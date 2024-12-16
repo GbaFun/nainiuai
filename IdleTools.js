@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         奶牛助手
+// @name         IdleTools
 // @version      0.1
 // @description  一键吃药|一键点亮|一键改造
 // @author       奶牛
