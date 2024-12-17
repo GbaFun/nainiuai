@@ -3,6 +3,7 @@
 // @version      0.1
 // @description  奶牛助手工具库
 // @author       奶牛
+// @match        https://www.idleinfinity.cn
 // @grant        none
 // @license MIT
 
