@@ -531,24 +531,7 @@
             if (compandMode) {
                 // localStorage.setItem('storedCompandCounts', JSON.stringify(""));
                 //默认保留数量
-                var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts')) || {
-                    "夏-13#": 1000,
-                    "多尔-14#": 1000,
-                    "蓝姆-20#": 1000,
-                    "普尔-21#": 1000,
-                    "乌姆-22#": 1000,
-                    "马尔-23#": 1000,
-                    "伊司特-24#": 1000,
-                    "古尔-25#": 1000,
-                    "伐克斯-26#": 1000,
-                    "欧姆-27#": 1000,
-                    "罗-28#": 1000,
-                    "瑟-29#": 1000,
-                    "贝-30#": 1000,
-                    "乔-31#": 1000,
-                    "查姆-32#": 1000,
-                    "萨德-33#": 1000,
-                };
+                var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts')) || storedCompandDefault;
                 $('.panel-heading:contains("符文") .rasdsky').remove();
 
                 var confirmButton = $('<a class="btn btn-xs btn-default" id="confirmButton">确认</a>');
