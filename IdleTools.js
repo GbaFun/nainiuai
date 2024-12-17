@@ -22,9 +22,6 @@
 
     //改造需要匹配的词条
     const reformKeyArr = "reformKeyArr";
-
-    const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
-
     class Idle {
         constructor() {
 

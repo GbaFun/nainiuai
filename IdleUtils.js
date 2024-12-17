@@ -8,7 +8,7 @@
 // @license MIT
 
 // ==/UserScript==
-
+const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
 //post消息
 function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
     setTimeout(function () {
