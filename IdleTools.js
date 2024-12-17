@@ -60,7 +60,7 @@
                 else {
                     localObj[id].isOnline = false;
                 }
-                this.saveMergeStatus(localObj, charStatus);
+                saveMergeStatus(localObj, charStatus);
             }
 
         }
@@ -71,7 +71,7 @@
             this.cids.forEach((item, index) => {
                 var obj = {};
                 obj[item] = { isOnline: true, }
-                this.saveMergeStatus(obj, charStatus);
+                saveMergeStatus(obj, charStatus);
             });
         }
 
@@ -127,21 +127,7 @@
         }
 
 
-        //保存对象到本地缓存，有则合并,无则直接新增
-        saveMergeStatus(obj, key) {
-            var localObj = localStorage.getItem(key);
-            localObj = JSON.parse(localObj);
-            if (!!!localObj) {
-                var str = JSON.stringify(obj);
-                localStorage.setItem(key, str);
-            }
-            else {
 
-                var t = deepMerge(localObj, obj);
-                var saveStr = JSON.stringify(t);
-                localStorage.setItem(key, saveStr);
-            }
-        }
 
         loadReformPlugin() {
             if (location.href.indexOf("Equipment/Reform") == -1) {
@@ -213,7 +199,7 @@
                     var t2 = $("#txtTarget2").val();
                     var optType = $("#optType").val();
                     var arr = this.saveAffixToArr([t1, t2, optType]);
-                    this.saveMergeStatus(arr, reformKeyArr);
+                    saveMergeStatus(arr, reformKeyArr);
                     this.reformAuto();
                 }
             });
@@ -354,7 +340,7 @@
                 'id': "btnSanRestore"
             });
             var numInput = $('<input>', {
-                'class': 'panel-filter panel-filter-mybag',
+                'style':"width:120px;line-height:18px;",
                 'placeholder': '请填写要吃的数量',
                 'id': 'sanNumTxt'
             });
@@ -515,7 +501,7 @@
                     if (regexResult[1] == curCompandRuneId) {
                         localStorage.setItem('lastCompandRuneId', regexResult[1]);
                         if (count > 1) {
-                                //升级符文消息
+                            //升级符文消息
                             compandStore(regexResult[1], count);
                         }
                         else {
@@ -705,7 +691,7 @@
 })();
 
 //改造白名单
-const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
+const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"],["血红", "白热"],["雄黄", "白热"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
 //升级符文保留数量默认表
 const storedCompandDefault = {
     "夏-13#": 1000,
@@ -724,6 +710,22 @@ const storedCompandDefault = {
     "乔-31#": 1000,
     "查姆-32#": 1000,
     "萨德-33#": 1000,
+}
+
+//保存对象到本地缓存，有则合并,无则直接新增
+function saveMergeStatus(obj, key) {
+    var localObj = localStorage.getItem(key);
+    localObj = JSON.parse(localObj);
+    if (!!!localObj) {
+        var str = JSON.stringify(obj);
+        localStorage.setItem(key, str);
+    }
+    else {
+
+        var t = deepMerge(localObj, obj);
+        var saveStr = JSON.stringify(t);
+        localStorage.setItem(key, saveStr);
+    }
 }
 //post消息
 function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
