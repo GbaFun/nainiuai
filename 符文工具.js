@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         符文工具
 // @version      1.0
-// @description
+// @description  废弃文件，功能已迁移至主文件
 // @author       RasdSky
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
 // @grant        none

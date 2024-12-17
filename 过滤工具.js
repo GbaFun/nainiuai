@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         过滤工具
-// @version      1.0
-// @description
+// @version      0.1
+// @description  测试工具，暂未实现
 // @author       RasdSky
 // @match        https://www.idleinfinity.cn/Config/Query?*
 // @grant        none
