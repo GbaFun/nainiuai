@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         IdleTools
-// @version      0.3
-// @description  一键吃药|一键点亮|一键改造
+// @version      0.4
+// @description  一键吃药|一键点亮|一键改造|一键合符文
 // @author       奶牛
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Map/Detail?*
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
+// @match        https://www.idleinfinity.cn/Equipment/Material?*
 // @grant        none
 // @license MIT
 // ==/UserScript==
@@ -15,27 +16,27 @@
     const charStatus = "charStatus";
     //一键吃药记录的物品id
     const sanMedKey = "sanMedcineIds";
- 
+
     const isClickOnline = "isClickOnline";
- 
+
     //改造需要匹配的词条
     const reformKeyArr = "reformKeyArr";
- 
+
     const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
- 
+
     class Idle {
         constructor() {
- 
+
             this.cids = this.getCharacters();
             this.initCidStatus();
             this.initCurrentChar();
             this.loadPlugin();
         }
- 
+
         cids = [];
         //当前用户
         currentId = 0;
- 
+
         //获取所有账号
         getCharacters() {
             let all = [];
@@ -56,7 +57,7 @@
                 var btns = $('a:contains("离线挂机")');
                 var localObj = JSON.parse(localStorage.getItem(charStatus));
                 if (btns.length == 0) {
- 
+
                     localObj[id].isOnline = true;
                 }
                 else {
@@ -64,9 +65,9 @@
                 }
                 this.saveMergeStatus(localObj, charStatus);
             }
- 
+
         }
- 
+
         //初始化一些角色相关的对象
         initCidStatus() {
             var map = {};
@@ -76,8 +77,8 @@
                 this.saveMergeStatus(obj, charStatus);
             });
         }
- 
- 
+
+
         online(callback) {
             setTimeout(() => {
                 $.ajax({
@@ -90,15 +91,15 @@
                     }
                 });
             }, 1000)
- 
+
         }
- 
+
         switchCharacter(id) {
             if (!!!id) return;
             setTimeout(() => {
                 location.href = `https://www.idleinfinity.cn/Map/Detail?id=${id}`;
             }, 1000)
- 
+
         }
         //开始循环点亮
         onlineLoop() {
@@ -120,15 +121,15 @@
                         var cIndex = this.cids.indexOf(this.currentId);
                         this.switchCharacter(this.cids[++cIndex]);
                     }
- 
+
                 }
             }
             if (this.currentId == this.cids[this.cids.length - 1]) {
                 localStorage.removeItem(isClickOnline);
             }
         }
- 
- 
+
+
         //保存对象到本地缓存，有则合并,无则直接新增
         saveMergeStatus(obj, key) {
             var localObj = localStorage.getItem(key);
@@ -138,13 +139,13 @@
                 localStorage.setItem(key, str);
             }
             else {
- 
+
                 var t = deepMerge(localObj, obj);
                 var saveStr = JSON.stringify(t);
                 localStorage.setItem(key, saveStr);
             }
         }
- 
+
         loadReformPlugin() {
             if (location.href.indexOf("Equipment/Reform") == -1) {
                 localStorage.removeItem(reformKeyArr);
@@ -166,17 +167,17 @@
                 style: "color:#000",
                 id: "txtTarget2"
             })
- 
- 
+
+
             container.append(span1)
             container.append(input1)
             var span2 = $("<span>", {
                 text: "目标词条2:",
- 
+
             });
             container.append(span2)
             container.append(input2)
- 
+
             var span3 = $("<span>", {
                 text: "改造公式:"
             });
@@ -193,18 +194,18 @@
                 { text: '套装+23#', value: '16' },
                 { text: '套装+21#', value: '17' },
                 { text: '稀有+22#', value: '27' },
- 
- 
- 
+
+
+
             ];
             //需要一个保留清单 洗出值钱的其他东西保留
- 
+
             $.each(options, function (i, option) {
                 opt.append($('<option></option>').text(option.text).attr('value', option.value));
             });
             container.append(span3);
             container.append(opt);
- 
+
             var btn = $('<button>', {
                 'class': 'btn btn-default btn-xs dropdown-toggle',
                 'text': '开始改造',
@@ -221,9 +222,9 @@
             });
             container.append(btn);
             this.reformAuto();
- 
+
         }
- 
+
         reform() {
             // location.reload();
             // return;
@@ -237,10 +238,10 @@
                     location.reload();
                 }
             });
- 
+
         }
         reformAuto() {
-       
+
             var localStr = localStorage.getItem(reformKeyArr);
             if (!!!localStr) return;//去掉本地存储就停止
             var arr = JSON.parse(localStr);
@@ -257,22 +258,22 @@
             if (text.indexOf(arr[0]) > -1 && text.indexOf(arr[1]) > -1) {
                 localStorage.removeItem(reformKeyArr);
                 confirm("出现了！", function () {
-                    
+
                 });
                 return;
             }
             if (this.checkWhiteList(text)) {
                 localStorage.removeItem(reformKeyArr);
                 confirm("出现了白名单物品!", function () {
-                    
+
                 });
                 return;
             }
             setTimeout(() => {
                 this.reform();
             }, 1500)
- 
- 
+
+
         }
         checkWhiteList(text) {
             debugger;
@@ -281,7 +282,7 @@
                 for (let j = 0; j < reformWhiteList[i].length; j++) {
                     var condition = reformWhiteList[i][j];
                     if (text.indexOf(condition) == -1) {
-                      
+
                         isMatch = false;
                         break;
                     }
@@ -298,7 +299,7 @@
             if (affixArr.length == 0) return "";
             return affixArr.join(",");
         }
- 
+
         //勾选选中的
         setAffixCheckbox(affixStr) {
             var arr = affixStr.split(",");
@@ -309,7 +310,7 @@
         }
         //保存勾选框
         saveAffixToArr(arr) {
- 
+
             $(".affix-select").each((index, item) => {
                 var isChecked = $(item).prop("checked");
                 if (isChecked) {
@@ -318,10 +319,10 @@
             })
             return arr;
         }
- 
- 
- 
- 
+
+
+
+
         loadPlugin() {
             //自动吃药
             loadSanPlugin();
@@ -329,14 +330,15 @@
             loadOnlinePlugin();
             //自动改造
             this.loadReformPlugin();
+            loadStorePlugin();
         }
- 
+
     }
     let _idle = new Idle();
     _idle.onlineLoop();
- 
- 
- 
+
+
+
     //载入吃药插件
     function loadSanPlugin() {
         var equipArr = [];//所有装备的id;
@@ -346,7 +348,7 @@
             if (name.indexOf("药水") > -1) {
                 sanRestoreMap[index] = item;
             }
- 
+
         })
         if (countProperties(sanRestoreMap) > 0) {
             var btn = $('<button>', {
@@ -363,11 +365,11 @@
             $(".panel-heading:eq(2) .pull-right").append(numInput);
         }
         $(".equip-box .equip-use[data-id]").each(function (index, item) {
- 
+
             let id = $(item).attr("data-id");
             equipArr.push(id);
         });
- 
+
         useSan();//缓存中计数吃药
         $("#btnSanRestore").on("click", function () {
             var count = 0;
@@ -378,17 +380,17 @@
                 return;
             }
             for (let key in sanRestoreMap) {
- 
+
                 if (count < num) {
                     sanMedcineIds.push(equipArr[key]);
                 }
- 
+
                 count++;
             }
             localStorage.setItem(sanMedKey, sanMedcineIds);
             useSan();
         });
- 
+
         //自动吃掉本地存储sanMedcineIds里面的药
         function useSan() {
             let medcine = localStorage.getItem(sanMedKey);
@@ -400,9 +402,9 @@
                 localStorage.setItem(sanMedKey, arr);
             });
         }
- 
+
     }
- 
+
     //载入上线脚本
     function loadOnlinePlugin() {
         var btns = $('a:contains("离线挂机")');
@@ -416,17 +418,17 @@
             'id': "btnOnline"
         });
         container.append(btn);
- 
+
         $("#btnOnline").on("click", function () {
             _idle.saveMergeStatus(true, isClickOnline);
             debugger;
             _idle.switchCharacter(_idle.cids[0]);//从第一个角色开始
         });
- 
+
     }
- 
- 
- 
+
+
+
     //使用道具
     function use(eid, callback) {
         $.ajax({
@@ -447,7 +449,7 @@
             }
         });
     }
- 
+
     function countProperties(obj) {
         let count = 0;
         for (let prop in obj) {
@@ -457,7 +459,7 @@
         }
         return count;
     }
- 
+
     function deepMerge(target, ...sources) {
         for (let source of sources) {
             for (let key in source) {
@@ -472,10 +474,260 @@
         }
         return target;
     }
- 
- 
- 
- 
- 
- 
+
+    //载入符文插件
+    function loadStorePlugin() {
+        if (location.href.indexOf("Equipment/Material") == -1) {
+            return;
+        }
+
+        var compandMode = false;
+        var autoCompandMode = false;
+        var storedRuneCounts = {}; // 存储每个符文项的数量
+        var storedCompandCounts = {}; // 合成每个符文项的保留数量
+
+        function showChange() {
+            var lastCompandRuneId = parseInt(localStorage.getItem('lastCompandRuneId'));
+            //刷新页面前正在运行一键升级符文逻辑，且符文检查没有运行完
+            if (!lastCompandRuneId.isNaN && lastCompandRuneId >= 0 && lastCompandRuneId < 33) {
+                autoCompandMode = true;
+            }
+
+            console.log("上次自动升级符文id：" + lastCompandRuneId + "----是否进入自动升级模式：" + autoCompandMode);
+            //一键升级模式
+            if (autoCompandMode) {
+                var curCompandRuneId = lastCompandRuneId + 1;
+                $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+                    var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+                    var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // 获取符文数量
+
+                    var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts'));
+
+                    var storedCount = storedCompandCounts[runeName];
+                    if (storedCount.isNaN || storedCount == undefined)
+                        storedCount = 0;
+                    var regexResult = runeName.match(/-(\d+)#/);
+                    var count = 0;
+                    if (runeCount > storedCount) {
+                        count = runeCount - storedCount;
+                        count = count - count % 2;
+                    }
+
+                    if (regexResult[1] == curCompandRuneId) {
+                        localStorage.setItem('lastCompandRuneId', regexResult[1]);
+                        if (count > 1) {
+                            compandStore(regexResult[1], count);
+                        }
+                        else {
+                            showChange();
+                        }
+                        // return;
+                    }
+                });
+                compandMode = true;
+            }
+
+            //设置升级保留数量模式
+            if (compandMode) {
+                // localStorage.setItem('storedCompandCounts', JSON.stringify(""));
+                //默认保留数量
+                var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts')) || {
+                    "夏-13#": 1000,
+                    "多尔-14#": 1000,
+                    "蓝姆-20#": 1000,
+                    "普尔-21#": 1000,
+                    "乌姆-22#": 1000,
+                    "马尔-23#": 1000,
+                    "伊司特-24#": 1000,
+                    "古尔-25#": 1000,
+                    "伐克斯-26#": 1000,
+                    "欧姆-27#": 1000,
+                    "罗-28#": 1000,
+                    "瑟-29#": 1000,
+                    "贝-30#": 1000,
+                    "乔-31#": 1000,
+                    "查姆-32#": 1000,
+                    "萨德-33#": 1000,
+                };
+                $('.panel-heading:contains("符文") .rasdsky').remove();
+
+                var confirmButton = $('<a class="btn btn-xs btn-default" id="confirmButton">确认</a>');
+                var cancleButton = $('<a class="btn btn-xs btn-default" id="cancleButton">退出</a>');
+
+                // 将按钮放入一个 div 中，并添加到 panel-heading 中
+                var buttonContainer = $('<div class="pull-right rasdsky"></div>');
+                buttonContainer.append(confirmButton);
+                buttonContainer.append(cancleButton);
+
+                $('.panel-heading:contains("符文")').append(buttonContainer);
+                confirmButton.click(function () {
+                    $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+                        var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+                        var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // 获取符文数量
+
+                        var _inputElement = $(this).find('.rasdsky-input:first');
+                        var cnt = parseInt(_inputElement.val());
+                        if (storedCompandCounts.hasOwnProperty(runeName)) {
+                            if (!cnt.isNaN && cnt != undefined) {
+                                storedCompandCounts[runeName] = cnt;
+                            }
+                        }
+                        else {
+                            storedCompandCounts[runeName] = 0;
+                        }
+                        // var storedCount = storedCompandCounts[runeName];
+                        // var regexResult = runeName.match(/-(\d+)#/);
+                        // if (runeCount > storedCount) {
+                        //     var count = runeCount - storedCount;
+                        //     count = count - count % 2;
+                        //     compandStore(regexResult[1], count);
+                        // }
+                    });
+                    localStorage.setItem('storedCompandCounts', JSON.stringify(storedCompandCounts)); // 存储到 localStorage 
+
+                    //进入一键升级模式
+                    autoCompandMode = true;
+                    localStorage.setItem('lastCompandRuneId', 0);
+                    showChange();
+                });
+                cancleButton.click(function () {
+                    compandMode = false;
+                    autoCompandMode = false;
+                    showChange();
+                });
+
+                $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+                    var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+
+                    var retainCount = 0;
+                    if (storedCompandCounts.hasOwnProperty(runeName)) {
+                        retainCount = storedCompandCounts[runeName];
+                        if (retainCount == undefined || retainCount.isNaN)
+                            retainCount = 0;
+                    }
+                    $(this).find('.rasdsky').remove();
+
+                    var t = ($('<span>').text('  保留：').css('color', 'grey'));
+
+                    var inputElement = $('<input class="rasdsky-input">').css({
+                        "color": "grey",
+                        "width": 120,
+                        "height": 21,
+                    });
+                    inputElement.val(retainCount);
+                    var p = $('<p class="rasdsky">');
+                    p.append(t);
+                    p.append(inputElement);
+
+                    $(this).append(p)
+
+                });
+            }
+            //查看变动数量模式
+            else {
+
+                $('.panel-heading:contains("符文") .rasdsky').remove();
+                var storedRuneCounts = JSON.parse(localStorage.getItem('storedRuneCounts')) || {};
+                console.log(storedRuneCounts);
+                var storedTime = localStorage.getItem('storedTime');
+
+                // 将按钮放入一个 div 中，并添加到 panel-heading 中
+                var buttonContainer2 = $('<div class="pull-right rasdsky"></div>');
+
+                // 创建展示存储时间的元素
+                var timeDiv = $('<div class="pull-left rasdsky"></div>');
+                var timeElement = $('<p>').text('存储时间: ' + storedTime);
+                timeDiv.append(timeElement);
+                // 创建存储符文数量的按钮
+                var saveButton = $('<a class="btn btn-xs btn-default" id="saveButton">存储</a>');
+                // 创建升级符文的按钮
+                var compandButton = $('<a class="pull-right btn btn-xs btn-default" id="compandButton">升级</a>');
+
+                buttonContainer2.append(timeDiv);
+                buttonContainer2.append(saveButton);
+                buttonContainer2.append(compandButton);
+
+                $('.panel-heading:contains("符文")').append(buttonContainer2);
+
+                saveButton.click(function () {
+                    var storedRuneCounts = {};
+
+                    $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+
+                        var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+
+                        var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // 获取符文数量
+                        // 检查解析是否成功，如果是 NaN 或者数量小于等于 20 则跳过不存储
+                        var regexResult = runeName.match(/-(\d+)#/);
+                        if (regexResult && parseInt(regexResult[1]) >= 1) {
+                            // 检查解析是否成功，如果是 NaN 则设为 0
+                            if (isNaN(runeCount)) {
+                                runeCount = 0;
+                            }
+                            storedRuneCounts[runeName] = runeCount; // 存储符文数量
+                        }
+                    });
+
+                    var currentTime = new Date().toLocaleString(); // 获取当前时间
+                    localStorage.setItem('storedRuneCounts', JSON.stringify(storedRuneCounts)); // 存储到 localStorage
+                    localStorage.setItem('storedTime', currentTime); // 存储时间到 localStorage
+                    alert("已存储数据", function () { });
+                });
+
+                compandButton.click(function () {
+                    compandMode = true;
+                    showChange();
+                });
+
+                $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+
+                    var $pElement = $(this).find('p:first'); // 获取当前容器下的第一个 <p> 元素
+
+                    var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+
+                    var currentRuneCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // 获取符文数量
+
+                    if (storedRuneCounts.hasOwnProperty(runeName)) {
+                        var storedCount = storedRuneCounts[runeName];
+                        var changeCount = currentRuneCount - storedCount; // 计算数量变动
+                        if (changeCount !== undefined) {
+                            var changeText = '  (' + storedCount + ' -> ' + currentRuneCount + ')'; // 根据变动数量生成对应文本
+
+                            $(this).find('.rasdsky').remove();
+                            // 将变动数量拼接到符文信息的最后，并为 <p> 标签添加对应的样式
+                            $(this).find('p:first .artifact:last').append($('<span class="rasdsky">').text(changeText).css('color', (changeCount > 0) ? 'red' : (changeCount < 0) ? 'green' : 'white')); // 为 <p> 标签添加颜色样式);)
+                        }
+                    }
+                });
+            }
+        }
+        showChange();
+    }
+
+    function compandStore(rune, count) {
+        var t = Math.floor(Math.random() * 1000) + 300;
+        setTimeout(function () {
+            $.ajax({
+                url: "RuneUpgrade",
+                type: "post",
+                data: {
+                    cid: $("#cid").val(),
+                    rune: rune,
+                    count: count,
+                    __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
+                },
+                dataType: "html",
+
+                success: function (result) {
+                    // callback();
+                    compandMode = true;
+                    location.reload();
+                },
+
+                error: function (request, state, ex) {
+                    // console.log(result)
+                }
+            });
+        }, t);
+    }
 })();
