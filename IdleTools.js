@@ -8,7 +8,7 @@
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
-// @require IdleUtils
+// @require      https://greasyfork.org/users/1411581
 // @grant        none
 // @license MIT
 // ==/UserScript==
