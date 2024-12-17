@@ -8,6 +8,7 @@
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
+// @require IdleUtils
 // @grant        none
 // @license MIT
 // ==/UserScript==
@@ -475,6 +476,8 @@
         return target;
     }
 
+    //#region 符文插件
+
     //载入符文插件
     function loadStorePlugin() {
         if (location.href.indexOf("Equipment/Material") == -1) {
@@ -704,30 +707,44 @@
         showChange();
     }
 
+    //升级符文消息
     function compandStore(rune, count) {
         var t = Math.floor(Math.random() * 1000) + 300;
-        setTimeout(function () {
-            $.ajax({
-                url: "RuneUpgrade",
-                type: "post",
-                data: {
-                    cid: $("#cid").val(),
-                    rune: rune,
-                    count: count,
-                    __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
-                },
-                dataType: "html",
+        IdleUtils.POST_Message("RuneUpgrade", {
+            cid: $("#cid").val(),
+            rune: rune,
+            count: count,
+            __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
+        }, "html", t, function (result) {
+            compandMode = true;
+            location.reload();
+        }, function (request, state, ex) {
+            console.log(result)
+        })
+        // setTimeout(function () {
+        //     $.ajax({
+        //         url: "RuneUpgrade",
+        //         type: "post",
+        //         data: {
+        //             cid: $("#cid").val(),
+        //             rune: rune,
+        //             count: count,
+        //             __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
+        //         },
+        //         dataType: "html",
 
-                success: function (result) {
-                    // callback();
-                    compandMode = true;
-                    location.reload();
-                },
+        //         success: function (result) {
+        //             // callback();
+        //             compandMode = true;
+        //             location.reload();
+        //         },
 
-                error: function (request, state, ex) {
-                    // console.log(result)
-                }
-            });
-        }, t);
+        //         error: function (request, state, ex) {
+        //             // console.log(result)
+        //         }
+        //     });
+        // }, t);
     }
+
+    //#endregion
 })();
