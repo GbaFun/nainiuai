@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         IdleUtils
-// @version      0.1
+// @version      0.2
 // @description  奶牛助手工具库
 // @author       奶牛
 // @match        https://www.idleinfinity.cn
