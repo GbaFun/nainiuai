@@ -8,7 +8,6 @@
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
-// @require      https://update.greasyfork.org/scripts/520974/1504685/IdleUtils.js
 // @grant        none
 // @license MIT
 // ==/UserScript==
@@ -516,6 +515,7 @@
                     if (regexResult[1] == curCompandRuneId) {
                         localStorage.setItem('lastCompandRuneId', regexResult[1]);
                         if (count > 1) {
+                                //升级符文消息
                             compandStore(regexResult[1], count);
                         }
                         else {
@@ -685,46 +685,63 @@
             }
         }
         showChange();
+
+        function compandStore(rune, count) {
+            var t = Math.floor(Math.random() * 1000) + 300;
+            POST_Message("RuneUpgrade", {
+                cid: $("#cid").val(),
+                rune: rune,
+                count: count,
+                __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
+            }, "html", t, function (result) {
+                compandMode = true;
+                location.reload();
+            }, function (request, state, ex) {
+                console.log(result)
+            })
+        }
     }
-
-    //升级符文消息
-    function compandStore(rune, count) {
-        var t = Math.floor(Math.random() * 1000) + 300;
-        POST_Message("RuneUpgrade", {
-            cid: $("#cid").val(),
-            rune: rune,
-            count: count,
-            __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
-        }, "html", t, function (result) {
-            compandMode = true;
-            location.reload();
-        }, function (request, state, ex) {
-            console.log(result)
-        })
-        // setTimeout(function () {
-        //     $.ajax({
-        //         url: "RuneUpgrade",
-        //         type: "post",
-        //         data: {
-        //             cid: $("#cid").val(),
-        //             rune: rune,
-        //             count: count,
-        //             __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
-        //         },
-        //         dataType: "html",
-
-        //         success: function (result) {
-        //             // callback();
-        //             compandMode = true;
-        //             location.reload();
-        //         },
-
-        //         error: function (request, state, ex) {
-        //             // console.log(result)
-        //         }
-        //     });
-        // }, t);
-    }
-
     //#endregion
 })();
+
+//改造白名单
+const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
+//升级符文保留数量默认表
+const storedCompandDefault = {
+    "夏-13#": 1000,
+    "多尔-14#": 1000,
+    "蓝姆-20#": 1000,
+    "普尔-21#": 1000,
+    "乌姆-22#": 1000,
+    "马尔-23#": 1000,
+    "伊司特-24#": 1000,
+    "古尔-25#": 1000,
+    "伐克斯-26#": 1000,
+    "欧姆-27#": 1000,
+    "罗-28#": 1000,
+    "瑟-29#": 1000,
+    "贝-30#": 1000,
+    "乔-31#": 1000,
+    "查姆-32#": 1000,
+    "萨德-33#": 1000,
+}
+//post消息
+function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
+    setTimeout(function () {
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: _data,
+            dataType: _dataType,
+
+            success: function (result) {
+                _onSuccess(result);
+                location.reload();
+            },
+
+            error: function (request, state, ex) {
+                _onError(request, state, ex);
+            }
+        });
+    }, _delay);
+}
