@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         IdleTools
-// @version      0.5
+// @version      0.6.1
 // @description  一键吃药|一键点亮|一键改造|一键合符文
 // @author       奶牛
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
@@ -710,7 +710,7 @@
     //升级符文消息
     function compandStore(rune, count) {
         var t = Math.floor(Math.random() * 1000) + 300;
-        IdleUtils.POST_Message("RuneUpgrade", {
+        POST_Message("RuneUpgrade", {
             cid: $("#cid").val(),
             rune: rune,
             count: count,
