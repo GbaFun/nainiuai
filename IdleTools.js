@@ -15,27 +15,27 @@
     const charStatus = "charStatus";
     //一键吃药记录的物品id
     const sanMedKey = "sanMedcineIds";
-
+ 
     const isClickOnline = "isClickOnline";
-
+ 
     //改造需要匹配的词条
     const reformKeyArr = "reformKeyArr";
-
+ 
     const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
-
+ 
     class Idle {
         constructor() {
-
+ 
             this.cids = this.getCharacters();
             this.initCidStatus();
             this.initCurrentChar();
             this.loadPlugin();
         }
-
+ 
         cids = [];
         //当前用户
         currentId = 0;
-
+ 
         //获取所有账号
         getCharacters() {
             let all = [];
@@ -56,7 +56,7 @@
                 var btns = $('a:contains("离线挂机")');
                 var localObj = JSON.parse(localStorage.getItem(charStatus));
                 if (btns.length == 0) {
-
+ 
                     localObj[id].isOnline = true;
                 }
                 else {
@@ -64,9 +64,9 @@
                 }
                 this.saveMergeStatus(localObj, charStatus);
             }
-
+ 
         }
-
+ 
         //初始化一些角色相关的对象
         initCidStatus() {
             var map = {};
@@ -76,8 +76,8 @@
                 this.saveMergeStatus(obj, charStatus);
             });
         }
-
-
+ 
+ 
         online(callback) {
             setTimeout(() => {
                 $.ajax({
@@ -90,15 +90,15 @@
                     }
                 });
             }, 1000)
-
+ 
         }
-
+ 
         switchCharacter(id) {
             if (!!!id) return;
             setTimeout(() => {
                 location.href = `https://www.idleinfinity.cn/Map/Detail?id=${id}`;
             }, 1000)
-
+ 
         }
         //开始循环点亮
         onlineLoop() {
@@ -120,15 +120,15 @@
                         var cIndex = this.cids.indexOf(this.currentId);
                         this.switchCharacter(this.cids[++cIndex]);
                     }
-
+ 
                 }
             }
             if (this.currentId == this.cids[this.cids.length - 1]) {
                 localStorage.removeItem(isClickOnline);
             }
         }
-
-
+ 
+ 
         //保存对象到本地缓存，有则合并,无则直接新增
         saveMergeStatus(obj, key) {
             var localObj = localStorage.getItem(key);
@@ -138,15 +138,18 @@
                 localStorage.setItem(key, str);
             }
             else {
-
+ 
                 var t = deepMerge(localObj, obj);
                 var saveStr = JSON.stringify(t);
                 localStorage.setItem(key, saveStr);
             }
         }
-
+ 
         loadReformPlugin() {
-            if (location.href.indexOf("Equipment/Reform") == -1) return;
+            if (location.href.indexOf("Equipment/Reform") == -1) {
+                localStorage.removeItem(reformKeyArr);
+                return;
+            }
             var container = $(".panel-heading:eq(1)");
             var span1 = $("<span>", {
                 text: "目标词条1:"
@@ -163,17 +166,17 @@
                 style: "color:#000",
                 id: "txtTarget2"
             })
-
-
+ 
+ 
             container.append(span1)
             container.append(input1)
             var span2 = $("<span>", {
                 text: "目标词条2:",
-
+ 
             });
             container.append(span2)
             container.append(input2)
-
+ 
             var span3 = $("<span>", {
                 text: "改造公式:"
             });
@@ -190,18 +193,18 @@
                 { text: '套装+23#', value: '16' },
                 { text: '套装+21#', value: '17' },
                 { text: '稀有+22#', value: '27' },
-
-
-
+ 
+ 
+ 
             ];
             //需要一个保留清单 洗出值钱的其他东西保留
-
+ 
             $.each(options, function (i, option) {
                 opt.append($('<option></option>').text(option.text).attr('value', option.value));
             });
             container.append(span3);
             container.append(opt);
-
+ 
             var btn = $('<button>', {
                 'class': 'btn btn-default btn-xs dropdown-toggle',
                 'text': '开始改造',
@@ -218,9 +221,9 @@
             });
             container.append(btn);
             this.reformAuto();
-
+ 
         }
-
+ 
         reform() {
             // location.reload();
             // return;
@@ -234,9 +237,10 @@
                     location.reload();
                 }
             });
-
+ 
         }
         reformAuto() {
+       
             var localStr = localStorage.getItem(reformKeyArr);
             if (!!!localStr) return;//去掉本地存储就停止
             var arr = JSON.parse(localStr);
@@ -267,8 +271,8 @@
             setTimeout(() => {
                 this.reform();
             }, 1500)
-
-
+ 
+ 
         }
         checkWhiteList(text) {
             debugger;
@@ -294,7 +298,7 @@
             if (affixArr.length == 0) return "";
             return affixArr.join(",");
         }
-
+ 
         //勾选选中的
         setAffixCheckbox(affixStr) {
             var arr = affixStr.split(",");
@@ -305,7 +309,7 @@
         }
         //保存勾选框
         saveAffixToArr(arr) {
-
+ 
             $(".affix-select").each((index, item) => {
                 var isChecked = $(item).prop("checked");
                 if (isChecked) {
@@ -314,10 +318,10 @@
             })
             return arr;
         }
-
-
-
-
+ 
+ 
+ 
+ 
         loadPlugin() {
             //自动吃药
             loadSanPlugin();
@@ -326,13 +330,13 @@
             //自动改造
             this.loadReformPlugin();
         }
-
+ 
     }
     let _idle = new Idle();
     _idle.onlineLoop();
-
-
-
+ 
+ 
+ 
     //载入吃药插件
     function loadSanPlugin() {
         var equipArr = [];//所有装备的id;
@@ -342,7 +346,7 @@
             if (name.indexOf("药水") > -1) {
                 sanRestoreMap[index] = item;
             }
-
+ 
         })
         if (countProperties(sanRestoreMap) > 0) {
             var btn = $('<button>', {
@@ -359,11 +363,11 @@
             $(".panel-heading:eq(2) .pull-right").append(numInput);
         }
         $(".equip-box .equip-use[data-id]").each(function (index, item) {
-
+ 
             let id = $(item).attr("data-id");
             equipArr.push(id);
         });
-
+ 
         useSan();//缓存中计数吃药
         $("#btnSanRestore").on("click", function () {
             var count = 0;
@@ -374,17 +378,17 @@
                 return;
             }
             for (let key in sanRestoreMap) {
-
+ 
                 if (count < num) {
                     sanMedcineIds.push(equipArr[key]);
                 }
-
+ 
                 count++;
             }
             localStorage.setItem(sanMedKey, sanMedcineIds);
             useSan();
         });
-
+ 
         //自动吃掉本地存储sanMedcineIds里面的药
         function useSan() {
             let medcine = localStorage.getItem(sanMedKey);
@@ -396,9 +400,9 @@
                 localStorage.setItem(sanMedKey, arr);
             });
         }
-
+ 
     }
-
+ 
     //载入上线脚本
     function loadOnlinePlugin() {
         var btns = $('a:contains("离线挂机")');
@@ -412,17 +416,17 @@
             'id': "btnOnline"
         });
         container.append(btn);
-
+ 
         $("#btnOnline").on("click", function () {
             _idle.saveMergeStatus(true, isClickOnline);
             debugger;
             _idle.switchCharacter(_idle.cids[0]);//从第一个角色开始
         });
-
+ 
     }
-
-
-
+ 
+ 
+ 
     //使用道具
     function use(eid, callback) {
         $.ajax({
@@ -443,7 +447,7 @@
             }
         });
     }
-
+ 
     function countProperties(obj) {
         let count = 0;
         for (let prop in obj) {
@@ -453,7 +457,7 @@
         }
         return count;
     }
-
+ 
     function deepMerge(target, ...sources) {
         for (let source of sources) {
             for (let key in source) {
@@ -468,10 +472,10 @@
         }
         return target;
     }
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 })();
