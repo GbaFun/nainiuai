@@ -33,6 +33,7 @@
         cids = [];
         //当前用户
         currentId = 0;
+        
 
         //获取所有账号
         getCharacters() {
