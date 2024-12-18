@@ -33,7 +33,7 @@
         cids = [];
         //当前用户
         currentId = 0;
-        
+
 
         //获取所有账号
         getCharacters() {
@@ -209,17 +209,19 @@
 
         }
 
-        reform() {
-            // location.reload();
-            // return;
-            var type = $("#optType").val();
+        reform(type, callback) {
             $("#form input[name='type']").val(type);
             $.ajax({
                 type: "POST", // 或者 "GET"，根据实际情况选择
                 url: "EquipReform",
                 data: $("form").serialize(),
                 success: function (response) {
+                    if (callback) {
+                        callback();
+                    }
+                    else{
                     location.reload();
+                    }
                 }
             });
 
@@ -254,7 +256,7 @@
                 return;
             }
             setTimeout(() => {
-                this.reform();
+                this.reform(arr[2]);
             }, 1500)
 
 
@@ -303,6 +305,11 @@
             })
             return arr;
         }
+        //改造返回储藏箱
+        reformBackToBag() {
+            debugger;
+            $("a:contains('返回')")[0].click();
+        }
 
 
 
@@ -318,7 +325,9 @@
         }
 
     }
+
     let _idle = new Idle();
+    debugger;
     _idle.onlineLoop();
 
 
@@ -341,7 +350,7 @@
                 'id': "btnSanRestore"
             });
             var numInput = $('<input>', {
-                'style':"width:120px;line-height:18px;",
+                'style': "width:120px;line-height:18px;",
                 'placeholder': '请填写要吃的数量',
                 'id': 'sanNumTxt'
             });
@@ -404,8 +413,8 @@
         container.append(btn);
 
         $("#btnOnline").on("click", function () {
-            _idle.saveMergeStatus(true, isClickOnline);
-            debugger;
+            saveMergeStatus(true, isClickOnline);
+
             _idle.switchCharacter(_idle.cids[0]);//从第一个角色开始
         });
 
@@ -444,20 +453,6 @@
         return count;
     }
 
-    function deepMerge(target, ...sources) {
-        for (let source of sources) {
-            for (let key in source) {
-                if (source.hasOwnProperty(key)) {
-                    if (typeof target[key] === 'object' && typeof source[key] === 'object') {
-                        deepMerge(target[key], source[key]);
-                    } else {
-                        target[key] = source[key];
-                    }
-                }
-            }
-        }
-        return target;
-    }
 
     //#region 符文插件
 
@@ -689,10 +684,75 @@
         }
     }
     //#endregion
+
+    /***************一键血白**********************/
+    const autoXuebaiType = "autoXuebaiType";
+    loadAutoXuebai();//在储藏箱执行
+    reformXuebai();//在改造页执行
+    //加载一键血白
+    function loadAutoXuebai() {
+        if (location.href.indexOf("Equipment/Query") == -1) {
+            return;
+        }
+        var targetEquip = [];//回复药水所处在数组中的index
+        $(".equip-box .equip-name").each(function (index, item) {
+            var name = $(this)[0].innerText;
+            if (name == "【白热的珠宝】" || name == "【血红之珠宝】" || name == "【雄黄之珠宝】") {
+                targetEquip.push(item);
+            }
+
+        })
+        $(".equip-bag .equip-name").each(function (index, item) {
+            var name = $(this)[0].innerText;
+            if (name == "【白热的珠宝】" || name == "【血红之珠宝】" || name == "【雄黄之珠宝】") {
+                targetEquip.push(item);
+            }
+
+        })
+        if (targetEquip.length > 0) {
+            var btn = $('<button>', {
+                'class': 'btn btn-default btn-xs dropdown-toggle',
+                'text': '一键血白',
+                'id': "btnXuebai"
+            });
+            $(".panel-heading:eq(2) .pull-right").append(btn);
+        }
+        else {
+            localStorage.removeItem(autoXuebaiType);
+        }
+        $("#btnXuebai").on("click", function () {
+            saveMergeStatus(20, autoXuebaiType);
+            var btn = $(targetEquip[0]).parent().find(".equip-reform");
+            btn[0].click();
+        });
+        if (targetEquip.length > 0&&localStorage.getItem(autoXuebaiType)) {
+            var btn = $(targetEquip[0]).parent().find(".equip-reform");
+            btn[0].click();
+        }
+    }
+
+    function reformXuebai() {
+        if (location.href.indexOf("Equipment/Reform") == -1) {
+            return;
+        } debugger;
+        var type = localStorage.getItem(autoXuebaiType);
+        if (type) {
+            setTimeout(()=>{
+                _idle.reform(type, function () {
+                    _idle.reformBackToBag();
+                });
+            },1500)
+         
+
+        }
+
+    }
+
+    /***************一键血白end**********************/
 })();
 
 //改造白名单
-const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"],["血红", "白热"],["雄黄", "白热"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
+const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["血红", "白热"], ["雄黄", "白热"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
 //升级符文保留数量默认表
 const storedCompandDefault = {
     "夏-13#": 1000,
@@ -711,6 +771,23 @@ const storedCompandDefault = {
     "乔-31#": 1000,
     "查姆-32#": 1000,
     "萨德-33#": 1000,
+}
+
+
+
+function deepMerge(target, ...sources) {
+    for (let source of sources) {
+        for (let key in source) {
+            if (source.hasOwnProperty(key)) {
+                if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
 }
 
 //保存对象到本地缓存，有则合并,无则直接新增

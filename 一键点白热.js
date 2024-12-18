@@ -1,20 +1,20 @@
-loadAutoXuebai();
+const autoXuebaiType="autoXuebaiType";
+loadAutoXuebai();//在储藏箱执行
+reformXuebai();//在改造页执行
 //加载一键血白
 function loadAutoXuebai() {
-    debugger;
     if (location.href.indexOf("Equipment/Query") == -1) {
         return;
     }
-    var equipArr = [];//所有装备的id;
-    var targetEquip = {};//回复药水所处在数组中的index
-    $(".equip-box .equip-name .unique[data-id]").each(function (index, item) {
+    var targetEquip = [];//回复药水所处在数组中的index
+    $(".equip-box .equip-name").each(function (index, item) {
         var name = $(this)[0].innerText;
-        if (name.indexOf("白热")>-1||name.indexOf("血红")>-1||name.indexOf("雄黄")>-1) {
-            targetEquip[index] = item;
+        if (name=="【白热的珠宝】"||name=="血红之珠宝】"||name=="【雄黄之珠宝】") {
+            targetEquip.push( item);
         }
 
     })
-    if (countProperties(targetEquip) > 0) {
+    if (targetEquip.length>0) {
         var btn = $('<button>', {
             'class': 'btn btn-default btn-xs dropdown-toggle',
             'text': '一键血白',
@@ -22,18 +22,30 @@ function loadAutoXuebai() {
         });
         $(".panel-heading:eq(2) .pull-right").append(btn);
     }
-    $(".equip-box .equip-use[data-id]").each(function (index, item) {
-        let id = $(item).attr("data-id");
-        equipArr.push(id);
-    });
-
+    else{
+       localStorage.removeItem(autoXuebaiType);
+    }
     $("#btnXuebai").on("click", function () {
-        var count = 0;
-        var sanMedcineIds = [];
-
-
+        saveMergeStatus("20",autoXuebaiType);
     });
+    if(targetEquip.length>0){
+        var btn=$(targetEquip[0]).parent().find(".equip-reform");
+        btn[0].click();
+    }
+}
 
+function reformXuebai(){
+    if (location.href.indexOf("Equipment/Reform") == -1) {
+        return;
+    }
+    var type=localStorage.getItem(autoXuebaiType);
+    if(type){
+        _idle.reform(type,function(){
+            _idle.reformBackToBag();
+        });
+
+    }
+    
 }
 
 
