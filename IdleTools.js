@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         IdleTools
-// @version      0.7.1
-// @description  一键吃药|一键点亮|一键改造|一键合符文
+// @version      0.7.3
+// @description  一键吃药|一键点亮|一键改造|一键合符文|一键血白
 // @author       奶牛
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
 // @match        https://www.idleinfinity.cn/Map/Detail?*
