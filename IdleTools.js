@@ -691,16 +691,14 @@
 
         function compandStore(rune, count) {
             var t = Math.floor(Math.random() * 1000) + 300;
-            POST_Message("RuneUpgrade", {
-                cid: $("#cid").val(),
+            POST_Message("RuneUpgrade", MERGE_Form({
                 rune: rune,
                 count: count,
-                __RequestVerificationToken: $("[name='__RequestVerificationToken']").val()
-            }, "html", t, function (result) {
+            }), "html", t, function (result) {
                 compandMode = true;
-                location.reload();
+                // location.reload();
             }, function (request, state, ex) {
-                console.log(result)
+                // console.log(result)
             })
         }
     }
@@ -822,7 +820,21 @@ function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
 
             error: function (request, state, ex) {
                 _onError(request, state, ex);
+                console.log(result);
             }
         });
     }, _delay);
+}
+function MERGE_Form(_data) {
+    var data = {};
+    var form = $("#form")[0];
+    $.each(form, function (infoIndex, info) {
+        // console.log("Name = " + info.name + " -- Id = " + info.id + " -- Value = " + info.value);
+        data[info.name] = info.value;
+    });
+    $.each(_data, function (infoIndex, info) {
+        // console.log("Name = " + infoIndex + " -- Id = " + infoIndex + " -- Value = " + info);
+        data[infoIndex] = info;
+    });
+    return data;
 }
