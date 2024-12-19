@@ -57,10 +57,10 @@ function GET_JSON_EquipName(_job, _lv, _equipType, _onGet) {
         if (cfg != undefined) {
             $.each(cfg, function (infoIndex, info2) {
                 if (info2.Lv.min <= level && level <= info2.Lv.max) {
-                    async function delayReturn() {
+                    async function asyncReturn() {
                         _onGet(info2[_equipType]);
                     }
-                    delayReturn();
+                    asyncReturn();
                 }
             })
         }
