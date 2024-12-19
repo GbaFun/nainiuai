@@ -33,3 +33,33 @@ function MERGE_Form(_data) {
     });
     return data;
 }
+//根据职业，等级，装备栏位获取配置的装备名称
+function GET_JSON_EquipName(_job, _lv, _equipType, _onGet) {
+    var job = _job;
+    var level = _lv;
+    if (EquipJson == null) {
+        $.getJSON("https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json", function (data) {
+            if (!$.isEmptyObject(data)) {
+                EquipJson = data[0];
+                var cfg = EquipJson[job];
+                if (cfg != undefined) {
+                    $.each(cfg, function (infoIndex, info2) {
+                        if (info2.Lv.min <= level && level < info2.Lv.max) {
+                            _onGet(info2[_equipType]);
+                        }
+                    })
+                }
+            }
+        });
+    }
+    else {
+        var cfg = EquipJson[job];
+        if (cfg != undefined) {
+            $.each(cfg, function (infoIndex, info2) {
+                if (info2.Lv.min <= level && level <= info2.Lv.max) {
+                    _onGet(info2[_equipType]);
+                }
+            })
+        }
+    }
+}
