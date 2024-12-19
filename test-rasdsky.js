@@ -1,7 +1,5 @@
 
 function doTest() {
-    var EquipJson = null;
-
     var data = MERGE_Form({
         eid: 1, rune: 33, count: 20,
     });
@@ -20,35 +18,4 @@ function doTest() {
         console.log(equipName)
     });
 
-    // POST_Message("EquipOn", MERGE_Form({ eid: 1 }), "html", 0, function (result) { }, function (request, state, ex) { });
-
-    function GET_JSON_EquipName(_job, _lv, _equipType, _onGet) {
-        var job = _job;
-        var level = _lv;
-        if (EquipJson == null) {
-            $.getJSON("https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json", function (data) {
-                if (!$.isEmptyObject(data)) {
-                    EquipJson = data[0];
-                    var cfg = EquipJson[job];
-                    if (cfg != undefined) {
-                        $.each(cfg, function (infoIndex, info2) {
-                            if (info2.Lv.min <= level && level < info2.Lv.max) {
-                                _onGet(info2[_equipType]);
-                            }
-                        })
-                    }
-                }
-            });
-        }
-        else {
-            var cfg = EquipJson[job];
-            if (cfg != undefined) {
-                $.each(cfg, function (infoIndex, info2) {
-                    if (info2.Lv.min <= level && level <= info2.Lv.max) {
-                        _onGet(info2[_equipType]);
-                    }
-                })
-            }
-        }
-    }
 }
