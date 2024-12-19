@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         IdleTools
-// @version      0.7.3
+// @version      0.7.4
 // @description  一键吃药|一键点亮|一键改造|一键合符文|一键血白
 // @author       奶牛
 // @match        https://www.idleinfinity.cn/Equipment/Query?*
@@ -21,6 +21,27 @@
 
     //改造需要匹配的词条
     const reformKeyArr = "reformKeyArr";
+    //改造白名单
+    const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["血红", "白热"], ["雄黄", "白热"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
+    //升级符文保留数量默认表
+    const storedCompandDefault = {
+        "夏-13#": 1000,
+        "多尔-14#": 1000,
+        "蓝姆-20#": 1000,
+        "普尔-21#": 1000,
+        "乌姆-22#": 1000,
+        "马尔-23#": 1000,
+        "伊司特-24#": 1000,
+        "古尔-25#": 1000,
+        "伐克斯-26#": 1000,
+        "欧姆-27#": 1000,
+        "罗-28#": 1000,
+        "瑟-29#": 1000,
+        "贝-30#": 1000,
+        "乔-31#": 1000,
+        "查姆-32#": 1000,
+        "萨德-33#": 1000,
+    }
     class Idle {
         constructor() {
 
@@ -170,10 +191,10 @@
             })
             // 添加option元素
             var options = [
+                { text: '蓝装+14#', value: '30' },
+                { text: '蓝装+13#', value: '20' },
                 { text: '蓝装+12#', value: '10' },
                 { text: '蓝装+绿|钻宝石', value: '11' },
-                { text: '蓝装+13#', value: '20' },
-                { text: '蓝装+14#', value: '30' },
                 { text: '蓝装+21#', value: '26' },
                 { text: '套装+23#', value: '16' },
                 { text: '套装+21#', value: '17' },
@@ -219,8 +240,8 @@
                     if (callback) {
                         callback();
                     }
-                    else{
-                    location.reload();
+                    else {
+                        location.reload();
                     }
                 }
             });
@@ -725,7 +746,7 @@
             var btn = $(targetEquip[0]).parent().find(".equip-reform");
             btn[0].click();
         });
-        if (targetEquip.length > 0&&localStorage.getItem(autoXuebaiType)) {
+        if (targetEquip.length > 0 && localStorage.getItem(autoXuebaiType)) {
             var btn = $(targetEquip[0]).parent().find(".equip-reform");
             btn[0].click();
         }
@@ -737,12 +758,12 @@
         } debugger;
         var type = localStorage.getItem(autoXuebaiType);
         if (type) {
-            setTimeout(()=>{
+            setTimeout(() => {
                 _idle.reform(type, function () {
                     _idle.reformBackToBag();
                 });
-            },1500)
-         
+            }, 1500)
+
 
         }
 
@@ -751,27 +772,7 @@
     /***************一键血白end**********************/
 })();
 
-//改造白名单
-const reformWhiteList = [["血红", "转换"], ["雄黄", "转换"], ["血红", "白热"], ["雄黄", "白热"], ["雷云风暴", "陨石"], ["支配", "陨石"], ["冰封球", "陨石"]]
-//升级符文保留数量默认表
-const storedCompandDefault = {
-    "夏-13#": 1000,
-    "多尔-14#": 1000,
-    "蓝姆-20#": 1000,
-    "普尔-21#": 1000,
-    "乌姆-22#": 1000,
-    "马尔-23#": 1000,
-    "伊司特-24#": 1000,
-    "古尔-25#": 1000,
-    "伐克斯-26#": 1000,
-    "欧姆-27#": 1000,
-    "罗-28#": 1000,
-    "瑟-29#": 1000,
-    "贝-30#": 1000,
-    "乔-31#": 1000,
-    "查姆-32#": 1000,
-    "萨德-33#": 1000,
-}
+
 
 
 
