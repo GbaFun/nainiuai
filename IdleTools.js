@@ -12,6 +12,19 @@
 // @license MIT
 // ==/UserScript==
 (function () {
+    getLibrary().then(data => {
+        // console.log(data);
+        addScriptToHead(data);
+        async function asyncLanuch() {
+            onLaunch();
+        }
+        asyncLanuch();
+    }).catch((_url, xhr, status, error) => {
+        alert('从(' + _url + ')获取数据失败!请确认重载', function () { location.reload(); });
+    });
+})();
+
+function onLaunch() {
     //存储角色状态的key值
     const charStatus = "charStatus";
     //一键吃药记录的物品id
@@ -776,11 +789,7 @@
     }
 
     /***************一键血白end**********************/
-})();
-
-
-
-
+}
 
 function deepMerge(target, ...sources) {
     for (let source of sources) {
@@ -796,7 +805,6 @@ function deepMerge(target, ...sources) {
     }
     return target;
 }
-
 //保存对象到本地缓存，有则合并,无则直接新增
 function saveMergeStatus(obj, key) {
     var localObj = localStorage.getItem(key);
@@ -812,3 +820,33 @@ function saveMergeStatus(obj, key) {
         localStorage.setItem(key, saveStr);
     }
 }
+
+//#region  INIT 
+function addScriptToHead(src) {
+    const script = document.createElement('script');
+    script.text = src;
+    document.head.appendChild(script);
+    console.log(document.head);
+}
+
+function getLibrary(_timeout = 5000) {
+    return new Promise((resolve, reject) => {
+        const _url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/IdleUtils.js"
+        $.ajax({
+            url: _url,
+            timeout: _timeout,
+            dataType: 'text',
+            success: function (data) {
+                // console.log(data);
+                resolve(data);
+            },
+            error: function (xhr, status, error) {
+                // 请求失败时的操作
+                // console.log('从(' + _url + ')获取JS脚本失败!');
+                reject(_url, xhr, status, error);
+            }
+        });
+    });
+}
+
+//#endregion
