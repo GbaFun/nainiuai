@@ -9,7 +9,6 @@
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
 // @grant        none
-// @resource IdleUtils https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/IdleUtils.js
 // @license MIT
 // ==/UserScript==
 (function () {
