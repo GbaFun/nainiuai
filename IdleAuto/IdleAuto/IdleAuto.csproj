@@ -85,7 +85,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="js\ah.js" />
+    <Content Include="js\ah.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

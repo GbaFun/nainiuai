@@ -7,7 +7,6 @@
 // ==/UserScript==
 
 (function () {
-    alert(1)
     var dataMap = {}//存储dataid对应装备的数据 
 
     loadPriceSuffix();
