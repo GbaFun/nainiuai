@@ -1,6 +1,31 @@
+///--json配置文件地址 
+const json_url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json";
+
+
 //发送POST消息
-function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
-    setTimeout(function () {
+// function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
+//     setTimeout(function () {
+//         $.ajax({
+//             url: _url,
+//             type: "post",
+//             data: _data,
+//             dataType: _dataType,
+
+//             success: function (result) {
+//                 _onSuccess(result);
+//                 location.reload();
+//             },
+
+//             error: function (request, state, ex) {
+//                 _onError(request, state, ex);
+//                 console.log(result);
+//             }
+//         });
+//     }, _delay);
+// }
+
+function Post(_url, _data, _dataType) {
+    return new Promise((resolve, reject) => {
         $.ajax({
             url: _url,
             type: "post",
@@ -8,20 +33,29 @@ function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
             dataType: _dataType,
 
             success: function (result) {
-                _onSuccess(result);
-                location.reload();
+                resolve(result);
             },
 
             error: function (request, state, ex) {
-                _onError(request, state, ex);
-                console.log(result);
+                reject(request);
             }
         });
-    }, _delay);
+    });
 }
 
+//利用promise实现优雅的暂停
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+//异步
+async function POST_Message(url, data, dataType, timeout = 0) {
+    console.log('Start');
+    await sleep(timeout);
+    console.log(timeout / 1000 + "秒后")
+    return Post(url, data, dataType)
 
+}
 
 //将表单数据合并进数据对象
 function MERGE_Form(_data) {
@@ -38,35 +72,58 @@ function MERGE_Form(_data) {
     return data;
 }
 //根据职业，等级，装备栏位获取配置的装备名称
-function GET_JSON_EquipName(_job, _lv, _equipType, _onGet) {
+function GET_EquipName(_job, _lv, _equipType, _onGet) {
     var job = _job;
     var level = _lv;
     if (EquipJson == null) {
-        $.getJSON("https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json", function (data) {
+        GET_JSON(json_url).then(data => {
             if (!$.isEmptyObject(data)) {
                 EquipJson = data[0];
-                var cfg = EquipJson[job];
-                if (cfg != undefined) {
-                    $.each(cfg, function (infoIndex, info2) {
-                        if (info2.Lv.min <= level && level < info2.Lv.max) {
-                            _onGet(info2[_equipType]);
-                        }
-                    })
-                }
+                EachConfig(_onGet);
             }
-        });
+        }).catch(_url, xhr, status, error)
+        {
+            alert('从(' + _url + ')获取JSON数据失败!', function () { });
+        }
     }
     else {
+        EachConfig(asyncReturn);
+    }
+
+    function EachConfig(_onGet) {
         var cfg = EquipJson[job];
         if (cfg != undefined) {
             $.each(cfg, function (infoIndex, info2) {
                 if (info2.Lv.min <= level && level <= info2.Lv.max) {
-                    async function asyncReturn() {
-                        _onGet(info2[_equipType]);
-                    }
-                    asyncReturn();
+                    _onGet(info2);
+                    return;
                 }
             })
         }
     }
+    async function asyncReturn(info) {
+        _onGet(info[_equipType]);
+    }
+}
+
+// 装备配置缓存
+let EquipJson;
+//
+function GET_JSON(_url, _timeout = 500) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: _url,
+            timeout: _timeout,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                resolve(data);
+            },
+            error: function (xhr, status, error) {
+                // 请求失败时的操作
+                console.log('从(' + _url + ')获取JSON数据失败!');
+                reject(_url, xhr, status, error);
+            }
+        });
+    });
 }

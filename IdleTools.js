@@ -9,6 +9,7 @@
 // @match        https://www.idleinfinity.cn/Equipment/Reform?*
 // @match        https://www.idleinfinity.cn/Equipment/Material?*
 // @grant        none
+// @require      https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/IdleUtils.js
 // @license MIT
 // ==/UserScript==
 (function () {
@@ -697,15 +698,16 @@
         //     })
         // }
         function compandStore(rune, count) {
-            var data=MERGE_Form({
+            var data = MERGE_Form({
                 rune: rune,
-                count: count});
+                count: count
+            });
             POST_Message("RuneUpgrade", data, "html", 2000)
-                .then(r=>{
-                compandMode=true;
-                location.reload();
-            })
-            .catch(r=>{console.log(r)});
+                .then(r => {
+                    compandMode = true;
+                    location.reload();
+                })
+                .catch(r => { console.log(r) });
         }
     }
 
@@ -760,7 +762,7 @@
     function reformXuebai() {
         if (location.href.indexOf("Equipment/Reform") == -1) {
             return;
-        } 
+        }
         var type = localStorage.getItem(autoXuebaiType);
         if (type) {
             setTimeout(() => {
@@ -810,50 +812,4 @@ function saveMergeStatus(obj, key) {
         var saveStr = JSON.stringify(t);
         localStorage.setItem(key, saveStr);
     }
-}
-function Post(_url, _data, _dataType) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: _url,
-            type: "post",
-            data: _data,
-            dataType: _dataType,
-
-            success: function (result) {
-                resolve(result);
-            },
-
-            error: function (request, state, ex) {
-                reject(request);
-            }
-        });
-    });
-}
-
-//利用promise实现优雅的暂停
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-//异步
-async function POST_Message(url, data, dataType, timeout = 0) {
-    console.log('Start');
-    await sleep(timeout);
-    console.log(timeout/1000+"秒后")
-    return Post(url, data, dataType)
-
-}
-
-function MERGE_Form(_data) {
-    var data = {};
-    var form = $("#form")[0];
-    $.each(form, function (infoIndex, info) {
-        // console.log("Name = " + info.name + " -- Id = " + info.id + " -- Value = " + info.value);
-        data[info.name] = info.value;
-    });
-    $.each(_data, function (infoIndex, info) {
-        // console.log("Name = " + infoIndex + " -- Id = " + infoIndex + " -- Value = " + info);
-        data[infoIndex] = info;
-    });
-    return data;
 }
