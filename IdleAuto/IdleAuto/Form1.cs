@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,47 +17,52 @@ namespace IdleAuto
 {
     public partial class Form1 : Form
     {
-        public Form1()
-        {
-            InitializeComponent();
-        }
+   
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var Url = @"https://www.idleinfinity.cn/Home/Index";//url网址
-            ChromiumWebBrowser ch = new ChromiumWebBrowser(Url);
-            ch.Dock = DockStyle.Fill;
-            //浏览器当前地址
-            //cr.CurrentUrl = open.Address;
-            this.Controls.Add(ch);
+  
 
         }
-        public class CustomRequestHandler : IRequestHandler
+        private ChromiumWebBrowser browser;
+
+        public Form1()
         {
-            public bool OnBeforeResourceLoad(IWebBrowser browserControl, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback)
-            {
-                var url = request.Url;
-
-                // 假设你的自定义JS文件名为 custom.js
-                if (request.ResourceType == ResourceType.Script && url.Contains("custom.js"))
-                {
-                    // 读取你的自定义JS内容
-                    var jsContent = System.IO.File.ReadAllText("path/to/your/custom.js");
-
-                    // 使用回调返回自定义的JS内容
-                    callback.Continue(new Response { MimeType = "application/javascript", StatusCode = 200, Body = jsContent });
-
-                    return true; // 表示处理已完成
-                }
-
-                return false; // 继续加载资源
-            }
-
-            // 其他必须实现的接口方法...
+            InitializeComponent();
+            InitializeChromium();
         }
 
-        // 在你的CefSharp初始化代码中使用这个自定义的RequestHandler
-        var browser = new ChromiumWebBrowser("http://yourwebsite.com");
-        browser.RequestHandler = new CustomRequestHandler();
+        private void InitializeChromium()
+        {
+            CefSettings settings = new CefSettings();
+            Cef.Initialize(settings);
+            browser = new ChromiumWebBrowser("https://www.idleinfinity.cn/Home/Index");
+            this.Controls.Add(browser);
+            browser.Dock = DockStyle.Fill;
+
+            // 等待页面加载完成后执行脚本
+            browser.FrameLoadEnd += OnFrameLoadEnd;
+        }
+
+        private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+
+            // 在主框架中执行自定义脚本
+            // 获取WinForms程序目录下的JavaScript文件路径
+            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "js", "ah.js");
+            string scriptContent = File.ReadAllText(scriptPath);
+
+            // 在主框架中执行自定义脚本
+            string script = $@"
+                    (function() {{
+                        var script = document.createElement('script');
+                        script.type = 'text/javascript';
+                        script.text = {scriptContent};
+                        document.head.appendChild(script);
+                    }})();
+                ";
+            browser.ExecuteScriptAsync(script);
+
+        }
     }
 }

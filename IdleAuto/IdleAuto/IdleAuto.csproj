@@ -84,5 +84,8 @@
       <Version>131.3.10</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="js\ah.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
