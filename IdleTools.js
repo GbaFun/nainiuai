@@ -839,7 +839,7 @@ function sleep(ms) {
 async function POST_Message(url, data, dataType, timeout = 0) {
     console.log('Start');
     await sleep(timeout);
-    console.log("2秒后")
+    console.log(timeout/1000+"秒后")
     return Post(url, data, dataType)
 
 }
