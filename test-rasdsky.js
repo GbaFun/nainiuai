@@ -2,8 +2,7 @@
 //#region  INIT 
 function addScriptToHead(src) {
     const script = document.createElement('script');
-    script.src = src;
-    script.type = 'text/javascript';
+    script.text = src;
     document.head.appendChild(script);
     console.log(document.head);
 }
@@ -11,7 +10,6 @@ function addScriptToHead(src) {
 function getLibrary(_timeout = 5000) {
     return new Promise((resolve, reject) => {
         const _url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/IdleUtils.js"
-        const json_url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json";
         $.ajax({
             url: _url,
             timeout: _timeout,
