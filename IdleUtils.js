@@ -19,6 +19,10 @@ function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
         });
     }, _delay);
 }
+
+
+
+
 //将表单数据合并进数据对象
 function MERGE_Form(_data) {
     var data = {};

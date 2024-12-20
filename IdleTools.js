@@ -129,14 +129,12 @@
                 let item = localObj[id];
                 if (this.currentId == id) {
                     if (!item.isOnline) {
-                        debugger;
                         this.online(() => {
                             var cIndex = this.cids.indexOf(this.currentId);
                             this.switchCharacter(this.cids[++cIndex]);
                         });
                     }
                     else {
-                        debugger
                         var cIndex = this.cids.indexOf(this.currentId);
                         this.switchCharacter(this.cids[++cIndex]);
                     }
@@ -283,7 +281,6 @@
 
         }
         checkWhiteList(text) {
-            debugger;
             for (let i = 0; i < reformWhiteList.length; i++) {
                 var isMatch = true;//满足一组条件才算命中
                 for (let j = 0; j < reformWhiteList[i].length; j++) {
@@ -328,7 +325,6 @@
         }
         //改造返回储藏箱
         reformBackToBag() {
-            debugger;
             $("a:contains('返回')")[0].click();
         }
 
@@ -348,7 +344,6 @@
     }
 
     let _idle = new Idle();
-    debugger;
     _idle.onlineLoop();
 
 
@@ -689,19 +684,31 @@
         }
         showChange();
 
+        // function compandStore(rune, count) {
+        //     var t = 1500;
+        //     POST_Message("RuneUpgrade", MERGE_Form({
+        //         rune: rune,
+        //         count: count,
+        //     }), "html", t, function (result) {
+        //         compandMode = true;
+        //         // location.reload();
+        //     }, function (request, state, ex) {
+        //         // console.log(result)
+        //     })
+        // }
         function compandStore(rune, count) {
-            var t = Math.floor(Math.random() * 1000) + 300;
-            POST_Message("RuneUpgrade", MERGE_Form({
+            var data=MERGE_Form({
                 rune: rune,
-                count: count,
-            }), "html", t, function (result) {
-                compandMode = true;
-                // location.reload();
-            }, function (request, state, ex) {
-                // console.log(result)
+                count: count});
+            POST_Message("RuneUpgrade", data, "html", 2000)
+                .then(r=>{
+                compandMode=true;
+                location.reload();
             })
+            .catch(r=>{console.log(r)});
         }
     }
+
     //#endregion
 
     /***************一键血白**********************/
@@ -753,7 +760,7 @@
     function reformXuebai() {
         if (location.href.indexOf("Equipment/Reform") == -1) {
             return;
-        } debugger;
+        } 
         var type = localStorage.getItem(autoXuebaiType);
         if (type) {
             setTimeout(() => {
@@ -804,9 +811,8 @@ function saveMergeStatus(obj, key) {
         localStorage.setItem(key, saveStr);
     }
 }
-//post消息
-function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
-    setTimeout(function () {
+function Post(_url, _data, _dataType) {
+    return new Promise((resolve, reject) => {
         $.ajax({
             url: _url,
             type: "post",
@@ -814,17 +820,30 @@ function POST_Message(_url, _data, _dataType, _delay, _onSuccess, _onError) {
             dataType: _dataType,
 
             success: function (result) {
-                _onSuccess(result);
-                location.reload();
+                resolve(result);
             },
 
             error: function (request, state, ex) {
-                _onError(request, state, ex);
-                console.log(result);
+                reject(request);
             }
         });
-    }, _delay);
+    });
 }
+
+//利用promise实现优雅的暂停
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//异步
+async function POST_Message(url, data, dataType, timeout = 0) {
+    console.log('Start');
+    await sleep(timeout);
+    console.log("2秒后")
+    return Post(url, data, dataType)
+
+}
+
 function MERGE_Form(_data) {
     var data = {};
     var form = $("#form")[0];
