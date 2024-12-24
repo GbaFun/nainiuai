@@ -71,6 +71,7 @@
             this.Controls.Add(this.CurLoginAct);
             this.Name = "TestForm";
             this.Text = "TestForm";
+            this.Load += new System.EventHandler(this.TestForm_Load);
             this.ResumeLayout(false);
 
         }

@@ -1,5 +1,15 @@
 
-CefSharp.BindObjectAsync('Bridge');
+
+async function init() {
+    await CefSharp.BindObjectAsync('Bridge');
+    onInitSuccess();
+}
+
+function onInitSuccess() {
+    console.log("onInitSuccess");
+}
+
+init();
 
 function showMessage(message) {
     alert(message);
