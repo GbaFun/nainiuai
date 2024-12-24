@@ -63,6 +63,9 @@ namespace IdleAuto
 
             // 初始化第一个浏览器
             browser = new ChromiumWebBrowser("https://www.idleinfinity.cn/Home/Index");
+            // 绑定对象
+            browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
+            browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
             browser.KeyboardHandler = new CEFKeyBoardHander();
             browserPanel.Controls.Add(browser);
 
@@ -72,29 +75,20 @@ namespace IdleAuto
 
         private void InitOptAccount()
         {
-            using (var reader = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "account.json")))
-            {
-                reader.ReadToEnd();
-                JObject
-            }
+
             topPanel.Dock = DockStyle.Top;
             topPanel.Height = 50; // 设置顶部面板高度
             this.Controls.Add(topPanel);
             optSelect = new ComboBox();
             optSelect.Dock = DockStyle.Left;
+            optSelect.Font = new Font("微软雅黑", 18);
             // 设置ComboBox的属性
             topPanel.Controls.Add(optSelect);
-
-            // 添加项到下拉列表
-            optSelect.Items.Add("账号1");
-            optSelect.Items.Add("账号2");
-
+            optSelect.Items.AddRange(AccountCfg.Instance.Accounts.Select(s => s.Username).ToArray());
             // 设置默认选中的项
             optSelect.SelectedIndex = 0;
-
             // 添加一个事件处理器来处理选中项变化事件
             optSelect.SelectedIndexChanged += new EventHandler(AccountChanged);
-
             // 将ComboBox添加到窗体控件集合中
             this.Controls.Add(optSelect);
         }
@@ -247,9 +241,10 @@ namespace IdleAuto
 
         private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
+            
             // 在主框架中执行自定义脚本
             // 获取WinForms程序目录下的JavaScript文件路径
-            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
+            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             string scriptContent = File.ReadAllText(scriptPath);
 
             // 在主框架中执行自定义脚本
@@ -261,7 +256,11 @@ namespace IdleAuto
                         document.head.appendChild(script);
                     }})();
                 ";
-            (sender as ChromiumWebBrowser).ExecuteScriptAsync(script);
+            var bro = sender as ChromiumWebBrowser;
+            if (bro.Address.ToLower().IndexOf("login") > -1)
+            {
+                bro.ExecuteScriptAsync(script);
+            }
 
         }
 

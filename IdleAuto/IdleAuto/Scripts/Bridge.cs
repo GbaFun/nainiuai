@@ -10,7 +10,7 @@ public class Bridge
 {
     public void ShowMessage(params object[] a)
     {
-        foreach(var item in a)
+        foreach (var item in a)
         {
             Console.WriteLine(a.ToString());
         }
@@ -19,6 +19,11 @@ public class Bridge
     {
         Console.WriteLine("JavaScript Called Cs");
         return "Message from C#";
+    }
+
+    public object GetAccount()
+    {
+        return AccountCfg.Instance.Accounts;
     }
 }
 
