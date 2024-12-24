@@ -8,9 +8,12 @@ using System.Windows.Forms;
 
 public class Bridge
 {
-    public void ShowMessage(string message)
+    public void ShowMessage(params object[] a)
     {
-        Console.WriteLine(message + "Message from JavaScript");
+        foreach(var item in a)
+        {
+            Console.WriteLine(a.ToString());
+        }
     }
     public string GetMessage()
     {
