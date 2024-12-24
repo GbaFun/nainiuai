@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -71,6 +72,11 @@ namespace IdleAuto
 
         private void InitOptAccount()
         {
+            using (var reader = new StreamReader(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config", "account.json")))
+            {
+                reader.ReadToEnd();
+                JObject
+            }
             topPanel.Dock = DockStyle.Top;
             topPanel.Height = 50; // 设置顶部面板高度
             this.Controls.Add(topPanel);
@@ -112,7 +118,7 @@ namespace IdleAuto
             await ClearLocalStorageAsync(browser);
             await LoadCookiesAsync(browser);
             await LoadLocalStorageAsync(browser);
-           await PrintCookiesAsync(browser); // 打印Cookie以验证写入
+            await PrintCookiesAsync(browser); // 打印Cookie以验证写入
             ReloadPage();
         }
 
@@ -189,7 +195,7 @@ namespace IdleAuto
             var response = await browser.EvaluateScriptAsync(script);
             if (response.Success && response.Result != null)
             {
-                File.WriteAllText(optSelect.SelectedItem.ToString()+".json", response.Result.ToString());
+                File.WriteAllText(optSelect.SelectedItem.ToString() + ".json", response.Result.ToString());
                 Console.WriteLine("LocalStorage saved.");
             }
             else

@@ -1,0 +1,54 @@
+﻿{
+  "accountList": [
+    {
+      "name": "暴走的喵星人",
+      "account": "15365261391",
+      "pwd": "zxc123"
+    },
+    {
+      "name": "史蒂夫",
+      "account": "yaodui",
+      "pwd": "123456"
+    },
+    {
+      "name": "南方10086",
+      "account": "yaodui1",
+      "pwd": "123456"
+    },
+    {
+      "name": "萤石矿",
+      "account": "yaodui2",
+      "pwd": "123456"
+    },
+    {
+      "name": "钻石矿",
+      "account": "yaodui3",
+      "pwd": "123456"
+    },
+    {
+      "name": "铁矿石",
+      "account": "niu1",
+      "pwd": "123456"
+    },
+    {
+      "name": "绿宝石",
+      "account": "niu2",
+      "pwd": "123456"
+    },
+    {
+      "name": "南宫",
+      "account": "rasdsky",
+      "pwd": "123456"
+    },
+    {
+      "name": "北宫",
+      "account": "rasdgch",
+      "pwd": "123456"
+    },
+    {
+      "name": "小花",
+      "account": "xiaohua1",
+      "pwd": "123456"
+    }
+  ]
+}
