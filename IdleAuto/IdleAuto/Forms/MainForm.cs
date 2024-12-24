@@ -20,7 +20,7 @@ namespace IdleAuto
     {
         private ChromiumWebBrowser browser;
         private ComboBox optSelect;
-        private Panel topPanel = new Panel();
+        private FlowLayoutPanel toolPanel;
         private Panel browserPanel;
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -30,9 +30,49 @@ namespace IdleAuto
         public MainForm()
         {
             InitializeComponent();
-            InitOptAccount();
+            InitializeLayout();
             InitializeChromium();
         }
+        private void InitializeLayout()
+        {
+            // 创建SplitContainer
+            var splitContainer = new SplitContainer();
+            splitContainer.Dock = DockStyle.Fill;
+            splitContainer.Orientation = Orientation.Vertical;
+            splitContainer.FixedPanel = FixedPanel.Panel1; // 固定左侧面板
+            splitContainer.IsSplitterFixed = true; // 禁止拖动分隔条
+            splitContainer.SplitterDistance = 300; // 左侧面板宽度
+            this.Controls.Add(splitContainer);
+
+            // 创建左侧面板用于放置按钮等控件
+            toolPanel = new FlowLayoutPanel();
+            toolPanel.Dock = DockStyle.Fill;
+            toolPanel.FlowDirection = FlowDirection.TopDown; // 从上往下排列
+            splitContainer.Panel1.Controls.Add(toolPanel);
+
+            // 创建右侧面板用于放置浏览器控件
+            browserPanel = new Panel();
+            browserPanel.Dock = DockStyle.Fill;
+            splitContainer.Panel2.Controls.Add(browserPanel);
+
+            // 在左侧面板中添加按钮
+            Button btnLogin = new Button();
+            btnLogin.Text = "登录";
+            
+            btnLogin.Click += LoadButton_Click;
+            toolPanel.Controls.Add(btnLogin);
+
+            Button btnSave = new Button();
+            btnSave.Text = "保存登录信息";
+            btnSave.Click += SaveButton_Click;
+            toolPanel.Controls.Add(btnSave);
+
+            // 添加ComboBox到左侧面板
+            optSelect = new ComboBox();
+            optSelect.SelectedIndexChanged += new EventHandler(AccountChanged);
+            toolPanel.Controls.Add(optSelect);
+        }
+
 
         private void InitializeChromium()
         {
@@ -40,27 +80,6 @@ namespace IdleAuto
             var settings = new CefSettings();
             settings.CachePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cache"); // 确保这是一个有效的、可写的路径
             Cef.Initialize(settings);
-
-            // 在顶部面板中添加按钮
-            Button btnLogin = new Button();
-            btnLogin.Text = "登录";
-            btnLogin.Dock = DockStyle.Left;
-            btnLogin.Click += LoadButton_Click;
-            topPanel.Controls.Add(btnLogin);
-
-            Button btnSave = new Button();
-            btnSave.Text = "保存登录信息";
-            btnSave.Dock = DockStyle.Left;
-            btnSave.Click += SaveButton_Click;
-            topPanel.Controls.Add(btnSave);
-
-            // 创建浏览器面板用于放置浏览器控件
-            browserPanel = new Panel();
-            browserPanel.Top = 100;
-            browserPanel.Width = 1000;
-            browserPanel.Height = 800;
-            this.Controls.Add(browserPanel);
-
             // 初始化第一个浏览器
             browser = new ChromiumWebBrowser("https://www.idleinfinity.cn/Home/Index");
             // 绑定对象
@@ -73,25 +92,6 @@ namespace IdleAuto
             browser.FrameLoadEnd += OnFrameLoadEnd;
         }
 
-        private void InitOptAccount()
-        {
-
-            topPanel.Dock = DockStyle.Top;
-            topPanel.Height = 50; // 设置顶部面板高度
-            this.Controls.Add(topPanel);
-            optSelect = new ComboBox();
-            optSelect.Dock = DockStyle.Left;
-            optSelect.Font = new Font("微软雅黑", 18);
-            // 设置ComboBox的属性
-            topPanel.Controls.Add(optSelect);
-            optSelect.Items.AddRange(AccountCfg.Instance.Accounts.Select(s => s.Username).ToArray());
-            // 设置默认选中的项
-            optSelect.SelectedIndex = 0;
-            // 添加一个事件处理器来处理选中项变化事件
-            optSelect.SelectedIndexChanged += new EventHandler(AccountChanged);
-            // 将ComboBox添加到窗体控件集合中
-            this.Controls.Add(optSelect);
-        }
 
         private void AccountChanged(object sender, EventArgs e)
         {

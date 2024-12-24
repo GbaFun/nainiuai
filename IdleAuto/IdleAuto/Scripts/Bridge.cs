@@ -21,6 +21,10 @@ public class Bridge
         return "Message from C#";
     }
 
+    /// <summary>
+    /// 读取账号配置 在js端调用
+    /// </summary>
+    /// <returns></returns>
     public object GetAccount()
     {
         return AccountCfg.Instance.Accounts;
