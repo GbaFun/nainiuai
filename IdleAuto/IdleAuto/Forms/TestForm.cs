@@ -18,9 +18,15 @@ namespace IdleAuto
             Instance = this;
             InitializeComponent();
         }
+
         private void TestForm_Load(object sender, EventArgs e)
         {
-
+            Console.WriteLine("On TestForm_Load");
+            AccountCfg.Instance.LoadConfig();
+            for (int i = 0; i < AccountCfg.Instance.Accounts.Count; i++)
+            {
+                Console.WriteLine($"Load Account {AccountCfg.Instance.Accounts[i].Username} Password {AccountCfg.Instance.Accounts[i].Password}");
+            }
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
@@ -32,5 +38,7 @@ namespace IdleAuto
             form1.Show();
             this.Hide(); // 隐藏当前表单
         }
+
+
     }
 }
