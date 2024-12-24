@@ -19,9 +19,6 @@ namespace IdleAuto
     public partial class MainForm : Form
     {
         private ChromiumWebBrowser browser;
-        private ComboBox optSelect;
-        private FlowLayoutPanel toolPanel;
-        private Panel browserPanel;
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -35,42 +32,16 @@ namespace IdleAuto
         }
         private void InitializeLayout()
         {
-            // 创建SplitContainer
-            var splitContainer = new SplitContainer();
-            splitContainer.Dock = DockStyle.Fill;
-            splitContainer.Orientation = Orientation.Vertical;
-            splitContainer.FixedPanel = FixedPanel.Panel1; // 固定左侧面板
-            splitContainer.IsSplitterFixed = true; // 禁止拖动分隔条
-            splitContainer.SplitterDistance = 300; // 左侧面板宽度
-            this.Controls.Add(splitContainer);
+            AccountCfg.Instance.LoadConfig();
+            foreach (var account in AccountCfg.Instance.Accounts)
+            {
+                AccountCombo.Items.Add(account.Username);
+            }
 
-            // 创建左侧面板用于放置按钮等控件
-            toolPanel = new FlowLayoutPanel();
-            toolPanel.Dock = DockStyle.Fill;
-            toolPanel.FlowDirection = FlowDirection.TopDown; // 从上往下排列
-            splitContainer.Panel1.Controls.Add(toolPanel);
-
-            // 创建右侧面板用于放置浏览器控件
-            browserPanel = new Panel();
-            browserPanel.Dock = DockStyle.Fill;
-            splitContainer.Panel2.Controls.Add(browserPanel);
-
-            // 在左侧面板中添加按钮
-            Button btnLogin = new Button();
-            btnLogin.Text = "登录";
-            
-            btnLogin.Click += LoadButton_Click;
-            toolPanel.Controls.Add(btnLogin);
-
-            Button btnSave = new Button();
-            btnSave.Text = "保存登录信息";
-            btnSave.Click += SaveButton_Click;
-            toolPanel.Controls.Add(btnSave);
-
-            // 添加ComboBox到左侧面板
-            optSelect = new ComboBox();
-            optSelect.SelectedIndexChanged += new EventHandler(AccountChanged);
-            toolPanel.Controls.Add(optSelect);
+            if (AccountCombo.Items.Count > 0)
+            {
+                AccountCombo.SelectedIndex = 0; // Select the first item by default
+            }
         }
 
 
@@ -86,7 +57,7 @@ namespace IdleAuto
             browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
             browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
             browser.KeyboardHandler = new CEFKeyBoardHander();
-            browserPanel.Controls.Add(browser);
+            this.browserPanel.Controls.Add(browser);
 
             // 等待页面加载完成后执行脚本
             browser.FrameLoadEnd += OnFrameLoadEnd;
@@ -96,7 +67,7 @@ namespace IdleAuto
         private void AccountChanged(object sender, EventArgs e)
         {
             // 获取选中的项
-            string selectedItem = optSelect.SelectedItem.ToString();
+            string selectedItem = this.AccountCombo.SelectedItem.ToString();
             // 可以在这里添加代码来处理选中项变化
         }
 
@@ -120,7 +91,7 @@ namespace IdleAuto
         {
             var cookieManager = browser.GetCookieManager();
             var cookies = await cookieManager.VisitAllCookiesAsync();
-            using (var writer = new StreamWriter(optSelect.SelectedItem.ToString() + "cookies.txt"))
+            using (var writer = new StreamWriter(this.AccountCombo.SelectedItem.ToString() + "cookies.txt"))
             {
                 foreach (var cookie in cookies)
                 {
@@ -133,7 +104,7 @@ namespace IdleAuto
         private async Task LoadCookiesAsync(ChromiumWebBrowser browser)
         {
             var cookieManager = browser.GetCookieManager();
-            using (var reader = new StreamReader(optSelect.SelectedItem.ToString() + "cookies.txt"))
+            using (var reader = new StreamReader(this.AccountCombo.SelectedItem.ToString() + "cookies.txt"))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -189,7 +160,7 @@ namespace IdleAuto
             var response = await browser.EvaluateScriptAsync(script);
             if (response.Success && response.Result != null)
             {
-                File.WriteAllText(optSelect.SelectedItem.ToString() + ".json", response.Result.ToString());
+                File.WriteAllText(this.AccountCombo.SelectedItem.ToString() + ".json", response.Result.ToString());
                 Console.WriteLine("LocalStorage saved.");
             }
             else
@@ -200,7 +171,7 @@ namespace IdleAuto
 
         private async Task LoadLocalStorageAsync(ChromiumWebBrowser browser)
         {
-            if (File.Exists(optSelect.SelectedItem.ToString() + "localstorage.json"))
+            if (File.Exists(this.AccountCombo.SelectedItem.ToString() + "localstorage.json"))
             {
                 var json = File.ReadAllText("localstorage.json");
                 var script = $@"
@@ -241,10 +212,10 @@ namespace IdleAuto
 
         private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
-            
+
             // 在主框架中执行自定义脚本
             // 获取WinForms程序目录下的JavaScript文件路径
-            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
+            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
             string scriptContent = File.ReadAllText(scriptPath);
 
             // 在主框架中执行自定义脚本
