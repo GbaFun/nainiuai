@@ -68,6 +68,7 @@ namespace IdleAuto
             this.AccountCombo.Name = "AccountCombo";
             this.AccountCombo.Size = new System.Drawing.Size(100, 20);
             this.AccountCombo.TabIndex = 2;
+            this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // CurLoginAccount
             // 

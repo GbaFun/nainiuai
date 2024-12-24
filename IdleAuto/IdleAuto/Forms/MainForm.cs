@@ -63,12 +63,12 @@ namespace IdleAuto
             browser.FrameLoadEnd += OnFrameLoadEnd;
         }
 
-
-        private void AccountChanged(object sender, EventArgs e)
+        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
             // 可以在这里添加代码来处理选中项变化
+
         }
 
         private async void SaveButton_Click(object sender, EventArgs e)
