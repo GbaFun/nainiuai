@@ -48,34 +48,39 @@ namespace IdleAuto
             this.menuPanel.Controls.Add(this.CurLoginAccount);
             this.menuPanel.Controls.Add(this.label1);
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
+            this.menuPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(100, 431);
+            this.menuPanel.Size = new System.Drawing.Size(133, 539);
             this.menuPanel.TabIndex = 0;
             // 
             // BtnLogin
             // 
-            this.BtnLogin.Location = new System.Drawing.Point(10, 80);
+            this.BtnLogin.Location = new System.Drawing.Point(13, 112);
+            this.BtnLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnLogin.Name = "BtnLogin";
-            this.BtnLogin.Size = new System.Drawing.Size(80, 25);
+            this.BtnLogin.Size = new System.Drawing.Size(107, 31);
             this.BtnLogin.TabIndex = 3;
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
             // AccountCombo
             // 
+            this.AccountCombo.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.AccountCombo.FormattingEnabled = true;
-            this.AccountCombo.Location = new System.Drawing.Point(0, 55);
+            this.AccountCombo.Location = new System.Drawing.Point(0, 69);
+            this.AccountCombo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AccountCombo.Name = "AccountCombo";
-            this.AccountCombo.Size = new System.Drawing.Size(100, 20);
+            this.AccountCombo.Size = new System.Drawing.Size(132, 35);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // CurLoginAccount
             // 
             this.CurLoginAccount.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.CurLoginAccount.Location = new System.Drawing.Point(0, 25);
+            this.CurLoginAccount.Location = new System.Drawing.Point(0, 31);
+            this.CurLoginAccount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.CurLoginAccount.Name = "CurLoginAccount";
-            this.CurLoginAccount.Size = new System.Drawing.Size(100, 23);
+            this.CurLoginAccount.Size = new System.Drawing.Size(133, 29);
             this.CurLoginAccount.TabIndex = 1;
             this.CurLoginAccount.Text = "当前无账号登录";
             this.CurLoginAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -84,8 +89,9 @@ namespace IdleAuto
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 25);
+            this.label1.Size = new System.Drawing.Size(133, 31);
             this.label1.TabIndex = 0;
             this.label1.Text = "当前登录账号";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -95,20 +101,21 @@ namespace IdleAuto
             this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.browserPanel.Location = new System.Drawing.Point(100, 0);
+            this.browserPanel.Location = new System.Drawing.Point(133, 0);
+            this.browserPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(528, 431);
+            this.browserPanel.Size = new System.Drawing.Size(704, 539);
             this.browserPanel.TabIndex = 1;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(626, 432);
+            this.ClientSize = new System.Drawing.Size(835, 540);
             this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.menuPanel);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);

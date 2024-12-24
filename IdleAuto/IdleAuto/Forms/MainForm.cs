@@ -1,6 +1,8 @@
 ﻿using CefSharp;
 using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
+using IdleAuto.Logic;
+using IdleAuto.Logic.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -32,7 +34,7 @@ namespace IdleAuto
         }
         private void InitializeLayout()
         {
-            AccountCfg.Instance.LoadConfig();
+            //AccountCfg.Instance.LoadConfig();
             foreach (var account in AccountCfg.Instance.Accounts)
             {
                 AccountCombo.Items.Add(account.Username);
@@ -67,8 +69,12 @@ namespace IdleAuto
         {
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
-            // 可以在这里添加代码来处理选中项变化
-
+            var item=AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
+            CurrentUser.User = new User { Username = selectedItem, Password=item.Password };
+            if (browser!=null&& browser.CanExecuteJavascriptInMainFrame)
+            {
+                ReloadPage();
+            }
         }
 
         private async void SaveButton_Click(object sender, EventArgs e)
@@ -215,7 +221,7 @@ namespace IdleAuto
 
             // 在主框架中执行自定义脚本
             // 获取WinForms程序目录下的JavaScript文件路径
-            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
+            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             string scriptContent = File.ReadAllText(scriptPath);
 
             // 在主框架中执行自定义脚本

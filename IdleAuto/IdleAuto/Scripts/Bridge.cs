@@ -1,4 +1,5 @@
 ﻿using CefSharp.WinForms;
+using IdleAuto.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,9 @@ public class Bridge
     /// 读取账号配置 在js端调用
     /// </summary>
     /// <returns></returns>
-    public object GetAccount()
+    public object GetSelectedAccount()
     {
-        return AccountCfg.Instance.Accounts;
+        return CurrentUser.User;
     }
 }
 
