@@ -20,15 +20,15 @@ using System.Windows.Forms;
 
 namespace IdleAuto
 {
-    public partial class MainForm : Form
+    public partial class MainForm_test : Form
     {
         private ChromiumWebBrowser browser;
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void MainForm_test_Load(object sender, EventArgs e)
         {
         }
 
-        public MainForm()
+        public MainForm_test()
         {
             InitializeComponent();
             //InitializeLayout();

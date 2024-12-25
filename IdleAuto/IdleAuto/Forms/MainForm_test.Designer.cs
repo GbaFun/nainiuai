@@ -1,7 +1,7 @@
 ﻿
 namespace IdleAuto
 {
-    partial class MainForm
+    partial class MainForm_test
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -147,7 +147,7 @@ namespace IdleAuto
             this.browserPanel.Size = new System.Drawing.Size(846, 600);
             this.browserPanel.TabIndex = 1;
             // 
-            // MainForm
+            // MainForm_test
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -156,9 +156,9 @@ namespace IdleAuto
             this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.menuPanel);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "MainForm";
+            this.Name = "MainForm_test";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Load += new System.EventHandler(this.MainForm_test_Load);
             this.menuPanel.ResumeLayout(false);
             this.LoginGroup.ResumeLayout(false);
             this.HomeGroup.ResumeLayout(false);
@@ -180,3 +180,4 @@ namespace IdleAuto
         private System.Windows.Forms.Button BtnAutoOnline;
     }
 }
+
