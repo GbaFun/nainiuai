@@ -79,19 +79,23 @@ namespace IdleAuto.Logic.Serivce
 
         public static async void LoadCookieAndCache(ChromiumWebBrowser bro)
         {
-            await DevToolUtil.ClearCookiesAsync(bro);
-            await DevToolUtil.ClearLocalStorageAsync(bro);
+        
             string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".json");
             string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".txt");
+        
             if (File.Exists(cookiePath))
             {
+                await DevToolUtil.ClearCookiesAsync(bro);
                 await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
+                bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
             }
+            
             if (File.Exists(stroagePath))
             {
+
+                await DevToolUtil.ClearLocalStorageAsync(bro);
                 await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
             }
-
 
         }
         #endregion

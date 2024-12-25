@@ -72,7 +72,7 @@ namespace IdleAuto
             settings.CachePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cache"); // 确保这是一个有效的、可写的路径
             Cef.Initialize(settings);
             // 初始化第一个浏览器
-            browser = new ChromiumWebBrowser("https://www.idleinfinity.cn/Home/Login");
+            browser = new ChromiumWebBrowser("https://www.idleinfinity.cn/Home/Index");
             // 绑定对象
             browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
             browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
@@ -86,15 +86,14 @@ namespace IdleAuto
         private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //存储当前用户
-            if (CurrentUser.User != null) PageLoadService.SaveCookieAndCache(browser, true);
+            if (CurrentUser.User != null&&!PageLoadService.ContainsUrl(browser.Address,PageLoadService.LoginPage)) PageLoadService.SaveCookieAndCache(browser, true);
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
             var item = AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
             CurrentUser.User = new User { Username = selectedItem, Password = item.Password };
             if (browser != null && browser.CanExecuteJavascriptInMainFrame)
             {
-                PageLoadService.LoadCookieAndCache(browser);
-                ReloadPage();
+                browser.Load("https://www.idleinfinity.cn/Home/Login?ReturnUrl=%2FHome%2FIndex");
             }
         }
 
@@ -109,12 +108,14 @@ namespace IdleAuto
             if (PageLoadService.ContainsUrl(url, PageLoadService.LoginPage))
             {
                 this.Invoke(new Action(() => ShowLoginMenu()));
+                PageLoadService.LoadCookieAndCache(browser);
             }
             if (PageLoadService.ContainsUrl(url, PageLoadService.HomePage))
             {
                 this.Invoke(new Action(() => ShowMainMenu()));
             }
             PageLoadService.LoadJsByUrl(browser);
+           
             if (!PageLoadService.ContainsUrl(url, PageLoadService.LoginPage))
             {
                 PageLoadService.SaveCookieAndCache(browser);
