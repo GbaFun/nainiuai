@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdleAuto.Logic
+namespace IdleAuto.Logic.ViewModel
 {
     public class CurrentUser
     {

@@ -30,5 +30,9 @@ public class Bridge
     {
         return CurrentUser.User;
     }
+    public void SaveCookie()
+    {
+
+    }
 }
 

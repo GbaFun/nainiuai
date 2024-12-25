@@ -49,11 +49,20 @@ namespace IdleAuto
             this.menuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
+
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
+
+            this.menuPanel.Controls.Add(this.AccountCombo);
+            this.menuPanel.Controls.Add(this.CurLoginAccount);
+            this.menuPanel.Controls.Add(this.label1);
+            this.menuPanel.Location = new System.Drawing.Point(0, 0);
+            this.menuPanel.Margin = new System.Windows.Forms.Padding(4);
+
             this.menuPanel.Name = "menuPanel";
             this.menuPanel.Size = new System.Drawing.Size(100, 600);
             this.menuPanel.TabIndex = 0;
             // 
+
             // LoginGroup
             // 
             this.LoginGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -117,11 +126,17 @@ namespace IdleAuto
             this.label1.Text = "当前登录账号";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+
             // AccountCombo
             // 
             this.AccountCombo.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.AccountCombo.FormattingEnabled = true;
+
             this.AccountCombo.Location = new System.Drawing.Point(1, 72);
+
+            this.AccountCombo.Location = new System.Drawing.Point(0, 69);
+            this.AccountCombo.Margin = new System.Windows.Forms.Padding(4);
+
             this.AccountCombo.Name = "AccountCombo";
             this.AccountCombo.Size = new System.Drawing.Size(100, 29);
             this.AccountCombo.TabIndex = 2;
@@ -142,7 +157,12 @@ namespace IdleAuto
             this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
+
             this.browserPanel.Location = new System.Drawing.Point(100, 0);
+
+            this.browserPanel.Location = new System.Drawing.Point(133, 0);
+            this.browserPanel.Margin = new System.Windows.Forms.Padding(4);
+
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(846, 600);
             this.browserPanel.TabIndex = 1;
@@ -173,10 +193,12 @@ namespace IdleAuto
         private System.Windows.Forms.Panel browserPanel;
         private System.Windows.Forms.Label CurLoginAccount;
         private System.Windows.Forms.ComboBox AccountCombo;
+
         private System.Windows.Forms.Button BtnLogin;
         private System.Windows.Forms.GroupBox LoginGroup;
         private System.Windows.Forms.GroupBox HomeGroup;
         private System.Windows.Forms.Button BtnAutoEquip;
         private System.Windows.Forms.Button BtnAutoOnline;
+
     }
 }
