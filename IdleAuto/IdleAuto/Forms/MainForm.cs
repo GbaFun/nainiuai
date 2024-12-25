@@ -92,16 +92,6 @@ namespace IdleAuto
             }
         }
 
-        private async void LoadButton_Click(object sender, EventArgs e)
-        {
-            await ClearCookiesAsync(browser);
-            await ClearLocalStorageAsync(browser);
-            await LoadCookiesAsync(browser);
-            await LoadLocalStorageAsync(browser);
-            await PrintCookiesAsync(browser); // 打印Cookie以验证写入
-            ReloadPage();
-        }
-
 
       
       

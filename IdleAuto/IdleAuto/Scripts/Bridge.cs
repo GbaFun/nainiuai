@@ -1,5 +1,6 @@
 ﻿using CefSharp.WinForms;
 using IdleAuto.Logic;
+using IdleAuto.Logic.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

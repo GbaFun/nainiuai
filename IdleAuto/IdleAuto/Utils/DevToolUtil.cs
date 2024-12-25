@@ -15,6 +15,7 @@ namespace IdleAuto.Utils
         //保存cookie
         public static async Task SaveCookiesAsync(ChromiumWebBrowser browser, string fileName)
         {
+            FileUtil.EnsureDirectoryExists(fileName);
             var cookieManager = browser.GetCookieManager();
             var cookies = await cookieManager.VisitAllCookiesAsync();
             using (var writer = new StreamWriter(fileName))
@@ -79,6 +80,7 @@ namespace IdleAuto.Utils
 
         public static async Task SaveLocalStorageAsync(ChromiumWebBrowser browser, string filename)
         {
+            FileUtil.EnsureDirectoryExists(filename);
             var script = @"
                 (function() {
                     var items = {};
@@ -100,7 +102,7 @@ namespace IdleAuto.Utils
             }
         }
 
-        public static async Task LoadLocalStorageAsync(ChromiumWebBrowser browser,string filename)
+        public static async Task LoadLocalStorageAsync(ChromiumWebBrowser browser, string filename)
         {
             if (File.Exists(filename))
             {
