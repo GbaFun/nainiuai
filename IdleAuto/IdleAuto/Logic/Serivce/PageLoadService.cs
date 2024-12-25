@@ -63,16 +63,24 @@ namespace IdleAuto.Logic.Serivce
         #region 载入替换cookie
 
 
-        public static async void SaveCookieAndCache(ChromiumWebBrowser bro)
+        public static async void SaveCookieAndCache(ChromiumWebBrowser bro, bool isDirectUpdate=false)
         {
             string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".json");
             string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".txt");
-            await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
-            await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
+            var createTime = File.GetCreationTime(cookiePath);
+            TimeSpan val = DateTime.Now - createTime;
+            if (val.Minutes >= 10 || isDirectUpdate)
+            {
+                await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
+                await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
+            }
+
         }
 
         public static async void LoadCookieAndCache(ChromiumWebBrowser bro)
         {
+            await DevToolUtil.ClearCookiesAsync(bro);
+            await DevToolUtil.ClearLocalStorageAsync(bro);
             string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".json");
             string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".txt");
             if (File.Exists(cookiePath))
@@ -94,7 +102,7 @@ namespace IdleAuto.Logic.Serivce
         /// <param name="url"></param>
         /// <param name="keyPage"></param>
         /// <returns></returns>
-        private static Boolean ContainsUrl(string url, string keyPage)
+        public static Boolean ContainsUrl(string url, string keyPage)
         {
             return url.IndexOf(keyPage) > -1;
         }

@@ -3,6 +3,7 @@ using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
 using CefSharp.WinForms.Internals;
 using IdleAuto.Logic;
+using IdleAuto.Logic.Serivce;
 using IdleAuto.Logic.ViewModel;
 using Newtonsoft.Json.Linq;
 using System;
@@ -31,7 +32,6 @@ namespace IdleAuto
         public MainForm()
         {
             InitializeComponent();
-            //InitializeLayout();
             InitializeChromium();
             ShowAccountCombo();
         }
@@ -83,12 +83,15 @@ namespace IdleAuto
 
         private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //存储当前用户
+            if (CurrentUser.User != null) PageLoadService.SaveCookieAndCache(browser, true);
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
             var item = AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
             CurrentUser.User = new User { Username = selectedItem, Password = item.Password };
             if (browser != null && browser.CanExecuteJavascriptInMainFrame)
             {
+                PageLoadService.LoadCookieAndCache(browser);
                 ReloadPage();
             }
         }
@@ -101,35 +104,19 @@ namespace IdleAuto
             var bro = sender as ChromiumWebBrowser;
             string url = bro.Address;
             Console.WriteLine(url);
-
-            if (url.IndexOf("Login") > -1)
+            if (PageLoadService.ContainsUrl(url, PageLoadService.LoginPage))
             {
                 this.Invoke(new Action(() => ShowLoginMenu()));
             }
-            else if (url.IndexOf("Home/Index") > -1)
+            if (PageLoadService.ContainsUrl(url, PageLoadService.HomePage))
             {
                 this.Invoke(new Action(() => ShowMainMenu()));
             }
-
-            // 在主框架中执行自定义脚本
-            // 获取WinForms程序目录下的JavaScript文件路径
-            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            string scriptContent = File.ReadAllText(scriptPath);
-
-            // 在主框架中执行自定义脚本
-            string script = $@"
-                    (function() {{
-                        var script = document.createElement('script');
-                        script.type = 'text/javascript';
-                        script.text = {scriptContent};
-                        document.head.appendChild(script);
-                    }})();
-                ";
-            if (bro.Address.ToLower().IndexOf("login") > -1)
+            PageLoadService.LoadJsByUrl(browser);
+            if (!PageLoadService.ContainsUrl(url, PageLoadService.LoginPage))
             {
-                bro.ExecuteScriptAsync(script);
+                PageLoadService.SaveCookieAndCache(browser);
             }
-
         }
 
         private void ReloadPage(string url = "")
