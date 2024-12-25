@@ -39,12 +39,14 @@ namespace IdleAuto
         {
             // 显示登录菜单
             this.menuPanel.Controls.Clear();
+            this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.LoginGroup);
 
         }
         private void ShowMainMenu()
         {
             this.menuPanel.Controls.Clear();
+            this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.HomeGroup);
         }
 
