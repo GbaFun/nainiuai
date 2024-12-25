@@ -33,13 +33,14 @@ namespace IdleAuto
             InitializeComponent();
             //InitializeLayout();
             InitializeChromium();
+            ShowAccountCombo();
         }
         private void ShowLoginMenu()
         {
             // 显示登录菜单
             this.menuPanel.Controls.Clear();
             this.menuPanel.Controls.Add(this.LoginGroup);
-            ShowAccountCombo();
+
         }
         private void ShowMainMenu()
         {
@@ -84,17 +85,17 @@ namespace IdleAuto
         {
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
-            var item=AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
-            CurrentUser.User = new User { Username = selectedItem, Password=item.Password };
-            if (browser!=null&& browser.CanExecuteJavascriptInMainFrame)
+            var item = AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
+            CurrentUser.User = new User { Username = selectedItem, Password = item.Password };
+            if (browser != null && browser.CanExecuteJavascriptInMainFrame)
             {
                 ReloadPage();
             }
         }
 
 
-      
-      
+
+
         private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
             var bro = sender as ChromiumWebBrowser;
