@@ -91,9 +91,9 @@ namespace IdleAuto
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
             var item = AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
             CurrentUser.User = new User { Username = selectedItem, Password = item.Password };
-            if (browser != null && browser.CanExecuteJavascriptInMainFrame)
+            if (browser != null )
             {
-                browser.Load("https://www.idleinfinity.cn/Home/Login?ReturnUrl=%2FHome%2FIndex");
+                browser.Load("https://www.idleinfinity.cn/Home/Login");
             }
         }
 
