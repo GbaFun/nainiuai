@@ -1,5 +1,6 @@
 ﻿using CefSharp.WinForms;
 using IdleAuto.Logic;
+using IdleAuto.Logic.Serivce;
 using IdleAuto.Logic.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,13 @@ using System.Windows.Forms;
 
 public class Bridge
 {
-    public void ShowMessage(params object[] a)
+    public object SendData(params object[] a)
     {
-        foreach (var item in a)
-        {
-            Console.WriteLine(a.ToString());
-        }
+        
+        return JsInvoker.HandleMessage(a);
+
     }
-    public string GetMessage()
-    {
-        Console.WriteLine("JavaScript Called Cs");
-        return "Message from C#";
-    }
+
 
     /// <summary>
     /// 读取账号配置 在js端调用
@@ -31,9 +27,6 @@ public class Bridge
     {
         return CurrentUser.User;
     }
-    public void SaveCookie()
-    {
 
-    }
 }
 

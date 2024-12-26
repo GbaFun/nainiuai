@@ -16,8 +16,9 @@ namespace IdleAuto.Logic.Serivce
     /// </summary>
     public class PageLoadService
     {
-        public static string LoginPage = "Login";
-        public static string HomePage = "Home/Index";
+        public const string LoginPage = "Login";
+        public const string HomePage = "Home/Index";
+        public static string AhPage = "Auction/Query";
 
         #region 载入js
         public static void LoadJsByUrl(ChromiumWebBrowser browser)
@@ -31,6 +32,11 @@ namespace IdleAuto.Logic.Serivce
             if (ContainsUrl(url, HomePage))
             {
                 var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
+                LoadJs(jsPath, browser);
+            }
+            if (ContainsUrl(url, AhPage))
+            {
+                var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
                 LoadJs(jsPath, browser);
             }
 
@@ -63,7 +69,7 @@ namespace IdleAuto.Logic.Serivce
         #region 载入替换cookie
 
 
-        public static async void SaveCookieAndCache(ChromiumWebBrowser bro, bool isDirectUpdate=false)
+        public static async void SaveCookieAndCache(ChromiumWebBrowser bro, bool isDirectUpdate = false)
         {
             string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".json");
             string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".txt");
@@ -79,17 +85,17 @@ namespace IdleAuto.Logic.Serivce
 
         public static async void LoadCookieAndCache(ChromiumWebBrowser bro)
         {
-        
+
             string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".json");
             string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", CurrentUser.User.Username + ".txt");
-        
+
             if (File.Exists(cookiePath))
             {
                 await DevToolUtil.ClearCookiesAsync(bro);
                 await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
                 bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
             }
-            
+
             if (File.Exists(stroagePath))
             {
 

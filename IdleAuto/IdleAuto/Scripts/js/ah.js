@@ -7,12 +7,26 @@
 // ==/UserScript==
 
 (function () {
+    const AhData= "拍卖数据";
+    //初始化Bridge
+    async function init() {
+        try {
+            await CefSharp.BindObjectAsync("Bridge");
+        }
+        catch (e) {
+            console.log("Error:", e);
+        }
+    }
     var dataMap = {}//存储dataid对应装备的数据 
 
-    loadPriceSuffix();
-    if (location.href.indexOf("Auction/Query") == -1) return;
+    init().then(() => {
+         loadPriceSuffix();
+    })
+
+
     //给每个拍卖物品加入后缀
-    function loadPriceSuffix() {
+    async function loadPriceSuffix() {
+        if (location.href.indexOf("Auction/Query") == -1) return;
         var auctionEquipMap = {};
         //页面显示的每个物品span标签
         var container = $(".equip-container .equip-name ");
@@ -47,7 +61,7 @@
             }
             //需要插入符文后缀的span
             var matchSpan = auctionEquipMap[dataid];
-            var suffixStr = generatePriceSuffix(goldCoin,goldCoinPrice,runePriceArr,runeCountArr);
+            var suffixStr = generatePriceSuffix(goldCoin, goldCoinPrice, runePriceArr, runeCountArr);
             $(matchSpan).parent().append($("<span>", {
                 text: suffixStr,
                 style: "color:#ff8281"
@@ -57,18 +71,19 @@
             e.eTitle = eTitle;
             e.goldCoinPrice = goldCoinPrice ? goldCoinPrice * 1 : 0;
             e.runePriceArr = runePriceArr;
-            e.runeCountArr=runeCountArr;
+            e.runeCountArr = runeCountArr;
             dataMap[dataid] = e;
         });
-        console.log(dataMap);
+        var d=await Bridge.sendData(AhData,dataMap);
+        console.log(d);
     }
-    function generatePriceSuffix(goldCoin,goldCoinPrice,runePriceArr,runeCountArr){
-        var str="";
-        str+=(goldCoin != null ? goldCoinPrice + "金" : "") 
-        runePriceArr.forEach((item,index) => {
-            var runePrice=item;
-            var runeCount=runeCountArr[index];
-            str+=runePrice+"# *"+runeCount+" ";
+    function generatePriceSuffix(goldCoin, goldCoinPrice, runePriceArr, runeCountArr) {
+        var str = "";
+        str += (goldCoin != null ? goldCoinPrice + "金" : "")
+        runePriceArr.forEach((item, index) => {
+            var runePrice = item;
+            var runeCount = runeCountArr[index];
+            str += runePrice + "# *" + runeCount + " ";
         });
         return str;
     }

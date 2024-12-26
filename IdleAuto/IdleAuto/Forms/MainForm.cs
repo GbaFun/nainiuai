@@ -78,7 +78,6 @@ namespace IdleAuto
             browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
             browser.KeyboardHandler = new CEFKeyBoardHander();
             this.browserPanel.Controls.Add(browser);
-
             // 等待页面加载完成后执行脚本
             browser.FrameLoadEnd += OnFrameLoadEnd;
         }
