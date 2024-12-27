@@ -47,7 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
+    <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Scripts\Controller\AuctionControl.cs" />
+    <Compile Include="Scripts\Controller\RuneController.cs" />
+    <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
     <Compile Include="Scripts\View\MainForm.cs">
       <SubType>Form</SubType>
@@ -85,6 +88,9 @@
     <None Include="Configs\EquipCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Configs\RuneCompandCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Document\ProjectStruct.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -114,7 +120,9 @@
     <Content Include="Scripts\js\login.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\js\rune.js" />
+    <Content Include="Scripts\js\rune.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />

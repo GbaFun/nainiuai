@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 /// <summary>
 /// 页面载入过程中涉及的处理逻辑
@@ -14,7 +15,8 @@ public class PageLoadHandler
 {
     public const string LoginPage = "Login";
     public const string HomePage = "Home/Index";
-    public static string AhPage = "Auction/Query";
+    public const string MaterialPage = "Equipment/Material";
+    public const string AhPage = "Auction/Query";
 
     #region 载入js
     public static void LoadJsByUrl(ChromiumWebBrowser browser)
@@ -22,8 +24,8 @@ public class PageLoadHandler
         var url = browser.Address;
         if (ContainsUrl(url, LoginPage))
         {
-            //var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            //LoadJs(jsPath, browser);
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
+            LoadJs(jsPath, browser);
         }
         if (ContainsUrl(url, HomePage))
         {
@@ -34,6 +36,11 @@ public class PageLoadHandler
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
             LoadJs(jsPath, browser);
+        }
+        if (ContainsUrl(url, MaterialPage))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "rune.js");
+            LoadGlobalJs(jsPath, browser);
         }
 
     }
@@ -57,8 +64,22 @@ public class PageLoadHandler
                 ";
 
         bro.ExecuteScriptAsync(script);
-
     }
+    private static void LoadGlobalJs(string path, ChromiumWebBrowser bro)
+    {
+        // 在主框架中执行自定义脚本
+        // 获取WinForms程序目录下的JavaScript文件路径
+
+        string scriptContent = File.ReadAllText(path);
+
+        // 在主框架中执行自定义脚本
+        string script = $@"
+                    {scriptContent}
+                ";
+
+        bro.ExecuteScriptAsync(script);
+    }
+
 
     #endregion
 

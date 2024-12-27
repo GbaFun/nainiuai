@@ -18,7 +18,13 @@ using System.Windows.Forms;
 
 public partial class MainForm : Form
 {
-    private ChromiumWebBrowser browser;
+    public static MainForm Instance;
+
+    public ChromiumWebBrowser browser
+    {
+        get;
+        private set;
+    }
 
     private void MainForm_Load(object sender, EventArgs e)
     {
@@ -29,6 +35,7 @@ public partial class MainForm : Form
         InitializeComponent();
         InitializeChromium();
         ShowAccountCombo();
+        Instance = this;
     }
     private void ShowLoginMenu()
     {
@@ -110,16 +117,21 @@ public partial class MainForm : Form
             this.Invoke(new Action(() => ShowLoginMenu()));
             PageLoadHandler.LoadCookieAndCache(browser);
         }
-        if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
+        else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
         {
             this.Invoke(new Action(() => ShowMainMenu()));
         }
-        //PageLoadHandler.LoadJsByUrl(browser);
+        else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage))
+        {
+            this.Invoke(new Action(() => ShowMaterialMenu()));
+        }
 
-        //if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
-        //{
-        //    PageLoadHandler.SaveCookieAndCache(browser);
-        //}
+        PageLoadHandler.LoadJsByUrl(browser);
+
+        if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
+        {
+            PageLoadHandler.SaveCookieAndCache(browser);
+        }
     }
 
     private void ReloadPage(string url = "")
@@ -133,6 +145,6 @@ public partial class MainForm : Form
 
     private void BtnAutoRune_Click(object sender, EventArgs e)
     {
-
+        RuneController.Instance.AutoUpgradeRune();
     }
 }

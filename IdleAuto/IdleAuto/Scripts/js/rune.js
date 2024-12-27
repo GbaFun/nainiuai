@@ -1,237 +1,167 @@
-//ÔØÈë·ûÎÄ²å¼ş
-function loadStorePlugin() {
-    if (location.href.indexOf("Equipment/Material") == -1) {
-        return;
+ï»¿//(function () {
+//åˆå§‹åŒ–Bridge
+async function init() {
+    try {
+        await CefSharp.BindObjectAsync("Bridge");
     }
-
-    var compandMode = false;
-    var autoCompandMode = false;
-    var storedRuneCounts = {}; // ´æ´¢Ã¿¸ö·ûÎÄÏîµÄÊıÁ¿
-    var storedCompandCounts = {}; // ºÏ³ÉÃ¿¸ö·ûÎÄÏîµÄ±£ÁôÊıÁ¿
-
-    function showChange() {
-        var lastCompandRuneId = parseInt(localStorage.getItem('lastCompandRuneId'));
-        //Ë¢ĞÂÒ³ÃæÇ°ÕıÔÚÔËĞĞÒ»¼üÉı¼¶·ûÎÄÂß¼­£¬ÇÒ·ûÎÄ¼ì²éÃ»ÓĞÔËĞĞÍê
-        if (!lastCompandRuneId.isNaN && lastCompandRuneId >= 0 && lastCompandRuneId < 33) {
-            autoCompandMode = true;
-        }
-
-        console.log("ÉÏ´Î×Ô¶¯Éı¼¶·ûÎÄid£º" + lastCompandRuneId + "----ÊÇ·ñ½øÈë×Ô¶¯Éı¼¶Ä£Ê½£º" + autoCompandMode);
-        //Ò»¼üÉı¼¶Ä£Ê½
-        if (autoCompandMode) {
-            var curCompandRuneId = lastCompandRuneId + 1;
-            $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
-                var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // »ñÈ¡·ûÎÄÃû³ÆµÄµÚ¶ş¸ö span
-                var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // »ñÈ¡·ûÎÄÊıÁ¿
-
-                var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts'));
-
-                var storedCount = storedCompandCounts[runeName];
-                if (storedCount.isNaN || storedCount == undefined)
-                    storedCount = 0;
-                var regexResult = runeName.match(/-(\d+)#/);
-                var count = 0;
-                if (runeCount > storedCount) {
-                    count = runeCount - storedCount;
-                    count = count - count % 2;
-                }
-
-                if (regexResult[1] == curCompandRuneId) {
-                    localStorage.setItem('lastCompandRuneId', regexResult[1]);
-                    if (count > 1) {
-                        //Éı¼¶·ûÎÄÏûÏ¢
-                        compandStore(regexResult[1], count);
-                    }
-                    else {
-                        showChange();
-                    }
-                    // return;
-                }
-            });
-            compandMode = true;
-        }
-
-        //ÉèÖÃÉı¼¶±£ÁôÊıÁ¿Ä£Ê½
-        if (compandMode) {
-            // localStorage.setItem('storedCompandCounts', JSON.stringify(""));
-            //Ä¬ÈÏ±£ÁôÊıÁ¿
-            var storedCompandCounts = JSON.parse(localStorage.getItem('storedCompandCounts')) || storedCompandDefault;
-            $('.panel-heading:contains("·ûÎÄ") .rasdsky').remove();
-
-            var confirmButton = $('<a class="btn btn-xs btn-default" id="confirmButton">È·ÈÏ</a>');
-            var cancleButton = $('<a class="btn btn-xs btn-default" id="cancleButton">ÍË³ö</a>');
-
-            // ½«°´Å¥·ÅÈëÒ»¸ö div ÖĞ£¬²¢Ìí¼Óµ½ panel-heading ÖĞ
-            var buttonContainer = $('<div class="pull-right rasdsky"></div>');
-            buttonContainer.append(confirmButton);
-            buttonContainer.append(cancleButton);
-
-            $('.panel-heading:contains("·ûÎÄ")').append(buttonContainer);
-            confirmButton.click(function () {
-                $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
-                    var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // »ñÈ¡·ûÎÄÃû³ÆµÄµÚ¶ş¸ö span
-                    var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // »ñÈ¡·ûÎÄÊıÁ¿
-
-                    var _inputElement = $(this).find('.rasdsky-input:first');
-                    var cnt = parseInt(_inputElement.val());
-                    if (storedCompandCounts.hasOwnProperty(runeName)) {
-                        if (!cnt.isNaN && cnt != undefined) {
-                            storedCompandCounts[runeName] = cnt;
-                        }
-                    }
-                    else {
-                        storedCompandCounts[runeName] = 0;
-                    }
-                    // var storedCount = storedCompandCounts[runeName];
-                    // var regexResult = runeName.match(/-(\d+)#/);
-                    // if (runeCount > storedCount) {
-                    //     var count = runeCount - storedCount;
-                    //     count = count - count % 2;
-                    //     compandStore(regexResult[1], count);
-                    // }
-                });
-                localStorage.setItem('storedCompandCounts', JSON.stringify(storedCompandCounts)); // ´æ´¢µ½ localStorage 
-
-                //½øÈëÒ»¼üÉı¼¶Ä£Ê½
-                autoCompandMode = true;
-                localStorage.setItem('lastCompandRuneId', 0);
-                showChange();
-            });
-            cancleButton.click(function () {
-                compandMode = false;
-                autoCompandMode = false;
-                showChange();
-            });
-
-            $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
-                var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // »ñÈ¡·ûÎÄÃû³ÆµÄµÚ¶ş¸ö span
-
-                var retainCount = 0;
-                if (storedCompandCounts.hasOwnProperty(runeName)) {
-                    retainCount = storedCompandCounts[runeName];
-                    if (retainCount == undefined || retainCount.isNaN)
-                        retainCount = 0;
-                }
-                $(this).find('.rasdsky').remove();
-
-                var t = ($('<span>').text('  ±£Áô£º').css('color', 'grey'));
-
-                var inputElement = $('<input class="rasdsky-input">').css({
-                    "color": "grey",
-                    "width": 120,
-                    "height": 21,
-                });
-                inputElement.val(retainCount);
-                var p = $('<p class="rasdsky">');
-                p.append(t);
-                p.append(inputElement);
-
-                $(this).append(p)
-
-            });
-        }
-        //²é¿´±ä¶¯ÊıÁ¿Ä£Ê½
-        else {
-
-            $('.panel-heading:contains("·ûÎÄ") .rasdsky').remove();
-            var storedRuneCounts = JSON.parse(localStorage.getItem('storedRuneCounts')) || {};
-            console.log(storedRuneCounts);
-            var storedTime = localStorage.getItem('storedTime');
-
-            // ½«°´Å¥·ÅÈëÒ»¸ö div ÖĞ£¬²¢Ìí¼Óµ½ panel-heading ÖĞ
-            var buttonContainer2 = $('<div class="pull-right rasdsky"></div>');
-
-            // ´´½¨Õ¹Ê¾´æ´¢Ê±¼äµÄÔªËØ
-            var timeDiv = $('<div class="pull-left rasdsky"></div>');
-            var timeElement = $('<p>').text('´æ´¢Ê±¼ä: ' + storedTime);
-            timeDiv.append(timeElement);
-            // ´´½¨´æ´¢·ûÎÄÊıÁ¿µÄ°´Å¥
-            var saveButton = $('<a class="btn btn-xs btn-default" id="saveButton">´æ´¢</a>');
-            // ´´½¨Éı¼¶·ûÎÄµÄ°´Å¥
-            var compandButton = $('<a class="pull-right btn btn-xs btn-default" id="compandButton">Éı¼¶</a>');
-
-            buttonContainer2.append(timeDiv);
-            buttonContainer2.append(saveButton);
-            buttonContainer2.append(compandButton);
-
-            $('.panel-heading:contains("·ûÎÄ")').append(buttonContainer2);
-
-            saveButton.click(function () {
-                var storedRuneCounts = {};
-
-                $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
-
-                    var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // »ñÈ¡·ûÎÄÃû³ÆµÄµÚ¶ş¸ö span
-
-                    var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // »ñÈ¡·ûÎÄÊıÁ¿
-                    // ¼ì²é½âÎöÊÇ·ñ³É¹¦£¬Èç¹ûÊÇ NaN »òÕßÊıÁ¿Ğ¡ÓÚµÈÓÚ 20 ÔòÌø¹ı²»´æ´¢
-                    var regexResult = runeName.match(/-(\d+)#/);
-                    if (regexResult && parseInt(regexResult[1]) >= 1) {
-                        // ¼ì²é½âÎöÊÇ·ñ³É¹¦£¬Èç¹ûÊÇ NaN ÔòÉèÎª 0
-                        if (isNaN(runeCount)) {
-                            runeCount = 0;
-                        }
-                        storedRuneCounts[runeName] = runeCount; // ´æ´¢·ûÎÄÊıÁ¿
-                    }
-                });
-
-                var currentTime = new Date().toLocaleString(); // »ñÈ¡µ±Ç°Ê±¼ä
-                localStorage.setItem('storedRuneCounts', JSON.stringify(storedRuneCounts)); // ´æ´¢µ½ localStorage
-                localStorage.setItem('storedTime', currentTime); // ´æ´¢Ê±¼äµ½ localStorage
-                alert("ÒÑ´æ´¢Êı¾İ", function () { });
-            });
-
-            compandButton.click(function () {
-                compandMode = true;
-                showChange();
-            });
-
-            $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
-
-                var $pElement = $(this).find('p:first'); // »ñÈ¡µ±Ç°ÈİÆ÷ÏÂµÄµÚÒ»¸ö <p> ÔªËØ
-
-                var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // »ñÈ¡·ûÎÄÃû³ÆµÄµÚ¶ş¸ö span
-
-                var currentRuneCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // »ñÈ¡·ûÎÄÊıÁ¿
-
-                if (storedRuneCounts.hasOwnProperty(runeName)) {
-                    var storedCount = storedRuneCounts[runeName];
-                    var changeCount = currentRuneCount - storedCount; // ¼ÆËãÊıÁ¿±ä¶¯
-                    if (changeCount !== undefined) {
-                        var changeText = '  (' + storedCount + ' -> ' + currentRuneCount + ')'; // ¸ù¾İ±ä¶¯ÊıÁ¿Éú³É¶ÔÓ¦ÎÄ±¾
-
-                        $(this).find('.rasdsky').remove();
-                        // ½«±ä¶¯ÊıÁ¿Æ´½Óµ½·ûÎÄĞÅÏ¢µÄ×îºó£¬²¢Îª <p> ±êÇ©Ìí¼Ó¶ÔÓ¦µÄÑùÊ½
-                        $(this).find('p:first .artifact:last').append($('<span class="rasdsky">').text(changeText).css('color', (changeCount > 0) ? 'red' : (changeCount < 0) ? 'green' : 'white')); // Îª <p> ±êÇ©Ìí¼ÓÑÕÉ«ÑùÊ½);)
-                    }
-                }
-            });
-        }
-    }
-    showChange();
-
-    // function compandStore(rune, count) {
-    //     var t = 1500;
-    //     POST_Message("RuneUpgrade", MERGE_Form({
-    //         rune: rune,
-    //         count: count,
-    //     }), "html", t, function (result) {
-    //         compandMode = true;
-    //         // location.reload();
-    //     }, function (request, state, ex) {
-    //         // console.log(result)
-    //     })
-    // }
-    function compandStore(rune, count) {
-        var data = MERGE_Form({
-            rune: rune,
-            count: count
-        });
-        POST_Message("RuneUpgrade", data, "html", 2000)
-            .then(r => {
-                compandMode = true;
-                location.reload();
-            })
-            .catch(r => { console.log(r) });
+    catch (e) {
+        console.log("Error:", e);
     }
 }
+
+init().then((r) => {
+    showRuneNumView();
+})
+
+function showRuneNumView() {
+    $('.panel-heading:contains("ç¬¦æ–‡") .rasdsky').remove();
+    var storedRuneCounts = JSON.parse(localStorage.getItem('storedRuneCounts')) || {};
+    var storedTime = localStorage.getItem('storedTime');
+
+    // å°†æŒ‰é’®æ”¾å…¥ä¸€ä¸ª div ä¸­ï¼Œå¹¶æ·»åŠ åˆ° panel-heading ä¸­
+    var buttonContainer2 = $('<div class="pull-right rasdsky"></div>');
+
+    // åˆ›å»ºå±•ç¤ºå­˜å‚¨æ—¶é—´çš„å…ƒç´ 
+    var timeDiv = $('<div class="pull-left rasdsky"></div>');
+    var timeElement = $('<p>').text('å­˜å‚¨æ—¶é—´: ' + storedTime);
+    timeDiv.append(timeElement);
+    // åˆ›å»ºå­˜å‚¨ç¬¦æ–‡æ•°é‡çš„æŒ‰é’®
+    var saveButton = $('<a class="btn btn-xs btn-default" id="saveButton">å­˜å‚¨</a>');
+    // åˆ›å»ºå‡çº§ç¬¦æ–‡çš„æŒ‰é’®
+    var compandButton = $('<a class="pull-right btn btn-xs btn-default" id="compandButton">å‡çº§</a>');
+
+    buttonContainer2.append(timeDiv);
+    buttonContainer2.append(saveButton);
+    buttonContainer2.append(compandButton);
+
+    $('.panel-heading:contains("ç¬¦æ–‡")').append(buttonContainer2);
+
+    saveButton.click(function () {
+        var storedRuneCounts = {};
+
+        $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+
+            var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // è·å–ç¬¦æ–‡åç§°çš„ç¬¬äºŒä¸ª span
+
+            var runeCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // è·å–ç¬¦æ–‡æ•°é‡
+            // æ£€æŸ¥è§£ææ˜¯å¦æˆåŠŸï¼Œå¦‚æœæ˜¯ NaN æˆ–è€…æ•°é‡å°äºç­‰äº 20 åˆ™è·³è¿‡ä¸å­˜å‚¨
+            var regexResult = runeName.match(/-(\d+)#/);
+            if (regexResult && parseInt(regexResult[1]) >= 1) {
+                // æ£€æŸ¥è§£ææ˜¯å¦æˆåŠŸï¼Œå¦‚æœæ˜¯ NaN åˆ™è®¾ä¸º 0
+                if (isNaN(runeCount)) {
+                    runeCount = 0;
+                }
+                storedRuneCounts[runeName] = runeCount; // å­˜å‚¨ç¬¦æ–‡æ•°é‡
+            }
+        });
+
+        var currentTime = new Date().toLocaleString(); // è·å–å½“å‰æ—¶é—´
+        localStorage.setItem('storedRuneCounts', JSON.stringify(storedRuneCounts)); // å­˜å‚¨åˆ° localStorage
+        localStorage.setItem('storedTime', currentTime); // å­˜å‚¨æ—¶é—´åˆ° localStorage
+        alert("å·²å­˜å‚¨æ•°æ®", function () { });
+    });
+
+    compandButton.click(function () {
+        compandMode = true;
+        showChange();
+    });
+
+    $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+
+        var $pElement = $(this).find('p:first'); // è·å–å½“å‰å®¹å™¨ä¸‹çš„ç¬¬ä¸€ä¸ª <p> å…ƒç´ 
+
+        var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // è·å–ç¬¦æ–‡åç§°çš„ç¬¬äºŒä¸ª span
+
+        var currentRuneCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // è·å–ç¬¦æ–‡æ•°é‡
+
+        if (storedRuneCounts.hasOwnProperty(runeName)) {
+            var storedCount = storedRuneCounts[runeName];
+            var changeCount = currentRuneCount - storedCount; // è®¡ç®—æ•°é‡å˜åŠ¨
+            if (changeCount !== undefined) {
+                var changeText = '  (' + storedCount + ' -> ' + currentRuneCount + ')'; // æ ¹æ®å˜åŠ¨æ•°é‡ç”Ÿæˆå¯¹åº”æ–‡æœ¬
+
+                $(this).find('.rasdsky').remove();
+                // å°†å˜åŠ¨æ•°é‡æ‹¼æ¥åˆ°ç¬¦æ–‡ä¿¡æ¯çš„æœ€åï¼Œå¹¶ä¸º <p> æ ‡ç­¾æ·»åŠ å¯¹åº”çš„æ ·å¼
+                $(this).find('p:first .artifact:last').append($('<span class="rasdsky">').text(changeText).css('color', (changeCount > 0) ? 'red' : (changeCount < 0) ? 'green' : 'white')); // ä¸º <p> æ ‡ç­¾æ·»åŠ é¢œè‰²æ ·å¼);)
+            }
+        }
+    });
+}
+
+function getRuneNum(rune) {
+    var num = 0;
+    $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+        var name = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // è·å–ç¬¦æ–‡åç§°çš„ç¬¬äºŒä¸ª span
+        var regexResult = name.match(/-(\d+)#/);
+        if (regexResult[1] == rune) {
+            num = parseInt($(this).find('p:first .artifact').last().text().trim());
+            console.log('å½“å‰ç¬¦æ–‡ï¼š{' + regexResult[1] + '}---å¯¹æ¯”ç¬¦æ–‡{' + rune + '}---æ•°é‡{' + num + '}');
+            return false; // è·å–ç¬¦æ–‡æ•°é‡
+        }
+    });
+    console.log('è¿”å›ï¼š{' + num + '}');
+    return num;
+}
+
+function upgradeRune(rune, count) {
+    var data = MERGE_Form({
+        rune: rune,
+        count: count
+    });
+    POST_Message("RuneUpgrade", data, "html", 2000)
+        .then(r => {
+            compandMode = true;
+            location.reload();
+        })
+        .catch(r => { console.log(r) });
+}
+
+function Post(_url, _data, _dataType) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: _url,
+            type: "post",
+            data: _data,
+            dataType: _dataType,
+
+            success: function (result) {
+                resolve(result);
+            },
+
+            error: function (request, state, ex) {
+                reject(request);
+            }
+        });
+    });
+}
+
+//åˆ©ç”¨promiseå®ç°ä¼˜é›…çš„æš‚åœ
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+//å¼‚æ­¥
+async function POST_Message(url, data, dataType, timeout = 0) {
+    console.log('Start');
+    await sleep(timeout);
+    console.log(timeout / 1000 + "ç§’å");
+    return Post(url, data, dataType);
+}
+
+//å°†è¡¨å•æ•°æ®åˆå¹¶è¿›æ•°æ®å¯¹è±¡
+function MERGE_Form(_data) {
+    var data = {};
+    var form = $("#form")[0];
+    $.each(form, function (infoIndex, info) {
+        // console.log("Name = " + info.name + " -- Id = " + info.id + " -- Value = " + info.value);
+        data[info.name] = info.value;
+    });
+    $.each(_data, function (infoIndex, info) {
+        // console.log("Name = " + infoIndex + " -- Id = " + infoIndex + " -- Value = " + info);
+        data[infoIndex] = info;
+    });
+    return data;
+}
+
+
+//})();

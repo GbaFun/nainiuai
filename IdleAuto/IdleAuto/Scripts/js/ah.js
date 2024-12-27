@@ -7,7 +7,7 @@
 // ==/UserScript==
 
 (function () {
-    const AhData= "拍卖数据";
+    const AhData = "拍卖数据";
     //初始化Bridge
     async function init() {
         try {
@@ -20,7 +20,7 @@
     var dataMap = {}//存储dataid对应装备的数据 
 
     init().then(() => {
-         loadPriceSuffix();
+        loadPriceSuffix();
     })
 
 
@@ -74,7 +74,7 @@
             e.runeCountArr = runeCountArr;
             dataMap[dataid] = e;
         });
-        var d=await Bridge.sendData(AhData,dataMap);
+        var d = await Bridge.sendData(AhData, dataMap);
         console.log(d);
     }
     function generatePriceSuffix(goldCoin, goldCoinPrice, runePriceArr, runeCountArr) {

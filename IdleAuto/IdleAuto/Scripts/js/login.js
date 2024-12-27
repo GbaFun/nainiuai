@@ -24,7 +24,7 @@
     }
 
 
-  
+
     init().then((r) => {
         //登录页逻辑
         if (location.href.indexOf("Login") > -1) {
@@ -33,7 +33,7 @@
 
         //首页保存cookie或者替换cookie
         if (location.href.indexOf("Home/Index") > -1) {
-            
+
         }
     })
 
