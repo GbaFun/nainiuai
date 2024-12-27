@@ -48,9 +48,9 @@
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
-    <Compile Include="Scripts\Controller\AuctionControl.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
+    <Compile Include="Scripts\Controller\AuctionController.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
     <Compile Include="Scripts\View\MainForm.cs">
       <SubType>Form</SubType>
@@ -59,7 +59,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Scripts\Model\Enum\BridgeMsgType.cs" />
-    <Compile Include="Scripts\Utils\JsInvoker.cs" />
+    <Compile Include="Scripts\Controller\BaseController.cs" />
     <Compile Include="Scripts\Utils\PageLoadHandler.cs" />
     <Compile Include="Scripts\Controller\AccountController.cs" />
     <Compile Include="Scripts\Model\AHItemModel.cs" />
@@ -115,6 +115,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\js\ah.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\js\char.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\js\IdleTools.js" />
+    <Content Include="Scripts\js\IdleUtils.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\login.js">

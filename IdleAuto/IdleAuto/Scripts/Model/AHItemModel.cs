@@ -31,4 +31,6 @@ public class AHItemModel
 
     public int[] runeCountArr { get; set; }
 
+    public bool canBuy { get; set; } 
+
 }

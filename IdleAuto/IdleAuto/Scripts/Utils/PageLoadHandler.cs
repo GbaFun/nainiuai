@@ -19,23 +19,26 @@ public class PageLoadHandler
     public const string AhPage = "Auction/Query";
 
     #region 载入js
-    public static void LoadJsByUrl(ChromiumWebBrowser browser)
+    public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
     {
         var url = browser.Address;
+        //全局js
+        await LoadJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
+        await LoadJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            LoadJs(jsPath, browser);
+            await LoadJs(jsPath, browser);
         }
         if (ContainsUrl(url, HomePage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            LoadJs(jsPath, browser);
+            await LoadJs(jsPath, browser);
         }
         if (ContainsUrl(url, AhPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
-            LoadJs(jsPath, browser);
+            await LoadJs(jsPath, browser);
         }
         if (ContainsUrl(url, MaterialPage))
         {
@@ -43,10 +46,11 @@ public class PageLoadHandler
             LoadGlobalJs(jsPath, browser);
         }
 
+
     }
 
 
-    private static void LoadJs(string path, ChromiumWebBrowser bro)
+    private static async Task LoadJs(string path, ChromiumWebBrowser bro)
     {
         // 在主框架中执行自定义脚本
         // 获取WinForms程序目录下的JavaScript文件路径

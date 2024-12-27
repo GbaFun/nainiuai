@@ -107,7 +107,7 @@ public partial class MainForm : Form
 
 
 
-    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+    private  void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
@@ -120,13 +120,9 @@ public partial class MainForm : Form
         else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
         {
             this.Invoke(new Action(() => ShowMainMenu()));
-        }
-        else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage))
-        {
-            this.Invoke(new Action(() => ShowMaterialMenu()));
-        }
-
-        PageLoadHandler.LoadJsByUrl(browser);
+        } Task.Run(async() => {
+           await PageLoadHandler.LoadJsByUrl(browser);
+        });
 
         if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {

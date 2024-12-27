@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 public class Bridge
 {
+    //js向后台发送数据
     public object SendData(params object[] a)
     {
-
-        return JsInvoker.HandleMessage(a);
+        return BaseController.HandleMessage(a);
 
     }
 

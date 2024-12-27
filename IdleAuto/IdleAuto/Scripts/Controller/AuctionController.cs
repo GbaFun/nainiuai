@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class AuctionControl
+public class AuctionController
 {
     public static List<AHItemModel> BuyEquip(ExpandoObject data)
     {

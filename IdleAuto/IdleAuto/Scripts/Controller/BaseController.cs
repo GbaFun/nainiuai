@@ -5,16 +5,15 @@ using System.Linq;
 using System.Text;
 
 
-public class JsInvoker
+public class BaseController
 {
     public static object HandleMessage(params object[] data)
     {
         string type = data[0] as string;
         switch (type)
         {
-            case BridgeMsgType.AhData:
-                return AuctionControl.BuyEquip(data[1] as ExpandoObject);
-                break;
+            case BridgeMsgType.EqipToBuy:
+                return AuctionController.BuyEquip(data[1] as ExpandoObject);
         }
         return "";
     }

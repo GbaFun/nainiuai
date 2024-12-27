@@ -7,7 +7,7 @@
 // ==/UserScript==
 
 (function () {
-    const AhData = "拍卖数据";
+    const EqipToBuy= "EqipToBuy";
     //初始化Bridge
     async function init() {
         try {
@@ -74,8 +74,21 @@
             e.runeCountArr = runeCountArr;
             dataMap[dataid] = e;
         });
-        var d = await Bridge.sendData(AhData, dataMap);
-        console.log(d);
+        //需要购买的装备
+        var equipToBuyArr = await Bridge.sendData(EqipToBuy, dataMap);
+        buy(equipToBuyArr);
+    }
+
+    function buy(arr) {
+        var data = MERGE_Form({
+            eid: 53293853,
+            cid: _char.cid
+        });
+        POST_Message("EquipBuy", MERGE_Form).then((r) => {
+            
+        }).catch((e) => {
+            console.log("购物失败" + e)
+        })
     }
     function generatePriceSuffix(goldCoin, goldCoinPrice, runePriceArr, runeCountArr) {
         var str = "";
