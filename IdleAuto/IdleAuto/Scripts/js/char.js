@@ -1,4 +1,5 @@
-﻿class Character {
+﻿
+;class Character {
     //当前角色id
     cid = 0;
 

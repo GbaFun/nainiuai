@@ -76,7 +76,7 @@
         });
         //需要购买的装备
         var equipToBuyArr = await Bridge.sendData(EqipToBuy, dataMap);
-        buy(equipToBuyArr);
+       // buy(equipToBuyArr);
     }
 
     function buy(arr) {
@@ -84,7 +84,7 @@
             eid: 53293853,
             cid: _char.cid
         });
-        POST_Message("EquipBuy", MERGE_Form).then((r) => {
+        POST_Message("EquipBuy", data,"post",2000).then((r) => {
             
         }).catch((e) => {
             console.log("购物失败" + e)

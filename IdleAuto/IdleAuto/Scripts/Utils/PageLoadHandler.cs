@@ -23,8 +23,8 @@ public class PageLoadHandler
     {
         var url = browser.Address;
         //全局js
-        await LoadJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
-        await LoadJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
+         LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
+         LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
