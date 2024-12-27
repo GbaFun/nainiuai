@@ -59,9 +59,9 @@
     <Compile Include="Logic\Serivce\PageLoadService.cs" />
     <Compile Include="Logic\ViewModel\CurrentUser.cs" />
     <Compile Include="Logic\ViewModel\Output\EquipToBuy.cs" />
+    <Compile Include="Logic\ViewModel\Rune.cs" />
     <Compile Include="Utils\DevToolUtil.cs" />
     <Compile Include="Logic\ViewModel\User.cs" />
-    <Compile Include="Scripts\AccountData.cs" />
     <Compile Include="Scripts\Bridge.cs" />
     <Compile Include="Scripts\CEFKeyBoardHander.cs" />
     <Compile Include="Scripts\Program.cs" />
@@ -113,6 +113,17 @@
     <Content Include="Scripts\js\login.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\rune.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Art\" />
+    <Folder Include="Document\" />
+    <Folder Include="Resource\" />
+    <Folder Include="Scripts\Controller\" />
+    <Folder Include="Scripts\Model\" />
+    <Folder Include="Scripts\ThirdPart\" />
+    <Folder Include="Scripts\Utils\Bridge\" />
+    <Folder Include="Scripts\View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
