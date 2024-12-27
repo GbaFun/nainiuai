@@ -31,6 +31,7 @@ namespace IdleAuto
         {
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
+            this.RuneGroup = new System.Windows.Forms.GroupBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
             this.BtnAutoEquip = new System.Windows.Forms.Button();
             this.BtnAutoOnline = new System.Windows.Forms.Button();
@@ -39,7 +40,9 @@ namespace IdleAuto
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.browserPanel = new System.Windows.Forms.Panel();
+            this.BtnAutoRune = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
+            this.RuneGroup.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
             this.SuspendLayout();
@@ -50,7 +53,7 @@ namespace IdleAuto
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
             this.menuPanel.Controls.Add(this.AccountCombo);
-            this.menuPanel.Controls.Add(this.HomeGroup);
+            this.menuPanel.Controls.Add(this.RuneGroup);
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Margin = new System.Windows.Forms.Padding(4);
             this.menuPanel.Name = "menuPanel";
@@ -67,6 +70,16 @@ namespace IdleAuto
             this.AccountCombo.Size = new System.Drawing.Size(100, 29);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
+            // RuneGroup
+            // 
+            this.RuneGroup.Controls.Add(this.BtnAutoRune);
+            this.RuneGroup.Location = new System.Drawing.Point(0, 40);
+            this.RuneGroup.Name = "RuneGroup";
+            this.RuneGroup.Size = new System.Drawing.Size(100, 560);
+            this.RuneGroup.TabIndex = 4;
+            this.RuneGroup.TabStop = false;
+            this.RuneGroup.Text = "RuneMenu";
             // 
             // HomeGroup
             // 
@@ -151,6 +164,16 @@ namespace IdleAuto
             this.browserPanel.Size = new System.Drawing.Size(846, 600);
             this.browserPanel.TabIndex = 1;
             // 
+            // BtnAutoRune
+            // 
+            this.BtnAutoRune.Location = new System.Drawing.Point(12, 20);
+            this.BtnAutoRune.Name = "BtnAutoRune";
+            this.BtnAutoRune.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoRune.TabIndex = 0;
+            this.BtnAutoRune.Text = "一键合符文";
+            this.BtnAutoRune.UseVisualStyleBackColor = true;
+            this.BtnAutoRune.Click += new System.EventHandler(this.BtnAutoRune_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -164,6 +187,7 @@ namespace IdleAuto
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuPanel.ResumeLayout(false);
+            this.RuneGroup.ResumeLayout(false);
             this.HomeGroup.ResumeLayout(false);
             this.LoginGroup.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -181,8 +205,9 @@ namespace IdleAuto
         private System.Windows.Forms.Button BtnLogin;
         private System.Windows.Forms.GroupBox LoginGroup;
         private System.Windows.Forms.GroupBox HomeGroup;
+        private System.Windows.Forms.GroupBox RuneGroup;
         private System.Windows.Forms.Button BtnAutoEquip;
         private System.Windows.Forms.Button BtnAutoOnline;
-
+        private System.Windows.Forms.Button BtnAutoRune;
     }
 }

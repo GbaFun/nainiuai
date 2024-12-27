@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdleAuto
+namespace IdleAuto.Logic.ViewModel
 {
-    internal class AccountData
+    internal class Rune
     {
     }
 }

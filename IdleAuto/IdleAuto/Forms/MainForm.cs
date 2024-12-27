@@ -49,6 +49,12 @@ namespace IdleAuto
             this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.HomeGroup);
         }
+        private void ShowMaterialMenu()
+        {
+            this.menuPanel.Controls.Clear();
+            this.menuPanel.Controls.Add(this.AccountCombo);
+            this.menuPanel.Controls.Add(this.RuneGroup);
+        }
 
 
         private void ShowAccountCombo()
@@ -85,12 +91,12 @@ namespace IdleAuto
         private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //存储当前用户
-            if (CurrentUser.User != null&&!PageLoadService.ContainsUrl(browser.Address,PageLoadService.LoginPage)) PageLoadService.SaveCookieAndCache(browser, true);
+            if (CurrentUser.User != null && !PageLoadService.ContainsUrl(browser.Address, PageLoadService.LoginPage)) PageLoadService.SaveCookieAndCache(browser, true);
             // 获取选中的项
             string selectedItem = this.AccountCombo.SelectedItem.ToString();
             var item = AccountCfg.Instance.Accounts.Where(s => s.Username == selectedItem).FirstOrDefault();
             CurrentUser.User = new User { Username = selectedItem, Password = item.Password };
-            if (browser != null )
+            if (browser != null)
             {
                 browser.Load("https://www.idleinfinity.cn/Home/Login");
             }
@@ -114,7 +120,7 @@ namespace IdleAuto
                 this.Invoke(new Action(() => ShowMainMenu()));
             }
             PageLoadService.LoadJsByUrl(browser);
-           
+
             if (!PageLoadService.ContainsUrl(url, PageLoadService.LoginPage))
             {
                 PageLoadService.SaveCookieAndCache(browser);
@@ -130,6 +136,9 @@ namespace IdleAuto
             }
         }
 
+        private void BtnAutoRune_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }
