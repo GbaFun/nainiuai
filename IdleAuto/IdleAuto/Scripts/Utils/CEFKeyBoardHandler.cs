@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System;
 
-public class CEFKeyBoardHander : IKeyboardHandler
+public class CEFKeyBoardHandler : IKeyboardHandler
 {
     public bool OnKeyEvent(IWebBrowser browserControl, IBrowser browser, KeyType type, int windowsKeyCode, int nativeKeyCode, CefEventFlags modifiers, bool isSystemKey)
     {

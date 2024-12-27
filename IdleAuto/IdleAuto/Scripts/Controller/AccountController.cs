@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdleAuto.Logic.ViewModel
+
+public class AccountController
 {
-    internal class Rune
-    {
-    }
+    //当前登录账号
+    public static UserModel User;
+
+
 }

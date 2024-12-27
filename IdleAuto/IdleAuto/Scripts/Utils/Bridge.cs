@@ -1,7 +1,4 @@
 ﻿using CefSharp.WinForms;
-using IdleAuto.Logic;
-using IdleAuto.Logic.Serivce;
-using IdleAuto.Logic.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +10,7 @@ public class Bridge
 {
     public object SendData(params object[] a)
     {
-        
+
         return JsInvoker.HandleMessage(a);
 
     }
@@ -25,7 +22,7 @@ public class Bridge
     /// <returns></returns>
     public object GetSelectedAccount()
     {
-        return CurrentUser.User;
+        return AccountController.User;
     }
 
 }
