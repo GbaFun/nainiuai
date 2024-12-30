@@ -121,6 +121,10 @@ public partial class MainForm : Form
         {
             this.Invoke(new Action(() => ShowMainMenu()));
         }
+        else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage))
+        {
+            this.Invoke(new Action(() => ShowMaterialMenu()));
+        }
         Task.Run(async () =>
         {
             await PageLoadHandler.LoadJsByUrl(browser);

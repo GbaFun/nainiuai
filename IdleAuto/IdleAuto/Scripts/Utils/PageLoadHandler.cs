@@ -23,8 +23,8 @@ public class PageLoadHandler
     {
         var url = browser.Address;
         //全局js
-         LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
-         LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
+        await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
+        await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
@@ -69,7 +69,7 @@ public class PageLoadHandler
 
         bro.ExecuteScriptAsync(script);
     }
-    private static void LoadGlobalJs(string path, ChromiumWebBrowser bro)
+    private static async Task LoadGlobalJs(string path, ChromiumWebBrowser bro)
     {
         // 在主框架中执行自定义脚本
         // 获取WinForms程序目录下的JavaScript文件路径
