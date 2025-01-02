@@ -7,7 +7,8 @@
 // ==/UserScript==
 
 (function () {
-    const EqipToBuy= "EqipToBuy";
+    const EquipToBuy = "EquipToBuy";
+    const ScanAhConfig = "ScanAhConfig";
     //初始化Bridge
     async function init() {
         try {
@@ -19,8 +20,9 @@
     }
     var dataMap = {}//存储dataid对应装备的数据 
 
-    init().then(() => {
-        loadPriceSuffix();
+    init().then(async () => {
+        await loadPriceSuffix();
+        await search();
     })
 
 
@@ -75,16 +77,32 @@
             dataMap[dataid] = e;
         });
         //需要购买的装备
-        var equipToBuyArr = await Bridge.sendData(EqipToBuy, dataMap);
-       // buy(equipToBuyArr);
+        //var equipToBuyArr = await Bridge.sendData(EquipToBuy, dataMap);
+        //buyAuto(equipToBuyArr);
     }
 
-    function buy(arr) {
+    async function search() {
+        let data = await Bridge.getAhDemandEquip();
+        saveMergeStatus(data, ScanAhConfig);
+
+    }
+
+    function jumpTo(config) {
+        var quality = config.quality;
+        var part = config.part;
+        var eqbase = config.eqbase
+        var ulList = $(".dropdown-menu:contains('全部')");
+        $(ulList[0])
+    }
+
+    function buyAuto(arr) {
+        if (!!!arr||arr.length == 0) return;
+        $($(".dropdown-menu:contains('全部')")[0]).find("li a")[3].click()
         var data = MERGE_Form({
-            eid: 53293853,
+            eid: arr[0].eid,
             cid: _char.cid
         });
-        POST_Message("EquipBuy", data,"post",2000).then((r) => {
+        POST_Message("EquipBuy", data, "post", 2000).then((r) => {
             
         }).catch((e) => {
             console.log("购物失败" + e)

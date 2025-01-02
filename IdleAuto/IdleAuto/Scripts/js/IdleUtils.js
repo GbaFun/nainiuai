@@ -105,3 +105,33 @@ function GET_JSON(_url, _timeout = 500) {
         });
     });
 }
+
+function deepMerge(target, ...sources) {
+    for (let source of sources) {
+        for (let key in source) {
+            if (source.hasOwnProperty(key)) {
+                if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
+}
+//保存对象到本地缓存，有则合并,无则直接新增
+function saveMergeStatus(obj, key) {
+    var localObj = localStorage.getItem(key);
+    localObj = JSON.parse(localObj);
+    if (!!!localObj) {
+        var str = JSON.stringify(obj);
+        localStorage.setItem(key, str);
+    }
+    else {
+
+        var t = deepMerge(localObj, obj);
+        var saveStr = JSON.stringify(t);
+        localStorage.setItem(key, saveStr);
+    }
+}

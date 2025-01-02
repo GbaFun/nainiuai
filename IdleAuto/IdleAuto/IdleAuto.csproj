@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
+    <Compile Include="Configs\CfgExtension\ScanAhCfg.cs.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
@@ -89,6 +90,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\RuneCompandCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\ScanAhCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Document\ProjectStruct.md" />

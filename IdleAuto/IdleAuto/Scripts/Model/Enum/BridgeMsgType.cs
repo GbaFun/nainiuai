@@ -8,5 +8,6 @@ using System.Threading.Tasks;
 public class BridgeMsgType
 {
 
-    public const string EqipToBuy = "EqipToBuy";
+    public const string EquipToBuy = "EquipToBuy";
+
 }

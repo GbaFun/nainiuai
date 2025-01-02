@@ -1,4 +1,5 @@
 ﻿using CefSharp.WinForms;
+using IdleAuto.Configs.CfgExtension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,11 @@ public class Bridge
     public object GetSelectedAccount()
     {
         return AccountController.User;
+    }
+
+    public List<DemandEquip> GetAhDemandEquip()
+    {
+        return ScanAhCfg.Instance.data;
     }
 
 }
