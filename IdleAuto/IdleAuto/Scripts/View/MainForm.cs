@@ -88,10 +88,12 @@ public partial class MainForm : Form
         this.browserPanel.Controls.Add(browser);
         // 等待页面加载完成后执行脚本
         browser.FrameLoadEnd += OnFrameLoadEnd;
+        browser.FrameLoadStart += OnFrameLoadStart;
     }
 
     private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
     {
+        
         //存储当前用户
         if (AccountController.User != null && !PageLoadHandler.ContainsUrl(browser.Address, PageLoadHandler.LoginPage)) PageLoadHandler.SaveCookieAndCache(browser, true);
         // 获取选中的项
@@ -100,11 +102,18 @@ public partial class MainForm : Form
         AccountController.User = new UserModel { Username = selectedItem, Password = item.Password };
         if (browser != null)
         {
+            Task.Run(async () =>
+            {
+                await DevToolUtil.ClearCookiesAsync(browser);
+            });
             browser.Load("https://www.idleinfinity.cn/Home/Login");
         }
     }
 
-
+    private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
+    {
+        var bro = sender as ChromiumWebBrowser;
+    }
 
 
     private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -115,7 +124,10 @@ public partial class MainForm : Form
         if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {
             this.Invoke(new Action(() => ShowLoginMenu()));
-            PageLoadHandler.LoadCookieAndCache(browser);
+            Task.Run(async () =>
+            {
+                await PageLoadHandler.LoadCookieAndCache(browser);
+            });
         }
         else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
         {

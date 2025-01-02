@@ -43,7 +43,7 @@ public class PageLoadHandler
         if (ContainsUrl(url, MaterialPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "rune.js");
-            LoadGlobalJs(jsPath, browser);
+            await LoadGlobalJs(jsPath, browser);
         }
 
 
@@ -104,7 +104,7 @@ public class PageLoadHandler
 
     }
 
-    public static async void LoadCookieAndCache(ChromiumWebBrowser bro)
+    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro)
     {
 
         string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.User.Username + ".json");
@@ -112,9 +112,13 @@ public class PageLoadHandler
 
         if (File.Exists(cookiePath))
         {
-            await DevToolUtil.ClearCookiesAsync(bro);
-            await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
-            bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
+            if (ValidCookie(cookiePath))
+            {
+                await DevToolUtil.ClearCookiesAsync(bro);
+                await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
+                bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
+            }
+
         }
 
         if (File.Exists(stroagePath))
@@ -124,6 +128,43 @@ public class PageLoadHandler
             await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
         }
 
+    }
+    /// <summary>
+    /// 检查cookie是否在有效期
+    /// </summary>
+    /// <param name="cookiePath"></param>
+    /// <returns></returns>
+    public static bool ValidCookie(string cookiePath)
+    {
+        if (!File.Exists(cookiePath))
+        {
+            return false;
+        }
+        var cookieList = new List<CefSharp.Cookie>();
+        DateTime createdTime = File.GetCreationTime(cookiePath);
+        using (var reader = new StreamReader(cookiePath))
+        {
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                var parts = line.Split('\t');
+                var cookie = new CefSharp.Cookie
+                {
+                    Domain = parts[0],
+                    Name = parts[1],
+                    Value = parts[2],
+                    Path = parts[3],
+                    Expires = parts[4] == "" ? DateTime.Now.AddDays(1) : DateTime.Parse(parts[4])
+                };
+                cookieList.Add(cookie);
+
+            }
+        }
+        if (cookieList.Count == 0) return false;
+        var idleCookie = cookieList.Where(p => p.Name == "idleinfinity.cookies").FirstOrDefault();
+        if (idleCookie == null) return false;
+        if (DateTime.Now.AddMinutes(-60) >= idleCookie.Expires) return false;
+        return true;
     }
     #endregion
 

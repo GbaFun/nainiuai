@@ -13,7 +13,6 @@
     async function setUsernamePwd() {
         try {
             var user = await Bridge.getSelectedAccount();
-            debugger;
             console.log(user);
             $("#username").val(user.Username);
             $("#password").val(user.Password);
