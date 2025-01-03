@@ -32,10 +32,12 @@ public class RuneController
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
         foreach (var item in cfg)
         {
-            Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#");
             //如果配置保留数量为-1，则不处理
             if (item.CompandNum == -1)
+            {
+                Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
                 continue;
+            }
             var response = await GetRuneNum(item.ID);
             if (response.Success)
             {
@@ -64,12 +66,12 @@ public class RuneController
         EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
     }
 
-    private void OnEventUpgradeRuneBack(emEventType eventType, params object[] args)
+    private void OnEventUpgradeRuneBack(params object[] args)
     {
         bool isSuccess = (bool)args[0];
         int runeId = (int)args[1];
         int runeNum = (int)args[2];
-        Console.WriteLine($"{DateTime.Now}---符文{runeId}-{runeNum}--升级:{isSuccess}");
+        Console.WriteLine($"{DateTime.Now}---升级符文：{runeId}#-{runeNum}--{isSuccess}");
         onUpgradeRuneCallBack(true);
     }
     //public void OnMainFormBrowseFrameLoad(object sender, FrameLoadEndEventArgs e)

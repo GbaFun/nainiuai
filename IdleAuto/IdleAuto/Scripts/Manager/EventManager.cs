@@ -19,16 +19,16 @@ public class EventManager
             if (instance == null)
             {
                 instance = new EventManager();
-                instance.eventDic = new Dictionary<emEventType, Action<emEventType, object[]>>();
+                instance.eventDic = new Dictionary<emEventType, Action<object[]>>();
             }
             return instance;
         }
 
     }
 
-    private Dictionary<emEventType, Action<emEventType, object[]>> eventDic;
+    private Dictionary<emEventType, Action<object[]>> eventDic;
 
-    public void SubscribeEvent(emEventType eventType, Action<emEventType, object[]> action)
+    public void SubscribeEvent(emEventType eventType, Action<object[]> action)
     {
         if (eventDic.ContainsKey(eventType))
         {
@@ -39,7 +39,7 @@ public class EventManager
             eventDic.Add(eventType, action);
         }
     }
-    public void UnsubscribeEvent(emEventType eventType, Action<emEventType, object[]> action)
+    public void UnsubscribeEvent(emEventType eventType, Action<object[]> action)
     {
         if (eventDic.ContainsKey(eventType))
         {
@@ -51,7 +51,7 @@ public class EventManager
     {
         if (eventDic.ContainsKey(eventType))
         {
-            eventDic[eventType]?.Invoke(eventType, args);
+            eventDic[eventType]?.Invoke(args);
         }
     }
 }
