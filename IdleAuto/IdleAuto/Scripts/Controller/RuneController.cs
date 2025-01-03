@@ -42,6 +42,10 @@ public class RuneController
                 {
                     int count = curNum - item.CompandNum;
                     count = count - count % 2;
+                    if (count < 2)
+                    {
+                        continue;
+                    }
                     UpgradeRune(item.ID, count);
                     var tcs = new TaskCompletionSource<bool>();
                     onUpgradeRuneCallBack = (result) => tcs.SetResult(result);

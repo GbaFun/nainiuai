@@ -61,10 +61,10 @@ function showRuneNumView() {
         alert("已存储数据", function () { });
     });
 
-    compandButton.click(function () {
-        compandMode = true;
-        showChange();
-    });
+    //compandButton.click(function () {
+    //    compandMode = true;
+    //    showChange();
+    //});
 
     $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
 
