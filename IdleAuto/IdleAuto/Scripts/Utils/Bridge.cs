@@ -31,5 +31,9 @@ public class Bridge
         return ScanAhCfg.Instance.data;
     }
 
+    public void InvokeEvent(string eventName, params object[] args)
+    {
+        EventManager.Instance.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
+    }
 }
 

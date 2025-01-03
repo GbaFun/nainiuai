@@ -27,6 +27,12 @@ public class RuneCompandCfg
             RuneCompandData = new List<RuneCompandData>();
         }
     }
+
+    public void SetDirty()
+    {
+        RuneCompandData = null;
+        LoadConfig();
+    }
 }
 
 public class RuneCompandData

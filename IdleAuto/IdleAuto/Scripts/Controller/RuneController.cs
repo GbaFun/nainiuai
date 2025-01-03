@@ -3,6 +3,7 @@ using CefSharp.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +27,8 @@ public class RuneController
     public async void AutoUpgradeRune()
     {
         Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
-        MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
+        EventManager.Instance.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
+        //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
         foreach (var item in cfg)
         {
@@ -58,15 +60,24 @@ public class RuneController
             }
         }
 
-        MainForm.Instance.browser.FrameLoadEnd -= OnMainFormBrowseFrameLoad;
+        //MainForm.Instance.browser.FrameLoadEnd -= OnMainFormBrowseFrameLoad;
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
     }
 
-    public void OnMainFormBrowseFrameLoad(object sender, FrameLoadEndEventArgs e)
+    private void OnEventUpgradeRuneBack(emEventType eventType, params object[] args)
     {
-        var bro = sender as ChromiumWebBrowser;
-        string url = bro.Address;
-        onUpgradeRuneCallBack(PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage));
+        bool isSuccess = (bool)args[0];
+        int runeId = (int)args[1];
+        int runeNum = (int)args[2];
+        Console.WriteLine($"{DateTime.Now}---符文{runeId}-{runeNum}--升级:{isSuccess}");
+        onUpgradeRuneCallBack(true);
     }
+    //public void OnMainFormBrowseFrameLoad(object sender, FrameLoadEndEventArgs e)
+    //{
+    //    var bro = sender as ChromiumWebBrowser;
+    //    string url = bro.Address;
+    //    onUpgradeRuneCallBack(PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage));
+    //}
 
     public void OnGetJsRuneData()
     {

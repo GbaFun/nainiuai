@@ -27,7 +27,7 @@ function sleep(ms) {
 }
 
 //异步
-async function POST_Message(url, data, dataType, timeout = 0) {
+async function POST_Message(url, data, dataType, timeout = 2000) {
     console.log('Start');
     await sleep(timeout);
     console.log(timeout / 1000 + "秒后")

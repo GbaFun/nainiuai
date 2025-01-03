@@ -28,11 +28,11 @@ function showRuneNumView() {
     // 创建存储符文数量的按钮
     var saveButton = $('<a class="btn btn-xs btn-default" id="saveButton">存储</a>');
     // 创建升级符文的按钮
-    var compandButton = $('<a class="pull-right btn btn-xs btn-default" id="compandButton">升级</a>');
+    //var compandButton = $('<a class="pull-right btn btn-xs btn-default" id="compandButton">升级</a>');
 
     buttonContainer2.append(timeDiv);
     buttonContainer2.append(saveButton);
-    buttonContainer2.append(compandButton);
+    //buttonContainer2.append(compandButton);
 
     $('.panel-heading:contains("符文")').append(buttonContainer2);
 
@@ -111,9 +111,13 @@ function upgradeRune(rune, count) {
     POST_Message("RuneUpgrade", data, "html", 2000)
         .then(r => {
             compandMode = true;
+            Bridge.invokeEvent('OnUpgradeRuneBack', true, data.rune, data.count);
             location.reload();
         })
-        .catch(r => { console.log(r) });
+        .catch(r => {
+            console.log(r);
+            Bridge.invokeEvent('OnUpgradeRuneBack', false, data.rune, data.count);
+        });
 }
 
 //})();
