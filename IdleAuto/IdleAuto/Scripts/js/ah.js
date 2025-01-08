@@ -82,19 +82,27 @@ let ah = {};
         //buyAuto(equipToBuyArr);
     }
 
-    async function search(config) {
-        if (false) return;//设置一个固定id扫拍
-        debugger;
-        
-        await jumpTo(config);
-        //购买
 
-        //跳页
 
-        //此项搜索结束开始下一项
+    async function isJumpToEnd(config) {
+        var quality = config.quality;
+        var part = config.part;
+        var eqbase = config.eqbase
+        var curQuality = $(".panel-heading button")[0].innerText.trim();
+        var curPart = $(".panel-heading button")[1].innerText.trim();
+        var curBase = $(".panel-heading button")[2].innerText.trim();
+        //是否载入到正确的选项 即三个选项载入完毕
+        if (curPart == part && curBase == eqbase && curQuality == quality) {
+            return "success";
+        }
+    }
 
-        //当前项索引+1
-        return config;
+    async function isLastPage() {
+        return $(".panel-footer a:contains('下页')").length == 0;
+    }
+
+    async function nextPage() {
+        $(".panel-footer a:contains('下页')")[0].click();
     }
 
     async function jumpTo(config) {
@@ -127,21 +135,18 @@ let ah = {};
                 }
             });
         }
-       //是否载入到正确的选项 即三个选项载入完毕
-        if (curPart == part && curBase == eqbase && curQuality == quality) {
-            return "success";
-        }
+  
      
     }
 
 
-    function buyAuto(arr) {
-        if (!!!arr || arr.length == 0) return;
+    function buy(eid) {
+        
         var data = MERGE_Form({
-            eid: arr[0].eid,
+            eid: eid,
             cid: _char.cid
         });
-        POST_Message("EquipBuy", data, "post", 2000).then((r) => {
+        POST_Message("EquipBuy", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
             console.log("购物失败" + e)
@@ -160,4 +165,8 @@ let ah = {};
 
 
     ah.jumpTo = jumpTo;
+    ah.isJumpToEnd = isJumpToEnd;
+    ah.isLastPage = isLastPage;
+    ah.nextPage = nextPage;
+    ah.buy = buy;
 })();

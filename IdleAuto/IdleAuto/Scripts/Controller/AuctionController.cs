@@ -13,7 +13,7 @@ public class AuctionController
 {
     public AuctionController()
     {
-        EventManager.Instance.SubscribeEvent(emEventType.OnAhLastPageLoaded, OnLastPageLoad);
+        MainForm.Instance.browser.FrameLoadEnd += OnPageLoadEnd;
     }
     private static AuctionController instance;
     public static AuctionController Instance
@@ -34,50 +34,114 @@ public class AuctionController
     public bool IsStart = false;
 
     /// <summary>
-    /// 是否跳转到对应的下拉框
-    /// </summary>
-    public bool IsJumpEnd = false;
-
-    /// <summary>
     /// 当前扫描到配置中的位置
     /// </summary>
     public int EqIndex = 0;
 
-
-    private void OnLastPageLoad(params object[] args)
+    /// <summary>
+    /// 监听页面刷新状态
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void OnPageLoadEnd(object sender, FrameLoadEndEventArgs e)
     {
-
-    }
-
-    public async void AutoScanAh()
-    {
-        if (!IsStart) return;
-        Console.WriteLine($"{DateTime.Now}---开始一键扫货");
-        List<DemandEquip> cfg = ScanAhCfg.Instance.data;
-        var curCfg = cfg[EqIndex];
-        do
+        if (IsStart)
         {
-            Thread.Sleep(2500);
-            var d = await JumpTo(curCfg);
-            if (d.Result?.ToString() == "success")
-            {
-                IsJumpEnd = true;
-            }
+            await AutoJump();
+            await AutoNextPage();
+        }
+    }
+    /// <summary>
+    /// 开始扫拍
+    /// </summary>
+    public async void StartScan()
+    {
+        IsStart = true;
+        await AutoJump();
+        await AutoNextPage();
+    }
 
-        } while (!IsJumpEnd);
+    /// <summary>
+    /// 自动跳转到对应选项
+    /// </summary>
+    /// <returns></returns>
+    private async Task AutoJump()
+    {
+        var curCfg = GetCurConfig();
+        var isJumpEnd = await IsJumpToEnd(curCfg);
+        if (!isJumpEnd)
+        {
+            await JumpTo(curCfg);
+        }
+    }
 
+    private async Task AutoNextPage()
+    {
+        var isJumpEnd = await IsJumpToEnd(GetCurConfig());
+        var isLast = await IsLastPage();
+        if (!isLast&&isJumpEnd)
+        {
+            await NextPage();
+        }
+    }
 
+    public void StopScan()
+    {
+        IsStart = false;
+    }
 
+    /// <summary>
+    /// 当前扫描的配置
+    /// </summary>
+    /// <returns></returns>
+    private DemandEquip GetCurConfig()
+    {
+        return ScanAhCfg.Instance.data[EqIndex];
+    }
+
+    /// <summary>
+    /// 一次跳转一个选项 
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public async Task<JavascriptResponse> JumpTo(DemandEquip config)
+    {
+        Thread.Sleep(1500);
+        var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({JsonConvert.SerializeObject(config)});");
+        return d;
 
     }
-    public async Task<JavascriptResponse> JumpTo(DemandEquip config)
+
+    /// <summary>
+    /// 是否跳转到最后对应选项
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public async Task<bool> IsJumpToEnd(DemandEquip config)
+    {
+        var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({JsonConvert.SerializeObject(config)});");
+        return d.Result?.ToString()=="success";
+
+    }
+
+    private async Task<bool> IsLastPage()
     {
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({JsonConvert.SerializeObject(config)});");
-            return d;
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isLastPage();");
+            return bool.Parse( d.Result?.ToString());
         }
-        else return new JavascriptResponse();
+        else return false;
+    }
+
+    private async Task NextPage()
+    {
+        Thread.Sleep(1500);
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        {
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.nextPage();");
+            
+        }
     }
     public static List<AHItemModel> BuyEquip(ExpandoObject data)
     {

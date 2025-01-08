@@ -305,16 +305,7 @@ public partial class MainForm : Form
         }
         //RuneController.Instance.AutoUpgradeRune();
     }
-    /// <summary>
-    /// 扫拍按钮
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void BtnScanAh_Click(object sender, EventArgs e)
-    {
-        AuctionController.Instance.IsStart = !AuctionController.Instance.IsStart;
-        AuctionController.Instance.AutoScanAh();
-    }
+   
 
     private void BtnHome_Click(object sender, EventArgs e)
     {
@@ -340,6 +331,16 @@ public partial class MainForm : Form
     private void BtnAutoAh_Click(object sender, EventArgs e)
     {
         //todo 自动拍卖
+        if (!AuctionController.Instance.IsStart)
+        {
+            AuctionController.Instance.StartScan();
+            this.BtnAutoAh.Text = "停止扫拍";
+        }
+        else
+        {
+            AuctionController.Instance.StopScan();
+            this.BtnAutoAh.Text = "开始扫拍";
+        }
     }
 
     private Match RegexRoleUrl(string url)
