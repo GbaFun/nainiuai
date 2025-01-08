@@ -9,6 +9,10 @@ public enum emEventType
     OnLoginSuccess,
     OnAccountDirty,
     OnUpgradeRuneBack,
+    /// <summary>
+    /// ah载入到最后一页触发
+    /// </summary>
+    OnAhLastPageLoaded,
 }
 
 public class EventManager

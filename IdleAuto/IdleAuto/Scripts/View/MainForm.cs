@@ -283,6 +283,16 @@ public partial class MainForm : Form
     {
         RuneController.Instance.AutoUpgradeRune();
     }
+    /// <summary>
+    /// 扫拍按钮
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void BtnScanAh_Click(object sender, EventArgs e)
+    {
+        AuctionController.Instance.IsStart = !AuctionController.Instance.IsStart;
+        AuctionController.Instance.AutoScanAh();
+    }
 
     private void BtnHome_Click(object sender, EventArgs e)
     {

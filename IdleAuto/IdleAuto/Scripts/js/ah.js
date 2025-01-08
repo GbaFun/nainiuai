@@ -6,7 +6,9 @@
 // @match         https://www.idleinfinity.cn/Auction/Query?*
 // ==/UserScript==
 
+let ah = {};
 (function () {
+
     const EquipToBuy = "EquipToBuy";
     const ScanAhConfig = "ScanAhConfig";
     //初始化Bridge
@@ -22,7 +24,6 @@
 
     init().then(async () => {
         await loadPriceSuffix();
-        await search();
     })
 
 
@@ -81,29 +82,67 @@
         //buyAuto(equipToBuyArr);
     }
 
-    async function search() {
-        let data = await Bridge.getAhDemandEquip();
-        saveMergeStatus(data, ScanAhConfig);
+    async function search(config) {
+        if (false) return;//设置一个固定id扫拍
+        debugger;
+        
+        await jumpTo(config);
+        //购买
 
+        //跳页
+
+        //此项搜索结束开始下一项
+
+        //当前项索引+1
+        return config;
     }
 
-    function jumpTo(config) {
+    async function jumpTo(config) {
         var quality = config.quality;
         var part = config.part;
         var eqbase = config.eqbase
+        var curQuality = $(".panel-heading button")[0].innerText.trim();
+        var curPart = $(".panel-heading button")[1].innerText.trim();
+        var curBase = $(".panel-heading button")[2].innerText.trim();
         var ulList = $(".dropdown-menu:contains('全部')");
-        $(ulList[0])
+     
+        if (curQuality != quality) {
+            $(ulList[0]).find("li a").each((index, item) => {
+                if (item.innerText == quality) {
+                    item.click();
+                }
+            });
+        }
+        if (curPart != part) {
+            $(ulList[1]).find("li a").each((index, item) => {
+                if (item.innerText == part) {
+                    item.click();
+                }
+            });
+        }
+        if (curBase != eqbase) {
+            $(ulList[2]).find("li a").each((index, item) => {
+                if (item.innerText == eqbase) {
+                    item.click();
+                }
+            });
+        }
+       //是否载入到正确的选项 即三个选项载入完毕
+        if (curPart == part && curBase == eqbase && curQuality == quality) {
+            return "success";
+        }
+     
     }
 
+
     function buyAuto(arr) {
-        if (!!!arr||arr.length == 0) return;
-        $($(".dropdown-menu:contains('全部')")[0]).find("li a")[3].click()
+        if (!!!arr || arr.length == 0) return;
         var data = MERGE_Form({
             eid: arr[0].eid,
             cid: _char.cid
         });
         POST_Message("EquipBuy", data, "post", 2000).then((r) => {
-            
+
         }).catch((e) => {
             console.log("购物失败" + e)
         })
@@ -118,4 +157,7 @@
         });
         return str;
     }
+
+
+    ah.jumpTo = jumpTo;
 })();

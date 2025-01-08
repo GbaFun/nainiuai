@@ -46,6 +46,7 @@ partial class MainForm
             this.HomeGroup = new System.Windows.Forms.GroupBox();
             this.BtnAutoEquip = new System.Windows.Forms.Button();
             this.BtnAutoOnline = new System.Windows.Forms.Button();
+             this.BtnScanAh = new System.Windows.Forms.Button();
             this.browserPanel = new System.Windows.Forms.Panel();
             this.LoadingPanel = new System.Windows.Forms.Panel();
             this.LoadingContent = new System.Windows.Forms.Label();
@@ -369,4 +370,5 @@ partial class MainForm
     private System.Windows.Forms.Button BtnHome;
     private System.Windows.Forms.Button BtnMaterial;
     private System.Windows.Forms.GroupBox RoleGroup;
+    private System.Windows.Forms.Button BtnScanAh;
 }

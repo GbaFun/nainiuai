@@ -39,7 +39,7 @@ public class PageLoadHandler
         if (ContainsUrl(url, AhPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
-            await LoadJs(jsPath, browser);
+            await LoadGlobalJs(jsPath, browser);
         }
         if (ContainsUrl(url, MaterialPage))
         {
@@ -97,7 +97,7 @@ public class PageLoadHandler
         string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.Username + ".txt");
         var createTime = File.GetCreationTime(cookiePath);
         TimeSpan val = DateTime.Now - createTime;
-        if (val.Minutes >= 10 || isDirectUpdate)
+        if (val.TotalMinutes >= 10 || isDirectUpdate)
         {
             await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
             await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
