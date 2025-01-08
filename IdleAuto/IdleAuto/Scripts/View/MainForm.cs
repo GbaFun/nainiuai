@@ -74,6 +74,13 @@ public partial class MainForm : Form
         this.menuPanel.Controls.Add(this.RuneGroup);
         this.menuPanel.Controls.Add(this.JumpGroup);
     }
+    private void ShowAhMenu()
+    {
+        this.menuPanel.Controls.Clear();
+        this.menuPanel.Controls.Add(this.AccountCombo);
+        this.menuPanel.Controls.Add(this.AhGroup);
+        this.menuPanel.Controls.Add(this.JumpGroup);
+    }
     public void ShowLoadingPanel(string content)
     {
         this.LoadingPanel.Visible = true;
@@ -224,6 +231,10 @@ public partial class MainForm : Form
         {
             this.Invoke(new Action(() => ShowMaterialMenu()));
         }
+        else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.AhPage))
+        {
+            this.Invoke(new Action(() => ShowAhMenu()));
+        }
         Task.Run(async () =>
         {
             await PageLoadHandler.LoadJsByUrl(browser);
@@ -326,10 +337,17 @@ public partial class MainForm : Form
         //https://www.idleinfinity.cn/Character/RuneLog?uid=13846682&id=10728
     }
 
+    private void BtnAutoAh_Click(object sender, EventArgs e)
+    {
+        //todo 自动拍卖
+    }
+
     private Match RegexRoleUrl(string url)
     {
         Regex reg = new Regex(@".*\\?id=(\d*)");
         Match result = reg.Match(url);
         return result;
     }
+
+
 }

@@ -28,8 +28,8 @@ partial class MainForm
     private void InitializeComponent()
     {
             this.menuPanel = new System.Windows.Forms.Panel();
+            this.AhGroup = new System.Windows.Forms.GroupBox();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
-            this.RoleGroup = new System.Windows.Forms.GroupBox();
             this.JumpGroup = new System.Windows.Forms.GroupBox();
             this.LayoutRoot = new System.Windows.Forms.FlowLayoutPanel();
             this.LableRoleTitle = new System.Windows.Forms.Label();
@@ -37,6 +37,7 @@ partial class MainForm
             this.BtnHome = new System.Windows.Forms.Button();
             this.BtnRank = new System.Windows.Forms.Button();
             this.BtnMaterial = new System.Windows.Forms.Button();
+            this.RoleGroup = new System.Windows.Forms.GroupBox();
             this.RuneGroup = new System.Windows.Forms.GroupBox();
             this.BtnAutoRune = new System.Windows.Forms.Button();
             this.LoginGroup = new System.Windows.Forms.GroupBox();
@@ -50,7 +51,9 @@ partial class MainForm
             this.LoadingPanel = new System.Windows.Forms.Panel();
             this.LoadingContent = new System.Windows.Forms.Label();
             this.LoadingBg = new System.Windows.Forms.PictureBox();
+            this.BtnAutoAh = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
+            this.AhGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
             this.LayoutRoot.SuspendLayout();
             this.RuneGroup.SuspendLayout();
@@ -66,13 +69,25 @@ partial class MainForm
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
             this.menuPanel.Controls.Add(this.AccountCombo);
-            this.menuPanel.Controls.Add(this.RoleGroup);
+            this.menuPanel.Controls.Add(this.AhGroup);
             this.menuPanel.Controls.Add(this.JumpGroup);
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Margin = new System.Windows.Forms.Padding(0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(133, 628);
+            this.menuPanel.Size = new System.Drawing.Size(100, 502);
             this.menuPanel.TabIndex = 0;
+            // 
+            // AhGroup
+            // 
+            this.AhGroup.Controls.Add(this.BtnAutoAh);
+            this.AhGroup.Location = new System.Drawing.Point(0, 40);
+            this.AhGroup.Margin = new System.Windows.Forms.Padding(0);
+            this.AhGroup.Name = "AhGroup";
+            this.AhGroup.Padding = new System.Windows.Forms.Padding(0);
+            this.AhGroup.Size = new System.Drawing.Size(100, 226);
+            this.AhGroup.TabIndex = 6;
+            this.AhGroup.TabStop = false;
+            this.AhGroup.Text = "拍卖行菜单";
             // 
             // AccountCombo
             // 
@@ -82,29 +97,18 @@ partial class MainForm
             this.AccountCombo.Location = new System.Drawing.Point(0, 0);
             this.AccountCombo.Margin = new System.Windows.Forms.Padding(0);
             this.AccountCombo.Name = "AccountCombo";
-            this.AccountCombo.Size = new System.Drawing.Size(132, 28);
+            this.AccountCombo.Size = new System.Drawing.Size(100, 24);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
-            // 
-            // RoleGroup
-            // 
-            this.RoleGroup.Location = new System.Drawing.Point(0, 50);
-            this.RoleGroup.Margin = new System.Windows.Forms.Padding(0);
-            this.RoleGroup.Name = "RoleGroup";
-            this.RoleGroup.Padding = new System.Windows.Forms.Padding(0);
-            this.RoleGroup.Size = new System.Drawing.Size(133, 282);
-            this.RoleGroup.TabIndex = 5;
-            this.RoleGroup.TabStop = false;
-            this.RoleGroup.Text = "角色菜单";
             // 
             // JumpGroup
             // 
             this.JumpGroup.Controls.Add(this.LayoutRoot);
-            this.JumpGroup.Location = new System.Drawing.Point(0, 338);
+            this.JumpGroup.Location = new System.Drawing.Point(0, 270);
             this.JumpGroup.Margin = new System.Windows.Forms.Padding(0);
             this.JumpGroup.Name = "JumpGroup";
             this.JumpGroup.Padding = new System.Windows.Forms.Padding(0);
-            this.JumpGroup.Size = new System.Drawing.Size(133, 282);
+            this.JumpGroup.Size = new System.Drawing.Size(100, 226);
             this.JumpGroup.TabIndex = 3;
             this.JumpGroup.TabStop = false;
             this.JumpGroup.Text = "快捷跳转";
@@ -117,10 +121,10 @@ partial class MainForm
             this.LayoutRoot.Controls.Add(this.BtnRank);
             this.LayoutRoot.Controls.Add(this.BtnMaterial);
             this.LayoutRoot.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.LayoutRoot.Location = new System.Drawing.Point(0, 25);
+            this.LayoutRoot.Location = new System.Drawing.Point(0, 20);
             this.LayoutRoot.Margin = new System.Windows.Forms.Padding(0);
             this.LayoutRoot.Name = "LayoutRoot";
-            this.LayoutRoot.Size = new System.Drawing.Size(133, 262);
+            this.LayoutRoot.Size = new System.Drawing.Size(100, 210);
             this.LayoutRoot.TabIndex = 8;
             // 
             // LableRoleTitle
@@ -128,7 +132,7 @@ partial class MainForm
             this.LableRoleTitle.Location = new System.Drawing.Point(0, 0);
             this.LableRoleTitle.Margin = new System.Windows.Forms.Padding(0);
             this.LableRoleTitle.Name = "LableRoleTitle";
-            this.LableRoleTitle.Size = new System.Drawing.Size(133, 25);
+            this.LableRoleTitle.Size = new System.Drawing.Size(100, 20);
             this.LableRoleTitle.TabIndex = 7;
             this.LableRoleTitle.Text = "切换角色";
             this.LableRoleTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -138,19 +142,19 @@ partial class MainForm
             this.RoleCombo.DisplayMember = "RoleName";
             this.RoleCombo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.RoleCombo.FormattingEnabled = true;
-            this.RoleCombo.Location = new System.Drawing.Point(0, 25);
-            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
+            this.RoleCombo.Location = new System.Drawing.Point(0, 20);
+            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.RoleCombo.Name = "RoleCombo";
-            this.RoleCombo.Size = new System.Drawing.Size(132, 28);
+            this.RoleCombo.Size = new System.Drawing.Size(100, 24);
             this.RoleCombo.TabIndex = 6;
             this.RoleCombo.SelectedIndexChanged += new System.EventHandler(this.RoleCombo_SelectedIndexChanged);
             // 
             // BtnHome
             // 
-            this.BtnHome.Location = new System.Drawing.Point(16, 65);
-            this.BtnHome.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnHome.Location = new System.Drawing.Point(12, 54);
+            this.BtnHome.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnHome.Name = "BtnHome";
-            this.BtnHome.Size = new System.Drawing.Size(100, 29);
+            this.BtnHome.Size = new System.Drawing.Size(75, 23);
             this.BtnHome.TabIndex = 8;
             this.BtnHome.Text = "主页";
             this.BtnHome.UseVisualStyleBackColor = true;
@@ -158,10 +162,10 @@ partial class MainForm
             // 
             // BtnRank
             // 
-            this.BtnRank.Location = new System.Drawing.Point(16, 106);
-            this.BtnRank.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnRank.Location = new System.Drawing.Point(12, 87);
+            this.BtnRank.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnRank.Name = "BtnRank";
-            this.BtnRank.Size = new System.Drawing.Size(100, 29);
+            this.BtnRank.Size = new System.Drawing.Size(75, 23);
             this.BtnRank.TabIndex = 4;
             this.BtnRank.Text = "赛季排行";
             this.BtnRank.UseVisualStyleBackColor = true;
@@ -169,14 +173,25 @@ partial class MainForm
             // 
             // BtnMaterial
             // 
-            this.BtnMaterial.Location = new System.Drawing.Point(16, 147);
-            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnMaterial.Location = new System.Drawing.Point(12, 120);
+            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnMaterial.Name = "BtnMaterial";
-            this.BtnMaterial.Size = new System.Drawing.Size(100, 29);
+            this.BtnMaterial.Size = new System.Drawing.Size(75, 23);
             this.BtnMaterial.TabIndex = 9;
             this.BtnMaterial.Text = " 材料页面";
             this.BtnMaterial.UseVisualStyleBackColor = true;
             this.BtnMaterial.Click += new System.EventHandler(this.BtnMaterial_Click);
+            // 
+            // RoleGroup
+            // 
+            this.RoleGroup.Location = new System.Drawing.Point(0, 40);
+            this.RoleGroup.Margin = new System.Windows.Forms.Padding(0);
+            this.RoleGroup.Name = "RoleGroup";
+            this.RoleGroup.Padding = new System.Windows.Forms.Padding(0);
+            this.RoleGroup.Size = new System.Drawing.Size(100, 226);
+            this.RoleGroup.TabIndex = 5;
+            this.RoleGroup.TabStop = false;
+            this.RoleGroup.Text = "角色菜单";
             // 
             // RuneGroup
             // 
@@ -277,10 +292,10 @@ partial class MainForm
             this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.browserPanel.Location = new System.Drawing.Point(133, 0);
-            this.browserPanel.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.browserPanel.Location = new System.Drawing.Point(100, 0);
+            this.browserPanel.Margin = new System.Windows.Forms.Padding(4);
             this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(1183, 628);
+            this.browserPanel.Size = new System.Drawing.Size(887, 502);
             this.browserPanel.TabIndex = 1;
             // 
             // LoadingPanel
@@ -291,9 +306,8 @@ partial class MainForm
             this.LoadingPanel.Controls.Add(this.LoadingContent);
             this.LoadingPanel.Controls.Add(this.LoadingBg);
             this.LoadingPanel.Location = new System.Drawing.Point(0, 0);
-            this.LoadingPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadingPanel.Name = "LoadingPanel";
-            this.LoadingPanel.Size = new System.Drawing.Size(1313, 628);
+            this.LoadingPanel.Size = new System.Drawing.Size(985, 502);
             this.LoadingPanel.TabIndex = 0;
             // 
             // LoadingContent
@@ -301,9 +315,8 @@ partial class MainForm
             this.LoadingContent.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.LoadingContent.BackColor = System.Drawing.SystemColors.ControlDark;
             this.LoadingContent.Location = new System.Drawing.Point(0, 0);
-            this.LoadingContent.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LoadingContent.Name = "LoadingContent";
-            this.LoadingContent.Size = new System.Drawing.Size(1313, 628);
+            this.LoadingContent.Size = new System.Drawing.Size(985, 502);
             this.LoadingContent.TabIndex = 3;
             this.LoadingContent.Text = "Loading";
             this.LoadingContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -315,26 +328,37 @@ partial class MainForm
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadingBg.BackColor = System.Drawing.SystemColors.ControlDark;
             this.LoadingBg.Location = new System.Drawing.Point(0, 0);
-            this.LoadingBg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadingBg.Name = "LoadingBg";
-            this.LoadingBg.Size = new System.Drawing.Size(1313, 628);
+            this.LoadingBg.Size = new System.Drawing.Size(985, 502);
             this.LoadingBg.TabIndex = 2;
             this.LoadingBg.TabStop = false;
             // 
+            // BtnAutoAh
+            // 
+            this.BtnAutoAh.Location = new System.Drawing.Point(12, 26);
+            this.BtnAutoAh.Name = "BtnAutoAh";
+            this.BtnAutoAh.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoAh.TabIndex = 0;
+            this.BtnAutoAh.Text = "开始扫拍";
+            this.BtnAutoAh.UseMnemonic = false;
+            this.BtnAutoAh.UseVisualStyleBackColor = true;
+            this.BtnAutoAh.Click += new System.EventHandler(this.BtnAutoAh_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1313, 629);
-            this.Controls.Add(this.menuPanel);
+            this.ClientSize = new System.Drawing.Size(985, 503);
             this.Controls.Add(this.LoadingPanel);
+            this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.browserPanel);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuPanel.ResumeLayout(false);
+            this.AhGroup.ResumeLayout(false);
             this.JumpGroup.ResumeLayout(false);
             this.LayoutRoot.ResumeLayout(false);
             this.RuneGroup.ResumeLayout(false);
@@ -372,4 +396,6 @@ partial class MainForm
     private System.Windows.Forms.Button BtnHome;
     private System.Windows.Forms.Button BtnMaterial;
     private System.Windows.Forms.GroupBox RoleGroup;
+    private System.Windows.Forms.GroupBox AhGroup;
+    private System.Windows.Forms.Button BtnAutoAh;
 }
