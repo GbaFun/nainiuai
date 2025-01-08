@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public enum emEventType
 {
+    OnLoginSuccess,
+    OnAccountDirty,
     OnUpgradeRuneBack,
 }
 

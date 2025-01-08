@@ -49,8 +49,10 @@
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs.cs" />
+    <Compile Include="Scripts\Controller\LoadingController.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />
     <Compile Include="Scripts\Manager\EventManager.cs" />
+    <Compile Include="Scripts\Model\RoleModel.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />

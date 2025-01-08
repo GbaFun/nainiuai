@@ -26,16 +26,21 @@ public class RuneController
     private OnUpgradeRuneBack onUpgradeRuneCallBack;
     public async void AutoUpgradeRune()
     {
-        Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
+        //Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
+        long start = DateTime.Now.Ticks;
+        MainForm.Instance.ShowLoadingPanel("开始一键升级符文");
         EventManager.Instance.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
         //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
         foreach (var item in cfg)
         {
+            long duration = (DateTime.Now.Ticks - start) / 10000;
+            MainForm.Instance.SetLoadContent($"当前升级符文：{item.ID}# \n\t        耗时：{duration}ms");
             //如果配置保留数量为-1，则不处理
             if (item.CompandNum == -1)
             {
-                Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                //Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                await Task.Delay(500);
                 continue;
             }
             var response = await GetRuneNum(item.ID);
@@ -48,6 +53,8 @@ public class RuneController
                     count = count - count % 2;
                     if (count < 2)
                     {
+                        //Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                        await Task.Delay(500);
                         continue;
                     }
                     UpgradeRune(item.ID, count);
@@ -64,6 +71,7 @@ public class RuneController
 
         //MainForm.Instance.browser.FrameLoadEnd -= OnMainFormBrowseFrameLoad;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
+        MainForm.Instance.HideLoadingPanel();
     }
 
     private void OnEventUpgradeRuneBack(params object[] args)
@@ -71,8 +79,13 @@ public class RuneController
         bool isSuccess = (bool)args[0];
         int runeId = (int)args[1];
         int runeNum = (int)args[2];
+
         Console.WriteLine($"{DateTime.Now}---升级符文：{runeId}#-{runeNum}--{isSuccess}");
         onUpgradeRuneCallBack(true);
+        //if (!tcs.Task.IsCompleted)
+        //{
+        //    onUpgradeRuneCallBack(true);
+        //}
     }
     //public void OnMainFormBrowseFrameLoad(object sender, FrameLoadEndEventArgs e)
     //{

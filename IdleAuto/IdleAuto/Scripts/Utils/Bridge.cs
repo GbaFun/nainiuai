@@ -23,7 +23,7 @@ public class Bridge
     /// <returns></returns>
     public object GetSelectedAccount()
     {
-        return AccountController.User;
+        return AccountController.Instance.User;
     }
 
     public List<DemandEquip> GetAhDemandEquip()

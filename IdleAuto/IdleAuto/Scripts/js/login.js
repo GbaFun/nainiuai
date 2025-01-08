@@ -22,7 +22,22 @@
         }
     }
 
-
+    function getAccountName() {
+        $('a[href="/Home/Index"]').each(function () {
+            if ($(this).text() != "idle infinity") {
+                return $(this).text();
+            }
+        });
+        return '';
+    } function getRoleInfo() {
+        var roleInfo = "";
+        $(".col-sm-6.col-md-4").each(function () {
+            var id = $(this).data("id");
+            var name = $(this).find("span.sort-item.name").text();
+            roleInfo += id + "," + name + ";";
+        });
+        return roleInfo;
+    }
 
     init().then((r) => {
         //登录页逻辑
@@ -32,7 +47,7 @@
 
         //首页保存cookie或者替换cookie
         if (location.href.indexOf("Home/Index") > -1) {
-
+            Bridge.invokeEvent("OnLoginSuccess", true, getAccountName(), getRoleInfo());
         }
     })
 
