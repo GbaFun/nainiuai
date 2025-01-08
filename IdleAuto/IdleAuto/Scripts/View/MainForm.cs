@@ -2,6 +2,7 @@
 using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
 using CefSharp.WinForms.Internals;
+using IdleAuto.Scripts.View;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -281,7 +282,17 @@ public partial class MainForm : Form
 
     private void BtnAutoRune_Click(object sender, EventArgs e)
     {
-        RuneController.Instance.AutoUpgradeRune();
+        var result = MessageBox.Show("是否需要确认符文保留数量", "提示", MessageBoxButtons.OKCancel);
+        if (result == DialogResult.OK)
+        {
+            var form = new RuneConfigForm();
+            form.Show();
+        }
+        else
+        {
+            RuneController.Instance.AutoUpgradeRune();
+        }
+        //RuneController.Instance.AutoUpgradeRune();
     }
     /// <summary>
     /// 扫拍按钮

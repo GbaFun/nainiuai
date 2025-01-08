@@ -27,6 +27,11 @@ public class RuneCompandCfg
             RuneCompandData = new List<RuneCompandData>();
         }
     }
+    public void SaveConfig()
+    {
+        var json = JsonConvert.SerializeObject(RuneCompandData);
+        File.WriteAllText(ConfigFilePath, json);
+    }
 
     public void SetDirty()
     {
