@@ -28,7 +28,7 @@ namespace IdleAuto.Scripts.View
             for (int i = 0; i < runes.Count; i++)
             {
                 var item = new RuneCfgItem();
-                this.Controls.Add(item);
+                this.ListPanel.Controls.Add(item);
                 item.SetData(runes[i], OnRuneItemValueChanged);
             }
         }
@@ -43,17 +43,26 @@ namespace IdleAuto.Scripts.View
 
         private void BtnCancle_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < ListPanel.Controls.Count; i++)
-            {
-                ListPanel.Controls[i].Dispose();
-            }
-            this.ListPanel.Controls.Clear();
+            ClearItems();
+            RuneCompandCfg.Instance.SetDirty();
             this.Close();
         }
 
         private void BtnConfirm_Click(object sender, EventArgs e)
         {
+            ClearItems();
+            RuneCompandCfg.Instance.SaveConfig();
+            RuneController.Instance.AutoUpgradeRune();
+            this.Close();
+        }
 
+        private void ClearItems()
+        {
+            for (int i = 0; i < ListPanel.Controls.Count; i++)
+            {
+                ListPanel.Controls[i].Dispose();
+            }
+            this.ListPanel.Controls.Clear();
         }
     }
 }

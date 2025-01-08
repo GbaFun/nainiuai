@@ -31,6 +31,7 @@ public class RuneCompandCfg
     {
         var json = JsonConvert.SerializeObject(RuneCompandData);
         File.WriteAllText(ConfigFilePath, json);
+        SetDirty();
     }
 
     public void SetDirty()

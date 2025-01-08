@@ -31,7 +31,7 @@ namespace IdleAuto.Scripts.View
             base.OnHandleCreated(e);
             if (Data != null)
             {
-                RuneName.Text = Data.ID.ToString();
+                RuneName.Text = $"{Data.ID}#";
                 CountInput.Value = Data.CompandNum;
             }
         }
