@@ -10,9 +10,9 @@ public enum emEventType
     OnAccountDirty,
     OnUpgradeRuneBack,
     /// <summary>
-    /// ah载入到最后一页触发
+    /// 载入ah页面发送装备信息
     /// </summary>
-    OnAhLastPageLoaded,
+    OnScanAh,
 }
 
 public class EventManager

@@ -13,7 +13,7 @@ public class AuctionController
 {
     public AuctionController()
     {
-        MainForm.Instance.browser.FrameLoadEnd += OnPageLoadEnd;
+        EventManager.Instance.SubscribeEvent(emEventType.OnScanAh, OnScanAh);
     }
     private static AuctionController instance;
     public static AuctionController Instance
@@ -38,29 +38,32 @@ public class AuctionController
     /// </summary>
     public int EqIndex = 0;
 
-    /// <summary>
-    /// 监听页面刷新状态
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private async void OnPageLoadEnd(object sender, FrameLoadEndEventArgs e)
-    {
-        if (IsStart)
-        {
-            await AutoJump();
-            await AutoNextPage();
-        }
-    }
+
     /// <summary>
     /// 开始扫拍
     /// </summary>
     public async void StartScan()
     {
         IsStart = true;
-        await AutoJump();
-        await AutoNextPage();
+        await StartAutoJob();
     }
 
+    /// <summary>
+    /// 开始自动执行
+    /// </summary>
+    private async Task StartAutoJob()
+    {
+        await AutoBuy();
+        await AutoJump();
+        await AutoNextPage();
+
+    }
+
+    private async Task AutoBuy()
+    {
+        var map = await getEqMap();
+        Console.WriteLine(map.Count);
+    }
     /// <summary>
     /// 自动跳转到对应选项
     /// </summary>
@@ -79,7 +82,7 @@ public class AuctionController
     {
         var isJumpEnd = await IsJumpToEnd(GetCurConfig());
         var isLast = await IsLastPage();
-        if (!isLast&&isJumpEnd)
+        if (!isLast && isJumpEnd)
         {
             await NextPage();
         }
@@ -97,6 +100,15 @@ public class AuctionController
     private DemandEquip GetCurConfig()
     {
         return ScanAhCfg.Instance.data[EqIndex];
+    }
+
+    private async void OnScanAh(params object[] args)
+    {
+
+        if (IsStart)
+        {
+            await StartAutoJob();
+        }
     }
 
     /// <summary>
@@ -120,7 +132,7 @@ public class AuctionController
     public async Task<bool> IsJumpToEnd(DemandEquip config)
     {
         var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({JsonConvert.SerializeObject(config)});");
-        return d.Result?.ToString()=="success";
+        return d.Result?.ToString() == "success";
 
     }
 
@@ -129,7 +141,7 @@ public class AuctionController
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isLastPage();");
-            return bool.Parse( d.Result?.ToString());
+            return bool.Parse(d.Result?.ToString());
         }
         else return false;
     }
@@ -140,8 +152,17 @@ public class AuctionController
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.nextPage();");
-            
+
         }
+    }
+    private async Task<Dictionary<int, AHItemModel>> getEqMap()
+    {
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        {
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.getEqMap();");
+            return d.Result.ToObject<Dictionary<int, AHItemModel>>();
+        }
+        return null;
     }
     public static List<AHItemModel> BuyEquip(ExpandoObject data)
     {

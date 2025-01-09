@@ -24,6 +24,7 @@ let ah = {};
 
     init().then(async () => {
         await loadPriceSuffix();
+        await Bridge.invokeEvent('OnScanAh');
     })
 
 
@@ -80,8 +81,13 @@ let ah = {};
         //需要购买的装备
         //var equipToBuyArr = await Bridge.sendData(EquipToBuy, dataMap);
         //buyAuto(equipToBuyArr);
+        return dataMap;
     }
 
+    //获取当前页装备
+    async function getEqMap() {
+        return dataMap;
+    }
 
 
     async function isJumpToEnd(config) {
@@ -169,4 +175,5 @@ let ah = {};
     ah.isLastPage = isLastPage;
     ah.nextPage = nextPage;
     ah.buy = buy;
+    ah.getEqMap = getEqMap;
 })();
