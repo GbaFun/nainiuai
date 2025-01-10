@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -61,8 +62,16 @@ public class AuctionController
 
     private async Task AutoBuy()
     {
+        List<AHItemModel> matchList = new List<AHItemModel>();
         var map = await getEqMap();
-        Console.WriteLine(map.Count);
+        foreach (var item in map.Values)
+        {
+           if(CanBuy(item))
+            {
+                matchList.Add(item);
+            }
+        }
+        CalEqLogicPrice(map.FirstOrDefault().Value);
     }
     /// <summary>
     /// 自动跳转到对应选项
@@ -93,6 +102,17 @@ public class AuctionController
         IsStart = false;
     }
 
+    private void CalEqLogicPrice(AHItemModel eq)
+    {
+        var map = RuneLogicPriceCfg.Instance.data;
+        for (int i = 0; i < eq.runePriceArr.Length; i++)
+        {
+            var logicPrice = map[eq.runePriceArr[i]] * eq.runeCountArr[i];
+            eq.logicPrice += logicPrice;
+        }
+    }
+
+
     /// <summary>
     /// 当前扫描的配置
     /// </summary>
@@ -109,6 +129,17 @@ public class AuctionController
         {
             await StartAutoJob();
         }
+    }
+
+    private Boolean CanBuy(AHItemModel item)
+    {
+        var cfg = GetCurConfig();
+        if (item.eTitle != cfg.name) return false;
+        if (cfg.minLv != 0 && item.lv < cfg.minLv) return false;
+        if (cfg.content.Count == 0) return true;
+        if (!cfg.content.All(p => item.content.Contains(p))) return false;
+        if (!RegexUtil.Match(item.content, cfg.regexList)) return false;
+        return true;
     }
 
     /// <summary>

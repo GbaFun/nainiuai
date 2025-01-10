@@ -4,7 +4,16 @@
     "part": "腰带",
     "eqbase": "巨战腰带",
     "name": "怒涛之心",
-    "content": ["神龙","定罪"]
+    "minLv": 70,
+    "content": [ "神龙摆尾" ],
+    "regexList": [ {"type": "compareNum","keywords": "命中,凤凰击","op": ">=","val": 15} ]
 
+  },
+  {
+    "quality": "传奇",
+    "part": "戒指",
+    "eqbase": "戒指",
+    "name": "全能法戒",
+    "content": [ "命中目标,>=18" ]
   }
 ]

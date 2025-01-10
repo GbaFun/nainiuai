@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Workflow.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
     <Compile Include="Scripts\Model\RoleModel.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
+    <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
     <Compile Include="Scripts\View\CustomItem\RuneCfgItem.cs">
       <SubType>UserControl</SubType>
@@ -118,7 +120,9 @@
     <None Include="Configs\RuneCompandCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configs\RuneLogicPrice.json" />
+    <None Include="Configs\RuneLogicPrice.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Configs\ScanAhCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

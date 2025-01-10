@@ -10,10 +10,10 @@ namespace IdleAuto.Configs.CfgExtension
 {
     public class RuneLogicPriceCfg
     {
-        private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "ScanAhCfg.json");
+        private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "RuneLogicPrice.json");
         public static RuneLogicPriceCfg Instance { get; } = new RuneLogicPriceCfg();
 
-        public List<DemandEquip> data { get; set; }
+        public Dictionary<int,decimal> data { get; set; }
 
         public RuneLogicPriceCfg()
         {
@@ -25,26 +25,14 @@ namespace IdleAuto.Configs.CfgExtension
             if (File.Exists(ConfigFilePath))
             {
                 var json = File.ReadAllText(ConfigFilePath);
-                data = JsonConvert.DeserializeObject<List<DemandEquip>>(json);
+                data = JsonConvert.DeserializeObject<Dictionary<int,decimal>>(json);
             }
             else
             {
-                data = new List<DemandEquip>();
+                data = new Dictionary<int, decimal>();
             }
         }
     }
-    public class RuneLogicPrice
-    {
-        /// <summary>
-        /// 品质
-        /// </summary>
-        public int rune { get; set; }
-
-        /// <summary>
-        /// 部位
-        /// </summary>
-        public decimal price { get; set; }
-
-    }
+   
 
 }
