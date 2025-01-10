@@ -18,6 +18,7 @@ public class PageLoadHandler
     public const string RolePage = "Character";
     public const string MaterialPage = "Equipment/Material";
     public const string AhPage = "Auction/Query";
+    public const string EquipPage = "Equipment/Query";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -31,23 +32,26 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             await LoadJs(jsPath, browser);
         }
-        if (ContainsUrl(url, HomePage))
+        else if (ContainsUrl(url, HomePage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             await LoadJs(jsPath, browser);
         }
-        if (ContainsUrl(url, AhPage))
+        else if (ContainsUrl(url, AhPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "ah.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        if (ContainsUrl(url, MaterialPage))
+        else if (ContainsUrl(url, MaterialPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "rune.js");
             await LoadGlobalJs(jsPath, browser);
         }
-
-
+        else if (ContainsUrl(url, EquipPage))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
     }
 
 

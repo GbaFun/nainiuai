@@ -10,6 +10,7 @@ async function init() {
 }
 
 init().then((r) => {
+    Bridge.invokeEvent('OnJsInited', 'rune');
     showRuneNumView();
 })
 

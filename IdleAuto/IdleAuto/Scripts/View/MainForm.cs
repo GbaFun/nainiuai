@@ -91,6 +91,7 @@ public partial class MainForm : Form
     }
     public void HideLoadingPanel()
     {
+        Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "HideLoadingPanel");
         if (this.LoadingPanel.Visible)
             this.LoadingPanel.Visible = false;
     }
@@ -305,7 +306,7 @@ public partial class MainForm : Form
         }
         //RuneController.Instance.AutoUpgradeRune();
     }
-   
+
 
     private void BtnHome_Click(object sender, EventArgs e)
     {
@@ -350,5 +351,8 @@ public partial class MainForm : Form
         return result;
     }
 
-
+    private void BtnAutoEquip_Click(object sender, EventArgs e)
+    {
+        EquipController.Instance.StartAutoEquip();
+    }
 }

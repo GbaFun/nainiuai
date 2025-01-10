@@ -6,8 +6,21 @@ using System.Threading.Tasks;
 
 public enum emEventType
 {
+    /// <summary>
+    /// js初始化完成
+    /// </summary>
+    OnJsInited,
+    /// <summary>
+    /// 登录成功
+    /// </summary>
     OnLoginSuccess,
+    /// <summary>
+    /// 登录账户变化
+    /// </summary>
     OnAccountDirty,
+    /// <summary>
+    /// 升级符文返回
+    /// </summary>
     OnUpgradeRuneBack,
     /// <summary>
     /// 载入ah页面发送装备信息

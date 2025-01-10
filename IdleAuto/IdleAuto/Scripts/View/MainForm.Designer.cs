@@ -28,8 +28,10 @@ partial class MainForm
     private void InitializeComponent()
     {
             this.menuPanel = new System.Windows.Forms.Panel();
-            this.AhGroup = new System.Windows.Forms.GroupBox();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
+            this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.BtnAutoEquip = new System.Windows.Forms.Button();
+            this.BtnAutoOnline = new System.Windows.Forms.Button();
             this.JumpGroup = new System.Windows.Forms.GroupBox();
             this.LayoutRoot = new System.Windows.Forms.FlowLayoutPanel();
             this.LableRoleTitle = new System.Windows.Forms.Label();
@@ -37,6 +39,8 @@ partial class MainForm
             this.BtnHome = new System.Windows.Forms.Button();
             this.BtnRank = new System.Windows.Forms.Button();
             this.BtnMaterial = new System.Windows.Forms.Button();
+            this.AhGroup = new System.Windows.Forms.GroupBox();
+            this.BtnAutoAh = new System.Windows.Forms.Button();
             this.RoleGroup = new System.Windows.Forms.GroupBox();
             this.RuneGroup = new System.Windows.Forms.GroupBox();
             this.BtnAutoRune = new System.Windows.Forms.Button();
@@ -44,21 +48,17 @@ partial class MainForm
             this.BtnLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
-            this.HomeGroup = new System.Windows.Forms.GroupBox();
-            this.BtnAutoEquip = new System.Windows.Forms.Button();
-            this.BtnAutoOnline = new System.Windows.Forms.Button();
             this.browserPanel = new System.Windows.Forms.Panel();
             this.LoadingPanel = new System.Windows.Forms.Panel();
             this.LoadingContent = new System.Windows.Forms.Label();
             this.LoadingBg = new System.Windows.Forms.PictureBox();
-            this.BtnAutoAh = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
-            this.AhGroup.SuspendLayout();
+            this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
             this.LayoutRoot.SuspendLayout();
+            this.AhGroup.SuspendLayout();
             this.RuneGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
-            this.HomeGroup.SuspendLayout();
             this.LoadingPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoadingBg)).BeginInit();
             this.SuspendLayout();
@@ -69,25 +69,13 @@ partial class MainForm
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
             this.menuPanel.Controls.Add(this.AccountCombo);
-            this.menuPanel.Controls.Add(this.AhGroup);
+            this.menuPanel.Controls.Add(this.HomeGroup);
             this.menuPanel.Controls.Add(this.JumpGroup);
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Margin = new System.Windows.Forms.Padding(0);
             this.menuPanel.Name = "menuPanel";
             this.menuPanel.Size = new System.Drawing.Size(100, 502);
             this.menuPanel.TabIndex = 0;
-            // 
-            // AhGroup
-            // 
-            this.AhGroup.Controls.Add(this.BtnAutoAh);
-            this.AhGroup.Location = new System.Drawing.Point(0, 40);
-            this.AhGroup.Margin = new System.Windows.Forms.Padding(0);
-            this.AhGroup.Name = "AhGroup";
-            this.AhGroup.Padding = new System.Windows.Forms.Padding(0);
-            this.AhGroup.Size = new System.Drawing.Size(100, 226);
-            this.AhGroup.TabIndex = 6;
-            this.AhGroup.TabStop = false;
-            this.AhGroup.Text = "拍卖行菜单";
             // 
             // AccountCombo
             // 
@@ -100,6 +88,36 @@ partial class MainForm
             this.AccountCombo.Size = new System.Drawing.Size(100, 24);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
+            // 
+            // HomeGroup
+            // 
+            this.HomeGroup.Controls.Add(this.BtnAutoEquip);
+            this.HomeGroup.Controls.Add(this.BtnAutoOnline);
+            this.HomeGroup.Location = new System.Drawing.Point(0, 40);
+            this.HomeGroup.Name = "HomeGroup";
+            this.HomeGroup.Size = new System.Drawing.Size(100, 230);
+            this.HomeGroup.TabIndex = 4;
+            this.HomeGroup.TabStop = false;
+            this.HomeGroup.Text = "主页菜单";
+            // 
+            // BtnAutoEquip
+            // 
+            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 49);
+            this.BtnAutoEquip.Name = "BtnAutoEquip";
+            this.BtnAutoEquip.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoEquip.TabIndex = 1;
+            this.BtnAutoEquip.Text = "一键修车";
+            this.BtnAutoEquip.UseVisualStyleBackColor = true;
+            this.BtnAutoEquip.Click += new System.EventHandler(this.BtnAutoEquip_Click);
+            // 
+            // BtnAutoOnline
+            // 
+            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 20);
+            this.BtnAutoOnline.Name = "BtnAutoOnline";
+            this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoOnline.TabIndex = 0;
+            this.BtnAutoOnline.Text = "一键点亮";
+            this.BtnAutoOnline.UseVisualStyleBackColor = true;
             // 
             // JumpGroup
             // 
@@ -182,6 +200,29 @@ partial class MainForm
             this.BtnMaterial.UseVisualStyleBackColor = true;
             this.BtnMaterial.Click += new System.EventHandler(this.BtnMaterial_Click);
             // 
+            // AhGroup
+            // 
+            this.AhGroup.Controls.Add(this.BtnAutoAh);
+            this.AhGroup.Location = new System.Drawing.Point(0, 40);
+            this.AhGroup.Margin = new System.Windows.Forms.Padding(0);
+            this.AhGroup.Name = "AhGroup";
+            this.AhGroup.Padding = new System.Windows.Forms.Padding(0);
+            this.AhGroup.Size = new System.Drawing.Size(100, 226);
+            this.AhGroup.TabIndex = 6;
+            this.AhGroup.TabStop = false;
+            this.AhGroup.Text = "拍卖行菜单";
+            // 
+            // BtnAutoAh
+            // 
+            this.BtnAutoAh.Location = new System.Drawing.Point(12, 26);
+            this.BtnAutoAh.Name = "BtnAutoAh";
+            this.BtnAutoAh.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoAh.TabIndex = 0;
+            this.BtnAutoAh.Text = "开始扫拍";
+            this.BtnAutoAh.UseMnemonic = false;
+            this.BtnAutoAh.UseVisualStyleBackColor = true;
+            this.BtnAutoAh.Click += new System.EventHandler(this.BtnAutoAh_Click);
+            // 
             // RoleGroup
             // 
             this.RoleGroup.Location = new System.Drawing.Point(0, 40);
@@ -258,35 +299,6 @@ partial class MainForm
             this.CurLoginAccount.Text = "当前无账号登录";
             this.CurLoginAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // HomeGroup
-            // 
-            this.HomeGroup.Controls.Add(this.BtnAutoEquip);
-            this.HomeGroup.Controls.Add(this.BtnAutoOnline);
-            this.HomeGroup.Location = new System.Drawing.Point(0, 40);
-            this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Size = new System.Drawing.Size(100, 230);
-            this.HomeGroup.TabIndex = 4;
-            this.HomeGroup.TabStop = false;
-            this.HomeGroup.Text = "主页菜单";
-            // 
-            // BtnAutoEquip
-            // 
-            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 49);
-            this.BtnAutoEquip.Name = "BtnAutoEquip";
-            this.BtnAutoEquip.Size = new System.Drawing.Size(75, 23);
-            this.BtnAutoEquip.TabIndex = 1;
-            this.BtnAutoEquip.Text = "一键修车";
-            this.BtnAutoEquip.UseVisualStyleBackColor = true;
-            // 
-            // BtnAutoOnline
-            // 
-            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 20);
-            this.BtnAutoOnline.Name = "BtnAutoOnline";
-            this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
-            this.BtnAutoOnline.TabIndex = 0;
-            this.BtnAutoOnline.Text = "一键点亮";
-            this.BtnAutoOnline.UseVisualStyleBackColor = true;
-            // 
             // browserPanel
             // 
             this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -333,17 +345,6 @@ partial class MainForm
             this.LoadingBg.TabIndex = 2;
             this.LoadingBg.TabStop = false;
             // 
-            // BtnAutoAh
-            // 
-            this.BtnAutoAh.Location = new System.Drawing.Point(12, 26);
-            this.BtnAutoAh.Name = "BtnAutoAh";
-            this.BtnAutoAh.Size = new System.Drawing.Size(75, 23);
-            this.BtnAutoAh.TabIndex = 0;
-            this.BtnAutoAh.Text = "开始扫拍";
-            this.BtnAutoAh.UseMnemonic = false;
-            this.BtnAutoAh.UseVisualStyleBackColor = true;
-            this.BtnAutoAh.Click += new System.EventHandler(this.BtnAutoAh_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -358,12 +359,12 @@ partial class MainForm
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.menuPanel.ResumeLayout(false);
-            this.AhGroup.ResumeLayout(false);
+            this.HomeGroup.ResumeLayout(false);
             this.JumpGroup.ResumeLayout(false);
             this.LayoutRoot.ResumeLayout(false);
+            this.AhGroup.ResumeLayout(false);
             this.RuneGroup.ResumeLayout(false);
             this.LoginGroup.ResumeLayout(false);
-            this.HomeGroup.ResumeLayout(false);
             this.LoadingPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoadingBg)).EndInit();
             this.ResumeLayout(false);

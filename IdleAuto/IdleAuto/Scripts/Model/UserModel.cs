@@ -29,19 +29,11 @@ public class UserModel
     public List<RoleModel> Roles = new List<RoleModel>();
 
     public bool IsLogin { get; private set; }
-    public void SetLogin(bool isSuccess, string account, string loginInfo)
+    public void SetLogin(bool isSuccess, string account, List<RoleModel> roles)
     {
         IsLogin = isSuccess;
         AccountName = account;
-        string[] sroles = loginInfo.Split(';');
-        foreach (var item in sroles)
-        {
-            if (!string.IsNullOrEmpty(item))
-            {
-                RoleModel role = new RoleModel(item);
-                Roles.Add(role);
-            }
-        }
+        Roles.AddRange(roles);
     }
 
     public RoleModel FirstRole

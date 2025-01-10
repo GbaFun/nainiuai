@@ -30,13 +30,18 @@
         });
         return '';
     } function getRoleInfo() {
-        var roleInfo = "";
+        var roles = [];
         $(".col-sm-6.col-md-4").each(function () {
-            var id = $(this).data("id");
-            var name = $(this).find("span.sort-item.name").text();
-            roleInfo += id + "," + name + ";";
+            var role = {};
+            role.RoleId = $(this).data("id");
+            role.RoleName = $(this).find("span.sort-item.name").text();
+            var d = $(this).find("div.media-body").children("div").first();
+            console.log(d);
+            console.log(d.text());
+            role.RoleInfo = d.text();
+            roles.push(role);
         });
-        return roleInfo;
+        return roles;
     }
 
     init().then((r) => {

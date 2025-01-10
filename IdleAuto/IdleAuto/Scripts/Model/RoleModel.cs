@@ -9,13 +9,33 @@ public class RoleModel
 {
     public int RoleId { get; set; }
     public string RoleName { get; set; }
-    //public int Level;
-    //public string Job;
-    public RoleModel(string info)
+    public string RoleInfo { get; set; }
+
+    public int Level
     {
-        string[] sinfo = info.Split(',');
-        RoleId = int.Parse(sinfo[0]);
-        RoleName = sinfo[1];
+        get
+        {
+            var s = RoleInfo.Split(' ');
+            return int.Parse(s[0].Replace("Lv", ""));
+        }
+    }
+    public emJob Job
+    {
+        get
+        {
+            var s = RoleInfo.Split(' ');
+            var job = s[1].Substring(2, 2);
+            return (emJob)Enum.Parse(typeof(emJob), job);
+        }
+    }
+    public emRace Race
+    {
+        get
+        {
+            var s = RoleInfo.Split(' ');
+            var race = s[1].Substring(0, 2);
+            return (emRace)Enum.Parse(typeof(emRace), race);
+        }
     }
 }
 

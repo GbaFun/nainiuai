@@ -47,12 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
+    <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs.cs" />
+    <Compile Include="Scripts\Controller\EquipController.cs" />
     <Compile Include="Scripts\Controller\LoadingController.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />
     <Compile Include="Scripts\Manager\EventManager.cs" />
+    <Compile Include="Scripts\Model\Enum\GameEnum.cs" />
+    <Compile Include="Scripts\Model\EquipModel.cs" />
     <Compile Include="Scripts\Model\RoleModel.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
@@ -145,6 +149,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\char.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\js\equip.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\IdleTools.js" />

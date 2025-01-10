@@ -36,10 +36,10 @@ public class AccountController
         {
             bool isSuccess = (bool)args[0];
             string account = args[1] as string;
-            string loginInfo = args[2] as string;
+            List<RoleModel> roles = args[2].ToObject<List<RoleModel>>();
             if (!User.IsLogin)
             {
-                User.SetLogin(isSuccess, account, loginInfo);
+                User.SetLogin(isSuccess, account, roles);
                 EventManager.Instance.InvokeEvent(emEventType.OnAccountDirty, null);
             }
         }
