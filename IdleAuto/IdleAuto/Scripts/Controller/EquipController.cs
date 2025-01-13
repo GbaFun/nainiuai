@@ -47,7 +47,7 @@ public class EquipController
             onJsInitCallBack = (result) => tcs.SetResult(result);
             await tcs.Task;
 
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "开始缓存装备");
+            P.Log("开始缓存装备", emLogType.AutoEquip);
             int page = 1;
             bool jumpNextPage = false;
             #region 缓存仓库装备
@@ -56,7 +56,7 @@ public class EquipController
                 do
                 {
                     jumpNextPage = false;
-                    Console.WriteLine($"缓存仓库第{page}页装备");
+                    P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
                     var response1 = await GetRepositoryEquips();
                     if (response1.Success)
                     {
@@ -71,33 +71,33 @@ public class EquipController
                         }
                     }
 
-                    Console.WriteLine($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}");
+                    P.Log($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
 
-                    Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "开始跳转仓库下一页");
+                    P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
                     var response2 = await JumpRepositoryPage();
                     if (response2.Success)
                     {
                         if ((bool)response2.Result)
                         {
-                            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "等待仓库切页完成");
+                            P.Log("等待仓库切页完成", emLogType.AutoEquip);
                             var tcs2 = new TaskCompletionSource<bool>();
                             onJsInitCallBack = (result) => tcs2.SetResult(result);
                             await tcs2.Task;
-                            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "仓库切页完成");
+                            P.Log("仓库切页完成");
                             page++;
                             jumpNextPage = true;
                             await Task.Delay(500);
                         }
                         else
                         {
-                            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "仓库最后一页了！");
+                            P.Log("仓库最后一页了！", emLogType.AutoEquip);
                             jumpNextPage = false;
                         }
                     }
                 } while (jumpNextPage);
                 isInitRepository = true;
             }
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "缓存仓库完成！！");
+            P.Log("缓存仓库完成！！");
             #endregion
             #region 缓存背包装备
             packageEquips.Clear();
@@ -106,7 +106,7 @@ public class EquipController
             do
             {
                 jumpNextPage = false;
-                Console.WriteLine($"缓存背包第{page}页装备");
+                P.Log($"缓存背包第{page}页装备", emLogType.AutoEquip);
                 var response1 = await GetPackageEquips();
                 if (response1.Success)
                 {
@@ -121,31 +121,31 @@ public class EquipController
                     }
                 }
 
-                Console.WriteLine($"缓存背包第{page}页装备完成,当前缓存背包装备数量:{packageEquips.Count}");
+                P.Log($"缓存背包第{page}页装备完成,当前缓存背包装备数量:{packageEquips.Count}", emLogType.AutoEquip);
 
-                Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "开始跳转背包下一页");
+                P.Log("开始跳转背包下一页", emLogType.AutoEquip);
                 var response2 = await JumpPackagePage();
                 if (response2.Success)
                 {
                     if ((bool)response2.Result)
                     {
-                        Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "等待背包切页完成");
+                        P.Log("等待背包切页完成", emLogType.AutoEquip);
                         var tcs2 = new TaskCompletionSource<bool>();
                         onJsInitCallBack = (result) => tcs2.SetResult(result);
                         await tcs2.Task;
-                        Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "背包切页完成");
+                        P.Log("背包切页完成", emLogType.AutoEquip);
                         page++;
                         jumpNextPage = true;
                         await Task.Delay(500);
                     }
                     else
                     {
-                        Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "背包最后一页了！");
+                        P.Log("背包最后一页了！", emLogType.AutoEquip);
                         jumpNextPage = false;
                     }
                 }
             } while (jumpNextPage);
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "缓存背包完成！！");
+            P.Log("缓存背包完成！！", emLogType.AutoEquip);
 
             #endregion
 
@@ -160,7 +160,7 @@ public class EquipController
                 var targetEquip = EquipCfg.Instance.GetEquipmentByJobAndLevel(role.Job, role.Level);
                 if (targetEquip == null)
                 {
-                    Console.WriteLine($"未找到{role.Level}级{role.Job}的装备配置,无法更换");
+                    P.Log($"未找到{role.Level}级{role.Job}的装备配置,无法更换", emLogType.AutoEquip);
                 }
                 else
                 {
@@ -172,7 +172,7 @@ public class EquipController
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.equipName.Contains(targetEquipName))
                             {
-                                Console.WriteLine($"{role.RoleName}的{equip.etypeName}位置装备{equip.equipName}符合要求，无需更换");
+                                P.Log($"{role.RoleName}的{equip.etypeName}位置装备{equip.equipName}符合要求，无需更换", emLogType.AutoEquip);
                                 continue;
                             }
                         }
@@ -182,23 +182,23 @@ public class EquipController
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {
-                                    Console.WriteLine($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备");
+                                    P.Log($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
                                     if (response3.Success)
                                     {
-                                        Console.WriteLine($"等待卸下装备消息返回");
+                                        P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
                                         var tcs2 = new TaskCompletionSource<bool>();
                                         onJsInitCallBack = (result) => tcs2.SetResult(result);
                                         await tcs2.Task;
                                     }
                                 }
 
-                                Console.WriteLine($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换");
+                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换", emLogType.AutoEquip);
                                 var response2 = await EquipOn(role, item.Value);
                                 if (response2.Success)
                                 {
                                     packageEquips.Remove(item.Key);
-                                    Console.WriteLine($"等待更换装备消息返回");
+                                    P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
                                     var tcs2 = new TaskCompletionSource<bool>();
                                     onJsInitCallBack = (result) => tcs2.SetResult(result);
                                     await tcs2.Task;
@@ -212,23 +212,23 @@ public class EquipController
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {
-                                    Console.WriteLine($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备");
+                                    P.Log($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
                                     if (response3.Success)
                                     {
-                                        Console.WriteLine($"等待卸下装备消息返回");
+                                        P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
                                         var tcs2 = new TaskCompletionSource<bool>();
                                         onJsInitCallBack = (result) => tcs2.SetResult(result);
                                         await tcs2.Task;
                                     }
                                 }
 
-                                Console.WriteLine($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换");
+                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换", emLogType.AutoEquip);
                                 var response2 = await EquipOn(role, item.Value);
                                 if (response2.Success)
                                 {
                                     repositoryEquips.Remove(item.Key);
-                                    Console.WriteLine($"等待更换装备消息返回");
+                                    P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
                                     var tcs2 = new TaskCompletionSource<bool>();
                                     onJsInitCallBack = (result) => tcs2.SetResult(result);
                                     await tcs2.Task;
@@ -238,10 +238,10 @@ public class EquipController
                         }
 
                         WEAR_EQUIP_SUCCESS:
-                        Console.WriteLine($"{role.RoleName}更换{targetEquipName}装备完成");
+                        P.Log($"{role.RoleName}更换{targetEquipName}装备完成", emLogType.AutoEquip);
                     }
                 }
-                Console.WriteLine($"{role.RoleName}全部位置装备更换完成");
+                P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
                 MainForm.Instance.browser.Load("https://www.idleinfinity.cn/Home/Index");
             }
             #endregion
