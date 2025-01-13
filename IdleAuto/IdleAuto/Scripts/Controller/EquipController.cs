@@ -242,6 +242,7 @@ public class EquipController
                     }
                 }
                 Console.WriteLine($"{role.RoleName}全部位置装备更换完成");
+                MainForm.Instance.browser.Load("https://www.idleinfinity.cn/Home/Index");
             }
             #endregion
         }
