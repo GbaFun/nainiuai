@@ -72,10 +72,15 @@ let ah = {};
             }));
             //读取装备名称
             var eTitle = $(item).find(".equip-title").text().match(/.*(?=\()/g)[0];
+            var lv = $(item).find(".equip-title").text().match(/\((\d+)\)/)[1];
+            var content = $(item).text();
             e.eTitle = eTitle;
             e.goldCoinPrice = goldCoinPrice ? goldCoinPrice * 1 : 0;
             e.runePriceArr = runePriceArr;
             e.runeCountArr = runeCountArr;
+            e.content = content;
+            e.lv = lv;
+            e.eid = dataid;
             dataMap[dataid] = e;
         });
         //需要购买的装备

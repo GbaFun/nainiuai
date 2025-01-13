@@ -14,12 +14,17 @@ public class AHItemModel
     /// <summary>
     /// 逻辑价格 通过一套衡量算法给出一个价值方便扫货
     /// </summary>
-    public int logicPrice { get; set; }
+    public decimal logicPrice { get; set; }
 
     /// <summary>
     /// 装备名称
     /// </summary>
     public string eTitle { get; set; }
+
+    /// <summary>
+    /// 装备文字描述 用于匹配词缀
+    /// </summary>
+    public string content { get; set; }
 
     public int lv { get; set; }
 

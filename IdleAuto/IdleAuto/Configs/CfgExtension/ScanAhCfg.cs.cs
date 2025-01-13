@@ -55,8 +55,36 @@ namespace IdleAuto.Configs.CfgExtension
         public string name { get; set; }
 
         /// <summary>
+        /// 最低装等
+        /// </summary>
+        public int minLv { get; set; }
+
+        /// <summary>
         /// 包含词缀
         /// </summary>
         public List<string> content { get; set; }
+
+        public List<RegexMatch> regexList { get; set; }
+    }
+    public class RegexMatch
+    {
+        /// <summary>
+        /// 匹配类型 compareNum:数值比较
+        /// </summary>
+        public string type { get; set; }
+        /// <summary>
+        /// 数值
+        /// </summary>
+        public string val { get; set; }
+
+        /// <summary>
+        /// 操作 >= <= ==
+        /// </summary>
+        public string op { get; set; }
+
+        /// <summary>
+        /// 请维护数值前后两个关键字 逗号拼接 触发,凤凰击
+        /// </summary>
+        public string keywords { get; set; }
     }
 }
