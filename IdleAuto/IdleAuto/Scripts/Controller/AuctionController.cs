@@ -60,7 +60,8 @@ public class AuctionController
         await AutoJump();
         await AutoNextPage();
         var isLastPage = await IsLastPage();
-        if (isLastPage)
+        var isJumpEnd = await IsJumpToEnd(GetCurNode());
+        if (isLastPage&& isJumpEnd)
         {
             if (CurIndex == ScanAhCfg.Instance.NodeList.Count - 1) CurIndex = 0;
             else CurIndex++;
@@ -71,15 +72,19 @@ public class AuctionController
 
     private async Task AutoBuy()
     {
-        List<AHItemModel> matchList = new List<AHItemModel>();
+        await Task.Delay(1500);
         var map = await getEqMap();
         foreach (var item in map.Values)
         {
             if (CanBuy(item))
             {
-                matchList.Add(item);
+                await Buy(item.eid);
+                P.Log($@"购买到:【{item.eTitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
+       
+       
+        
     }
     /// <summary>
     /// 自动跳转到对应选项
@@ -138,13 +143,12 @@ public class AuctionController
         var node = GetCurNode();
         foreach (var cfg in node.Configs)
         {
+            if (cfg.content == null) cfg.content = new List<string>();
             if (item.eTitle != cfg.name) return false;
             if (cfg.minLv != 0 && item.lv < cfg.minLv) return false;
-            if (cfg.content == null || cfg.content.Count == 0) return true;
             if (!cfg.content.All(p => item.content.Contains(p))) return false;
-            if (!RegexUtil.Match(item.content, cfg.regexList)) return false;
-            if (item.logicPrice <= cfg.price) return true;//最后比较价格是否合适
-            return true;
+            if (cfg.regexList!=null&& !RegexUtil.Match(item.content, cfg.regexList)) return false;
+            if (item.logicPrice!=0&&item.logicPrice <= cfg.price) return true;//最后比较价格是否合适
         }
         return false;
     }
@@ -214,15 +218,16 @@ public class AuctionController
         }
         return null;
     }
-    public static List<AHItemModel> BuyEquip(ExpandoObject data)
+
+    private async Task<JavascriptResponse> Buy(int eid)
     {
-        var d = data.ToObject<Dictionary<int, AHItemModel>>();
-        foreach (var item in d)
+        await Task.Delay(3000);
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
-            item.Value.eid = item.Key;
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.buy({eid});");
+            return d;
         }
-
-        return d.Values.ToList();
-
+        return null;
     }
+
 }

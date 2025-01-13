@@ -12,7 +12,7 @@
         "type": "compareNum",
         "keywords": "命中,凤凰击",
         "op": ">=",
-        "val": 15
+        "val": 18
       }
     ]
 
@@ -21,7 +21,7 @@
     "quality": "传奇",
     "part": "戒指",
     "name": "全能法戒",
-    "price": 7,
+    "price": 10,
     "regexList": [
       {
         "type": "compareNum",

@@ -152,7 +152,7 @@ let ah = {};
     }
 
 
-    function buy(eid) {
+    async function buy(eid) {
         
         var data = MERGE_Form({
             eid: eid,
