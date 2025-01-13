@@ -83,7 +83,7 @@ public partial class MainForm : Form
     }
     public void ShowLoadingPanel(string content)
     {
-        this.LoadingPanel.Visible = true;
+        //this.LoadingPanel.Visible = true;
         if (!string.IsNullOrEmpty(content))
         {
             SetLoadContent(content);
@@ -91,7 +91,6 @@ public partial class MainForm : Form
     }
     public void HideLoadingPanel()
     {
-        Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "HideLoadingPanel");
         if (this.LoadingPanel.Visible)
             this.LoadingPanel.Visible = false;
     }
@@ -250,9 +249,12 @@ public partial class MainForm : Form
         Match result = RegexRoleUrl(url);
         if (result.Success)
         {
-            int id = int.Parse(result.Groups[1].Value);
-            RoleModel role = RoleCombo.Items.Cast<RoleModel>().FirstOrDefault(s => s.RoleId == id);
-            this.Invoke(new Action(() => RefreshRole(role)));
+            if (int.TryParse(result.Groups[1].Value, out int id))
+            {
+                id = int.Parse(result.Groups[1].Value);
+                RoleModel role = RoleCombo.Items.Cast<RoleModel>().FirstOrDefault(s => s.RoleId == id);
+                this.Invoke(new Action(() => RefreshRole(role)));
+            }
         }
         this.Invoke(new Action(() => HideLoadingPanel()));
     }
