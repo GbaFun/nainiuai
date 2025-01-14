@@ -149,6 +149,10 @@ public class AuctionController
             if (!cfg.content.All(p => item.content.Contains(p))) return false;
             if (cfg.regexList!=null&& !RegexUtil.Match(item.content, cfg.regexList)) return false;
             if (item.logicPrice!=0&&item.logicPrice <= cfg.price) return true;//最后比较价格是否合适
+            else
+            {
+                P.Log($@"太贵没买:【{item.eTitle}】,价格:{item.ToPriceStr()},地址:{MainForm.Instance.browser.Address}", emLogType.AhScan);
+            }
         }
         return false;
     }
