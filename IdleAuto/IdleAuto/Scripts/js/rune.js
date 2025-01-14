@@ -62,10 +62,10 @@ function showRuneNumView() {
         alert("已存储数据", function () { });
     });
 
-    compandButton.click(function () {
-        compandMode = true;
-        showChange();
-    });
+    //compandButton.click(function () {
+    //    //compandMode = true;
+    //    showChange();
+    //});
 
     $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
 
@@ -111,7 +111,7 @@ function upgradeRune(rune, count) {
     });
     POST_Message("RuneUpgrade", data, "html", 2000)
         .then(r => {
-            compandMode = true;
+            //compandMode = true;
             Bridge.invokeEvent('OnUpgradeRuneBack', true, data.rune, data.count);
             location.reload();
         })

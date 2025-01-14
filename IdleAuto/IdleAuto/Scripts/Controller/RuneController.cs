@@ -35,11 +35,11 @@ public class RuneController
         foreach (var item in cfg)
         {
             long duration = (DateTime.Now.Ticks - start) / 10000;
-            MainForm.Instance.SetLoadContent($"当前升级符文：{item.ID}# \n\t        耗时：{duration}ms");
+            MainForm.Instance.SetLoadContent($"当前升级符文：{item.ID}#       耗时：{duration}ms");
             //如果配置保留数量为-1，则不处理
             if (item.CompandNum == -1)
             {
-                //Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                MainForm.Instance.SetLoadContent($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
                 await Task.Delay(500);
                 continue;
             }
@@ -53,13 +53,13 @@ public class RuneController
                     count = count - count % 2;
                     if (count < 2)
                     {
-                        //Console.WriteLine($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                        MainForm.Instance.SetLoadContent($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
                         await Task.Delay(500);
                         continue;
                     }
                     UpgradeRune(item.ID, count);
                     var tcs = new TaskCompletionSource<bool>();
-                    onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
+                    onUpgradeRuneCallBack = (result) => { tcs.SetResult(result); onUpgradeRuneCallBack = null; };
                     await tcs.Task;
                     if (tcs.Task.Result == false)
                     {
@@ -81,7 +81,8 @@ public class RuneController
         int runeNum = (int)args[2];
 
         Console.WriteLine($"{DateTime.Now}---升级符文：{runeId}#-{runeNum}--{isSuccess}");
-        onUpgradeRuneCallBack(true);
+        if (onUpgradeRuneCallBack != null)
+            onUpgradeRuneCallBack(true);
         //if (!tcs.Task.IsCompleted)
         //{
         //    onUpgradeRuneCallBack(true);

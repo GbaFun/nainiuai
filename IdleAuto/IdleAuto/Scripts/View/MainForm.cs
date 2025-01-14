@@ -27,6 +27,11 @@ public partial class MainForm : Form
         get;
         private set;
     }
+    public MaskForm maskForm
+    {
+        get;
+        private set;
+    }
 
     private void MainForm_Load(object sender, EventArgs e)
     {
@@ -81,23 +86,38 @@ public partial class MainForm : Form
         this.menuPanel.Controls.Add(this.AhGroup);
         this.menuPanel.Controls.Add(this.JumpGroup);
     }
-    public void ShowLoadingPanel(string content)
+    public void ShowLoadingPanel(string content = "")
     {
+        if (maskForm == null)
+        {
+            maskForm = new MaskForm(this);
+        }
+        maskForm.Show();
         //this.LoadingPanel.Visible = true;
         if (!string.IsNullOrEmpty(content))
         {
-            SetLoadContent(content);
+            maskForm.SetLoadContent(content);
         }
     }
     public void HideLoadingPanel()
     {
-        if (this.LoadingPanel.Visible)
-            this.LoadingPanel.Visible = false;
+        maskForm?.Hide();
+        //if (this.LoadingPanel.Visible)
+        //    this.LoadingPanel.Visible = false;
     }
 
     public void SetLoadContent(string content)
     {
-        this.LoadingContent.Text = content;
+        if (maskForm == null)
+        {
+            maskForm = new MaskForm(this);
+        }
+        if (!maskForm.Visible)
+            maskForm.Show();
+        if (!string.IsNullOrEmpty(content))
+        {
+            maskForm.SetLoadContent(content);
+        }
     }
 
     private void ShowAccountCombo()

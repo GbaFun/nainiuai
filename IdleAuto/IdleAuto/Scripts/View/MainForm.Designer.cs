@@ -27,6 +27,7 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
@@ -315,6 +316,7 @@ partial class MainForm
             this.LoadingPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.LoadingPanel.BackColor = System.Drawing.Color.Transparent;
             this.LoadingPanel.Controls.Add(this.LoadingContent);
             this.LoadingPanel.Controls.Add(this.LoadingBg);
             this.LoadingPanel.Location = new System.Drawing.Point(0, 0);
@@ -325,10 +327,12 @@ partial class MainForm
             // LoadingContent
             // 
             this.LoadingContent.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LoadingContent.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.LoadingContent.Location = new System.Drawing.Point(0, 0);
+            this.LoadingContent.BackColor = System.Drawing.Color.Transparent;
+            this.LoadingContent.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LoadingContent.Location = new System.Drawing.Point(0, 467);
+            this.LoadingContent.Margin = new System.Windows.Forms.Padding(0);
             this.LoadingContent.Name = "LoadingContent";
-            this.LoadingContent.Size = new System.Drawing.Size(985, 502);
+            this.LoadingContent.Size = new System.Drawing.Size(985, 35);
             this.LoadingContent.TabIndex = 3;
             this.LoadingContent.Text = "Loading";
             this.LoadingContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -338,7 +342,10 @@ partial class MainForm
             this.LoadingBg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.LoadingBg.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.LoadingBg.BackColor = System.Drawing.Color.Transparent;
+            this.LoadingBg.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LoadingBg.BackgroundImage")));
+            this.LoadingBg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LoadingBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LoadingBg.Location = new System.Drawing.Point(0, 0);
             this.LoadingBg.Name = "LoadingBg";
             this.LoadingBg.Size = new System.Drawing.Size(985, 502);
@@ -350,10 +357,11 @@ partial class MainForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(985, 503);
-            this.Controls.Add(this.LoadingPanel);
-            this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.browserPanel);
+            this.Controls.Add(this.menuPanel);
+            this.Controls.Add(this.LoadingPanel);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "Form1";
