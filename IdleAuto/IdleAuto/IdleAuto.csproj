@@ -133,6 +133,9 @@
     <None Include="Configs\RuneLogicPrice.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Configs\ScanAhCfg-demo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Configs\ScanAhCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
