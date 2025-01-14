@@ -170,6 +170,8 @@ public class EquipController
                     //逐个检查装备部位的装备是否符合要求
                     for (int j = 0; j < 11; j++)
                     {
+                        //每个部位检查装备前增加500ms得等待时间
+                        await Task.Delay(500);
                         string targetEquipName = targetEquip.GetEquipByType((emEquipType)j);
                         if (curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
                         {
