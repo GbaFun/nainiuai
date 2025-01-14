@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ public class EquipController
     }
     private async void AutoEquip()
     {
-        MainForm.Instance.ShowLoadingPanel("开始自动修车");
+        MainForm.Instance.ShowLoadingPanel("开始自动修车", emMaskType.AUTO_EQUIPING);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         //角色背包装备缓存
         Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
@@ -51,6 +52,7 @@ public class EquipController
             int page = 1;
             bool jumpNextPage = false;
             #region 缓存仓库装备
+            MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
             if (!isInitRepository)
             {
                 do
@@ -72,7 +74,7 @@ public class EquipController
                     }
 
                     P.Log($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
-
+                    MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
                     P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
                     var response2 = await JumpRepositoryPage();
                     if (response2.Success)
@@ -100,6 +102,7 @@ public class EquipController
             P.Log("缓存仓库完成！！");
             #endregion
             #region 缓存背包装备
+            MainForm.Instance.SetLoadContent($"正在缓存背包的装备");
             packageEquips.Clear();
             page = 1;
             jumpNextPage = false;
@@ -122,7 +125,7 @@ public class EquipController
                 }
 
                 P.Log($"缓存背包第{page}页装备完成,当前缓存背包装备数量:{packageEquips.Count}", emLogType.AutoEquip);
-
+                MainForm.Instance.SetLoadContent($"正在缓存背包的装备，当前已缓存数量{packageEquips.Count}");
                 P.Log("开始跳转背包下一页", emLogType.AutoEquip);
                 var response2 = await JumpPackagePage();
                 if (response2.Success)
@@ -150,7 +153,7 @@ public class EquipController
             #endregion
 
             #region 检查角色装备
-            MainForm.Instance.ShowLoadingPanel($"正在检查{role.RoleName}的装备");
+            MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
 
             Dictionary<emEquipType, EquipModel> curEquips = null;
             var response = await GetCurEquips();
@@ -241,12 +244,14 @@ public class EquipController
                         P.Log($"{role.RoleName}更换{targetEquipName}装备完成", emLogType.AutoEquip);
                     }
                 }
-                P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
+                P.Log($"{role.RoleName}全部位置装备更换完成\n\t\n\t\n\t", emLogType.AutoEquip);
                 MainForm.Instance.browser.Load("https://www.idleinfinity.cn/Home/Index");
             }
             #endregion
         }
+        P.Log($"全部角色装备更换完成\n\t\n\t\n\t\n\t\n\t", emLogType.AutoEquip);
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
+        MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
 
     public async Task<JavascriptResponse> GetCurEquips()
@@ -283,7 +288,7 @@ public class EquipController
         string jsName = args[0] as string;
         if (jsName == "equip")
         {
-            onJsInitCallBack.Invoke(true);
+            onJsInitCallBack?.Invoke(true);
             onJsInitCallBack = null;
         }
     }

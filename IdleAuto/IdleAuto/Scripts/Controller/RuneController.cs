@@ -2,10 +2,12 @@
 using CefSharp.WinForms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 public class RuneController
 {
@@ -24,22 +26,28 @@ public class RuneController
 
     private delegate void OnUpgradeRuneBack(bool result);
     private OnUpgradeRuneBack onUpgradeRuneCallBack;
+    private delegate void OnJsInitCallBack(bool result);
+    private OnJsInitCallBack onJsInitCallBack;
+
     public async void AutoUpgradeRune()
     {
         //Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
         long start = DateTime.Now.Ticks;
-        MainForm.Instance.ShowLoadingPanel("开始一键升级符文");
+        MainForm.Instance.ShowLoadingPanel("开始一键升级符文", emMaskType.RUNE_UPDATING);
+        P.Log("开始一键升级符文", emLogType.RuneUpgrate);
         EventManager.Instance.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
         //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
         foreach (var item in cfg)
         {
+            P.Log($"开始检查{item.ID}#符文", emLogType.RuneUpgrate);
             long duration = (DateTime.Now.Ticks - start) / 10000;
             MainForm.Instance.SetLoadContent($"当前升级符文：{item.ID}#       耗时：{duration}ms");
             //如果配置保留数量为-1，则不处理
             if (item.CompandNum == -1)
             {
-                MainForm.Instance.SetLoadContent($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                P.Log($"{item.ID}#符文配置保留数量为无限，无需升级", emLogType.RuneUpgrate);
                 await Task.Delay(500);
                 continue;
             }
@@ -53,25 +61,32 @@ public class RuneController
                     count = count - count % 2;
                     if (count < 2)
                     {
-                        MainForm.Instance.SetLoadContent($"{DateTime.Now}---升级符文：{item.ID}#--跳过");
+                        P.Log($"{item.ID}#符文空余数量不足2，无需升级", emLogType.RuneUpgrate);
                         await Task.Delay(500);
                         continue;
                     }
+                    P.Log($"开始升级{item.ID}#符文，升级数量{count}", emLogType.RuneUpgrate);
                     UpgradeRune(item.ID, count);
                     var tcs = new TaskCompletionSource<bool>();
-                    onUpgradeRuneCallBack = (result) => { tcs.SetResult(result); onUpgradeRuneCallBack = null; };
+                    onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
                     await tcs.Task;
+                    var tcs2 = new TaskCompletionSource<bool>();
+                    onJsInitCallBack = (result) => tcs2.SetResult(result);
+                    await tcs2.Task;
+
                     if (tcs.Task.Result == false)
                     {
+                        MessageBox.Show($"自动升级符文失败，详情请查看log文件({Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", emLogType.RuneUpgrate.ToString())})");
                         break;
                     }
                 }
             }
         }
 
-        //MainForm.Instance.browser.FrameLoadEnd -= OnMainFormBrowseFrameLoad;
+        P.Log($"全部符文升级完成\n\t\n\t\n\t\n\t\n\t", emLogType.RuneUpgrate);
         EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
-        MainForm.Instance.HideLoadingPanel();
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
+        MainForm.Instance.HideLoadingPanel(emMaskType.RUNE_UPDATING);
     }
 
     private void OnEventUpgradeRuneBack(params object[] args)
@@ -80,25 +95,18 @@ public class RuneController
         int runeId = (int)args[1];
         int runeNum = (int)args[2];
 
-        Console.WriteLine($"{DateTime.Now}---升级符文：{runeId}#-{runeNum}--{isSuccess}");
-        if (onUpgradeRuneCallBack != null)
-            onUpgradeRuneCallBack(true);
-        //if (!tcs.Task.IsCompleted)
-        //{
-        //    onUpgradeRuneCallBack(true);
-        //}
-    }
-    //public void OnMainFormBrowseFrameLoad(object sender, FrameLoadEndEventArgs e)
-    //{
-    //    var bro = sender as ChromiumWebBrowser;
-    //    string url = bro.Address;
-    //    onUpgradeRuneCallBack(PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage));
-    //}
+        if (!isSuccess)
+        {
+            string msg = args[3] as string;
+            P.Log($"{runeId}#符文升级失败，升级数量{runeNum}，失败原因{msg}", emLogType.RuneUpgrate);
+        }
+        else
+        {
+            P.Log($"{runeId}#符文升级成功，升级数量{runeNum}", emLogType.RuneUpgrate);
+        }
 
-    public void OnGetJsRuneData()
-    {
-        //var runeData = data.ToObject<List<RuneModel>>();
-        //RuneCompandCfg.Instance.RuneCompandData = runeData;
+        onUpgradeRuneCallBack?.Invoke(true);
+        onUpgradeRuneCallBack = null;
     }
 
     public async Task<JavascriptResponse> GetRuneNum(int runeId)
@@ -108,6 +116,16 @@ public class RuneController
     public void UpgradeRune(int runeId, int count)
     {
         MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
+    }
+
+    private void OnRuneJsInited(params object[] args)
+    {
+        string jsName = args[0] as string;
+        if (jsName == "rune")
+        {
+            onJsInitCallBack?.Invoke(true);
+            onJsInitCallBack = null;
+        }
     }
 }
 

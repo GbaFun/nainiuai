@@ -117,7 +117,7 @@ function upgradeRune(rune, count) {
         })
         .catch(r => {
             console.log(r);
-            Bridge.invokeEvent('OnUpgradeRuneBack', false, data.rune, data.count);
+            Bridge.invokeEvent('OnUpgradeRuneBack', false, data.rune, data.count, r);
         });
 }
 

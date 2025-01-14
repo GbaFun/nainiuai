@@ -32,7 +32,7 @@ public partial class MainForm : Form
         get;
         private set;
     }
-
+    private emMaskType maskType;
     private void MainForm_Load(object sender, EventArgs e)
     {
     }
@@ -86,21 +86,31 @@ public partial class MainForm : Form
         this.menuPanel.Controls.Add(this.AhGroup);
         this.menuPanel.Controls.Add(this.JumpGroup);
     }
-    public void ShowLoadingPanel(string content = "")
+    public void ShowLoadingPanel(string content = "", emMaskType mType = emMaskType.WEB_LOADING)
     {
+        P.Log($"ShowLoadingPanel--From:{mType}", emLogType.Warning);
         if (maskForm == null)
         {
             maskForm = new MaskForm(this);
         }
-        maskForm.Show();
-        //this.LoadingPanel.Visible = true;
-        if (!string.IsNullOrEmpty(content))
+        if (!maskForm.Visible)
+        {
+            maskForm.Show();
+            maskType = mType;
+        }
+        if (!string.IsNullOrEmpty(content) && mType == maskType)
         {
             maskForm.SetLoadContent(content);
         }
+        //this.LoadingPanel.Visible = true;
     }
-    public void HideLoadingPanel()
+    public void HideLoadingPanel(emMaskType mType = emMaskType.WEB_LOADING)
     {
+        P.Log($"HideLoadingPanel--From:{mType}", emLogType.Warning);
+        if (mType != maskType)
+        {
+            return;
+        }
         maskForm?.Hide();
         //if (this.LoadingPanel.Visible)
         //    this.LoadingPanel.Visible = false;

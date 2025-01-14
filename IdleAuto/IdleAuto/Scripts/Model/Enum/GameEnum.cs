@@ -49,3 +49,12 @@ public enum emEquipType
     项链 = 9,
     护符 = 10,
 }
+
+public enum emMaskType
+{
+    WEB_LOADING = 0,
+    RES_LOADING = 1,
+    AUTO_EQUIPING = 2,
+    AH_SCANING = 3,
+    RUNE_UPDATING = 4,
+}

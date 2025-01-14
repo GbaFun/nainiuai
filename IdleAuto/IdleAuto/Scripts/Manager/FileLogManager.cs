@@ -12,6 +12,7 @@ public enum emLogType
     AhScan = 2,
     Error = 3,
     Warning = 4,
+    RuneUpgrate = 5,
 }
 public static class P
 {
@@ -28,6 +29,8 @@ public static class P
                 lable = "一键修车："; break;
             case emLogType.AhScan:
                 lable = "自动扫拍："; break;
+            case emLogType.RuneUpgrate:
+                lable = "自动符文："; break;
             default:
                 lable = "消!!!!息："; break;
         }
