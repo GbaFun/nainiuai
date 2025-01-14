@@ -37,7 +37,7 @@ public static class P
         //Console.ForegroundColor = color;
         Console.WriteLine($"{lable}:{message}");
 
-        if (logType == emLogType.Debug)
+        if (logType == emLogType.Debug || logType == emLogType.Warning || logType == emLogType.Error)
         {
             return;
         }
