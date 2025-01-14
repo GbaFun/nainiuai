@@ -28,7 +28,7 @@ public class Bridge
 
     public List<DemandEquip> GetAhDemandEquip()
     {
-        return ScanAhCfg.Instance.data;
+        return ScanAhCfg.Instance.Data;
     }
 
     public void InvokeEvent(string eventName, params object[] args)

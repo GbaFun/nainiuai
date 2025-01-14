@@ -5,15 +5,38 @@
     "eqbase": "巨战腰带",
     "name": "怒涛之心",
     "minLv": 70,
-    "content": [ "神龙摆尾" ],
-    "regexList": [ {"type": "compareNum","keywords": "命中,凤凰击","op": ">=","val": 15} ]
+    "price": 0.1,
+    "content": [ "+3 神龙摆尾" ],
+    "regexList": [
+      {
+        "type": "compareNum",
+        "keywords": "命中,凤凰击",
+        "op": ">=",
+        "val": 18
+      }
+    ]
 
   },
   {
     "quality": "传奇",
     "part": "戒指",
-    "eqbase": "戒指",
     "name": "全能法戒",
-    "content": [ "命中目标,>=18" ]
+    "price": 10,
+    "regexList": [
+      {
+        "type": "compareNum",
+        "keywords": "命中,法术",
+        "op": ">=",
+        "val": 20
+      }
+    ]
+
+  },
+  {
+    "quality": "传奇",
+    "part": "戒指",
+    "name": "乔丹之石",
+    "price": 1
   }
+
 ]

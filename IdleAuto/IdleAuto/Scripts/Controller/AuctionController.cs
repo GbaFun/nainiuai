@@ -35,9 +35,11 @@ public class AuctionController
     public bool IsStart = false;
 
     /// <summary>
-    /// 当前扫描到配置中的位置
+    /// 当前索引位置
     /// </summary>
-    public int EqIndex = 0;
+    public int CurIndex = 0;
+
+
 
 
     /// <summary>
@@ -57,21 +59,32 @@ public class AuctionController
         await AutoBuy();
         await AutoJump();
         await AutoNextPage();
+        var isLastPage = await IsLastPage();
+        var isJumpEnd = await IsJumpToEnd(GetCurNode());
+        if (isLastPage&& isJumpEnd)
+        {
+            if (CurIndex == ScanAhCfg.Instance.NodeList.Count - 1) CurIndex = 0;
+            else CurIndex++;
+            await AutoJump();
+        }
 
     }
 
     private async Task AutoBuy()
     {
-        List<AHItemModel> matchList = new List<AHItemModel>();
+        await Task.Delay(1500);
         var map = await getEqMap();
         foreach (var item in map.Values)
         {
-           if(CanBuy(item))
+            if (CanBuy(item))
             {
-                matchList.Add(item);
+                await Buy(item.eid);
+                P.Log($@"购买到:【{item.eTitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
-        CalEqLogicPrice(map.FirstOrDefault().Value);
+       
+       
+        
     }
     /// <summary>
     /// 自动跳转到对应选项
@@ -79,17 +92,18 @@ public class AuctionController
     /// <returns></returns>
     private async Task AutoJump()
     {
-        var curCfg = GetCurConfig();
-        var isJumpEnd = await IsJumpToEnd(curCfg);
+        var node = GetCurNode();
+        var isJumpEnd = await IsJumpToEnd(node);
         if (!isJumpEnd)
         {
-            await JumpTo(curCfg);
+            await JumpTo(node);
         }
     }
 
     private async Task AutoNextPage()
     {
-        var isJumpEnd = await IsJumpToEnd(GetCurConfig());
+        var node = GetCurNode();
+        var isJumpEnd = await IsJumpToEnd(node);
         var isLast = await IsLastPage();
         if (!isLast && isJumpEnd)
         {
@@ -113,14 +127,6 @@ public class AuctionController
     }
 
 
-    /// <summary>
-    /// 当前扫描的配置
-    /// </summary>
-    /// <returns></returns>
-    private DemandEquip GetCurConfig()
-    {
-        return ScanAhCfg.Instance.data[EqIndex];
-    }
 
     private async void OnScanAh(params object[] args)
     {
@@ -133,13 +139,23 @@ public class AuctionController
 
     private Boolean CanBuy(AHItemModel item)
     {
-        var cfg = GetCurConfig();
-        if (item.eTitle != cfg.name) return false;
-        if (cfg.minLv != 0 && item.lv < cfg.minLv) return false;
-        if (cfg.content.Count == 0) return true;
-        if (!cfg.content.All(p => item.content.Contains(p))) return false;
-        if (!RegexUtil.Match(item.content, cfg.regexList)) return false;
-        return true;
+        CalEqLogicPrice(item);
+        var node = GetCurNode();
+        foreach (var cfg in node.Configs)
+        {
+            if (cfg.content == null) cfg.content = new List<string>();
+            if (item.eTitle != cfg.name) return false;
+            if (cfg.minLv != 0 && item.lv < cfg.minLv) return false;
+            if (!cfg.content.All(p => item.content.Contains(p))) return false;
+            if (cfg.regexList!=null&& !RegexUtil.Match(item.content, cfg.regexList)) return false;
+            if (item.logicPrice!=0&&item.logicPrice <= cfg.price) return true;//最后比较价格是否合适
+        }
+        return false;
+    }
+
+    private ScanAhTreeNode GetCurNode()
+    {
+        return ScanAhCfg.Instance.NodeList[CurIndex];
     }
 
     /// <summary>
@@ -147,11 +163,15 @@ public class AuctionController
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public async Task<JavascriptResponse> JumpTo(DemandEquip config)
+    public async Task<JavascriptResponse> JumpTo(ScanAhTreeNode node)
     {
-        Thread.Sleep(1500);
-        var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({JsonConvert.SerializeObject(config)});");
-        return d;
+        await Task.Delay(1500);
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        {
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({JsonConvert.SerializeObject(node)});");
+            return d;
+        }
+        return new JavascriptResponse();
 
     }
 
@@ -160,10 +180,14 @@ public class AuctionController
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public async Task<bool> IsJumpToEnd(DemandEquip config)
+    public async Task<bool> IsJumpToEnd(ScanAhTreeNode node)
     {
-        var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({JsonConvert.SerializeObject(config)});");
-        return d.Result?.ToString() == "success";
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        {
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({JsonConvert.SerializeObject(node)});");
+            return d.Result?.ToString() == "success";
+        }
+        return false;
 
     }
 
@@ -179,11 +203,10 @@ public class AuctionController
 
     private async Task NextPage()
     {
-        Thread.Sleep(1500);
+        await Task.Delay(1500);
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.nextPage();");
-
         }
     }
     private async Task<Dictionary<int, AHItemModel>> getEqMap()
@@ -195,15 +218,16 @@ public class AuctionController
         }
         return null;
     }
-    public static List<AHItemModel> BuyEquip(ExpandoObject data)
+
+    private async Task<JavascriptResponse> Buy(int eid)
     {
-        var d = data.ToObject<Dictionary<int, AHItemModel>>();
-        foreach (var item in d)
+        await Task.Delay(3000);
+        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
-            item.Value.eid = item.Key;
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.buy({eid});");
+            return d;
         }
-
-        return d.Values.ToList();
-
+        return null;
     }
+
 }

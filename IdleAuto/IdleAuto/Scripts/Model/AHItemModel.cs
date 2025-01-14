@@ -36,6 +36,19 @@ public class AHItemModel
 
     public int[] runeCountArr { get; set; }
 
-    public bool canBuy { get; set; } 
+    public bool canBuy { get; set; }
+
+    public string ToPriceStr()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < runePriceArr.Length; i++)
+        {
+            sb.Append(runePriceArr[i].ToString());
+            sb.Append("*");
+            sb.Append(runeCountArr[i]);
+            sb.Append(" ");
+        }
+        return sb.ToString();
+    }
 
 }

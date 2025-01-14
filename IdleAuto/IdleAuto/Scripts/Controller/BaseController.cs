@@ -12,8 +12,7 @@ public class BaseController
         string type = data[0] as string;
         switch (type)
         {
-            case BridgeMsgType.EquipToBuy:
-                return AuctionController.BuyEquip(data[1] as ExpandoObject);
+         
         }
         return "";
     }
