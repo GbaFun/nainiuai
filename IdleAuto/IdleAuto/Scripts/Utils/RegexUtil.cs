@@ -44,7 +44,7 @@ public class RegexUtil
     private static bool CompareNum(string content, RegexMatch regCfg)
     {
         var keywords = regCfg.keywords.Split(',');
-        var match = Regex.Match(content, $@"{keywords[0]}.*?(\d+)%.*{keywords[1]}");
+        var match = Regex.Match(content, $@"{keywords[0]}.*?(\d+).*{keywords[1]}");
         //不匹配直接退出
         if (!match.Success)
         {
