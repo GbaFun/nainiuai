@@ -37,7 +37,6 @@ public class EquipController
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
         bool isInitRepository = false;
 
-        //int i = 0;
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
@@ -170,11 +169,12 @@ public class EquipController
                     //逐个检查装备部位的装备是否符合要求
                     for (int j = 0; j < 11; j++)
                     {
+                        bool isSuccess = false;
                         //每个部位检查装备前增加500ms得等待时间
                         await Task.Delay(500);
                         Equipment targetEquip = targetEquips.GetEquipByType((emEquipType)j);
                         string targetEquipName = targetEquip.Name;
-                        if (curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
+                        if (curEquips != null && curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.equipName.Contains(targetEquipName))
                             {
@@ -184,6 +184,10 @@ public class EquipController
                         }
                         foreach (var item in packageEquips)
                         {
+                            if (item.Value.etypeName == targetEquip.Name)
+                            {
+                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在检查属性", emLogType.AutoEquip);
+                            }
                             if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
@@ -209,12 +213,17 @@ public class EquipController
                                     var tcs2 = new TaskCompletionSource<bool>();
                                     onJsInitCallBack = (result) => tcs2.SetResult(result);
                                     await tcs2.Task;
-                                    goto WEAR_EQUIP_SUCCESS;
+                                    isSuccess = true;
+                                    goto WEAR_EQUIP_FIANLLY;
                                 }
                             }
                         }
                         foreach (var item in repositoryEquips)
                         {
+                            if (item.Value.etypeName == targetEquip.Name)
+                            {
+                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在检查属性", emLogType.AutoEquip);
+                            }
                             if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
@@ -239,13 +248,18 @@ public class EquipController
                                     var tcs2 = new TaskCompletionSource<bool>();
                                     onJsInitCallBack = (result) => tcs2.SetResult(result);
                                     await tcs2.Task;
-                                    goto WEAR_EQUIP_SUCCESS;
+                                    isSuccess = true;
+                                    goto WEAR_EQUIP_FIANLLY;
                                 }
                             }
                         }
 
-                        WEAR_EQUIP_SUCCESS:
-                        P.Log($"{role.RoleName}更换{targetEquipName}装备完成", emLogType.AutoEquip);
+                        isSuccess = false;
+                        WEAR_EQUIP_FIANLLY:
+                        if (isSuccess)
+                            P.Log($"{role.RoleName}更换{targetEquipName}装备完成", emLogType.AutoEquip);
+                        else
+                            P.Log($"{role.RoleName}未找到{targetEquipName}装备，无法更换", emLogType.AutoEquip);
                     }
                 }
                 P.Log($"{role.RoleName}全部位置装备更换完成\n\t\n\t\n\t", emLogType.AutoEquip);

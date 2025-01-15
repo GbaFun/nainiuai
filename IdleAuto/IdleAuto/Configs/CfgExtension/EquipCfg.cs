@@ -28,7 +28,7 @@ public class Item
 
     public bool AdaptAttr(string name, string attr)
     {
-        if (!Name.Contains(name)) return false;
+        if (!name.Contains(Name)) return false;
         if (!Content.All(p => attr.Contains(p))) return false;
         if (regexList != null && !RegexUtil.Match(attr, regexList)) return false;
 
@@ -45,6 +45,7 @@ public class Equipments
     public Equipment 副手 { get; set; }
     public Equipment 头盔 { get; set; }
     public Equipment 护符 { get; set; }
+    public Equipment 项链 { get; set; }
     public Equipment 戒指1 { get; set; }
     public Equipment 戒指2 { get; set; }
     public Equipment 衣服 { get; set; }
@@ -64,6 +65,8 @@ public class Equipments
                 return 头盔;
             case emEquipType.护符:
                 return 护符;
+            case emEquipType.项链:
+                return 项链;
             case emEquipType.戒指1:
                 return 戒指1;
             case emEquipType.戒指2:
@@ -87,7 +90,7 @@ public class EquipCfg
     private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "EquipCfg.json");
     public static EquipCfg Instance { get; } = new EquipCfg();
     public List<Equipments> EquipList { get; set; }
-    public Dictionary<emJob, List<Equipments>> _equipMap;
+    private Dictionary<emJob, List<Equipments>> _equipMap;
 
     public EquipCfg()
     {

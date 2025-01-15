@@ -19,12 +19,12 @@ function getCurEquips() {
     $('.sr-only.label.label-danger.equip-off').each(function () {
         var e = {};//装备对象
         e.etype = $(this).data('type');
-        var equipContent = $(this).prev();
-        e.eid = equipItem.data('id');
+        var __equip = $(this).prev();
+        e.eid = __equip.data('id');
         e.equipName = equipItem.text().replace('【', '').replace('】', '');
         e.etypeName = equipItem.prev().text().replace('：', '');
         var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
-        e.content = equipItem.text();
+        e.content = equipContent.text();
         eMap[e.etype] = e;
     });
 
@@ -42,6 +42,7 @@ function getPackageEquips() {
         var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
         e.equipName = equipContent.find('p:first').text();
         e.etypeName = equipContent.find('p:first').next().text();
+        e.content = equipContent.text();
         if (!e.equipName.includes('秘境') &&
             !e.etypeName.includes('药水') &&
             !e.etypeName.includes('珠宝') &&
@@ -63,6 +64,7 @@ function getRepositoryEquips() {
         var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
         e.equipName = equipContent.find('p:first').text();
         e.etypeName = equipContent.find('p:first').next().text();
+        e.content = equipContent.text();
         if (!e.equipName.includes('秘境') &&
             !e.etypeName.includes('药水') &&
             !e.etypeName.includes('珠宝') &&

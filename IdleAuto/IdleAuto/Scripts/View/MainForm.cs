@@ -385,6 +385,7 @@ public partial class MainForm : Form
 
     private void BtnAutoEquip_Click(object sender, EventArgs e)
     {
+        //var equips = EquipCfg.Instance.EquipList;
         EquipController.Instance.StartAutoEquip();
     }
 }
