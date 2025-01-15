@@ -143,12 +143,12 @@ public class AuctionController
         var node = GetCurNode();
         foreach (var cfg in node.Configs)
         {
-            if (cfg.content == null) cfg.content = new List<string>();
-            if (item.eTitle != cfg.name) return false;
-            if (cfg.minLv != 0 && item.lv < cfg.minLv) return false;
-            if (!cfg.content.All(p => item.content.Contains(p))) return false;
-            if (cfg.regexList!=null&& !RegexUtil.Match(item.content, cfg.regexList)) return false;
-            if (item.logicPrice!=0&&item.logicPrice <= cfg.price) return true;//最后比较价格是否合适
+            if (cfg.Content == null) cfg.Content = new List<string>();
+            if (item.eTitle != cfg.Name) return false;
+            if (cfg.MinLv != 0 && item.lv < cfg.MinLv) return false;
+            if (!cfg.Content.All(p => item.content.Contains(p))) return false;
+            if (cfg.RegexList!=null&& !RegexUtil.Match(item.content, cfg.RegexList)) return false;
+            if (item.logicPrice!=0&&item.logicPrice <= cfg.Price) return true;//最后比较价格是否合适
             else
             {
                 P.Log($@"太贵没买:【{item.eTitle}】,价格:{item.ToPriceStr()},地址:{MainForm.Instance.browser.Address}", emLogType.AhScan);
@@ -172,7 +172,8 @@ public class AuctionController
         await Task.Delay(1500);
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({JsonConvert.SerializeObject(node)});");
+            var data = node.ToLowerCamelCase();
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({data});");
             return d;
         }
         return new JavascriptResponse();
@@ -188,7 +189,7 @@ public class AuctionController
     {
         if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({JsonConvert.SerializeObject(node)});");
+            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({node.ToLowerCamelCase()});");
             return d.Result?.ToString() == "success";
         }
         return false;

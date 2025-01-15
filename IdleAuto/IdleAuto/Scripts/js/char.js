@@ -1,11 +1,12 @@
 ﻿
-;class Character {
+; class Character {
     //当前角色id
     cid = 0;
 
     constructor() {
         this.init().then(() => {
             this.initCurrentChar();
+            this.initAttribute();
         });
     }
     async init() {
@@ -33,10 +34,30 @@
         var dex = $("#char-dex").text();
         var vit = $("#char-vit").text();
         var eng = $("#char-eng").text();
-        var panels = (".panel.panel-inverse");
+        var panels = $(".panel.panel-inverse");
         var skillPanel = panels[1]
         var attPanel = panels[4]
-        var damage
+        var att = $(attPanel).find("p span:contains('准确率')").next().text();
+        var as = $(attPanel).find("p span:contains('攻击速度')").next().text();
+        var fcr = $(attPanel).find("p span:contains('施法速度')").next().text();
+        //生效的速度类型
+        var effectSpeedType = $(attPanel).find("p span:contains('施法速度')").next().hasClass('skill') ? "fcr" : "as";
+        var crushDamage = $(attPanel).find("p span:contains('压碎')").next().text();
+        var openWound = $(attPanel).find("p span:contains('撕开')").next().text();
+        var reduceDef = $(attPanel).find("p span:contains('减目标防御')").next().text();
+        var isIgnoreDef = $(attPanel).find("p span:contains('无视目标防御')").next().text();
+        var obj = {
+            str: str,
+            dex: dex,
+            vit: vit,
+            eng: eng,
+            att: att,
+            as: as,
+            fcr: fcr,
+            effectSpeedType: effectSpeedType,
+            crushDamage: crushDamage,
+        }
+        Bridge.invokeEvent('OnCharLoaded', r);
     }
 }
 

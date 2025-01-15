@@ -29,7 +29,7 @@ public class RegexUtil
     {
         foreach (var item in regList)
         {
-            if (item.type == compareNum)
+            if (item.Type == compareNum)
             {
                 var r = CompareNum(content, item);
                 if (!r) return r;
@@ -43,7 +43,7 @@ public class RegexUtil
     /// <returns></returns>
     private static bool CompareNum(string content, RegexMatch regCfg)
     {
-        var keywords = regCfg.keywords.Split(',');
+        var keywords = regCfg.Keywords.Split(',');
         var match = Regex.Match(content, $@"{keywords[0]}.*?(\d+).*{keywords[1]}");
         //不匹配直接退出
         if (!match.Success)
@@ -52,8 +52,8 @@ public class RegexUtil
         }
         //命中词条再比较数值
         var num = Decimal.Parse(match.Groups[1].Value);
-        ComparisonOperator<decimal> comparison = GetDecimalOperator(regCfg.op);
-        return comparison(num, decimal.Parse(regCfg.val));
+        ComparisonOperator<decimal> comparison = GetDecimalOperator(regCfg.Op);
+        return comparison(num, decimal.Parse(regCfg.Val));
     }
 
 

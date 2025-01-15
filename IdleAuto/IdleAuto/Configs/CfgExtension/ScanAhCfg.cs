@@ -38,7 +38,7 @@ namespace IdleAuto.Configs.CfgExtension
             if (File.Exists(ConfigFilePath))
             {
                 var json = File.ReadAllText(ConfigFilePath);
-                Data = JsonConvert.DeserializeObject<List<DemandEquip>>(json);
+                Data = json.ToUpperCamelCase<List<DemandEquip>>();
                 ConfigTree = BuildTree(Data);
                 Dfs(ConfigTree);
             }
@@ -62,37 +62,37 @@ namespace IdleAuto.Configs.CfgExtension
 
             foreach (var config in configs)
             {
-                ScanAhTreeNode qualityNode = root.FindChild(config.quality);
+                ScanAhTreeNode qualityNode = root.FindChild(config.Quality);
                 if (qualityNode == null)
                 {
-                    qualityNode = new ScanAhTreeNode(config.quality);
+                    qualityNode = new ScanAhTreeNode(config.Quality);
                     root.AddChild(qualityNode);
                 }
 
-                ScanAhTreeNode partNode = qualityNode.FindChild(config.part);
+                ScanAhTreeNode partNode = qualityNode.FindChild(config.Part);
                 if (partNode == null)
                 {
-                    partNode = new ScanAhTreeNode(config.part);
+                    partNode = new ScanAhTreeNode(config.Part);
                     qualityNode.AddChild(partNode);
                 }
-                partNode.quality = config.quality;
-                partNode.part = config.part;
+                partNode.Quality = config.Quality;
+                partNode.Part = config.Part;
                 //没有维护底子 节点到此结束
-                if (string.IsNullOrWhiteSpace(config.eqbase))
+                if (string.IsNullOrWhiteSpace(config.Eqbase))
                 {
                     partNode.Configs.Add(config);
                     continue;
                 }
 
-                ScanAhTreeNode eqBaseNode = partNode.FindChild(config.eqbase);
+                ScanAhTreeNode eqBaseNode = partNode.FindChild(config.Eqbase);
                 if (eqBaseNode == null)
                 {
-                    eqBaseNode = new ScanAhTreeNode(config.eqbase);
+                    eqBaseNode = new ScanAhTreeNode(config.Eqbase);
                     partNode.AddChild(eqBaseNode);
                 }
-                eqBaseNode.quality = config.quality;
-                eqBaseNode.part = config.part;
-                eqBaseNode.eqbase = config.eqbase;
+                eqBaseNode.Quality = config.Quality;
+                eqBaseNode.Part = config.Part;
+                eqBaseNode.Eqbase = config.Eqbase;
                 eqBaseNode.Configs.Add(config);
             }
 
@@ -125,79 +125,82 @@ namespace IdleAuto.Configs.CfgExtension
 
             foreach (var equipment in node.Configs)
             {
-                Console.WriteLine(new string(' ', (level + 1) * 2) + equipment.name);
+                Console.WriteLine(new string(' ', (level + 1) * 2) + equipment.Name);
             }
         }
     }
+    /// <summary>
+    /// 扫拍需求装备 通过配置序列化
+    /// </summary>
     public class DemandEquip
     {
         /// <summary>
         /// 品质
         /// </summary>
-        public string quality { get; set; }
+        public string Quality { get; set; }
 
         /// <summary>
         /// 部位
         /// </summary>
-        public string part { get; set; }
+        public string Part { get; set; }
         /// <summary>
         /// 底子
         /// </summary>
-        public string eqbase { get; set; }
+        public string Eqbase { get; set; }
 
         /// <summary>
         /// 能接受的逻辑价格
         /// </summary>
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
 
         /// <summary>
         /// 装备名称
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 最低装等
         /// </summary>
-        public int minLv { get; set; }
+        public int MinLv { get; set; }
 
         /// <summary>
         /// 包含词缀
         /// </summary>
-        public List<string> content { get; set; }
+        public List<string> Content { get; set; }
 
-        public List<RegexMatch> regexList { get; set; }
+        public List<RegexMatch> RegexList { get; set; }
     }
     public class RegexMatch
     {
         /// <summary>
         /// 匹配类型 compareNum:数值比较
         /// </summary>
-        public string type { get; set; }
+        public string Type { get; set; }
         /// <summary>
         /// 数值
         /// </summary>
-        public string val { get; set; }
+        public string Val { get; set; }
 
         /// <summary>
         /// 操作 >= <= ==
         /// </summary>
-        public string op { get; set; }
+        public string Op { get; set; }
 
         /// <summary>
         /// 请维护数值前后两个关键字 逗号拼接 触发,凤凰击
         /// </summary>
-        public string keywords { get; set; }
+        public string Keywords { get; set; }
     }
 
     public class ScanAhTreeNode
     {
         public string Value { get; set; }
 
-        public string quality { get; set; }
+        public string Quality { get; set; }
 
-        public string part { get; set; }
+        public string Part { get; set; }
 
-        public string eqbase { get; set; }
+        public string Eqbase { get; set; }
         public List<ScanAhTreeNode> Children { get; set; } = new List<ScanAhTreeNode>();
         public List<DemandEquip> Configs { get; set; } = new List<DemandEquip>();
 
