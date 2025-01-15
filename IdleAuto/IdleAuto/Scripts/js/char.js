@@ -41,12 +41,13 @@
         var as = $(attPanel).find("p span:contains('攻击速度')").next().text();
         var fcr = $(attPanel).find("p span:contains('施法速度')").next().text();
         //生效的速度类型
-        var effectSpeedType = $(attPanel).find("p span:contains('施法速度')").next().hasClass('skill') ? "fcr" : "as";
-        var crushDamage = $(attPanel).find("p span:contains('压碎')").next().text();
-        var openWound = $(attPanel).find("p span:contains('撕开')").next().text();
-        var reduceDef = $(attPanel).find("p span:contains('减目标防御')").next().text();
+        var speedType = $(attPanel).find("p span:contains('施法速度')").next().hasClass('skill') ? "fcr" : "as";
+        var crushDamage = $(attPanel).find("p span:contains('压碎')").next().text().match(/\d+/)[0];
+        var openWound = $(attPanel).find("p span:contains('撕开')").next().text().match(/\d+/)[0];
+        var reduceDef = $(attPanel).find("p span:contains('减目标防御')").next().text().match(/\d+/)[0];
         var isIgnoreDef = $(attPanel).find("p span:contains('无视目标防御')").next().text();
         var obj = {
+            roleId: this.cid,
             str: str,
             dex: dex,
             vit: vit,
@@ -54,10 +55,13 @@
             att: att,
             as: as,
             fcr: fcr,
-            effectSpeedType: effectSpeedType,
+            speedType: speedType,
             crushDamage: crushDamage,
+            openWound: openWound,
+            reduceDef: reduceDef,
+            isIgnoreDef: isIgnoreDef
         }
-        Bridge.invokeEvent('OnCharLoaded', r);
+        Bridge.invokeEvent('OnCharLoaded', obj);
     }
 }
 

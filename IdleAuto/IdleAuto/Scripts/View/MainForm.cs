@@ -2,6 +2,7 @@
 using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
 using CefSharp.WinForms.Internals;
+using IdleAuto.Scripts.Controller;
 using IdleAuto.Scripts.View;
 using Newtonsoft.Json.Linq;
 using System;
@@ -43,8 +44,8 @@ public partial class MainForm : Form
         InitializeChromium();
         ShowAccountCombo();
         HideLoadingPanel();
-
         EventManager.Instance.SubscribeEvent(emEventType.OnAccountDirty, OnAccountDirty);
+        EventManager.Instance.SubscribeEvent(emEventType.OnCharLoaded, CharacterController.Instance.OnCharLoaded);
         OnAccountDirty(null);
         Instance = this;
     }

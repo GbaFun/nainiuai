@@ -52,6 +52,7 @@
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
+    <Compile Include="Scripts\Controller\CharacterController.cs" />
     <Compile Include="Scripts\Controller\EquipController.cs" />
     <Compile Include="Scripts\Controller\LoadingController.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />

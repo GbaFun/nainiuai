@@ -31,6 +31,8 @@ public static class SerializeUtil
     {
         var settings = new JsonSerializerSettings
         {
+            // 设置枚举转换为字符串
+            Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new UpperCamelCaseNamingStrategy()) },
             ContractResolver = new UpperCamelCaseContractResolver(),
             Formatting = Formatting.Indented
         };
@@ -41,6 +43,8 @@ public static class SerializeUtil
     {
         var settings = new JsonSerializerSettings
         {
+            // 设置枚举转换为字符串
+            Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new LowerCamelCaseNamingStrategy()) },
             ContractResolver = new LowerCamelCaseContractResolver(),
             Formatting = Formatting.Indented
         };

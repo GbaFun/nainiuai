@@ -26,6 +26,10 @@ public enum emEventType
     /// 载入ah页面发送装备信息
     /// </summary>
     OnScanAh,
+    /// <summary>
+    /// 载入人物属性页
+    /// </summary>
+    OnCharLoaded
 }
 
 public class EventManager

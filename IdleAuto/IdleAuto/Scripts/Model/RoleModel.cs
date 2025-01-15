@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdleAuto.Scripts.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ public class RoleModel
     public int RoleId { get; set; }
     public string RoleName { get; set; }
     public string RoleInfo { get; set; }
+
+    public CharAttributeModel Attribute { get; set; }
 
     public int Level
     {

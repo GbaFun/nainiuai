@@ -78,8 +78,8 @@ public class AuctionController
         {
             if (CanBuy(item))
             {
-                await Buy(item.eid);
-                P.Log($@"购买到:【{item.eTitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
+                await Buy(item.Eid);
+                P.Log($@"购买到:【{item.ETitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
        
@@ -119,10 +119,10 @@ public class AuctionController
     private void CalEqLogicPrice(AHItemModel eq)
     {
         var map = RuneLogicPriceCfg.Instance.data;
-        for (int i = 0; i < eq.runePriceArr.Length; i++)
+        for (int i = 0; i < eq.RunePriceArr.Length; i++)
         {
-            var logicPrice = map[eq.runePriceArr[i]] * eq.runeCountArr[i];
-            eq.logicPrice += logicPrice;
+            var logicPrice = map[eq.RunePriceArr[i]] * eq.RuneCountArr[i];
+            eq.LogicPrice += logicPrice;
         }
     }
 
@@ -144,14 +144,14 @@ public class AuctionController
         foreach (var cfg in node.Configs)
         {
             if (cfg.Content == null) cfg.Content = new List<string>();
-            if (item.eTitle != cfg.Name) return false;
-            if (cfg.MinLv != 0 && item.lv < cfg.MinLv) return false;
-            if (!cfg.Content.All(p => item.content.Contains(p))) return false;
-            if (cfg.RegexList!=null&& !RegexUtil.Match(item.content, cfg.RegexList)) return false;
-            if (item.logicPrice!=0&&item.logicPrice <= cfg.Price) return true;//最后比较价格是否合适
+            if (item.ETitle != cfg.Name) return false;
+            if (cfg.MinLv != 0 && item.Lv < cfg.MinLv) return false;
+            if (!cfg.Content.All(p => item.Content.Contains(p))) return false;
+            if (cfg.RegexList!=null&& !RegexUtil.Match(item.Content, cfg.RegexList)) return false;
+            if (item.LogicPrice!=0&&item.LogicPrice <= cfg.Price) return true;//最后比较价格是否合适
             else
             {
-                P.Log($@"太贵没买:【{item.eTitle}】,价格:{item.ToPriceStr()},地址:{MainForm.Instance.browser.Address}", emLogType.AhScan);
+                P.Log($@"太贵没买:【{item.ETitle}】,价格:{item.ToPriceStr()},地址:{MainForm.Instance.browser.Address}", emLogType.AhScan);
             }
         }
         return false;
