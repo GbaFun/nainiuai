@@ -107,7 +107,7 @@ namespace IdleAuto.Configs.CfgExtension
             }
             else
             {
-                foreach(var item in node.Children)
+                foreach (var item in node.Children)
                 {
                     Dfs(item);
                 }

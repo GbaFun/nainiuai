@@ -160,8 +160,8 @@ public class EquipController
             if (response.Success)
             {
                 curEquips = response.Result.ToObject<Dictionary<emEquipType, EquipModel>>();
-                var targetEquip = EquipCfg.Instance.GetEquipmentByJobAndLevel(role.Job, role.Level);
-                if (targetEquip == null)
+                var targetEquips = EquipCfg.Instance.GetEquipmentByJobAndLevel(role.Job, role.Level);
+                if (targetEquips == null)
                 {
                     P.Log($"未找到{role.Level}级{role.Job}的装备配置,无法更换", emLogType.AutoEquip);
                 }
@@ -172,7 +172,8 @@ public class EquipController
                     {
                         //每个部位检查装备前增加500ms得等待时间
                         await Task.Delay(500);
-                        string targetEquipName = targetEquip.GetEquipByType((emEquipType)j);
+                        Equipment targetEquip = targetEquips.GetEquipByType((emEquipType)j);
+                        string targetEquipName = targetEquip.Name;
                         if (curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.equipName.Contains(targetEquipName))
@@ -183,7 +184,7 @@ public class EquipController
                         }
                         foreach (var item in packageEquips)
                         {
-                            if (item.Value.equipName.Contains(targetEquipName))
+                            if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {
@@ -199,6 +200,7 @@ public class EquipController
                                 }
 
                                 P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换", emLogType.AutoEquip);
+
                                 var response2 = await EquipOn(role, item.Value);
                                 if (response2.Success)
                                 {
@@ -213,7 +215,7 @@ public class EquipController
                         }
                         foreach (var item in repositoryEquips)
                         {
-                            if (item.Value.equipName.Contains(targetEquipName))
+                            if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {

@@ -54,6 +54,8 @@
         if (location.href.indexOf("Home/Index") > -1) {
             Bridge.invokeEvent("OnLoginSuccess", true, getAccountName(), getRoleInfo());
         }
+
+        Bridge.invokeEvent("OnJsInited", "login");
     })
 
 

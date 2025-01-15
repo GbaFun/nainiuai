@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using IdleAuto.Configs.CfgExtension;
 using Newtonsoft.Json;
+using System.Linq;
 
 
 public class LevelRange
@@ -14,24 +16,43 @@ public class LevelRange
         return level >= Min && level <= Max;
     }
 }
+public class Equipment : Item
+{
+    public emEquipType emEquipType { get; set; }
+}
+public class Item
+{
+    public string Name { get; set; }
+    public List<string> Content { get; set; } = new List<string>();
+    public List<RegexMatch> regexList { get; set; } = new List<RegexMatch>();
+
+    public bool AdaptAttr(string name, string attr)
+    {
+        if (!Name.Contains(name)) return false;
+        if (!Content.All(p => attr.Contains(p))) return false;
+        if (regexList != null && !RegexUtil.Match(attr, regexList)) return false;
+
+        return true;
+    }
+}
 
 public class Equipments
 {
     public string JobName;
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
     public LevelRange Lv { get; set; }
-    public string 主手 { get; set; }
-    public string 副手 { get; set; }
-    public string 头盔 { get; set; }
-    public string 护符 { get; set; }
-    public string 戒指1 { get; set; }
-    public string 戒指2 { get; set; }
-    public string 衣服 { get; set; }
-    public string 腰带 { get; set; }
-    public string 手套 { get; set; }
-    public string 靴子 { get; set; }
+    public Equipment 主手 { get; set; }
+    public Equipment 副手 { get; set; }
+    public Equipment 头盔 { get; set; }
+    public Equipment 护符 { get; set; }
+    public Equipment 戒指1 { get; set; }
+    public Equipment 戒指2 { get; set; }
+    public Equipment 衣服 { get; set; }
+    public Equipment 腰带 { get; set; }
+    public Equipment 手套 { get; set; }
+    public Equipment 靴子 { get; set; }
 
-    public string GetEquipByType(emEquipType type)
+    public Equipment GetEquipByType(emEquipType type)
     {
         switch (type)
         {
@@ -106,23 +127,3 @@ public class EquipCfg
         return null;
     }
 }
-
-//class Program
-//{
-//    static void Main(string[] args)
-//    {
-//        var configManager = new EquipConfigManager("IdleAuto/Configs/EquipCfg.json");
-
-//        var necromancerEquipments = configManager.GetEquipmentByClassAndLevel("死灵", 15);
-//        foreach (var equipment in necromancerEquipments)
-//        {
-//            Console.WriteLine($"主手: {equipment.主手}, 副手: {equipment.副手}");
-//        }
-
-//        var monkEquipments = configManager.GetEquipmentByClassAndLevel("武僧", 40);
-//        foreach (var equipment in monkEquipments)
-//        {
-//            Console.WriteLine($"主手: {equipment.主手}, 副手: {equipment.副手}");
-//        }
-//    }
-//}

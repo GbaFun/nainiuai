@@ -11,5 +11,6 @@ public class EquipModel
     public long eid { get; set; }
     public string etypeName { get; set; }
     public string equipName { get; set; }
+    public string content { get; set; }
 }
 

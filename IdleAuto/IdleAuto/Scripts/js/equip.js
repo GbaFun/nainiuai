@@ -19,9 +19,12 @@ function getCurEquips() {
     $('.sr-only.label.label-danger.equip-off').each(function () {
         var e = {};//装备对象
         e.etype = $(this).data('type');
-        var equipItem = $(this).prev();
+        var equipContent = $(this).prev();
+        e.eid = equipItem.data('id');
         e.equipName = equipItem.text().replace('【', '').replace('】', '');
         e.etypeName = equipItem.prev().text().replace('：', '');
+        var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
+        e.content = equipItem.text();
         eMap[e.etype] = e;
     });
 
