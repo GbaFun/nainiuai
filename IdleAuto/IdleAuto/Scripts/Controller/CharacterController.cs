@@ -1,4 +1,5 @@
-﻿using IdleAuto.Scripts.Model;
+﻿using CefSharp;
+using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +28,24 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        public void OnCharLoaded(params object[] args)
+        public async void OnCharLoaded(params object[] args)
         {
-            //更新人物属性
-            CharAttributeModel data = args[0].ToObject<CharAttributeModel>();
-            UpdateAttribute(data);
+            await GetCharAtt();
+        }
+
+        /// <summary>
+        /// 获取人物属性
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CharAttributeModel> GetCharAtt()
+        {
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_char.getAttribute();");
+                return d.Result?.ToObject<CharAttributeModel>();
+            }
+            else return null;
+
         }
 
         private void UpdateAttribute(CharAttributeModel data)

@@ -6,7 +6,7 @@
     constructor() {
         this.init().then(() => {
             this.initCurrentChar();
-            this.initAttribute();
+            
         });
     }
     async init() {
@@ -27,8 +27,11 @@
 
 
     }
+    async testInvoke() {
+        await Bridge.invokeEvent('OnCharLoaded');
+    }
 
-    initAttribute() {
+    getAttribute() {
         if (location.href.indexOf("Character/Detail") == -1) return;
         var str = $("#char-str").text();
         var dex = $("#char-dex").text();
@@ -61,7 +64,7 @@
             reduceDef: reduceDef,
             isIgnoreDef: isIgnoreDef
         }
-        Bridge.invokeEvent('OnCharLoaded', obj);
+        return obj;
     }
 }
 
