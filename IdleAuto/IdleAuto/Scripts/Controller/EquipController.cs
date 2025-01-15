@@ -37,6 +37,46 @@ public class EquipController
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
         bool isInitRepository = false;
 
+        #region 测试
+        //int i = 0;
+        //RoleModel role = AccountController.Instance.User.Roles[i];
+        //MainForm.Instance.browser.Load($"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+
+        ////等待页面跳转并加载js
+        //var tcs = new TaskCompletionSource<bool>();
+        //onJsInitCallBack = (result) => tcs.SetResult(result);
+        //await tcs.Task;
+
+        //P.Log("开始缓存装备", emLogType.AutoEquip);
+        //int page = 1;
+        //bool jumpNextPage = false;
+        ////#region 缓存仓库装备
+        //MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
+        //if (!isInitRepository)
+        //{
+        //    //do
+        //    {
+        //        jumpNextPage = false;
+        //        P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
+        //        var response1 = await GetRepositoryEquips();
+        //        if (response1.Success)
+        //        {
+        //            var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
+        //            if (equips != null)
+        //            {
+        //                foreach (var item in equips)
+        //                {
+        //                    if (!repositoryEquips.ContainsKey(item.Key))
+        //                        repositoryEquips.Add(item.Key, item.Value);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        //return;
+
+        #endregion
+
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
@@ -176,19 +216,15 @@ public class EquipController
                         string targetEquipName = targetEquip.Name;
                         if (curEquips != null && curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
                         {
-                            if (string.IsNullOrEmpty(targetEquipName) || equip.equipName.Contains(targetEquipName))
+                            if (string.IsNullOrEmpty(targetEquipName) || equip.EquipName.Contains(targetEquipName))
                             {
-                                P.Log($"{role.RoleName}的{equip.etypeName}位置装备{equip.equipName}符合要求，无需更换", emLogType.AutoEquip);
+                                P.Log($"{role.RoleName}的{equip.EquipTypeName}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
                                 continue;
                             }
                         }
                         foreach (var item in packageEquips)
                         {
-                            if (item.Value.etypeName == targetEquip.Name)
-                            {
-                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在检查属性", emLogType.AutoEquip);
-                            }
-                            if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
+                            if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {
@@ -220,11 +256,7 @@ public class EquipController
                         }
                         foreach (var item in repositoryEquips)
                         {
-                            if (item.Value.etypeName == targetEquip.Name)
-                            {
-                                P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在检查属性", emLogType.AutoEquip);
-                            }
-                            if (targetEquip.AdaptAttr(item.Value.equipName, item.Value.content))
+                            if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
                                 if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
                                 {
@@ -294,7 +326,7 @@ public class EquipController
     }
     public async Task<JavascriptResponse> EquipOn(RoleModel role, EquipModel equip)
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.eid})");
+        return await MainForm.Instance.browser.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.EquipID})");
     }
     public async Task<JavascriptResponse> EquipOff(RoleModel role, int etype)
     {

@@ -24,13 +24,13 @@ public class Item
 {
     public string Name { get; set; }
     public List<string> Content { get; set; } = new List<string>();
-    public List<RegexMatch> regexList { get; set; } = new List<RegexMatch>();
+    public List<RegexMatch> RegexList { get; set; } = new List<RegexMatch>();
 
     public bool AdaptAttr(string name, string attr)
     {
         if (!name.Contains(Name)) return false;
         if (!Content.All(p => attr.Contains(p))) return false;
-        if (regexList != null && !RegexUtil.Match(attr, regexList)) return false;
+        if (RegexList != null && !RegexUtil.Match(attr, RegexList)) return false;
 
         return true;
     }
@@ -105,7 +105,7 @@ public class EquipCfg
         }
 
         var json = File.ReadAllText(ConfigFilePath);
-        EquipList = JsonConvert.DeserializeObject<List<Equipments>>(json);
+        EquipList = json.ToUpperCamelCase<List<Equipments>>();
     }
 
     public Equipments GetEquipmentByJobAndLevel(emJob job, int level)
