@@ -11,6 +11,21 @@ using System.Threading.Tasks;
 
 public static class SerializeUtil
 {
+    private static readonly JsonSerializerSettings UpperSetting = new JsonSerializerSettings
+    {
+        // 设置枚举转换为字符串
+        Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new UpperCamelCaseNamingStrategy()) },
+        ContractResolver = new UpperCamelCaseContractResolver(),
+        Formatting = Formatting.Indented
+    };
+
+    private static readonly JsonSerializerSettings LowerSetting = new JsonSerializerSettings
+    {
+        // 设置枚举转换为字符串
+        Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new LowerCamelCaseNamingStrategy()) },
+        ContractResolver = new LowerCamelCaseContractResolver(),
+        Formatting = Formatting.Indented
+    };
     public static T ToObject<T>(this ExpandoObject dynamicObject)
     {
         // 将dynamic对象序列化为JSON字符串
@@ -29,26 +44,14 @@ public static class SerializeUtil
 
     public static T ToUpperCamelCase<T>(this string str)
     {
-        var settings = new JsonSerializerSettings
-        {
-            // 设置枚举转换为字符串
-            Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new UpperCamelCaseNamingStrategy()) },
-            ContractResolver = new UpperCamelCaseContractResolver(),
-            Formatting = Formatting.Indented
-        };
-        return JsonConvert.DeserializeObject<T>(str, settings);
+    
+        return JsonConvert.DeserializeObject<T>(str, UpperSetting);
     }
 
     public static string ToLowerCamelCase(this object obj)
     {
-        var settings = new JsonSerializerSettings
-        {
-            // 设置枚举转换为字符串
-            Converters = new List<JsonConverter> { new Newtonsoft.Json.Converters.StringEnumConverter(new LowerCamelCaseNamingStrategy()) },
-            ContractResolver = new LowerCamelCaseContractResolver(),
-            Formatting = Formatting.Indented
-        };
-        return JsonConvert.SerializeObject(obj, settings);
+    
+        return JsonConvert.SerializeObject(obj, LowerSetting);
     }
 
     public class UpperCamelCaseNamingStrategy : NamingStrategy
