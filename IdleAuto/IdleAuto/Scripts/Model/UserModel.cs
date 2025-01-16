@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeSql.DataAnnotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,12 @@ public class UserModel
         Roles = new List<RoleModel>();
         IsLogin = false;
     }
+    public UserModel()
+    {
+
+    }
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Id { get; set; }
     /// <summary>
     /// 账户名字
     /// </summary>
