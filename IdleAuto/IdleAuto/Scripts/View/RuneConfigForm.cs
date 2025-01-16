@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IdleAuto.Db;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +14,8 @@ namespace IdleAuto.Scripts.View
 {
     public partial class RuneConfigForm : Form
     {
+        private List<RuneCompandData> Runes;
+
         public RuneConfigForm()
         {
             InitializeComponent();
@@ -20,22 +24,29 @@ namespace IdleAuto.Scripts.View
 
         private void InitializeRuneCfgItems()
         {
-            var runes = RuneCompandCfg.Instance.RuneCompandData;
-            runes.Sort((a, b) =>
+            var runeDb = FreeDb.Sqlite.Select<RuneCompandData>();
+            Runes = runeDb.ToList();
+            if (Runes == null || Runes.Count == 0)
+            {
+                Runes = RuneCompandCfg.Instance.RuneCompandData;
+                FreeDb.Sqlite.Insert<RuneCompandData>(Runes).ExecuteAffrows();
+            }
+
+            Runes.Sort((a, b) =>
             {
                 return a.ID.CompareTo(b.ID);
             });
-            for (int i = 0; i < runes.Count; i++)
+            for (int i = 0; i < Runes.Count; i++)
             {
                 var item = new RuneCfgItem();
                 this.ListPanel.Controls.Add(item);
-                item.SetData(runes[i], OnRuneItemValueChanged);
+                item.SetData(Runes[i], OnRuneItemValueChanged);
             }
         }
 
         private void OnRuneItemValueChanged(int id, int value)
         {
-            RuneCompandCfg.Instance.RuneCompandData.Find((rune) =>
+            Runes.Find((rune) =>
             {
                 return rune.ID == id;
             }).CompandNum = value;
@@ -44,15 +55,14 @@ namespace IdleAuto.Scripts.View
         private void BtnCancle_Click(object sender, EventArgs e)
         {
             ClearItems();
-            RuneCompandCfg.Instance.SetDirty();
             this.Close();
         }
 
         private void BtnConfirm_Click(object sender, EventArgs e)
         {
-            ClearItems();
-            RuneCompandCfg.Instance.SaveConfig();
+            var runs = FreeDb.Sqlite.Update<RuneCompandData>().SetSource(Runes).ExecuteAffrows();
             RuneController.Instance.AutoUpgradeRune();
+            ClearItems();
             this.Close();
         }
 

@@ -2,10 +2,12 @@
 using CefSharp.DevTools.Network;
 using CefSharp.WinForms;
 using CefSharp.WinForms.Internals;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Controller;
 using IdleAuto.Scripts.View;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -386,7 +388,11 @@ public partial class MainForm : Form
 
     private void BtnAutoEquip_Click(object sender, EventArgs e)
     {
-        //var equips = EquipCfg.Instance.EquipList;
-        EquipController.Instance.StartAutoEquip();
+        var uList = new List<UserModel>();
+        foreach (var item in AccountCfg.Instance.Accounts)
+        {
+            var u = new UserModel(item);
+            uList.Add(u);
+        }
     }
 }
