@@ -53,6 +53,7 @@ partial class MainForm
             this.LoadingPanel = new System.Windows.Forms.Panel();
             this.LoadingContent = new System.Windows.Forms.Label();
             this.LoadingBg = new System.Windows.Forms.PictureBox();
+            this.BtnInit = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
@@ -92,6 +93,7 @@ partial class MainForm
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.BtnInit);
             this.HomeGroup.Controls.Add(this.BtnAutoEquip);
             this.HomeGroup.Controls.Add(this.BtnAutoOnline);
             this.HomeGroup.Location = new System.Drawing.Point(0, 40);
@@ -103,7 +105,7 @@ partial class MainForm
             // 
             // BtnAutoEquip
             // 
-            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 49);
+            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 78);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
             this.BtnAutoEquip.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoEquip.TabIndex = 1;
@@ -113,7 +115,7 @@ partial class MainForm
             // 
             // BtnAutoOnline
             // 
-            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 20);
+            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 49);
             this.BtnAutoOnline.Name = "BtnAutoOnline";
             this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoOnline.TabIndex = 0;
@@ -352,6 +354,16 @@ partial class MainForm
             this.LoadingBg.TabIndex = 2;
             this.LoadingBg.TabStop = false;
             // 
+            // BtnInit
+            // 
+            this.BtnInit.Location = new System.Drawing.Point(12, 20);
+            this.BtnInit.Name = "BtnInit";
+            this.BtnInit.Size = new System.Drawing.Size(75, 23);
+            this.BtnInit.TabIndex = 2;
+            this.BtnInit.Text = "账号初始化";
+            this.BtnInit.UseVisualStyleBackColor = true;
+            this.BtnInit.Click += new System.EventHandler(this.BtnInit_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -407,4 +419,5 @@ partial class MainForm
     private System.Windows.Forms.GroupBox RoleGroup;
     private System.Windows.Forms.GroupBox AhGroup;
     private System.Windows.Forms.Button BtnAutoAh;
+    private System.Windows.Forms.Button BtnInit;
 }
