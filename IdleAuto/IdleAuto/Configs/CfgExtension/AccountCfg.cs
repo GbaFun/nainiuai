@@ -42,6 +42,10 @@ public class Account
     [JsonProperty("password")]
     public string Password { get; set; }
     /// <summary>
+    /// 起号时候的前缀
+    /// </summary>
+    public string Prefix { get; set; }
+    /// <summary>
     /// 账号名字
     /// </summary>
     [JsonProperty("account")]

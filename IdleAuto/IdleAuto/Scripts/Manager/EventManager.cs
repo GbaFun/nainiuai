@@ -27,9 +27,9 @@ public enum emEventType
     /// </summary>
     OnScanAh,
     /// <summary>
-    /// 载入人物属性页
+    /// 初始化账号 包括角色 组队 工会
     /// </summary>
-    OnCharLoaded
+    OnInitChar
 }
 
 public class EventManager

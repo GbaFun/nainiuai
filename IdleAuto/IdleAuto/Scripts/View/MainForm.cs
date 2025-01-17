@@ -47,7 +47,6 @@ public partial class MainForm : Form
         ShowAccountCombo();
         HideLoadingPanel();
         EventManager.Instance.SubscribeEvent(emEventType.OnAccountDirty, OnAccountDirty);
-        EventManager.Instance.SubscribeEvent(emEventType.OnCharLoaded, CharacterController.Instance.OnCharLoaded);
         OnAccountDirty(null);
         Instance = this;
     }
@@ -286,6 +285,7 @@ public partial class MainForm : Form
             {
                 id = int.Parse(result.Groups[1].Value);
                 RoleModel role = RoleCombo.Items.Cast<RoleModel>().FirstOrDefault(s => s.RoleId == id);
+                if (role == null) return;//先跳过一下
                 this.Invoke(new Action(() => RefreshRole(role)));
             }
         }
@@ -364,7 +364,7 @@ public partial class MainForm : Form
         //https://www.idleinfinity.cn/Character/RuneLog?uid=13846682&id=10728
     }
 
-    private void BtnAutoAh_Click(object sender, EventArgs e)
+    public void BtnAutoAh_Click(object sender, EventArgs e)
     {
         //todo 自动拍卖
         if (!AuctionController.Instance.IsStart)
@@ -391,13 +391,17 @@ public partial class MainForm : Form
         EquipController.Instance.StartAutoEquip();
     }
 
-    private void BtnInit_Click(object sender, EventArgs e)
+    public void BtnInit_Click(object sender, EventArgs e)
     {
-        EquipController.Instance.SaveAllEquips();
+        BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
+        if (!CharacterController.Instance.IsAutoInit)
+        {
+            CharacterController.Instance.StartInit();
 
-        //todo 账号初始化
-        // 根据配置创建角色(自动命名,选择种族,职业)
-        // 自动创建工会
-        // 自动进行组队
+        }
+        else
+        {
+            CharacterController.Instance.Stop();
+        }
     }
 }
