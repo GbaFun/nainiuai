@@ -429,7 +429,6 @@ public class EquipController
         {
             equip.emEquipType = emItemType.道具;
         }
-        equip.EquipBaseName = equip.emEquipType.ToString();
     }
 }
 

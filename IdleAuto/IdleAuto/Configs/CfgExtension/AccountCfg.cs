@@ -31,11 +31,24 @@ public class AccountCfg
 
 public class Account
 {
+    /// <summary>
+    /// 账户登录名
+    /// </summary>
+    [JsonProperty("username")]
     public string Username { get; set; }
+    /// <summary>
+    /// 登录密码
+    /// </summary>
+    [JsonProperty("password")]
     public string Password { get; set; }
-
-    public override string ToString()
-    {
-        return $"Username: {Username}, Password: {Password}";
-    }
+    /// <summary>
+    /// 账号名字
+    /// </summary>
+    [JsonProperty("account")]
+    public string AccountName { get; set; }
+    /// <summary>
+    /// 账号ID
+    /// </summary>
+    [JsonProperty("accountId")]
+    public int AccountID { get; set; }
 }
