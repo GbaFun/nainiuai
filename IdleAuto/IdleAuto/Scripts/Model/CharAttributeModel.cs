@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FreeSql.DataAnnotations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace IdleAuto.Scripts.Model
     }
     public class CharAttributeModel
     {
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
+        [Navigate(nameof(RoleModel.RoleId))]
         public int RoleId { get; set; }
 
         [Description("力量")]

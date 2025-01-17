@@ -1,10 +1,12 @@
 ﻿using CefSharp;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreeSql;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -30,7 +32,15 @@ namespace IdleAuto.Scripts.Controller
 
         public async void OnCharLoaded(params object[] args)
         {
-            await GetCharAtt();
+            var c = await GetCharAtt();
+            AccountController.Instance.User.Roles.ForEach(p => { p.Attribute = new List<CharAttributeModel>() { c }; });
+
+            FreeDb.Sqlite.Insert(AccountController.Instance.User.Roles).ExecuteAffrows();
+            var attList = AccountController.Instance.User.Roles.SelectMany(p => p.Attribute);
+            FreeDb.Sqlite.Insert(attList).ExecuteAffrows();
+
+
+
         }
 
         /// <summary>
@@ -48,10 +58,6 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        private void UpdateAttribute(CharAttributeModel data)
-        {
-            var r = AccountController.Instance.User.Roles.Find(p => p.RoleId == data.RoleId);
-            r.Attribute = data;
-        }
+
     }
 }

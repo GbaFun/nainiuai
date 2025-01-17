@@ -72,7 +72,9 @@ public class PageLoadHandler
                     }})();
                 ";
 
-        bro.ExecuteScriptAsync(script);
+        await Task.Run(() => {
+            bro.ExecuteScriptAsync(script);
+        });
     }
     private static async Task LoadGlobalJs(string path, ChromiumWebBrowser bro)
     {
@@ -86,7 +88,9 @@ public class PageLoadHandler
                     {scriptContent}
                 ";
 
-        bro.ExecuteScriptAsync(script);
+        await Task.Run(() => {
+            bro.ExecuteScriptAsync(script);
+        });
     }
 
 
