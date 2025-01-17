@@ -388,16 +388,13 @@ public partial class MainForm : Form
 
     private void BtnAutoEquip_Click(object sender, EventArgs e)
     {
-        var uList = new List<UserModel>();
-        foreach (var item in AccountCfg.Instance.Accounts)
-        {
-            var u = new UserModel(item);
-            uList.Add(u);
-        }
+        EquipController.Instance.StartAutoEquip();
     }
 
     private void BtnInit_Click(object sender, EventArgs e)
     {
+        EquipController.Instance.SaveAllEquips();
+
         //todo 账号初始化
         // 根据配置创建角色(自动命名,选择种族,职业)
         // 自动创建工会

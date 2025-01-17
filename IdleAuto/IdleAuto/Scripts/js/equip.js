@@ -18,14 +18,14 @@ function getCurEquips() {
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
         var e = {};//装备对象
-        e.etype = $(this).data('type');
+        e.esort = $(this).data('type');
         var __equip = $(this).prev();
         e.eid = __equip.data('id');
         e.equipName = equipItem.text().replace('【', '').replace('】', '');
         e.equipTypeName = equipItem.prev().text().replace('：', '');
         var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
         e.content = equipContent.text();
-        eMap[e.etype] = e;
+        eMap[e.esort] = e;
     });
 
     return eMap;
@@ -43,13 +43,13 @@ function getPackageEquips() {
         e.equipName = equipContent.find('p:first').text();
         e.equipTypeName = equipContent.find('p:first').next().text();
         e.content = equipContent.text();
-        if (!e.equipName.includes('秘境') &&
-            !e.equipTypeName.includes('药水') &&
-            !e.equipTypeName.includes('珠宝') &&
-            !e.equipTypeName.includes('卡片') &&
-            !e.equipTypeName.includes('宝箱')) {
-            eMap[e.eid] = e;
-        }
+        //if (!e.equipName.includes('秘境') &&
+        //    !e.equipTypeName.includes('药水') &&
+        //    !e.equipTypeName.includes('珠宝') &&
+        //    !e.equipTypeName.includes('卡片') &&
+        //    !e.equipTypeName.includes('宝箱')) {
+        eMap[e.eid] = e;
+        //}
     });
     return eMap;
 }
@@ -67,13 +67,13 @@ function getRepositoryEquips() {
         e.equipTypeName = equipContent.find('p:first').next().text();
         e.content = equipContent.text();
         console.log(e);
-        if (!e.equipName.includes('秘境') &&
-            !e.equipTypeName.includes('药水') &&
-            !e.equipTypeName.includes('珠宝') &&
-            !e.equipTypeName.includes('卡片') &&
-            !e.equipTypeName.includes('宝箱')) {
-            eMap[e.eid] = e;
-        }
+        //if (!e.equipName.includes('秘境') &&
+        //    !e.equipTypeName.includes('药水') &&
+        //    !e.equipTypeName.includes('珠宝') &&
+        //    !e.equipTypeName.includes('卡片') &&
+        //    !e.equipTypeName.includes('宝箱')) {
+        eMap[e.eid] = e;
+        //}
     });
     return eMap;
 }

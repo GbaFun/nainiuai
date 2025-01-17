@@ -35,7 +35,7 @@ public enum emRace
     矮人 = 8,
 }
 
-public enum emEquipType
+public enum emEquipSort
 {
     头盔 = 0,
     衣服 = 1,
@@ -48,6 +48,77 @@ public enum emEquipType
     戒指2 = 8,
     项链 = 9,
     护符 = 10,
+}
+
+public enum emItemType
+{
+    头盔 = 0,
+    衣服 = 1,
+    手套 = 2,
+    靴子 = 3,
+    腰带 = 4,
+    主手 = 5,
+    副手 = 6,
+    戒指 = 7,
+    项链 = 8,
+    护符 = 9,
+    秘境 = 10,
+    道具 = 11,
+    珠宝 = 12,
+}
+public enum emItemSubType
+{
+    帽子,
+    衣服,
+    盾,
+    手套,
+    靴子,
+    腰带,
+    头饰,
+    戒指,
+    项链,
+    珠宝,
+    护符,
+    秘境,
+    道具,
+    斧,
+    剑,
+    锤,
+    长矛,
+    匕首,
+    法杖,
+    权杖,
+    弓,
+    十字弓,
+    标枪,
+    投掷武器,
+    法珠,
+    爪,
+    游侠弓,
+    游侠标枪,
+    战士头盔,
+    祭祀刀,
+    牧师副手,
+    手杖,
+    死灵副手,
+    骑士盾牌,
+    萨满头饰,
+    贤者头盔,
+    拳套,
+    手弩,
+    死骑面罩
+}
+public enum emItemQuality
+{
+    PHYSICAL,       //全部
+    BASE,           //普通
+    MAGICAL,        //魔法
+    RARE,           //稀有
+    CRAFT,          //手工
+    SET,            //套装
+    UNIQUE,         //传奇
+    ARTIFACT,       //神器
+    HOLY,           //圣衣
 }
 
 public enum emMaskType

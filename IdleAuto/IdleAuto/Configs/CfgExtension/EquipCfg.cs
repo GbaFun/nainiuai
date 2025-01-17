@@ -18,7 +18,7 @@ public class LevelRange
 }
 public class Equipment : Item
 {
-    public emEquipType emEquipType { get; set; }
+    public emItemType emEquipType { get; set; }
 }
 public class Item
 {
@@ -53,31 +53,31 @@ public class Equipments
     public Equipment 手套 { get; set; }
     public Equipment 靴子 { get; set; }
 
-    public Equipment GetEquipByType(emEquipType type)
+    public Equipment GetEquipBySort(emEquipSort type)
     {
         switch (type)
         {
-            case emEquipType.主手:
+            case emEquipSort.主手:
                 return 主手;
-            case emEquipType.副手:
+            case emEquipSort.副手:
                 return 副手;
-            case emEquipType.头盔:
+            case emEquipSort.头盔:
                 return 头盔;
-            case emEquipType.护符:
+            case emEquipSort.护符:
                 return 护符;
-            case emEquipType.项链:
+            case emEquipSort.项链:
                 return 项链;
-            case emEquipType.戒指1:
+            case emEquipSort.戒指1:
                 return 戒指1;
-            case emEquipType.戒指2:
+            case emEquipSort.戒指2:
                 return 戒指2;
-            case emEquipType.衣服:
+            case emEquipSort.衣服:
                 return 衣服;
-            case emEquipType.腰带:
+            case emEquipSort.腰带:
                 return 腰带;
-            case emEquipType.手套:
+            case emEquipSort.手套:
                 return 手套;
-            case emEquipType.靴子:
+            case emEquipSort.靴子:
                 return 靴子;
             default:
                 return null;

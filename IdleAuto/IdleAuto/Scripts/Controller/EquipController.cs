@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using IdleAuto.Db;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,6 +24,75 @@ public class EquipController
 
     private delegate void OnJsInitCallBack(bool result);
     private OnJsInitCallBack onJsInitCallBack;
+
+    public void SaveAllEquips()
+    {
+        StartSaveEquips();
+    }
+    public async void StartSaveEquips()
+    {
+        MainForm.Instance.ShowLoadingPanel("开始缓存仓库装备", emMaskType.AUTO_EQUIPING);
+
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
+        Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
+        P.Log("开始缓存装备", emLogType.AutoEquip);
+        int page = 1;
+        bool jumpNextPage = false;
+        #region 缓存仓库装备
+        MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
+        do
+        {
+            jumpNextPage = false;
+            P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
+            var response1 = await GetRepositoryEquips();
+            if (response1.Success)
+            {
+                var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
+                if (equips != null)
+                {
+                    foreach (var item in equips)
+                    {
+                        EquipModel equip = item.Value;
+                        equip.SetAccountInfo(AccountController.Instance.User);
+                        CheckEquipType(equip);
+                        if (!repositoryEquips.ContainsKey(item.Key))
+                            repositoryEquips.Add(item.Key, item.Value);
+                    }
+                }
+            }
+
+            P.Log($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
+            MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
+            P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
+            var response2 = await JumpRepositoryPage();
+            if (response2.Success)
+            {
+                if ((bool)response2.Result)
+                {
+                    P.Log("等待仓库切页完成", emLogType.AutoEquip);
+                    var tcs2 = new TaskCompletionSource<bool>();
+                    onJsInitCallBack = (result) => tcs2.SetResult(result);
+                    await tcs2.Task;
+                    P.Log("仓库切页完成");
+                    page++;
+                    jumpNextPage = true;
+                    await Task.Delay(500);
+                }
+                else
+                {
+                    P.Log("仓库最后一页了！", emLogType.AutoEquip);
+                    jumpNextPage = false;
+                }
+            }
+        } while (jumpNextPage);
+
+        FreeDb.Sqlite.Insert<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
+        P.Log("缓存仓库完成！！");
+        #endregion
+
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
+        MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
+    }
     public void StartAutoEquip()
     {
         AutoEquip();
@@ -194,11 +264,11 @@ public class EquipController
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
 
-            Dictionary<emEquipType, EquipModel> curEquips = null;
+            Dictionary<emEquipSort, EquipModel> curEquips = null;
             var response = await GetCurEquips();
             if (response.Success)
             {
-                curEquips = response.Result.ToObject<Dictionary<emEquipType, EquipModel>>();
+                curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
                 var targetEquips = EquipCfg.Instance.GetEquipmentByJobAndLevel(role.Job, role.Level);
                 if (targetEquips == null)
                 {
@@ -212,13 +282,13 @@ public class EquipController
                         bool isSuccess = false;
                         //每个部位检查装备前增加500ms得等待时间
                         await Task.Delay(500);
-                        Equipment targetEquip = targetEquips.GetEquipByType((emEquipType)j);
+                        Equipment targetEquip = targetEquips.GetEquipBySort((emEquipSort)j);
                         string targetEquipName = targetEquip.Name;
-                        if (curEquips != null && curEquips.TryGetValue((emEquipType)j, out EquipModel equip))
+                        if (curEquips != null && curEquips.TryGetValue((emEquipSort)j, out EquipModel equip))
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.EquipName.Contains(targetEquipName))
                             {
-                                P.Log($"{role.RoleName}的{equip.EquipTypeName}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
+                                P.Log($"{role.RoleName}的{equip.EquipBaseName}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
                                 continue;
                             }
                         }
@@ -226,9 +296,9 @@ public class EquipController
                         {
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
-                                if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
+                                if (j == (int)emEquipSort.副手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2)
                                 {
-                                    P.Log($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
+                                    P.Log($"{(emEquipSort)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
                                     if (response3.Success)
                                     {
@@ -258,9 +328,9 @@ public class EquipController
                         {
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
-                                if (j == (int)emEquipType.副手 || j == (int)emEquipType.戒指1 || j == (int)emEquipType.戒指2)
+                                if (j == (int)emEquipSort.副手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2)
                                 {
-                                    P.Log($"{(emEquipType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
+                                    P.Log($"{(emItemType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
                                     if (response3.Success)
                                     {
@@ -341,6 +411,25 @@ public class EquipController
             onJsInitCallBack?.Invoke(true);
             onJsInitCallBack = null;
         }
+    }
+
+    public static void CheckEquipType(EquipModel equip)
+    {
+        if (equip.EquipName.Contains("秘境"))
+        {
+            equip.emEquipType = emItemType.秘境;
+        }
+        else if (equip.EquipBaseName.Contains("珠宝"))
+        {
+            equip.emEquipType = emItemType.珠宝;
+        }
+        else if (equip.EquipBaseName.Contains("药水")
+             || equip.EquipBaseName.Contains("卡片")
+             || equip.EquipBaseName.Contains("宝箱"))
+        {
+            equip.emEquipType = emItemType.道具;
+        }
+        equip.EquipBaseName = equip.emEquipType.ToString();
     }
 }
 
