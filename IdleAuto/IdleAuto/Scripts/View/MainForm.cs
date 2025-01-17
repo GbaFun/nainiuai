@@ -397,7 +397,6 @@ public partial class MainForm : Form
         if (!CharacterController.Instance.IsAutoInit)
         {
             CharacterController.Instance.StartInit();
-
         }
         else
         {
