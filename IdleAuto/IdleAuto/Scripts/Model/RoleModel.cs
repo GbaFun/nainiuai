@@ -1,4 +1,5 @@
-﻿using IdleAuto.Scripts.Model;
+﻿using FreeSql.DataAnnotations;
+using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,12 @@ using System.Threading.Tasks;
 
 public class RoleModel
 {
+    [Column( IsPrimary = true)]
     public int RoleId { get; set; }
     public string RoleName { get; set; }
     public string RoleInfo { get; set; }
-
-    public CharAttributeModel Attribute { get; set; }
+    [Navigate(nameof(CharAttributeModel.RoleId))]
+    public List<CharAttributeModel> Attribute { get; set; }
 
     public int Level
     {
