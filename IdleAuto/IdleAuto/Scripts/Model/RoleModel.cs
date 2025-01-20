@@ -42,4 +42,16 @@ public class RoleModel
             return (emRace)Enum.Parse(typeof(emRace), race);
         }
     }
+    public override bool Equals(object obj)
+    {
+        var t = obj as RoleModel;
+        if (t == null) return false;
+        return t.RoleId == this.RoleId;
+    }
+    public override int GetHashCode()
+    {
+        return this.RoleId;
+    }
+
+
 }

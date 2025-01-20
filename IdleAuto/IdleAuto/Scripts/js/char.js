@@ -27,9 +27,7 @@
 
 
     }
-    async testInvoke() {
-        await Bridge.invokeEvent('OnCharLoaded');
-    }
+   
 
     getAttribute() {
         if (location.href.indexOf("Character/Detail") == -1) return;

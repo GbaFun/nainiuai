@@ -43,6 +43,10 @@ public class AccountController
                 User.SetLogin(isSuccess, account, roles);
                 EventManager.Instance.InvokeEvent(emEventType.OnAccountDirty, null);
             }
+            else
+            {
+                User.UnionRoles(roles);
+            }
         }
     }
 }

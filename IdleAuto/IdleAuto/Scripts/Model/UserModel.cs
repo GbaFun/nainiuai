@@ -43,6 +43,11 @@ public class UserModel
         Roles.AddRange(roles);
     }
 
+    public void UnionRoles(List<RoleModel> roles)
+    {
+      Roles=  Roles.Union(roles).ToList();
+    }
+
     public RoleModel FirstRole
     {
         get

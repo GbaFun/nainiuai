@@ -81,6 +81,7 @@
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
     <Compile Include="Scripts\Model\SkillModel.cs" />
+    <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
     <Compile Include="Scripts\View\CustomItem\RuneCfgItem.cs">

@@ -28,8 +28,11 @@ let _init = {};
         };
         debugger;
         POST_Message("Create", data, "post", 1500).then((r) => {
-            location.href = "home/index";
+            location.href = "Home/Index";
         }).catch((e) => {
+            if (e.responseText.indexOf("角色名称已经存在")>-1) {
+                Bridge.invokeEvent('OnCharNameConflict');
+            }
             if (e.status == 200) {
                 location.href = "../Home/Index";
             }
@@ -49,10 +52,30 @@ let _init = {};
         });
         return roles;
     }
+    async function hasUnion(data) {
+        var hasUnion = $("span:contains('工会')").next().text().indexOf("创建并邀请") > -1;
+        return hasUnion;
+    }
 
-    
+    async function createUnion(data) {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            id: data.firstRoleId,
+            type: 2,
+            cname: data.cname,
+            gname: data.gname
+        };
+        debugger;
+        POST_Message("GroupCreate", data, "post", 1500).then((r) => {
+            location.reload();
+        }).catch((e) => {
+            location.reload();
+        })
+    }
 
 
     _init.createRole = createRole;
     _init.getRoleInfo = getRoleInfo;
+    _init.hasUnion = hasUnion;
+    _init.createUnion = createUnion;
 })();

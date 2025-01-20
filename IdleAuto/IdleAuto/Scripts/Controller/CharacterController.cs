@@ -24,6 +24,7 @@ namespace IdleAuto.Scripts.Controller
         "酿造台", "治疗药水", "再生药水", "水肺药水", "虚弱药水", "喷溅药水", "力量药水", "迅捷药水", "夜视药水", "隐身药水", "跳跃药水", "缓降药水",
         "打火石", "木屋", "TNT", "铁轨机", "刷线机", "地狱门", "刷怪笼", "附魔台", "末影珍珠", "熔岩桶", "烟花火箭", "火焰弹"
     };
+
         private static CharacterController instance;
         public static CharacterController Instance
         {
@@ -45,10 +46,17 @@ namespace IdleAuto.Scripts.Controller
         /// 角色总数
         /// </summary>
         public int CharCount { get; set; }
+        /// <summary>
+        /// 起名冲突加值
+        /// </summary>
+        public int CharNameSeed { get; set; }
+
+        private static string PrefixName = ConfigUtil.GetAppSetting("PrefixName");
 
         public CharacterController()
         {
             EventManager.Instance.SubscribeEvent(emEventType.OnInitChar, OnInitChar);
+            EventManager.Instance.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
         }
 
         /// <summary>
@@ -61,7 +69,14 @@ namespace IdleAuto.Scripts.Controller
             await Task.Delay(500);
             var curName = AccountController.Instance.User.Username;
             var index = AccountCfg.Instance.Accounts.FindIndex(p => p.Username == curName);
-            return Names[12 * index + CharCount];
+            if (!String.IsNullOrWhiteSpace(PrefixName))
+            {
+
+                var name = $@"{PrefixName}{24 * index + CharCount + CharNameSeed }";
+                return name;
+            }
+
+            return Names[12 * index + CharCount] + (CharNameSeed == 0 ? "" : CharNameSeed.ToString());
         }
         /// <summary>
         /// 生成种族和职业
@@ -73,6 +88,7 @@ namespace IdleAuto.Scripts.Controller
             var roles = AccountController.Instance.User.Roles;
             if (roles.Where(p => p.Job == emJob.骑士).Count() < 4)
             {
+                var count = roles.Where(p => p.Job == emJob.骑士).Count();
                 return new Tuple<int, int>(1, 5);
             }
             if (roles.Where(p => p.Job == emJob.死灵).Count() < 4)
@@ -102,6 +118,16 @@ namespace IdleAuto.Scripts.Controller
                 await StartAutoJob();
             }
         }
+
+        /// <summary>
+        /// 起名冲突
+        /// </summary>
+        /// <param name="args"></param>
+        private async void OnCharNameConflict(params object[] args)
+        {
+            await Task.Delay(500);
+            CharNameSeed += 1;
+        }
         /// <summary>
         /// 开始
         /// </summary>
@@ -114,6 +140,7 @@ namespace IdleAuto.Scripts.Controller
         public void Stop()
         {
             IsAutoInit = false;
+            MainForm.Instance.btnInit.Text = "开始初始化";
         }
         /// <summary>
         /// 开始自动执行
@@ -125,10 +152,12 @@ namespace IdleAuto.Scripts.Controller
                 if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.HomePage) > -1)
                 {
                     var roles = await GetRoles();
-                    CharCount = roles.Count;
-                    if (roles.Count >= 12)
+
+                    CharCount = roles == null ? 0 : roles.Count;
+                    if (CharCount >= 12)
                     {
-                        IsAutoInit = false;
+                        
+                        await GoToMakeGroup();
                         return;
                     }
                     await Task.Delay(1500);
@@ -138,9 +167,84 @@ namespace IdleAuto.Scripts.Controller
                 {
                     await CreateRole();
                 }
+                else if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.CharGroup) > -1)
+                {
+                    await MakeGroup();
+                }
             }
         }
 
+        private async Task GoToMakeGroup()
+        {
+            if (MainForm.Instance.browser.Address.IndexOf("Character/Group") == -1)
+            {
+                MainForm.Instance.browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={AccountController.Instance.User.Roles[0].RoleId}");
+            }
+            await Task.Delay(500);
+        }
+
+        /// <summary>
+        /// 组队
+        /// </summary>
+        /// <returns></returns>
+        private async Task MakeGroup()
+        {
+            await Task.Delay(500);
+
+            var hasUnion = await HasUnion();
+            if (!hasUnion)
+            {
+                //创建工会
+                await CreateUnion();
+            }
+            else
+            {
+                
+            }
+        }
+
+        /// <summary>
+        /// 是否有工会
+        /// </summary>
+        /// <returns></returns>
+        private async Task<Boolean> HasUnion()
+        {
+            await Task.Delay(1000);
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.hasUnion();");
+                return d.Result.ToObject<Boolean>();
+            }
+            else return false;
+        }
+
+        /// <summary>
+        /// 是否有工会
+        /// </summary>
+        /// <returns></returns>
+        private async Task CreateUnion()
+        {
+            await Task.Delay(1000);
+            var data = new Dictionary<string, object>();
+            data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
+            data["cname"] = AccountController.Instance.User.Roles[1].RoleName;
+            data["gname"] = AccountController.Instance.User.Roles[0].RoleName + "★";
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.createUnion({data.ToLowerCamelCase()});");
+
+            }
+
+        }
+
+        /// <summary>
+        /// 获取没在工会中的人员
+        /// </summary>
+        /// <returns></returns>
+        private string GetNotInUnionName()
+        {
+            return "";
+        }
 
         /// <summary>
         /// 获取人物属性
