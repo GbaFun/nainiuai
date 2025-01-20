@@ -19,6 +19,7 @@ public class PageLoadHandler
     public const string MaterialPage = "Equipment/Material";
     public const string AhPage = "Auction/Query";
     public const string EquipPage = "Equipment/Query";
+    public const string CharCreate = "Character/Create";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -36,6 +37,8 @@ public class PageLoadHandler
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             await LoadJs(jsPath, browser);
+            var initPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
+            await LoadGlobalJs(initPath, browser);
         }
         else if (ContainsUrl(url, AhPage))
         {
@@ -52,6 +55,12 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
             await LoadGlobalJs(jsPath, browser);
         }
+        else if (ContainsUrl(url, CharCreate))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
+
     }
 
 
@@ -72,7 +81,8 @@ public class PageLoadHandler
                     }})();
                 ";
 
-        await Task.Run(() => {
+        await Task.Run(() =>
+        {
             bro.ExecuteScriptAsync(script);
         });
     }
@@ -88,7 +98,8 @@ public class PageLoadHandler
                     {scriptContent}
                 ";
 
-        await Task.Run(() => {
+        await Task.Run(() =>
+        {
             bro.ExecuteScriptAsync(script);
         });
     }

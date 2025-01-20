@@ -30,6 +30,7 @@ public class AccountController
     //当前登录账号
     public UserModel User;
 
+
     private void OnLoginSuccess(params object[] args)
     {
         if (args.Length == 3)

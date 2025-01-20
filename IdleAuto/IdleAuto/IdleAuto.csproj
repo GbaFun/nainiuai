@@ -206,6 +206,9 @@
     <Content Include="Scripts\js\IdleUtils.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\init.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\js\login.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

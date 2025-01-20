@@ -3,60 +3,70 @@
     "username": "RasdSky",
     "password": "123456",
     "account": "南宫",
-    "accountId": 13826420
+    "accountId": 13826420,
+    "prefix": "MC"
   },
   {
     "username": "RasdGch",
     "password": "123456",
     "account": "北宫",
-    "accountId": 13852404
+    "accountId": 13852404,
+    "prefix": "MC"
   },
   {
     "username": "xiaohua1",
     "password": "123456",
     "account": "打火石",
-    "accountId": 13853281
+    "accountId": 13853281,
+    "prefix": "MC"
   },
   {
     "username": "niu1",
     "password": "123456",
     "account": "铁矿石",
-    "accountId": 13853212
+    "accountId": 13853212,
+    "prefix": "MC"
   },
   {
     "username": "niu2",
     "password": "123456",
     "account": "绿宝石",
-    "accountId": 13853216
+    "accountId": 13853216,
+    "prefix": "MC"
   },
   {
     "username": "yaodui",
     "password": "123456",
     "account": "史蒂夫",
-    "accountid": 13846682
+    "accountid": 13846682,
+    "prefix": "MC"
   },
   {
     "username": "yaodui1",
     "password": "yaodui",
     "account": "南方10086",
-    "accountId": 13852362
+    "accountId": 13852362,
+    "prefix": "MC"
   },
   {
     "username": "yaodui2",
     "password": "123456",
     "account": "萤石矿",
-    "accountId": 13853206
+    "accountId": 13853206,
+    "prefix": "MC"
   },
   {
     "username": "yaodui3",
     "password": "123456",
     "account": "钻石矿",
-    "accountId": 13853207
+    "accountId": 13853207,
+    "prefix": "MC"
   },
   {
     "username": "15365261391",
     "password": "zxc123",
     "account": "暴走喵星人1",
-    "accountId": 13851807
+    "accountId": 13851807,
+    "prefix": "MC"
   }
 ]
