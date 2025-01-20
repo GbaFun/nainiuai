@@ -32,6 +32,11 @@ public enum emEventType
     OnInitChar,
 
     /// <summary>
+    /// 角色载入
+    /// </summary>
+    OnCharLoaded,
+
+    /// <summary>
     /// 角色名冲突
     /// </summary>
     OnCharNameConflict

@@ -6,7 +6,7 @@
     constructor() {
         this.init().then(() => {
             this.initCurrentChar();
-            
+            if (this.cid) Bridge.invokeEvent('OnCharLoaded', this.cid);
         });
     }
     async init() {

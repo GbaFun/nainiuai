@@ -51,6 +51,10 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         public int CharNameSeed { get; set; }
 
+        public RoleModel CurRole { get; set; }
+
+        public int CurRoleIndex { get; set; }
+
         private static string PrefixName = ConfigUtil.GetAppSetting("PrefixName");
 
         public CharacterController()
@@ -112,7 +116,6 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="args"></param>
         private async void OnInitChar(params object[] args)
         {
-
             if (IsAutoInit)
             {
                 await StartAutoJob();
@@ -140,7 +143,10 @@ namespace IdleAuto.Scripts.Controller
         public void Stop()
         {
             IsAutoInit = false;
-            MainForm.Instance.btnInit.Text = "开始初始化";
+            MainForm.Instance.btnInit.Invoke(new Action(() =>
+            {
+                MainForm.Instance.btnInit.Text = "开始初始化";
+            }));
         }
         /// <summary>
         /// 开始自动执行
@@ -156,20 +162,34 @@ namespace IdleAuto.Scripts.Controller
                     CharCount = roles == null ? 0 : roles.Count;
                     if (CharCount >= 12)
                     {
-                        
+                        //12个号建完去组队页面
                         await GoToMakeGroup();
                         return;
                     }
-                    await Task.Delay(1500);
+                    await Task.Delay(1000);
+                    //不满12个号去建号
                     MainForm.Instance.browser.LoadUrl("https://www.idleinfinity.cn/Character/Create");
                 }
                 else if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.CharCreate) > -1)
                 {
+                    //建号
                     await CreateRole();
                 }
                 else if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.CharGroup) > -1)
                 {
-                    await MakeGroup();
+                    //工会
+                    var isUnionDone = await MakeUnion();
+                    if (isUnionDone)
+                    {
+                        //工会拉人结束 开始组队
+                        var isGroupDone = await MakeGroup();
+                        if (AccountController.Instance.CurRoleIndex == 9 && isGroupDone)
+                        {
+                            //最后一组完成
+                            Stop();
+                            return;
+                        }
+                    }
                 }
             }
         }
@@ -184,10 +204,51 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
-        /// 组队
+        /// 继续建队 跳三个角色作为队长
         /// </summary>
         /// <returns></returns>
-        private async Task MakeGroup()
+        private async Task ContinueMakeGroup()
+        {
+            await Task.Delay(1000);
+            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 3;
+            if (nextIndex > 11) return;
+            int roleId = AccountController.Instance.User.Roles[nextIndex].RoleId;
+            MainForm.Instance.browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={roleId}");
+
+        }
+
+
+        /// <summary>
+        /// 拉队伍
+        /// </summary>
+        /// <returns>true拉队伍结束需要换一组</returns>
+        private async Task<Boolean> MakeGroup()
+        {
+            var existMembers = await GetExistGroupMember();
+            if (existMembers.Length == 3 && AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) < 9)
+            {
+                await ContinueMakeGroup();
+            }
+
+            var hasGroup = await HasGroup();
+            if (!hasGroup)
+            {
+                await CreateGroup();
+                return false;
+            }
+            else
+            {
+                await AddGroupMember();
+                return true;//一个队伍三个人 加完一次就结束了
+            }
+
+        }
+
+        /// <summary>
+        /// 拉工会
+        /// </summary>
+        /// <returns>true拉工会结束 </returns>
+        private async Task<Boolean> MakeUnion()
         {
             await Task.Delay(500);
 
@@ -199,8 +260,17 @@ namespace IdleAuto.Scripts.Controller
             }
             else
             {
-                
+                var existMember = await GetExistUnionMember();
+                if (AccountController.Instance.User.Roles == null|| existMember==null)
+                {
+                    Console.WriteLine("roles空");
+                }
+                var notInUnionMember = AccountController.Instance.User.Roles.Where(p => !existMember.Contains(p.RoleName)).FirstOrDefault();
+                if (notInUnionMember == null) return true;
+                await AddUnionMember(notInUnionMember);
+
             }
+            return false;
         }
 
         /// <summary>
@@ -209,7 +279,6 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task<Boolean> HasUnion()
         {
-            await Task.Delay(1000);
             if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.hasUnion();");
@@ -220,6 +289,21 @@ namespace IdleAuto.Scripts.Controller
 
         /// <summary>
         /// 是否有工会
+        /// </summary>
+        /// <returns></returns>
+        private async Task<Boolean> HasGroup()
+        {
+            await Task.Delay(1000);
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.hasGroup();");
+                return d.Result.ToObject<Boolean>();
+            }
+            else return false;
+        }
+
+        /// <summary>
+        /// 创建工会
         /// </summary>
         /// <returns></returns>
         private async Task CreateUnion()
@@ -238,13 +322,94 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
-        /// 获取没在工会中的人员
+        /// 创建工会
         /// </summary>
         /// <returns></returns>
-        private string GetNotInUnionName()
+        private async Task CreateGroup()
         {
-            return "";
+            await Task.Delay(1000);
+            var data = new Dictionary<string, object>();
+            data["roleid"] = AccountController.Instance.CurRole.RoleId;
+            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 1;
+            data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
+            data["gname"] = AccountController.Instance.CurRole.RoleName + "★";
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.createGroup({data.ToLowerCamelCase()});");
+
+            }
+
         }
+
+        /// <summary>
+        /// 工会加人
+        /// </summary>
+        /// <returns></returns>
+        private async Task AddUnionMember(RoleModel r)
+        {
+            
+            var data = new Dictionary<string, object>();
+            data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
+            data["cname"] = r.RoleName;
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.addUnionMember({data.ToLowerCamelCase()});");
+            }
+            await Task.Delay(1000);
+        }
+        /// <summary>
+        /// 组队加人
+        /// </summary>
+        /// <returns></returns>
+        private async Task AddGroupMember()
+        {
+            var existMembers = await GetExistGroupMember();
+            if (existMembers.Length == 3) return;
+            var data = new Dictionary<string, object>();
+            data["roleid"] = AccountController.Instance.CurRole.RoleId;
+            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 2;
+            data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.addGroupMember({data.ToLowerCamelCase()});");
+            }
+            await Task.Delay(1000);
+
+        }
+
+        /// <summary>
+        /// 查找在工会中的人员
+        /// </summary>
+        /// <returns></returns>
+        private async Task<string[]> GetExistUnionMember()
+        {
+            
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getExistUnionMember();");
+                return d.Result.ToObject<string[]>();
+
+            }
+            else return new string[] { };
+           
+        }
+
+        /// <summary>
+        /// 查找在队伍中的人员
+        /// </summary>
+        /// <returns></returns>
+        private async Task<string[]> GetExistGroupMember()
+        {
+
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getExistGroupMember();");
+                return d.Result.ToObject<string[]>();
+            }
+            else return new string[] { };
+            await Task.Delay(500);
+        }
+
 
         /// <summary>
         /// 获取人物属性
