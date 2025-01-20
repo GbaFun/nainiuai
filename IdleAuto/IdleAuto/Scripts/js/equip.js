@@ -17,14 +17,13 @@ function getCurEquips() {
     console.log('start getCurEquips');
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
-        var e = {};//装备对象
-        e.esort = $(this).data('type');
+        var sortid = $(this).data('type');
         var __equip = $(this).prev();
-        e.eid = __equip.data('id');
-        e.equipName = equipItem.text().replace('【', '').replace('】', '');
-        e.equipTypeName = equipItem.prev().text().replace('：', '');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
-        e.content = equipContent.text();
+        var id = __equip.data('id');
+        var quality = __equip.data('type');
+        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var content = equipContent.text();
+        var e = getEquipInfo(id, sortid, quality, content);
         eMap[e.esort] = e;
     });
 
@@ -36,44 +35,55 @@ function getPackageEquips() {
     var eMap = {};
     var box = $('.panel-body.equip-bag')[0];
     $(box).children().each(function () {
-        var e = {};//装备对象
         var equipItem = $(this).find('span:first');
-        e.eid = equipItem.data('id');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
-        e.equipName = equipContent.find('p:first').text();
-        e.equipTypeName = equipContent.find('p:first').next().text();
-        e.content = equipContent.text();
-        //if (!e.equipName.includes('秘境') &&
-        //    !e.equipTypeName.includes('药水') &&
-        //    !e.equipTypeName.includes('珠宝') &&
-        //    !e.equipTypeName.includes('卡片') &&
-        //    !e.equipTypeName.includes('宝箱')) {
+        var id = equipItem.data('id');
+        var quality = equipItem.data('type');
+        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var content = equipContent.text();
+        var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
-        //}
     });
     return eMap;
 }
+
+function getEquipInfo(eid, sortid, quality, content) {
+    var e = {};
+    e.eid = eid;
+    e.esort = sortid;
+    e.quality = quality;
+    content = content.replace(/^\s*\n/gm, "")
+    content = content.replace(/[ ]/g, "")
+    e.content = content;
+    var sc = content.split('\n');
+    var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
+    var baseName = "未知"
+    if (quality == "set" || quality == "unique" || quality == "artifact") {
+        if (sc[1] != "已绑定") baseName = sc[1];
+        else baseName = sc[2];
+    }
+    else if (sc[2].includes("可以作为镶嵌物"))
+        baseName = "珠宝";
+    else if (name[1].includes("秘境"))
+        baseName = "秘境";
+    e.equipBaseName = baseName;
+    e.equipName = name[1];
+    e.isPerfect = sc[0].includes('★');
+    e.isLocal = sc[1].includes("已绑定");
+    return e;
+}
+
 function getRepositoryEquips() {
     console.log('start getRepositoryEquips');
     var eMap = {};
     var box = $('.panel-body.equip-box')[0];
     $(box).children().each(function () {
-        var e = {};//装备对象
         var equipItem = $(this).find('span:first');
-        e.eid = equipItem.data('id');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${e.eid}"]`); //#${ e.eid }.equip-content
-        console.log(equipContent);
-        e.equipName = equipContent.find('p:first').text();
-        e.equipTypeName = equipContent.find('p:first').next().text();
-        e.content = equipContent.text();
-        console.log(e);
-        //if (!e.equipName.includes('秘境') &&
-        //    !e.equipTypeName.includes('药水') &&
-        //    !e.equipTypeName.includes('珠宝') &&
-        //    !e.equipTypeName.includes('卡片') &&
-        //    !e.equipTypeName.includes('宝箱')) {
+        var id = equipItem.data('id');
+        var quality = equipItem.data('type');
+        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var content = equipContent.text();
+        var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
-        //}
     });
     return eMap;
 }
@@ -113,7 +123,8 @@ function equipOn(cid, eid) {
         .catch(r => {
             console.log(r);
         });
-} function equipOff(cid, etype) {
+}
+function equipOff(cid, etype) {
     console.log('start equipOff');
     var data = MERGE_Form({
         cid: cid,

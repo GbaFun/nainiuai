@@ -48,6 +48,7 @@ public enum emEquipSort
     戒指2 = 8,
     项链 = 9,
     护符 = 10,
+    未穿戴 = 999,
 }
 
 public enum emItemType
@@ -65,6 +66,7 @@ public enum emItemType
     秘境 = 10,
     道具 = 11,
     珠宝 = 12,
+    未知 = 999,
 }
 public enum emItemSubType
 {

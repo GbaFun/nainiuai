@@ -31,64 +31,138 @@ public class EquipController
     }
     public async void StartSaveEquips()
     {
-        MainForm.Instance.ShowLoadingPanel("开始缓存仓库装备", emMaskType.AUTO_EQUIPING);
-
+        FreeDb.Sqlite.Delete<EquipModel>().Where(p => true).ExecuteAffrows();
+        MainForm.Instance.ShowLoadingPanel("开始盘点所有装备", emMaskType.AUTO_EQUIPING);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-        P.Log("开始缓存装备", emLogType.AutoEquip);
-        int page = 1;
-        bool jumpNextPage = false;
-        #region 缓存仓库装备
-        MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
-        do
+        //Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
+
+        for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
-            jumpNextPage = false;
-            P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
-            var response1 = await GetRepositoryEquips();
-            if (response1.Success)
+            RoleModel role = AccountController.Instance.User.Roles[i];
+            MainForm.Instance.browser.Load($"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+
+            //等待页面跳转并加载js
+            var tcs = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) => tcs.SetResult(result);
+            await tcs.Task;
+
+            MainForm.Instance.SetLoadContent("开始缓存仓库装备");
+
+
+            P.Log("开始缓存装备", emLogType.AutoEquip);
+            int page = 1;
+            bool jumpNextPage = false;
+            if (i == 0)
             {
-                var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
-                if (equips != null)
+                #region 缓存仓库装备
+                MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
+                do
                 {
-                    foreach (var item in equips)
+                    jumpNextPage = false;
+                    P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
+                    var response1 = await GetRepositoryEquips();
+                    if (response1.Success)
                     {
-                        EquipModel equip = item.Value;
-                        equip.SetAccountInfo(AccountController.Instance.User);
-                        CheckEquipType(equip);
-                        if (!repositoryEquips.ContainsKey(item.Key))
-                            repositoryEquips.Add(item.Key, item.Value);
+                        var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
+                        if (equips != null)
+                        {
+                            foreach (var item in equips)
+                            {
+                                EquipModel equip = item.Value;
+                                equip.SetAccountInfo(AccountController.Instance.User);
+                                if (!repositoryEquips.ContainsKey(item.Key))
+                                    repositoryEquips.Add(item.Key, item.Value);
+                                //goto TESTFINISH;
+                            }
+                        }
+                    }
+
+                    P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
+                    MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
+                    P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
+                    var response2 = await JumpRepositoryPage();
+                    if (response2.Success)
+                    {
+                        if ((bool)response2.Result)
+                        {
+                            P.Log("等待仓库切页完成", emLogType.AutoEquip);
+                            var tcs2 = new TaskCompletionSource<bool>();
+                            onJsInitCallBack = (result) => tcs2.SetResult(result);
+                            await tcs2.Task;
+                            P.Log("仓库切页完成");
+                            page++;
+                            jumpNextPage = true;
+                            await Task.Delay(500);
+                        }
+                        else
+                        {
+                            P.Log("仓库最后一页了！", emLogType.AutoEquip);
+                            jumpNextPage = false;
+                        }
+                    }
+                } while (jumpNextPage);
+
+                P.Log("缓存仓库完成！！");
+                #endregion
+            }
+
+            #region 缓存背包装备
+            MainForm.Instance.SetLoadContent($"正在缓存背包的装备");
+            page = 1;
+            jumpNextPage = false;
+            do
+            {
+                jumpNextPage = false;
+                P.Log($"缓存背包第{page}页装备", emLogType.AutoEquip);
+                var response1 = await GetPackageEquips();
+                if (response1.Success)
+                {
+                    var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
+                    if (equips != null)
+                    {
+                        foreach (var item in equips)
+                        {
+                            EquipModel equip = item.Value;
+                            equip.SetAccountInfo(AccountController.Instance.User, role);
+                            //CheckEquipType(equip);
+                            if (!repositoryEquips.ContainsKey(item.Key))
+                                repositoryEquips.Add(item.Key, item.Value);
+                        }
                     }
                 }
-            }
 
-            P.Log($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
-            MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
-            P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
-            var response2 = await JumpRepositoryPage();
-            if (response2.Success)
-            {
-                if ((bool)response2.Result)
+                P.Log($"缓存背包第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
+                MainForm.Instance.SetLoadContent($"正在缓存背包的装备，当前已缓存数量{repositoryEquips.Count}");
+                P.Log("开始跳转背包下一页", emLogType.AutoEquip);
+                var response2 = await JumpPackagePage();
+                if (response2.Success)
                 {
-                    P.Log("等待仓库切页完成", emLogType.AutoEquip);
-                    var tcs2 = new TaskCompletionSource<bool>();
-                    onJsInitCallBack = (result) => tcs2.SetResult(result);
-                    await tcs2.Task;
-                    P.Log("仓库切页完成");
-                    page++;
-                    jumpNextPage = true;
-                    await Task.Delay(500);
+                    if ((bool)response2.Result)
+                    {
+                        P.Log("等待背包切页完成", emLogType.AutoEquip);
+                        var tcs2 = new TaskCompletionSource<bool>();
+                        onJsInitCallBack = (result) => tcs2.SetResult(result);
+                        await tcs2.Task;
+                        P.Log("背包切页完成", emLogType.AutoEquip);
+                        page++;
+                        jumpNextPage = true;
+                        await Task.Delay(500);
+                    }
+                    else
+                    {
+                        P.Log("背包最后一页了！", emLogType.AutoEquip);
+                        jumpNextPage = false;
+                    }
                 }
-                else
-                {
-                    P.Log("仓库最后一页了！", emLogType.AutoEquip);
-                    jumpNextPage = false;
-                }
-            }
-        } while (jumpNextPage);
+            } while (jumpNextPage);
+            P.Log("缓存背包完成！！", emLogType.AutoEquip);
 
+            #endregion
+        }
+
+        //TESTFINISH:
         FreeDb.Sqlite.Insert<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
-        P.Log("缓存仓库完成！！");
-        #endregion
 
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
@@ -413,22 +487,24 @@ public class EquipController
         }
     }
 
-    public static void CheckEquipType(EquipModel equip)
-    {
-        if (equip.EquipName.Contains("秘境"))
-        {
-            equip.emEquipType = emItemType.秘境;
-        }
-        else if (equip.EquipBaseName.Contains("珠宝"))
-        {
-            equip.emEquipType = emItemType.珠宝;
-        }
-        else if (equip.EquipBaseName.Contains("药水")
-             || equip.EquipBaseName.Contains("卡片")
-             || equip.EquipBaseName.Contains("宝箱"))
-        {
-            equip.emEquipType = emItemType.道具;
-        }
-    }
+    //public static void CheckEquipType(EquipModel equip)
+    //{
+    //    if (equip.EquipName.Contains("秘境"))
+    //    {
+    //        equip.emEquipType = emItemType.秘境;
+    //        equip.EquipBaseName = "秘境";
+    //    }
+    //    else if (equip.EquipBaseName.Contains("珠宝"))
+    //    {
+    //        equip.emEquipType = emItemType.珠宝;
+    //    }
+    //    else if (equip.EquipBaseName.Contains("药水")
+    //         || equip.EquipBaseName.Contains("卡片")
+    //         || equip.EquipBaseName.Contains("宝箱"))
+    //    {
+    //        equip.emEquipType = emItemType.道具;
+    //        equip.EquipBaseName = "道具";
+    //    }
+    //}
 }
 
