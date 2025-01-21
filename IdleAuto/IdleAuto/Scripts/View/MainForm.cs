@@ -35,6 +35,10 @@ public partial class MainForm : Form
         get;
         private set;
     }
+    public Button btnInit
+    {
+        get { return BtnInit; }
+    }
     private emMaskType maskType;
     private void MainForm_Load(object sender, EventArgs e)
     {
@@ -393,7 +397,7 @@ public partial class MainForm : Form
 
     public void BtnInit_Click(object sender, EventArgs e)
     {
-        BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
+   
         if (!CharacterController.Instance.IsAutoInit)
         {
             CharacterController.Instance.StartInit();
@@ -402,5 +406,6 @@ public partial class MainForm : Form
         {
             CharacterController.Instance.Stop();
         }
+        BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
     }
 }

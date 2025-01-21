@@ -20,6 +20,7 @@ public class PageLoadHandler
     public const string AhPage = "Auction/Query";
     public const string EquipPage = "Equipment/Query";
     public const string CharCreate = "Character/Create";
+    public const string CharGroup = "Character/Group";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -56,6 +57,11 @@ public class PageLoadHandler
             await LoadGlobalJs(jsPath, browser);
         }
         else if (ContainsUrl(url, CharCreate))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
+        else if (ContainsUrl(url, CharGroup))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(jsPath, browser);

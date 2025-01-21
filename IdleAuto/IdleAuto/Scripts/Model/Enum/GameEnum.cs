@@ -130,4 +130,8 @@ public enum emMaskType
     AUTO_EQUIPING = 2,
     AH_SCANING = 3,
     RUNE_UPDATING = 4,
+    /// <summary>
+    /// 起号组队工会
+    /// </summary>
+    AUTO_INIT=5
 }

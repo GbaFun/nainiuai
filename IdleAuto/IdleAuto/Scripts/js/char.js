@@ -6,7 +6,7 @@
     constructor() {
         this.init().then(() => {
             this.initCurrentChar();
-            
+            if (this.cid) Bridge.invokeEvent('OnCharLoaded', this.cid);
         });
     }
     async init() {
@@ -27,9 +27,7 @@
 
 
     }
-    async testInvoke() {
-        await Bridge.invokeEvent('OnCharLoaded');
-    }
+   
 
     getAttribute() {
         if (location.href.indexOf("Character/Detail") == -1) return;

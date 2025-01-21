@@ -29,7 +29,17 @@ public enum emEventType
     /// <summary>
     /// 初始化账号 包括角色 组队 工会
     /// </summary>
-    OnInitChar
+    OnInitChar,
+
+    /// <summary>
+    /// 角色载入
+    /// </summary>
+    OnCharLoaded,
+
+    /// <summary>
+    /// 角色名冲突
+    /// </summary>
+    OnCharNameConflict
 }
 
 public class EventManager
