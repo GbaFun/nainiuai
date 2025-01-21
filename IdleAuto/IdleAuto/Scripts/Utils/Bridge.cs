@@ -9,14 +9,6 @@ using System.Windows.Forms;
 
 public class Bridge
 {
-    //js向后台发送数据
-    public object SendData(params object[] a)
-    {
-        return BaseController.HandleMessage(a);
-
-    }
-
-
     /// <summary>
     /// 读取账号配置 在js端调用
     /// </summary>

@@ -136,6 +136,7 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         public async void StartInit()
         {
+            MainForm.Instance.ShowLoadingPanel("开始初始化账号【建号、组队、工会】", emMaskType.AUTO_INIT);
             IsAutoInit = true;
             await StartAutoJob();
         }
@@ -407,7 +408,7 @@ namespace IdleAuto.Scripts.Controller
                 return d.Result.ToObject<string[]>();
             }
             else return new string[] { };
-            await Task.Delay(500);
+            
         }
 
 
@@ -447,7 +448,7 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
-        /// 创建角色
+        /// 读取home页所有角色
         /// </summary>
         /// <returns></returns>
         public async Task<List<RoleModel>> GetRoles()

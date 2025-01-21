@@ -14,11 +14,36 @@ namespace IdleAuto
         /// </summary>
         [STAThread]
         static void Main()
-        {
+        {  // 设置全局异常处理
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
 
+        }
+        // 处理 UI 线程中的未处理异常
+        static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            HandleException(e.Exception);
+        }
+
+        // 处理非 UI 线程中的未处理异常
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleException(e.ExceptionObject as Exception);
+        }
+
+        // 异常处理方法
+        static void HandleException(Exception ex)
+        {
+            if (ex != null)
+            {
+                // 记录异常信息（例如，写入日志文件）
+                // 显示友好的错误消息
+                MessageBox.Show($"发生未处理的异常: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                P.Log(ex.StackTrace, emLogType.Error);
+            }
         }
     }
 }
