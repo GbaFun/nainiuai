@@ -31,6 +31,7 @@ partial class MainForm
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.BtnInit = new System.Windows.Forms.Button();
             this.BtnAutoEquip = new System.Windows.Forms.Button();
             this.BtnAutoOnline = new System.Windows.Forms.Button();
             this.JumpGroup = new System.Windows.Forms.GroupBox();
@@ -49,11 +50,11 @@ partial class MainForm
             this.BtnLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
-            this.browserPanel = new System.Windows.Forms.Panel();
             this.LoadingPanel = new System.Windows.Forms.Panel();
             this.LoadingContent = new System.Windows.Forms.Label();
             this.LoadingBg = new System.Windows.Forms.PictureBox();
-            this.BtnInit = new System.Windows.Forms.Button();
+            this.browserPanel = new System.Windows.Forms.Panel();
+            this.broTabControl = new System.Windows.Forms.TabControl();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
@@ -63,6 +64,7 @@ partial class MainForm
             this.LoginGroup.SuspendLayout();
             this.LoadingPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoadingBg)).BeginInit();
+            this.browserPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuPanel
@@ -76,7 +78,7 @@ partial class MainForm
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Margin = new System.Windows.Forms.Padding(0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(100, 502);
+            this.menuPanel.Size = new System.Drawing.Size(133, 628);
             this.menuPanel.TabIndex = 0;
             // 
             // AccountCombo
@@ -87,7 +89,7 @@ partial class MainForm
             this.AccountCombo.Location = new System.Drawing.Point(0, 0);
             this.AccountCombo.Margin = new System.Windows.Forms.Padding(0);
             this.AccountCombo.Name = "AccountCombo";
-            this.AccountCombo.Size = new System.Drawing.Size(100, 24);
+            this.AccountCombo.Size = new System.Drawing.Size(132, 28);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
@@ -96,18 +98,32 @@ partial class MainForm
             this.HomeGroup.Controls.Add(this.BtnInit);
             this.HomeGroup.Controls.Add(this.BtnAutoEquip);
             this.HomeGroup.Controls.Add(this.BtnAutoOnline);
-            this.HomeGroup.Location = new System.Drawing.Point(0, 40);
+            this.HomeGroup.Location = new System.Drawing.Point(0, 50);
+            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Size = new System.Drawing.Size(100, 230);
+            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Size = new System.Drawing.Size(133, 288);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             // 
+            // BtnInit
+            // 
+            this.BtnInit.Location = new System.Drawing.Point(16, 25);
+            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Name = "BtnInit";
+            this.BtnInit.Size = new System.Drawing.Size(100, 29);
+            this.BtnInit.TabIndex = 2;
+            this.BtnInit.Text = "账号初始化";
+            this.BtnInit.UseVisualStyleBackColor = true;
+            this.BtnInit.Click += new System.EventHandler(this.BtnInit_Click);
+            // 
             // BtnAutoEquip
             // 
-            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 78);
+            this.BtnAutoEquip.Location = new System.Drawing.Point(16, 98);
+            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
-            this.BtnAutoEquip.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoEquip.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoEquip.TabIndex = 1;
             this.BtnAutoEquip.Text = "一键修车";
             this.BtnAutoEquip.UseVisualStyleBackColor = true;
@@ -115,9 +131,10 @@ partial class MainForm
             // 
             // BtnAutoOnline
             // 
-            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 49);
+            this.BtnAutoOnline.Location = new System.Drawing.Point(16, 61);
+            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnAutoOnline.Name = "BtnAutoOnline";
-            this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
+            this.BtnAutoOnline.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoOnline.TabIndex = 0;
             this.BtnAutoOnline.Text = "一键点亮";
             this.BtnAutoOnline.UseVisualStyleBackColor = true;
@@ -125,11 +142,11 @@ partial class MainForm
             // JumpGroup
             // 
             this.JumpGroup.Controls.Add(this.LayoutRoot);
-            this.JumpGroup.Location = new System.Drawing.Point(0, 270);
+            this.JumpGroup.Location = new System.Drawing.Point(0, 338);
             this.JumpGroup.Margin = new System.Windows.Forms.Padding(0);
             this.JumpGroup.Name = "JumpGroup";
             this.JumpGroup.Padding = new System.Windows.Forms.Padding(0);
-            this.JumpGroup.Size = new System.Drawing.Size(100, 226);
+            this.JumpGroup.Size = new System.Drawing.Size(133, 282);
             this.JumpGroup.TabIndex = 3;
             this.JumpGroup.TabStop = false;
             this.JumpGroup.Text = "快捷跳转";
@@ -142,10 +159,10 @@ partial class MainForm
             this.LayoutRoot.Controls.Add(this.BtnRank);
             this.LayoutRoot.Controls.Add(this.BtnMaterial);
             this.LayoutRoot.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.LayoutRoot.Location = new System.Drawing.Point(0, 20);
+            this.LayoutRoot.Location = new System.Drawing.Point(0, 25);
             this.LayoutRoot.Margin = new System.Windows.Forms.Padding(0);
             this.LayoutRoot.Name = "LayoutRoot";
-            this.LayoutRoot.Size = new System.Drawing.Size(100, 210);
+            this.LayoutRoot.Size = new System.Drawing.Size(133, 262);
             this.LayoutRoot.TabIndex = 8;
             // 
             // LableRoleTitle
@@ -153,7 +170,7 @@ partial class MainForm
             this.LableRoleTitle.Location = new System.Drawing.Point(0, 0);
             this.LableRoleTitle.Margin = new System.Windows.Forms.Padding(0);
             this.LableRoleTitle.Name = "LableRoleTitle";
-            this.LableRoleTitle.Size = new System.Drawing.Size(100, 20);
+            this.LableRoleTitle.Size = new System.Drawing.Size(133, 25);
             this.LableRoleTitle.TabIndex = 7;
             this.LableRoleTitle.Text = "切换角色";
             this.LableRoleTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -163,19 +180,19 @@ partial class MainForm
             this.RoleCombo.DisplayMember = "RoleName";
             this.RoleCombo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.RoleCombo.FormattingEnabled = true;
-            this.RoleCombo.Location = new System.Drawing.Point(0, 20);
-            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
+            this.RoleCombo.Location = new System.Drawing.Point(0, 25);
+            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
             this.RoleCombo.Name = "RoleCombo";
-            this.RoleCombo.Size = new System.Drawing.Size(100, 24);
+            this.RoleCombo.Size = new System.Drawing.Size(132, 28);
             this.RoleCombo.TabIndex = 6;
             this.RoleCombo.SelectedIndexChanged += new System.EventHandler(this.RoleCombo_SelectedIndexChanged);
             // 
             // BtnHome
             // 
-            this.BtnHome.Location = new System.Drawing.Point(12, 54);
-            this.BtnHome.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
+            this.BtnHome.Location = new System.Drawing.Point(16, 65);
+            this.BtnHome.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
             this.BtnHome.Name = "BtnHome";
-            this.BtnHome.Size = new System.Drawing.Size(75, 23);
+            this.BtnHome.Size = new System.Drawing.Size(100, 29);
             this.BtnHome.TabIndex = 8;
             this.BtnHome.Text = "主页";
             this.BtnHome.UseVisualStyleBackColor = true;
@@ -183,10 +200,10 @@ partial class MainForm
             // 
             // BtnRank
             // 
-            this.BtnRank.Location = new System.Drawing.Point(12, 87);
-            this.BtnRank.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
+            this.BtnRank.Location = new System.Drawing.Point(16, 106);
+            this.BtnRank.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
             this.BtnRank.Name = "BtnRank";
-            this.BtnRank.Size = new System.Drawing.Size(75, 23);
+            this.BtnRank.Size = new System.Drawing.Size(100, 29);
             this.BtnRank.TabIndex = 4;
             this.BtnRank.Text = "赛季排行";
             this.BtnRank.UseVisualStyleBackColor = true;
@@ -194,10 +211,10 @@ partial class MainForm
             // 
             // BtnMaterial
             // 
-            this.BtnMaterial.Location = new System.Drawing.Point(12, 120);
-            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
+            this.BtnMaterial.Location = new System.Drawing.Point(16, 147);
+            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
             this.BtnMaterial.Name = "BtnMaterial";
-            this.BtnMaterial.Size = new System.Drawing.Size(75, 23);
+            this.BtnMaterial.Size = new System.Drawing.Size(100, 29);
             this.BtnMaterial.TabIndex = 9;
             this.BtnMaterial.Text = " 材料页面";
             this.BtnMaterial.UseVisualStyleBackColor = true;
@@ -302,17 +319,6 @@ partial class MainForm
             this.CurLoginAccount.Text = "当前无账号登录";
             this.CurLoginAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // browserPanel
-            // 
-            this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.browserPanel.Location = new System.Drawing.Point(100, 0);
-            this.browserPanel.Margin = new System.Windows.Forms.Padding(4);
-            this.browserPanel.Name = "browserPanel";
-            this.browserPanel.Size = new System.Drawing.Size(887, 502);
-            this.browserPanel.TabIndex = 1;
-            // 
             // LoadingPanel
             // 
             this.LoadingPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -322,8 +328,9 @@ partial class MainForm
             this.LoadingPanel.Controls.Add(this.LoadingContent);
             this.LoadingPanel.Controls.Add(this.LoadingBg);
             this.LoadingPanel.Location = new System.Drawing.Point(0, 0);
+            this.LoadingPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadingPanel.Name = "LoadingPanel";
-            this.LoadingPanel.Size = new System.Drawing.Size(985, 502);
+            this.LoadingPanel.Size = new System.Drawing.Size(1313, 628);
             this.LoadingPanel.TabIndex = 0;
             // 
             // LoadingContent
@@ -331,10 +338,10 @@ partial class MainForm
             this.LoadingContent.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.LoadingContent.BackColor = System.Drawing.Color.Transparent;
             this.LoadingContent.Font = new System.Drawing.Font("宋体", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LoadingContent.Location = new System.Drawing.Point(0, 467);
+            this.LoadingContent.Location = new System.Drawing.Point(0, 584);
             this.LoadingContent.Margin = new System.Windows.Forms.Padding(0);
             this.LoadingContent.Name = "LoadingContent";
-            this.LoadingContent.Size = new System.Drawing.Size(985, 35);
+            this.LoadingContent.Size = new System.Drawing.Size(1313, 44);
             this.LoadingContent.TabIndex = 3;
             this.LoadingContent.Text = "Loading";
             this.LoadingContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -349,32 +356,43 @@ partial class MainForm
             this.LoadingBg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.LoadingBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LoadingBg.Location = new System.Drawing.Point(0, 0);
+            this.LoadingBg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoadingBg.Name = "LoadingBg";
-            this.LoadingBg.Size = new System.Drawing.Size(985, 502);
+            this.LoadingBg.Size = new System.Drawing.Size(1313, 627);
             this.LoadingBg.TabIndex = 2;
             this.LoadingBg.TabStop = false;
             // 
-            // BtnInit
+            // browserPanel
             // 
-            this.BtnInit.Location = new System.Drawing.Point(12, 20);
-            this.BtnInit.Name = "BtnInit";
-            this.BtnInit.Size = new System.Drawing.Size(75, 23);
-            this.BtnInit.TabIndex = 2;
-            this.BtnInit.Text = "账号初始化";
-            this.BtnInit.UseVisualStyleBackColor = true;
-            this.BtnInit.Click += new System.EventHandler(this.BtnInit_Click);
+            this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.browserPanel.Controls.Add(this.broTabControl);
+            this.browserPanel.Location = new System.Drawing.Point(133, 0);
+            this.browserPanel.Margin = new System.Windows.Forms.Padding(5);
+            this.browserPanel.Name = "browserPanel";
+            this.browserPanel.Size = new System.Drawing.Size(1183, 628);
+            this.browserPanel.TabIndex = 1;
+            // 
+            // broTabControl
+            // 
+            this.broTabControl.Location = new System.Drawing.Point(0, 0);
+            this.broTabControl.Name = "broTabControl";
+            this.broTabControl.SelectedIndex = 0;
+            this.broTabControl.Size = new System.Drawing.Size(1177, 628);
+            this.broTabControl.TabIndex = 0;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ClientSize = new System.Drawing.Size(985, 503);
+            this.ClientSize = new System.Drawing.Size(1313, 629);
             this.Controls.Add(this.browserPanel);
             this.Controls.Add(this.menuPanel);
             this.Controls.Add(this.LoadingPanel);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
@@ -387,6 +405,7 @@ partial class MainForm
             this.LoginGroup.ResumeLayout(false);
             this.LoadingPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoadingBg)).EndInit();
+            this.browserPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
     }
@@ -395,7 +414,6 @@ partial class MainForm
 
     private System.Windows.Forms.Panel menuPanel;
     private System.Windows.Forms.Label label1;
-    private System.Windows.Forms.Panel browserPanel;
     private System.Windows.Forms.Label CurLoginAccount;
     private System.Windows.Forms.ComboBox AccountCombo;
 
@@ -420,4 +438,6 @@ partial class MainForm
     private System.Windows.Forms.GroupBox AhGroup;
     private System.Windows.Forms.Button BtnAutoAh;
     private System.Windows.Forms.Button BtnInit;
+    private System.Windows.Forms.Panel browserPanel;
+    private System.Windows.Forms.TabControl broTabControl;
 }
