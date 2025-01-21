@@ -89,6 +89,6 @@ public partial class MainForm : Form
 
     public void AddBrowserTab(string account, string url)
     {
-        TabManager.TriggerAddTabPage(account, url);
+        Task.Run(() => { TabManager.TriggerAddTabPage(account, url); });
     }
 }

@@ -178,7 +178,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scripts\View\BroTabManager.cs" />
+    <Compile Include="Scripts\Manager\BroTabManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
