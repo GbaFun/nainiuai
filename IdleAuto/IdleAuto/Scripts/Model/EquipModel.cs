@@ -23,7 +23,7 @@ public class EquipModel
     /// 物品品质
     /// </summary>
     [JsonProperty("quality")]
-    public string Quality;
+    public string Quality { get; set; }
     [JsonIgnore]
     public emItemQuality emItemQuality
     {
