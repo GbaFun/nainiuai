@@ -54,7 +54,7 @@ partial class MainForm
             this.LoadingContent = new System.Windows.Forms.Label();
             this.LoadingBg = new System.Windows.Forms.PictureBox();
             this.browserPanel = new System.Windows.Forms.Panel();
-            this.broTabControl = new System.Windows.Forms.TabControl();
+            this.BroTabControl = new System.Windows.Forms.TabControl();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
@@ -99,9 +99,9 @@ partial class MainForm
             this.HomeGroup.Controls.Add(this.BtnAutoEquip);
             this.HomeGroup.Controls.Add(this.BtnAutoOnline);
             this.HomeGroup.Location = new System.Drawing.Point(0, 50);
-            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Size = new System.Drawing.Size(133, 288);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
@@ -110,7 +110,7 @@ partial class MainForm
             // BtnInit
             // 
             this.BtnInit.Location = new System.Drawing.Point(16, 25);
-            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Margin = new System.Windows.Forms.Padding(4);
             this.BtnInit.Name = "BtnInit";
             this.BtnInit.Size = new System.Drawing.Size(100, 29);
             this.BtnInit.TabIndex = 2;
@@ -121,7 +121,7 @@ partial class MainForm
             // BtnAutoEquip
             // 
             this.BtnAutoEquip.Location = new System.Drawing.Point(16, 98);
-            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
             this.BtnAutoEquip.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoEquip.TabIndex = 1;
@@ -132,7 +132,7 @@ partial class MainForm
             // BtnAutoOnline
             // 
             this.BtnAutoOnline.Location = new System.Drawing.Point(16, 61);
-            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoOnline.Name = "BtnAutoOnline";
             this.BtnAutoOnline.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoOnline.TabIndex = 0;
@@ -328,7 +328,7 @@ partial class MainForm
             this.LoadingPanel.Controls.Add(this.LoadingContent);
             this.LoadingPanel.Controls.Add(this.LoadingBg);
             this.LoadingPanel.Location = new System.Drawing.Point(0, 0);
-            this.LoadingPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.LoadingPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LoadingPanel.Name = "LoadingPanel";
             this.LoadingPanel.Size = new System.Drawing.Size(1313, 628);
             this.LoadingPanel.TabIndex = 0;
@@ -356,7 +356,7 @@ partial class MainForm
             this.LoadingBg.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.LoadingBg.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.LoadingBg.Location = new System.Drawing.Point(0, 0);
-            this.LoadingBg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.LoadingBg.Margin = new System.Windows.Forms.Padding(4);
             this.LoadingBg.Name = "LoadingBg";
             this.LoadingBg.Size = new System.Drawing.Size(1313, 627);
             this.LoadingBg.TabIndex = 2;
@@ -367,20 +367,20 @@ partial class MainForm
             this.browserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.browserPanel.Controls.Add(this.broTabControl);
+            this.browserPanel.Controls.Add(this.BroTabControl);
             this.browserPanel.Location = new System.Drawing.Point(133, 0);
             this.browserPanel.Margin = new System.Windows.Forms.Padding(5);
             this.browserPanel.Name = "browserPanel";
             this.browserPanel.Size = new System.Drawing.Size(1183, 628);
             this.browserPanel.TabIndex = 1;
             // 
-            // broTabControl
+            // BroTabControl
             // 
-            this.broTabControl.Location = new System.Drawing.Point(0, 0);
-            this.broTabControl.Name = "broTabControl";
-            this.broTabControl.SelectedIndex = 0;
-            this.broTabControl.Size = new System.Drawing.Size(1177, 628);
-            this.broTabControl.TabIndex = 0;
+            this.BroTabControl.Location = new System.Drawing.Point(0, 0);
+            this.BroTabControl.Name = "BroTabControl";
+            this.BroTabControl.SelectedIndex = 0;
+            this.BroTabControl.Size = new System.Drawing.Size(1177, 628);
+            this.BroTabControl.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -437,7 +437,7 @@ partial class MainForm
     private System.Windows.Forms.GroupBox RoleGroup;
     private System.Windows.Forms.GroupBox AhGroup;
     private System.Windows.Forms.Button BtnAutoAh;
-    private System.Windows.Forms.Button BtnInit;
+    public System.Windows.Forms.Button BtnInit;
     private System.Windows.Forms.Panel browserPanel;
-    private System.Windows.Forms.TabControl broTabControl;
+    public System.Windows.Forms.TabControl BroTabControl;
 }

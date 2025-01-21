@@ -144,9 +144,9 @@ namespace IdleAuto.Scripts.Controller
         public void Stop()
         {
             IsAutoInit = false;
-            MainForm.Instance.btnInit.Invoke(new Action(() =>
+            MainForm.Instance.BtnInit.Invoke(new Action(() =>
             {
-                MainForm.Instance.btnInit.Text = "开始初始化";
+                MainForm.Instance.BtnInit.Text = "开始初始化";
             }));
         }
         /// <summary>

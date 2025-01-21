@@ -118,8 +118,8 @@ public class PageLoadHandler
 
     public static async void SaveCookieAndCache(ChromiumWebBrowser bro, bool isDirectUpdate = false)
     {
-        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.Username + ".json");
-        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.Username + ".txt");
+        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".json");
+        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".txt");
         var createTime = File.GetCreationTime(cookiePath);
         TimeSpan val = DateTime.Now - createTime;
         if (val.TotalMinutes >= 10 || isDirectUpdate)
@@ -130,11 +130,11 @@ public class PageLoadHandler
 
     }
 
-    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro)
+    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro,string name)
     {
 
-        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.Username + ".json");
-        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.Username + ".txt");
+        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
+        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
 
         if (File.Exists(cookiePath))
         {

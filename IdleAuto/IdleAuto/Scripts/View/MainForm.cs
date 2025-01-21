@@ -35,10 +35,9 @@ public partial class MainForm : Form
         get;
         private set;
     }
-    public Button btnInit
-    {
-        get { return BtnInit; }
-    }
+
+    private BroTabManager _tabManager;
+
     private emMaskType maskType;
     private void MainForm_Load(object sender, EventArgs e)
     {
@@ -53,6 +52,8 @@ public partial class MainForm : Form
         EventManager.Instance.SubscribeEvent(emEventType.OnAccountDirty, OnAccountDirty);
         OnAccountDirty(null);
         Instance = this;
+        // 初始化 TabManager，并传递 TabControl
+        _tabManager = new BroTabManager(BroTabControl);
     }
     private void ShowLoginMenu()
     {
@@ -252,7 +253,7 @@ public partial class MainForm : Form
             this.Invoke(new Action(() => ShowLoginMenu()));
             Task.Run(async () =>
             {
-                await PageLoadHandler.LoadCookieAndCache(browser);
+                await PageLoadHandler.LoadCookieAndCache(browser,AccountController.Instance.User.AccountName);
             });
         }
         else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
