@@ -71,7 +71,7 @@ namespace IdleAuto.Scripts.View
 			}
 		}
 
-		public void AddTabPage(string name, string url)
+		private void AddTabPage(string name, string url)
 		{
 			_accountName = name;
 			InitializeChromium(name, url);

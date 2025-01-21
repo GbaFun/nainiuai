@@ -36,7 +36,7 @@ public partial class MainForm : Form
         private set;
     }
 
-    private BroTabManager _tabManager;
+    public BroTabManager TabManager;
 
     private emMaskType maskType;
     private void MainForm_Load(object sender, EventArgs e)
@@ -53,7 +53,7 @@ public partial class MainForm : Form
         OnAccountDirty(null);
         Instance = this;
         // 初始化 TabManager，并传递 TabControl
-        _tabManager = new BroTabManager(BroTabControl);
+        TabManager = new BroTabManager(BroTabControl);
     }
     private void ShowLoginMenu()
     {
