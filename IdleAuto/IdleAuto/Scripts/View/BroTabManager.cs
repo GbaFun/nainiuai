@@ -54,8 +54,6 @@ namespace IdleAuto.Scripts.View
 			this.Tab = tab;
 			AddTabPageEvent += OnAddTabPage;
 
-			TriggerAddTabPage(AccountCfg.Instance.Accounts[0].AccountName, "https://www.idleinfinity.cn/Home/Index");
-
 		}
 		private void OnAddTabPage(string title, string url)
 		{
