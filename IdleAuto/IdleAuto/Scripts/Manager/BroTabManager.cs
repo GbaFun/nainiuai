@@ -72,19 +72,6 @@ public class BroTabManager
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
     }
-    private void OnAddTabPage(string title, string url)
-    {
-        // 检查是否需要调用 Invoke
-        if (Tab.InvokeRequired)
-        {
-            // 使用 Invoke 方法将操作委托给创建控件的线程
-            Tab.Invoke(new Action(() => AddTabPage(title, url)));
-        }
-        else
-        {
-            AddTabPage(title, url);
-        }
-    }
 
 
 
