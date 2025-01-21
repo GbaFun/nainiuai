@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 public enum emEventType
 {
+    OnBrowserFrameLoadStart,
+    OnBrowserFrameLoadEnd,
     /// <summary>
     /// js初始化完成
     /// </summary>

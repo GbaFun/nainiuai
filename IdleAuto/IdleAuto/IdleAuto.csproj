@@ -84,6 +84,12 @@
     <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
+    <Compile Include="Scripts\View\CustomItem\MenuWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Scripts\View\CustomItem\MenuWidget.Designer.cs">
+      <DependentUpon>MenuWidget.cs</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\View\CustomItem\RuneCfgItem.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -120,6 +126,9 @@
     <Compile Include="Scripts\View\RuneConfigForm.Designer.cs">
       <DependentUpon>RuneConfigForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Scripts\View\CustomItem\MenuWidget.resx">
+      <DependentUpon>MenuWidget.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scripts\View\CustomItem\RuneCfgItem.resx">
       <DependentUpon>RuneCfgItem.cs</DependentUpon>
     </EmbeddedResource>

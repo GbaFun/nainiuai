@@ -76,7 +76,7 @@ namespace IdleAuto.Scripts.Controller
             if (!String.IsNullOrWhiteSpace(PrefixName))
             {
 
-                var name = $@"{PrefixName}{24 * index + CharCount + CharNameSeed }";
+                var name = $@"{PrefixName}{24 * index + CharCount + CharNameSeed}";
                 return name;
             }
 
@@ -144,10 +144,11 @@ namespace IdleAuto.Scripts.Controller
         public void Stop()
         {
             IsAutoInit = false;
-            MainForm.Instance.BtnInit.Invoke(new Action(() =>
-            {
-                MainForm.Instance.BtnInit.Text = "开始初始化";
-            }));
+            //todo:更新按钮状态
+            //MainForm.Instance.BtnInit.Invoke(new Action(() =>
+            //{
+            //    MainForm.Instance.BtnInit.Text = "开始初始化";
+            //}));
         }
         /// <summary>
         /// 开始自动执行
@@ -262,7 +263,7 @@ namespace IdleAuto.Scripts.Controller
             else
             {
                 var existMember = await GetExistUnionMember();
-                if (AccountController.Instance.User.Roles == null|| existMember==null)
+                if (AccountController.Instance.User.Roles == null || existMember == null)
                 {
                     Console.WriteLine("roles空");
                 }
@@ -348,7 +349,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task AddUnionMember(RoleModel r)
         {
-            
+
             var data = new Dictionary<string, object>();
             data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
             data["cname"] = r.RoleName;
@@ -384,7 +385,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task<string[]> GetExistUnionMember()
         {
-            
+
             if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getExistUnionMember();");
@@ -392,7 +393,7 @@ namespace IdleAuto.Scripts.Controller
 
             }
             else return new string[] { };
-           
+
         }
 
         /// <summary>
@@ -408,7 +409,7 @@ namespace IdleAuto.Scripts.Controller
                 return d.Result.ToObject<string[]>();
             }
             else return new string[] { };
-            
+
         }
 
 
