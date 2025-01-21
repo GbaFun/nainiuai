@@ -49,7 +49,6 @@ public class EquipController
 
             MainForm.Instance.SetLoadContent("开始缓存仓库装备");
 
-
             P.Log("开始缓存装备", emLogType.AutoEquip);
             int page = 1;
             bool jumpNextPage = false;

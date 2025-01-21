@@ -10,6 +10,8 @@ public class UserModel
 {
     public UserModel(Account account)
     {
+        Id = account.AccountID;
+        AccountName = account.AccountName;
         Username = account.Username;
         Password = account.Password;
         Roles = new List<RoleModel>();
@@ -39,7 +41,7 @@ public class UserModel
     public void SetLogin(bool isSuccess, string account, List<RoleModel> roles)
     {
         IsLogin = isSuccess;
-        AccountName = account;
+        //AccountName = account;
         Roles.AddRange(roles);
     }
 
