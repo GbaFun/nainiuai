@@ -428,6 +428,21 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        /// <summary>
+        /// 获取人物技能
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SkillModel>> GetSkillInfo()
+        {
+            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_char.getSkillInfo();");
+                return d.Result?.ToObject<List<SkillModel>>();
+            }
+            else return null;
+
+        }
+
 
         /// <summary>
         /// 创建角色

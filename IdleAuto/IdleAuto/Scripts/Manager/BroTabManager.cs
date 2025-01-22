@@ -72,7 +72,7 @@ public class BroTabManager
         browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
         browser.KeyboardHandler = new CEFKeyBoardHandler();
         // 等待页面加载完成后执行脚本
-        browser.FrameLoadEnd += (sender,e)=> OnFrameLoadEnd(sender,e,name);
+        browser.FrameLoadEnd += (sender,e)=> OnFrameLoadEnd(sender,e,name,url);
         browser.FrameLoadStart += OnFrameLoadStart;
         BroDic.TryAdd(_seed, browser);
       
@@ -192,7 +192,14 @@ public class BroTabManager
 
     }
 
-    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e,string name)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    /// <param name="name">账户名称 南宫</param>
+    /// <param name="jumpTo">需要条状的地址 在载入cookie之后跳转</param>
+    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e,string name,string jumpToUrl)
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
@@ -201,7 +208,7 @@ public class BroTabManager
         {
             Task.Run(async () =>
             {
-                await PageLoadHandler.LoadCookieAndCache(bro, name);
+                await PageLoadHandler.LoadCookieAndCache(bro, name, jumpToUrl);
             });
         }
         Task.Run(async () =>

@@ -27,7 +27,7 @@
 
 
     }
-   
+
 
     getAttribute() {
         if (location.href.indexOf("Character/Detail") == -1) return;
@@ -63,6 +63,49 @@
             isIgnoreDef: isIgnoreDef
         }
         return obj;
+    }
+
+    getSkillInfo() {
+        if (location.href.indexOf("Character/Detail") == -1) return;
+        var r = [];
+
+        var arr = $(".skill-container .sr-container").toArray();
+        //前五个为主动技能 后三个为组队信息
+        for (let i = 0; i < arr.length; i++) {
+            var item = arr[i];
+            var lvStr = $(item).find(".label.label-success").text();
+            var lv = lvStr.match(/\d+/)[0];
+            var skillName = $(item).find(".skill-name").text();
+            var next = $(item).find(".skill-name").next();
+            var isK = false;
+            if (next) {
+                if (!next.hasClass("skill-pve-key")) {
+                    isK = true;
+                }
+            }
+            r.push[{
+                type: "主动",
+                lv: lv,
+                skillName: skillName,
+                isK: isK
+            }];
+
+        }
+
+        var skillContainer = $($(".skill-container")[1]);
+        var passiveSkillLvArr = skillContainer.find("p span.label.label-info").toArray();
+        var passiveSkillNameArr = skillContainer.find("p span.skill-name").toArray();
+        passiveSkillLvArr.forEach((item, index) => {
+            var lvStr = item.innerText;
+            var lv = lvStr.match(/\d+/)[0];
+            var skillName = passiveSkillNameArr[index].innerText;
+            r.push({
+                type: skillName.indexOf("光环") > -1 ? "光环" : "被动",
+                lv: lv,
+                skillName: skillName
+            })
+        })
+        return r;
     }
 }
 

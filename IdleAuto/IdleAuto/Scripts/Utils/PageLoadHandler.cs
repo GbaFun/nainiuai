@@ -130,7 +130,7 @@ public class PageLoadHandler
 
     }
 
-    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro,string name)
+    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro,string name,string url="")
     {
 
         string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
@@ -142,7 +142,14 @@ public class PageLoadHandler
             {
                 await DevToolUtil.ClearCookiesAsync(bro);
                 await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
-                bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
+                if (url == "")
+                {
+                    bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
+                }
+                else
+                {
+                    bro.LoadUrl(url);
+                }
             }
 
         }
