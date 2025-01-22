@@ -53,7 +53,10 @@ public class EquipController
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
-            m_equipBroID = MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+            if (m_equipBroID == 0)
+                m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
+            else
+                await MainForm.Instance.TabManager.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
 
             //等待页面跳转并加载js
             var tcs = new TaskCompletionSource<bool>();
@@ -171,8 +174,6 @@ public class EquipController
             P.Log("缓存背包完成！！", emLogType.AutoEquip);
 
             #endregion
-
-            MainForm.Instance.TabManager.DisposePage(m_equipBroID);
         }
 
         //TESTFINISH:
@@ -184,6 +185,8 @@ public class EquipController
         else
             FreeDb.Sqlite.Insert<CommonModel>().ExecuteAffrows();
 
+        MainForm.Instance.TabManager.DisposePage(m_equipBroID);
+        m_equipBroID = 0;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
@@ -202,14 +205,17 @@ public class EquipController
         Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
         //账号仓库装备缓存
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-        bool isInitRepository = false;
 
         repositoryEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == 0).ToList().ToDictionary(p => p.EquipID, p => p);
 
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
-            m_equipBroID = MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+            if (m_equipBroID == 0)
+                m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
+            else
+                await MainForm.Instance.TabManager.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
+
             packageEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == role.RoleId).ToList().ToDictionary(p => p.EquipID, p => p);
 
             #region 检查角色装备
@@ -320,8 +326,9 @@ public class EquipController
                             P.Log($"{role.RoleName}未找到{targetEquipName}装备，无法更换", emLogType.AutoEquip);
                     }
                 }
+                MainForm.Instance.TabManager.DisposePage(m_equipBroID);
+
                 P.Log($"{role.RoleName}全部位置装备更换完成\n\t\n\t\n\t", emLogType.AutoEquip);
-                MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, "https://www.idleinfinity.cn/Home/Index");
             }
             #endregion
         }
@@ -331,6 +338,8 @@ public class EquipController
         FreeDb.Sqlite.Update<EquipModel>(packageEquips.Values.ToList()).ExecuteAffrows();
 
         MainForm.Instance.TabManager.DisposePage(m_equipBroID);
+        m_equipBroID = 0;
+
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }

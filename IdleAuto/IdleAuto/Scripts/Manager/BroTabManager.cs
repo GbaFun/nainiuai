@@ -40,9 +40,10 @@ public class BroTabManager
     /// </summary>
     public ConcurrentDictionary<string, int> NameUrlDic;
 
+    private delegate void OnJsInitCallBack(string jsName);
+    private OnJsInitCallBack onJsInitCallBack;
 
-
- private void SeedIncrease()
+    private void SeedIncrease()
     {
         lock (LOCKOBJECT)
         {
@@ -55,7 +56,7 @@ public class BroTabManager
     /// </summary>
     /// <param name="index">浏览器的流水号</param>
     /// <returns></returns>
-    private ChromiumWebBrowser InitializeChromium( string name, string url)
+    private ChromiumWebBrowser InitializeChromium(string name, string url)
     {
 
         // 创建 CefRequestContextSettings 并指定缓存路径
@@ -72,10 +73,10 @@ public class BroTabManager
         browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
         browser.KeyboardHandler = new CEFKeyBoardHandler();
         // 等待页面加载完成后执行脚本
-        browser.FrameLoadEnd += (sender,e)=> OnFrameLoadEnd(sender,e,name,url);
+        browser.FrameLoadEnd += (sender, e) => OnFrameLoadEnd(sender, e, name, url);
         browser.FrameLoadStart += OnFrameLoadStart;
         BroDic.TryAdd(_seed, browser);
-      
+
         return browser;
     }
 
@@ -90,12 +91,9 @@ public class BroTabManager
         NameUrlDic = new ConcurrentDictionary<string, int>();
     }
 
-
-
-
-
-    private int AddTabPage(string name, string url)
+    private async Task<int> AddTabPage(string name, string url, string jsName = "")
     {
+
         ChromiumWebBrowser bro;
         var key = name + url;
         if (NameUrlDic.ContainsKey(key))
@@ -105,6 +103,11 @@ public class BroTabManager
             return seed;
         }
         SeedIncrease();
+
+        var jsTask = new TaskCompletionSource<bool>();
+        onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+
         bro = InitializeChromium(name, url);
         // 创建 TabPage
         TabPage tabPage = new TabPage(name);
@@ -113,59 +116,93 @@ public class BroTabManager
         Tab.TabPages.Add(tabPage);
         Tab.SelectedTab = tabPage;
         TabPageDic.TryAdd(_seed, tabPage);
+
+        await jsTask.Task;
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return _seed;
     }
 
-    private void LoadUrl(int seed, string name, string url)
+    private async Task LoadUrl(int seed, string name, string url, string jsName = "")
     {
-        Tab.SelectedTab = TabPageDic[seed] ;
+        Tab.SelectedTab = TabPageDic[seed];
         NameUrlDic[name + url] = seed;
         var bro = BroDic[seed];
+        var jsTask = new TaskCompletionSource<bool>();
+        onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+
         bro.LoadUrl(url);
+
+        await jsTask.Task;
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        return;
     }
-    public int TriggerAddTabPage(string title, string url)
+    public async Task<int> TriggerAddTabPage(string title, string url, string jsName = "")
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
         // 检查是否需要调用 Invoke
         if (Tab.InvokeRequired)
         {
-            // 使用 Invoke 方法将操作委托给创建控件的线程
-          var a=  Tab.Invoke(new Func<int>(() => {return AddTabPage(title, url); }));
-            return int.Parse(a.ToString());
+            // 使用 TaskCompletionSource<int> 来等待 Invoke 的结果
+            var tcs = new TaskCompletionSource<int>();
+            Tab.Invoke(new Action(async () =>
+            {
+                try
+                {
+                    var result = await AddTabPage(title, url, jsName);
+                    tcs.SetResult(result);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            }));
+            return await tcs.Task;
         }
         else
         {
-          return AddTabPage(title, url);
+            return await AddTabPage(title, url, jsName);
         }
-
     }
 
-    public void TriggerLoadUrl(string title, string url,int index)
+    public async Task TriggerLoadUrl(string title, string url, int index, string jsName = "")
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
         // 检查是否需要调用 Invoke
         if (Tab.InvokeRequired)
         {
-            // 使用 Invoke 方法将操作委托给创建控件的线程
-            Tab.Invoke(new Action(() => LoadUrl(index,title, url)));
+            // 使用 TaskCompletionSource 来等待 Invoke 的结果
+            var tcs = new TaskCompletionSource<bool>();
+            Tab.Invoke(new Action(async () =>
+            {
+                try
+                {
+                    await LoadUrl(index, title, url, jsName);
+                    tcs.SetResult(true);
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
+            }));
+            await tcs.Task;
         }
         else
         {
-            LoadUrl(index,title, url);
+            await LoadUrl(index, title, url, jsName);
         }
-
     }
 
     public void DisposePage(int seed)
     {
-        var list=NameUrlDic.Values.ToList();
-        foreach(var item in NameUrlDic.ToList())
+        var list = NameUrlDic.Values.ToList();
+        foreach (var item in NameUrlDic.ToList())
         {
-           if( item.Value == seed)
+            if (item.Value == seed)
             {
-                NameUrlDic.TryRemove(item.Key,out _);
+                NameUrlDic.TryRemove(item.Key, out _);
             }
         }
         var tabPage = TabPageDic[seed];
@@ -199,7 +236,7 @@ public class BroTabManager
     /// <param name="e"></param>
     /// <param name="name">账户名称 南宫</param>
     /// <param name="jumpTo">需要条状的地址 在载入cookie之后跳转</param>
-    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e,string name,string jumpToUrl)
+    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e, string name, string jumpToUrl)
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
@@ -222,6 +259,13 @@ public class BroTabManager
         }
 
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
+    }
+
+    private void OnJsInited(params object[] args)
+    {
+        string jsName = args[0] as string;
+        onJsInitCallBack?.Invoke(jsName);
+        onJsInitCallBack = null;
     }
 }
 
