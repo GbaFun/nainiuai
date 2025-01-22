@@ -68,7 +68,8 @@ public class BroTabManager
     public BroTabManager(TabControl tab)
     {
         this.Tab = tab;
-
+        // 确保控件的句柄已经创建
+        var handle = Tab.Handle;
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
     }
