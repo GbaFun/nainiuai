@@ -25,7 +25,7 @@ public class EquipController
     private delegate void OnJsInitCallBack(bool result);
     private OnJsInitCallBack onJsInitCallBack;
 
-    private int m_equipBroID = -1;
+    private int m_equipBroID = 0;
 
 
     public async void SaveAllEquips()
@@ -59,9 +59,9 @@ public class EquipController
                 await MainForm.Instance.TabManager.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
 
             //等待页面跳转并加载js
-            var tcs = new TaskCompletionSource<bool>();
-            onJsInitCallBack = (result) => tcs.SetResult(result);
-            await tcs.Task;
+            //var tcs = new TaskCompletionSource<bool>();
+            //onJsInitCallBack = (result) => tcs.SetResult(result);
+            //await tcs.Task;
 
             MainForm.Instance.SetLoadContent("开始缓存仓库装备");
 
@@ -183,7 +183,7 @@ public class EquipController
         if (v.Count > 0)
             FreeDb.Sqlite.Update<CommonModel>(time1).ExecuteAffrows();
         else
-            FreeDb.Sqlite.Insert<CommonModel>().ExecuteAffrows();
+            FreeDb.Sqlite.Insert<CommonModel>(time1).ExecuteAffrows();
 
         MainForm.Instance.TabManager.DisposePage(m_equipBroID);
         m_equipBroID = 0;
