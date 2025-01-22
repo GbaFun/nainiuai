@@ -87,11 +87,4 @@ public partial class MainForm : Form
         //    maskForm.SetLoadContent(content);
         //}
     }
-
-    public void AddBrowserTab(string account, string url)
-    {
-        int seed = TabManager.TriggerAddTabPage(account, url);
-        
-        Task.Run(() => { Thread.Sleep(10000); TabManager.DisposePage(seed); });
-    }
 }

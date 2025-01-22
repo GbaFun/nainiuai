@@ -148,7 +148,7 @@ namespace IdleAuto.Scripts.View
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
 
-            MainForm.Instance.AddBrowserTab(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
         private void RoleCombo_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -63,7 +63,6 @@ public class EquipModel
     /// </summary>
     public bool IsLocal { get; set; }
 
-
     /// <summary>
     /// 装备所属账户ID
     /// </summary>

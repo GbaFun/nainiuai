@@ -75,6 +75,7 @@
     <Compile Include="Scripts\Manager\EventManager.cs" />
     <Compile Include="Scripts\Manager\FileLogManager.cs" />
     <Compile Include="Scripts\Model\CharAttributeModel.cs" />
+    <Compile Include="Scripts\Model\CommonModel.cs" />
     <Compile Include="Scripts\Model\Enum\GameEnum.cs" />
     <Compile Include="Scripts\Model\EquipModel.cs" />
     <Compile Include="Scripts\Model\RoleModel.cs" />

@@ -25,22 +25,35 @@ public class EquipController
     private delegate void OnJsInitCallBack(bool result);
     private OnJsInitCallBack onJsInitCallBack;
 
-    public void SaveAllEquips()
+    private int m_equipBroID = -1;
+
+
+    public async void SaveAllEquips()
     {
-        StartSaveEquips();
+        await StartSaveEquips();
     }
-    public async void StartSaveEquips()
+    public async Task StartSaveEquips()
     {
+        var v = FreeDb.Sqlite.Select<CommonModel>().Where(P => P.CommonKey == "EquipSaveTime").ToList();
+        if (v.Count > 0)
+        {
+            var time = Convert.ToDateTime(v[0].CommonValue);
+            if (DateTime.Now.Subtract(time).TotalHours < 24)
+            {
+                P.Log("24小时内已经保存过装备，无需再次保存", emLogType.AutoEquip);
+                return;
+            }
+        }
+
         FreeDb.Sqlite.Delete<EquipModel>().Where(p => true).ExecuteAffrows();
         MainForm.Instance.ShowLoadingPanel("开始盘点所有装备", emMaskType.AUTO_EQUIPING);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-        //Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
 
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
-            MainForm.Instance.browser.Load($"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+            m_equipBroID = MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
 
             //等待页面跳转并加载js
             var tcs = new TaskCompletionSource<bool>();
@@ -158,21 +171,32 @@ public class EquipController
             P.Log("缓存背包完成！！", emLogType.AutoEquip);
 
             #endregion
+
+            MainForm.Instance.TabManager.DisposePage(m_equipBroID);
         }
 
         //TESTFINISH:
         FreeDb.Sqlite.Insert<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
 
+        var time1 = new CommonModel() { CommonKey = "EquipSaveTime", CommonValue = DateTime.Now.ToString() };
+        if (v.Count > 0)
+            FreeDb.Sqlite.Update<CommonModel>(time1).ExecuteAffrows();
+        else
+            FreeDb.Sqlite.Insert<CommonModel>().ExecuteAffrows();
+
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
-    public void StartAutoEquip()
+    public async void StartAutoEquip()
     {
-        AutoEquip();
+        await AutoEquip();
     }
-    private async void AutoEquip()
+    private async Task AutoEquip()
     {
         MainForm.Instance.ShowLoadingPanel("开始自动修车", emMaskType.AUTO_EQUIPING);
+
+        await StartSaveEquips();
+
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         //角色背包装备缓存
         Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
@@ -180,159 +204,13 @@ public class EquipController
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
         bool isInitRepository = false;
 
-        #region 测试
-        //int i = 0;
-        //RoleModel role = AccountController.Instance.User.Roles[i];
-        //MainForm.Instance.browser.Load($"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
-
-        ////等待页面跳转并加载js
-        //var tcs = new TaskCompletionSource<bool>();
-        //onJsInitCallBack = (result) => tcs.SetResult(result);
-        //await tcs.Task;
-
-        //P.Log("开始缓存装备", emLogType.AutoEquip);
-        //int page = 1;
-        //bool jumpNextPage = false;
-        ////#region 缓存仓库装备
-        //MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
-        //if (!isInitRepository)
-        //{
-        //    //do
-        //    {
-        //        jumpNextPage = false;
-        //        P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
-        //        var response1 = await GetRepositoryEquips();
-        //        if (response1.Success)
-        //        {
-        //            var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
-        //            if (equips != null)
-        //            {
-        //                foreach (var item in equips)
-        //                {
-        //                    if (!repositoryEquips.ContainsKey(item.Key))
-        //                        repositoryEquips.Add(item.Key, item.Value);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-        //return;
-
-        #endregion
+        repositoryEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == 0).ToList().ToDictionary(p => p.EquipID, p => p);
 
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
-            MainForm.Instance.browser.Load($"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
-
-            //等待页面跳转并加载js
-            var tcs = new TaskCompletionSource<bool>();
-            onJsInitCallBack = (result) => tcs.SetResult(result);
-            await tcs.Task;
-
-            P.Log("开始缓存装备", emLogType.AutoEquip);
-            int page = 1;
-            bool jumpNextPage = false;
-            #region 缓存仓库装备
-            MainForm.Instance.SetLoadContent($"正在缓存仓库的装备");
-            if (!isInitRepository)
-            {
-                do
-                {
-                    jumpNextPage = false;
-                    P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
-                    var response1 = await GetRepositoryEquips();
-                    if (response1.Success)
-                    {
-                        var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
-                        if (equips != null)
-                        {
-                            foreach (var item in equips)
-                            {
-                                if (!repositoryEquips.ContainsKey(item.Key))
-                                    repositoryEquips.Add(item.Key, item.Value);
-                            }
-                        }
-                    }
-
-                    P.Log($"缓存仓库第{page}页装备完成,当前缓存仓库装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
-                    MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
-                    P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
-                    var response2 = await JumpRepositoryPage();
-                    if (response2.Success)
-                    {
-                        if ((bool)response2.Result)
-                        {
-                            P.Log("等待仓库切页完成", emLogType.AutoEquip);
-                            var tcs2 = new TaskCompletionSource<bool>();
-                            onJsInitCallBack = (result) => tcs2.SetResult(result);
-                            await tcs2.Task;
-                            P.Log("仓库切页完成");
-                            page++;
-                            jumpNextPage = true;
-                            await Task.Delay(500);
-                        }
-                        else
-                        {
-                            P.Log("仓库最后一页了！", emLogType.AutoEquip);
-                            jumpNextPage = false;
-                        }
-                    }
-                } while (jumpNextPage);
-                isInitRepository = true;
-            }
-            P.Log("缓存仓库完成！！");
-            #endregion
-            #region 缓存背包装备
-            MainForm.Instance.SetLoadContent($"正在缓存背包的装备");
-            packageEquips.Clear();
-            page = 1;
-            jumpNextPage = false;
-            do
-            {
-                jumpNextPage = false;
-                P.Log($"缓存背包第{page}页装备", emLogType.AutoEquip);
-                var response1 = await GetPackageEquips();
-                if (response1.Success)
-                {
-                    var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
-                    if (equips != null)
-                    {
-                        foreach (var item in equips)
-                        {
-                            if (!packageEquips.ContainsKey(item.Key))
-                                packageEquips.Add(item.Key, item.Value);
-                        }
-                    }
-                }
-
-                P.Log($"缓存背包第{page}页装备完成,当前缓存背包装备数量:{packageEquips.Count}", emLogType.AutoEquip);
-                MainForm.Instance.SetLoadContent($"正在缓存背包的装备，当前已缓存数量{packageEquips.Count}");
-                P.Log("开始跳转背包下一页", emLogType.AutoEquip);
-                var response2 = await JumpPackagePage();
-                if (response2.Success)
-                {
-                    if ((bool)response2.Result)
-                    {
-                        P.Log("等待背包切页完成", emLogType.AutoEquip);
-                        var tcs2 = new TaskCompletionSource<bool>();
-                        onJsInitCallBack = (result) => tcs2.SetResult(result);
-                        await tcs2.Task;
-                        P.Log("背包切页完成", emLogType.AutoEquip);
-                        page++;
-                        jumpNextPage = true;
-                        await Task.Delay(500);
-                    }
-                    else
-                    {
-                        P.Log("背包最后一页了！", emLogType.AutoEquip);
-                        jumpNextPage = false;
-                    }
-                }
-            } while (jumpNextPage);
-            P.Log("缓存背包完成！！", emLogType.AutoEquip);
-
-            #endregion
+            m_equipBroID = MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}");
+            packageEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == role.RoleId).ToList().ToDictionary(p => p.EquipID, p => p);
 
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
@@ -357,7 +235,8 @@ public class EquipController
                         await Task.Delay(500);
                         Equipment targetEquip = targetEquips.GetEquipBySort((emEquipSort)j);
                         string targetEquipName = targetEquip.Name;
-                        if (curEquips != null && curEquips.TryGetValue((emEquipSort)j, out EquipModel equip))
+                        EquipModel equip = null;
+                        if (curEquips != null && curEquips.TryGetValue((emEquipSort)j, out equip))
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.EquipName.Contains(targetEquipName))
                             {
@@ -369,7 +248,7 @@ public class EquipController
                         {
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
-                                if (j == (int)emEquipSort.副手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2)
+                                if (equip != null && (j == (int)emEquipSort.副手 || j == (int)emEquipSort.主手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2))
                                 {
                                     P.Log($"{(emEquipSort)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
@@ -379,6 +258,8 @@ public class EquipController
                                         var tcs2 = new TaskCompletionSource<bool>();
                                         onJsInitCallBack = (result) => tcs2.SetResult(result);
                                         await tcs2.Task;
+                                        equip.SetAccountInfo(AccountController.Instance.User);
+                                        packageEquips.Add(equip.EquipID, equip);
                                     }
                                 }
 
@@ -401,7 +282,7 @@ public class EquipController
                         {
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
-                                if (j == (int)emEquipSort.副手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2)
+                                if (equip != null && (j == (int)emEquipSort.副手 || j == (int)emEquipSort.主手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2))
                                 {
                                     P.Log($"{(emItemType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                                     var response3 = await EquipOff(role, j);
@@ -410,6 +291,8 @@ public class EquipController
                                         P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
                                         var tcs2 = new TaskCompletionSource<bool>();
                                         onJsInitCallBack = (result) => tcs2.SetResult(result);
+                                        equip.SetAccountInfo(AccountController.Instance.User);
+                                        repositoryEquips.Add(equip.EquipID, equip);
                                         await tcs2.Task;
                                     }
                                 }
@@ -438,42 +321,54 @@ public class EquipController
                     }
                 }
                 P.Log($"{role.RoleName}全部位置装备更换完成\n\t\n\t\n\t", emLogType.AutoEquip);
-                MainForm.Instance.browser.Load("https://www.idleinfinity.cn/Home/Index");
+                MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, "https://www.idleinfinity.cn/Home/Index");
             }
             #endregion
         }
         P.Log($"全部角色装备更换完成\n\t\n\t\n\t\n\t\n\t", emLogType.AutoEquip);
+
+        FreeDb.Sqlite.Update<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
+        FreeDb.Sqlite.Update<EquipModel>(packageEquips.Values.ToList()).ExecuteAffrows();
+
+        MainForm.Instance.TabManager.DisposePage(m_equipBroID);
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
 
     public async Task<JavascriptResponse> GetCurEquips()
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getCurEquips()");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"getCurEquips()");
     }
     public async Task<JavascriptResponse> GetPackageEquips()
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getPackageEquips()");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"getPackageEquips()");
     }
     public async Task<JavascriptResponse> GetRepositoryEquips()
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRepositoryEquips()");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"getRepositoryEquips()");
     }
     public async Task<JavascriptResponse> JumpRepositoryPage()
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"repositoryNext()");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"repositoryNext()");
     }
     public async Task<JavascriptResponse> JumpPackagePage()
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"packageNext()");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"packageNext()");
     }
     public async Task<JavascriptResponse> EquipOn(RoleModel role, EquipModel equip)
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.EquipID})");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.EquipID})");
     }
     public async Task<JavascriptResponse> EquipOff(RoleModel role, int etype)
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"equipOff({role.RoleId},{etype})");
+        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+        return await bro.EvaluateScriptAsync($@"equipOff({role.RoleId},{etype})");
     }
 
     private void OnEquipJsInited(params object[] args)
@@ -485,25 +380,5 @@ public class EquipController
             onJsInitCallBack = null;
         }
     }
-
-    //public static void CheckEquipType(EquipModel equip)
-    //{
-    //    if (equip.EquipName.Contains("秘境"))
-    //    {
-    //        equip.emEquipType = emItemType.秘境;
-    //        equip.EquipBaseName = "秘境";
-    //    }
-    //    else if (equip.EquipBaseName.Contains("珠宝"))
-    //    {
-    //        equip.emEquipType = emItemType.珠宝;
-    //    }
-    //    else if (equip.EquipBaseName.Contains("药水")
-    //         || equip.EquipBaseName.Contains("卡片")
-    //         || equip.EquipBaseName.Contains("宝箱"))
-    //    {
-    //        equip.emEquipType = emItemType.道具;
-    //        equip.EquipBaseName = "道具";
-    //    }
-    //}
 }
 
