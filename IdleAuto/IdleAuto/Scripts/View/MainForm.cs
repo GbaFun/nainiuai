@@ -18,6 +18,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -89,6 +90,8 @@ public partial class MainForm : Form
 
     public void AddBrowserTab(string account, string url)
     {
-        Task.Run(() => { TabManager.TriggerAddTabPage(account, url); });
+        int seed = TabManager.TriggerAddTabPage(account, url);
+        
+        Task.Run(() => { Thread.Sleep(10000); TabManager.DisposePage(seed); });
     }
 }

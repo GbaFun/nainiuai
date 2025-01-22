@@ -10,20 +10,30 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
+/// <summary>
+/// 1.确保name+url的窗口只会添加一个浏览器实例
+/// 2.销毁一个tabpage的时候需要对字典中的index作重新排序
+/// 3.accountName目前不支持多线程 也需要一个方法通过
+/// </summary>
 public class BroTabManager
 {
+    static object LOCKOBJECT = new object();
+
     private TabControl Tab;
 
     /// <summary>
-    /// 登录账号调取cookie用
+    /// 返回的流水号
     /// </summary>
-    private string _accountName { get; set; }
-
+    private int _seed = 0;
     /// <summary>
-    /// 流水号存浏览器 流水号就是选项卡索引
+    /// 流水号->浏览器
     /// </summary>
     public ConcurrentDictionary<int, ChromiumWebBrowser> BroDic;
+
+    /// <summary>
+    /// 流水号->选项卡 用于选中选项卡
+    /// </summary>
+    public ConcurrentDictionary<int, TabPage> TabPageDic;
 
     /// <summary>
     /// 账号名+地址 存浏览器流水号
@@ -32,16 +42,20 @@ public class BroTabManager
 
 
 
-    //public event Action<string, string> AddTabPageEvent;
-
-    //public event Action<int, string> LoadUrl;
+ private void SeedIncrease()
+    {
+        lock (LOCKOBJECT)
+        {
+            _seed++;
+        }
+    }
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="index">浏览器的流水号</param>
     /// <returns></returns>
-    private ChromiumWebBrowser InitializeChromium(int index, string name, string url)
+    private ChromiumWebBrowser InitializeChromium( string name, string url)
     {
 
         // 创建 CefRequestContextSettings 并指定缓存路径
@@ -58,9 +72,10 @@ public class BroTabManager
         browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
         browser.KeyboardHandler = new CEFKeyBoardHandler();
         // 等待页面加载完成后执行脚本
-        browser.FrameLoadEnd += OnFrameLoadEnd;
+        browser.FrameLoadEnd += (sender,e)=> OnFrameLoadEnd(sender,e,name);
         browser.FrameLoadStart += OnFrameLoadStart;
-        BroDic.TryAdd(index, browser);
+        BroDic.TryAdd(_seed, browser);
+      
         return browser;
     }
 
@@ -71,6 +86,7 @@ public class BroTabManager
         // 确保控件的句柄已经创建
         var handle = Tab.Handle;
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
+        TabPageDic = new ConcurrentDictionary<int, TabPage>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
     }
 
@@ -84,26 +100,27 @@ public class BroTabManager
         var key = name + url;
         if (NameUrlDic.ContainsKey(key))
         {
-            Tab.SelectedIndex = NameUrlDic[key];
-            return Tab.SelectedIndex;
+            int seed = NameUrlDic[key];
+            Tab.SelectedTab = TabPageDic[seed];
+            return seed;
         }
-        _accountName = name;
-        var index = Tab.TabPages.Count;
-        bro = InitializeChromium(index, name, url);
+        SeedIncrease();
+        bro = InitializeChromium(name, url);
         // 创建 TabPage
         TabPage tabPage = new TabPage(name);
         tabPage.Controls.Add(bro);
         // 将 TabPage 添加到 TabControl
         Tab.TabPages.Add(tabPage);
-        Tab.SelectedIndex = index;
-        return index;
+        Tab.SelectedTab = tabPage;
+        TabPageDic.TryAdd(_seed, tabPage);
+        return _seed;
     }
 
-    private void LoadUrl(int index, string name, string url)
+    private void LoadUrl(int seed, string name, string url)
     {
-        Tab.SelectedIndex = index;
-        NameUrlDic[name + url] = index;
-        var bro = BroDic[index];
+        Tab.SelectedTab = TabPageDic[seed] ;
+        NameUrlDic[name + url] = seed;
+        var bro = BroDic[seed];
         bro.LoadUrl(url);
     }
     public int TriggerAddTabPage(string title, string url)
@@ -141,6 +158,33 @@ public class BroTabManager
 
     }
 
+    public void DisposePage(int seed)
+    {
+        var list=NameUrlDic.Values.ToList();
+        foreach(var item in NameUrlDic.ToList())
+        {
+           if( item.Value == seed)
+            {
+                NameUrlDic.TryRemove(item.Key,out _);
+            }
+        }
+        var tabPage = TabPageDic[seed];
+        if (Tab.InvokeRequired)
+        {
+            Tab.Invoke(new Action(() =>
+            {
+                Tab.TabPages.Remove(tabPage);
+            }));
+        }
+        else
+        {
+            Tab.TabPages.Remove(tabPage);
+        }
+        BroDic.TryRemove(seed, out _);
+        TabPageDic.TryRemove(seed, out _);
+        GC.Collect();
+    }
+
     private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
     {
         var bro = sender as ChromiumWebBrowser;
@@ -148,7 +192,7 @@ public class BroTabManager
 
     }
 
-    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+    private void OnFrameLoadEnd(object sender, FrameLoadEndEventArgs e,string name)
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
@@ -157,7 +201,7 @@ public class BroTabManager
         {
             Task.Run(async () =>
             {
-                await PageLoadHandler.LoadCookieAndCache(bro, _accountName);
+                await PageLoadHandler.LoadCookieAndCache(bro, name);
             });
         }
         Task.Run(async () =>
