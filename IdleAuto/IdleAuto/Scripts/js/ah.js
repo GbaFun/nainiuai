@@ -24,7 +24,8 @@ let ah = {};
 
     init().then(async () => {
         await loadPriceSuffix();
-        await Bridge.invokeEvent('OnScanAh');
+        console.log('ah.js inited');
+        Bridge.invokeEvent('OnJsInited', 'ah');
     })
 
 

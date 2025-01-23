@@ -9,12 +9,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CefSharp.WinForms;
 
 public class AuctionController
 {
+    private ChromiumWebBrowser _browser;
+
+    private int _broSeed;
+
+    private delegate void OnJsInitCallBack(bool result);
+    private OnJsInitCallBack onJsInitCallBack;
     public AuctionController()
     {
-        EventManager.Instance.SubscribeEvent(emEventType.OnScanAh, OnScanAh);
     }
     private static AuctionController instance;
     public static AuctionController Instance
@@ -48,6 +54,7 @@ public class AuctionController
     public async void StartScan()
     {
         IsStart = true;
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         await StartAutoJob();
     }
 
@@ -56,18 +63,28 @@ public class AuctionController
     /// </summary>
     private async Task StartAutoJob()
     {
+        _browser = await GetBrowserAsync();
         await AutoBuy();
         await AutoJump();
         await AutoNextPage();
         var isLastPage = await IsLastPage();
         var isJumpEnd = await IsJumpToEnd(GetCurNode());
-        if (isLastPage&& isJumpEnd)
+        if (isLastPage && isJumpEnd)
         {
             if (CurIndex == ScanAhCfg.Instance.NodeList.Count - 1) CurIndex = 0;
             else CurIndex++;
             await AutoJump();
         }
 
+    }
+
+
+    private async Task<ChromiumWebBrowser> GetBrowserAsync()
+    {
+        var roleid = AccountController.Instance.User.FirstRole.RoleId;
+        var seed = await MainForm.Instance.TabManager.TriggerAddTabPage("扫拍", $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
+        _broSeed = seed;
+        return MainForm.Instance.TabManager.BroDic[seed];
     }
 
     private async Task AutoBuy()
@@ -79,12 +96,13 @@ public class AuctionController
             if (CanBuy(item))
             {
                 await Buy(item.Eid);
+                await AwaitJsInit();
                 P.Log($@"购买到:【{item.ETitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
-       
-       
-        
+
+
+
     }
     /// <summary>
     /// 自动跳转到对应选项
@@ -114,6 +132,11 @@ public class AuctionController
     public void StopScan()
     {
         IsStart = false;
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+        Task.Run(() => {
+            Thread.Sleep(60000);
+            MainForm.Instance.TabManager.DisposePage(_broSeed);
+        });
     }
 
     private void CalEqLogicPrice(AHItemModel eq)
@@ -128,14 +151,6 @@ public class AuctionController
 
 
 
-    private async void OnScanAh(params object[] args)
-    {
-
-        if (IsStart)
-        {
-            await StartAutoJob();
-        }
-    }
 
     private Boolean CanBuy(AHItemModel item)
     {
@@ -147,11 +162,11 @@ public class AuctionController
             if (item.ETitle != cfg.Name) return false;
             if (cfg.MinLv != 0 && item.Lv < cfg.MinLv) return false;
             if (!cfg.Content.All(p => item.Content.Contains(p))) return false;
-            if (cfg.RegexList!=null&& !RegexUtil.Match(item.Content, cfg.RegexList)) return false;
-            if (item.LogicPrice!=0&&item.LogicPrice <= cfg.Price) return true;//最后比较价格是否合适
+            if (cfg.RegexList != null && !RegexUtil.Match(item.Content, cfg.RegexList)) return false;
+            if (item.LogicPrice != 0 && item.LogicPrice <= cfg.Price) return true;//最后比较价格是否合适
             else
             {
-                P.Log($@"太贵没买:【{item.ETitle}】,价格:{item.ToPriceStr()},地址:{MainForm.Instance.browser.Address}", emLogType.AhScan);
+                P.Log($@"太贵没买:【{item.ETitle}】,价格:{item.ToPriceStr()},地址:{_browser.Address}", emLogType.AhScan);
             }
         }
         return false;
@@ -170,10 +185,10 @@ public class AuctionController
     public async Task<JavascriptResponse> JumpTo(ScanAhTreeNode node)
     {
         await Task.Delay(1500);
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
             var data = node.ToLowerCamelCase();
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.jumpTo({data});");
+            var d = await _browser.EvaluateScriptAsync($@"ah.jumpTo({data});");
             return d;
         }
         return new JavascriptResponse();
@@ -187,9 +202,9 @@ public class AuctionController
     /// <returns></returns>
     public async Task<bool> IsJumpToEnd(ScanAhTreeNode node)
     {
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isJumpToEnd({node.ToLowerCamelCase()});");
+            var d = await _browser.EvaluateScriptAsync($@"ah.isJumpToEnd({node.ToLowerCamelCase()});");
             return d.Result?.ToString() == "success";
         }
         return false;
@@ -198,9 +213,9 @@ public class AuctionController
 
     private async Task<bool> IsLastPage()
     {
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.isLastPage();");
+            var d = await _browser.EvaluateScriptAsync($@"ah.isLastPage();");
             return bool.Parse(d.Result?.ToString());
         }
         else return false;
@@ -209,16 +224,16 @@ public class AuctionController
     private async Task NextPage()
     {
         await Task.Delay(1500);
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.nextPage();");
+            var d = await _browser.EvaluateScriptAsync($@"ah.nextPage();");
         }
     }
     private async Task<Dictionary<int, AHItemModel>> getEqMap()
     {
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.getEqMap();");
+            var d = await _browser.EvaluateScriptAsync($@"ah.getEqMap();");
             return d.Result.ToObject<Dictionary<int, AHItemModel>>();
         }
         return null;
@@ -227,12 +242,29 @@ public class AuctionController
     private async Task<JavascriptResponse> Buy(int eid)
     {
         await Task.Delay(3000);
-        if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+        if (_browser.CanExecuteJavascriptInMainFrame)
         {
-            var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"ah.buy({eid});");
+            var d = await _browser.EvaluateScriptAsync($@"ah.buy({eid});");
             return d;
         }
         return null;
+    }
+
+    private void OnAhJsInited(params object[] args)
+    {
+        string jsName = args[0] as string;
+        if (jsName == "ah")
+        {
+            onJsInitCallBack?.Invoke(true);
+            onJsInitCallBack = null;
+        }
+    }
+
+    private async Task AwaitJsInit()
+    {
+        var tcs2 = new TaskCompletionSource<bool>();
+        onJsInitCallBack = (result) => tcs2.SetResult(result);
+        await tcs2.Task;
     }
 
 }

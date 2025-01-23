@@ -89,6 +89,7 @@ namespace IdleAuto.Scripts.View
         {
             this.menuPanel.Controls.Clear();
             this.menuPanel.Controls.Add(this.AccountCombo);
+            this.AhGroup.Controls.Add(this.BtnAutoAh);
             this.menuPanel.Controls.Add(this.AhGroup);
             this.menuPanel.Controls.Add(this.JumpGroup);
         }

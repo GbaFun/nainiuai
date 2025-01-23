@@ -86,7 +86,7 @@
             r.push[{
                 type: "主动",
                 lv: lv,
-                skillName: skillName,
+                name: skillName,
                 isK: isK
             }];
 
@@ -102,7 +102,7 @@
             r.push({
                 type: skillName.indexOf("光环") > -1 ? "光环" : "被动",
                 lv: lv,
-                skillName: skillName
+                name: skillName
             })
         })
         return r;

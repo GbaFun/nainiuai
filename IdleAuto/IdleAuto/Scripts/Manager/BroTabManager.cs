@@ -12,8 +12,6 @@ using System.Windows.Forms;
 
 /// <summary>
 /// 1.确保name+url的窗口只会添加一个浏览器实例
-/// 2.销毁一个tabpage的时候需要对字典中的index作重新排序
-/// 3.accountName目前不支持多线程 也需要一个方法通过
 /// </summary>
 public class BroTabManager
 {

@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreeSql;
+using CefSharp.WinForms;
 
 namespace IdleAuto.Scripts.Controller
 {
     public class CharacterController
     {
+        private ChromiumWebBrowser _browser;
         static string[] Names = new string[]{
         "末影龙", "苦力怕", "烈焰人", "远古守卫", "恶魂", "幻翼", "史莱姆", "唤魔者", "凋零", "女巫", "掠夺者", "猪灵",
         "钻石", "煤矿石", "铁矿石", "铜矿石", "青金石", "金矿石", "黑曜石", "绿宝石", "石英石", "萤石", "下届合金", "紫水晶",
@@ -155,9 +157,10 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         private async Task StartAutoJob()
         {
+            
             if (IsAutoInit)
             {
-                if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.HomePage) > -1)
+                if (_browser.Address.IndexOf(PageLoadHandler.HomePage) > -1)
                 {
                     var roles = await GetRoles();
 
@@ -170,14 +173,14 @@ namespace IdleAuto.Scripts.Controller
                     }
                     await Task.Delay(1000);
                     //不满12个号去建号
-                    MainForm.Instance.browser.LoadUrl("https://www.idleinfinity.cn/Character/Create");
+                    _browser.LoadUrl("https://www.idleinfinity.cn/Character/Create");
                 }
-                else if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.CharCreate) > -1)
+                else if (_browser.Address.IndexOf(PageLoadHandler.CharCreate) > -1)
                 {
                     //建号
                     await CreateRole();
                 }
-                else if (MainForm.Instance.browser.Address.IndexOf(PageLoadHandler.CharGroup) > -1)
+                else if (_browser.Address.IndexOf(PageLoadHandler.CharGroup) > -1)
                 {
                     //工会
                     var isUnionDone = await MakeUnion();
@@ -198,9 +201,9 @@ namespace IdleAuto.Scripts.Controller
 
         private async Task GoToMakeGroup()
         {
-            if (MainForm.Instance.browser.Address.IndexOf("Character/Group") == -1)
+            if (_browser.Address.IndexOf("Character/Group") == -1)
             {
-                MainForm.Instance.browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={AccountController.Instance.User.Roles[0].RoleId}");
+                _browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={AccountController.Instance.User.Roles[0].RoleId}");
             }
             await Task.Delay(500);
         }
@@ -215,7 +218,7 @@ namespace IdleAuto.Scripts.Controller
             int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 3;
             if (nextIndex > 11) return;
             int roleId = AccountController.Instance.User.Roles[nextIndex].RoleId;
-            MainForm.Instance.browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={roleId}");
+            _browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={roleId}");
 
         }
 
@@ -281,9 +284,9 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task<Boolean> HasUnion()
         {
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.hasUnion();");
+                var d = await _browser.EvaluateScriptAsync($@"_init.hasUnion();");
                 return d.Result.ToObject<Boolean>();
             }
             else return false;
@@ -296,9 +299,9 @@ namespace IdleAuto.Scripts.Controller
         private async Task<Boolean> HasGroup()
         {
             await Task.Delay(1000);
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.hasGroup();");
+                var d = await _browser.EvaluateScriptAsync($@"_init.hasGroup();");
                 return d.Result.ToObject<Boolean>();
             }
             else return false;
@@ -315,9 +318,9 @@ namespace IdleAuto.Scripts.Controller
             data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
             data["cname"] = AccountController.Instance.User.Roles[1].RoleName;
             data["gname"] = AccountController.Instance.User.Roles[0].RoleName + "★";
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.createUnion({data.ToLowerCamelCase()});");
+                var d = await _browser.EvaluateScriptAsync($@"_init.createUnion({data.ToLowerCamelCase()});");
 
             }
 
@@ -335,9 +338,9 @@ namespace IdleAuto.Scripts.Controller
             int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 1;
             data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
             data["gname"] = AccountController.Instance.CurRole.RoleName + "★";
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.createGroup({data.ToLowerCamelCase()});");
+                var d = await _browser.EvaluateScriptAsync($@"_init.createGroup({data.ToLowerCamelCase()});");
 
             }
 
@@ -353,9 +356,9 @@ namespace IdleAuto.Scripts.Controller
             var data = new Dictionary<string, object>();
             data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
             data["cname"] = r.RoleName;
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.addUnionMember({data.ToLowerCamelCase()});");
+                var d = await _browser.EvaluateScriptAsync($@"_init.addUnionMember({data.ToLowerCamelCase()});");
             }
             await Task.Delay(1000);
         }
@@ -371,9 +374,9 @@ namespace IdleAuto.Scripts.Controller
             data["roleid"] = AccountController.Instance.CurRole.RoleId;
             int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 2;
             data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.addGroupMember({data.ToLowerCamelCase()});");
+                var d = await _browser.EvaluateScriptAsync($@"_init.addGroupMember({data.ToLowerCamelCase()});");
             }
             await Task.Delay(1000);
 
@@ -386,9 +389,9 @@ namespace IdleAuto.Scripts.Controller
         private async Task<string[]> GetExistUnionMember()
         {
 
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getExistUnionMember();");
+                var d = await _browser.EvaluateScriptAsync($@"_init.getExistUnionMember();");
                 return d.Result.ToObject<string[]>();
 
             }
@@ -403,9 +406,9 @@ namespace IdleAuto.Scripts.Controller
         private async Task<string[]> GetExistGroupMember()
         {
 
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getExistGroupMember();");
+                var d = await _browser.EvaluateScriptAsync($@"_init.getExistGroupMember();");
                 return d.Result.ToObject<string[]>();
             }
             else return new string[] { };
@@ -419,9 +422,9 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<CharAttributeModel> GetCharAtt()
         {
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_char.getAttribute();");
+                var d = await _browser.EvaluateScriptAsync($@"_char.getAttribute();");
                 return d.Result?.ToObject<CharAttributeModel>();
             }
             else return null;
@@ -434,9 +437,9 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<List<SkillModel>> GetSkillInfo()
         {
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_char.getSkillInfo();");
+                var d = await _browser.EvaluateScriptAsync($@"_char.getSkillInfo();");
                 return d.Result?.ToObject<List<SkillModel>>();
             }
             else return null;
@@ -456,9 +459,9 @@ namespace IdleAuto.Scripts.Controller
             var info = CreateRaceAndType();
             data["race"] = info.Item2;
             data["type"] = info.Item1;
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.createRole({data.ToLowerCamelCase()});");
+                var d = await _browser.EvaluateScriptAsync($@"_init.createRole({data.ToLowerCamelCase()});");
             }
 
         }
@@ -470,9 +473,9 @@ namespace IdleAuto.Scripts.Controller
         public async Task<List<RoleModel>> GetRoles()
         {
             await Task.Delay(1500);
-            if (MainForm.Instance.browser.CanExecuteJavascriptInMainFrame)
+            if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await MainForm.Instance.browser.EvaluateScriptAsync($@"_init.getRoleInfo();");
+                var d = await _browser.EvaluateScriptAsync($@"_init.getRoleInfo();");
                 return d.Result?.ToObject<List<RoleModel>>();
             }
             return null;

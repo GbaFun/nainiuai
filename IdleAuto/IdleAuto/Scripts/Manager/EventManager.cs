@@ -24,10 +24,7 @@ public enum emEventType
     /// 升级符文返回
     /// </summary>
     OnUpgradeRuneBack,
-    /// <summary>
-    /// 载入ah页面发送装备信息
-    /// </summary>
-    OnScanAh,
+
     /// <summary>
     /// 初始化账号 包括角色 组队 工会
     /// </summary>

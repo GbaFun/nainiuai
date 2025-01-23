@@ -8,26 +8,27 @@ using System.Threading.Tasks;
 
 namespace IdleAuto.Scripts.Model
 {
-    public enum SkillTypeEnum
-    {
-        [Description("主动")]
-        Active,
-        [Description("被动")]
-        Passive,
-        [Description("光环")]
-        Aura
-    }
+    /// <summary>
+    /// 技能配置表和读取人物技能公用
+    /// </summary>
     public class SkillModel
     {
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
         /// <summary>
-        /// 技能类型
+        /// 和爱液库保持一致
         /// </summary>
-        public SkillTypeEnum Type { get; set; }
+        [Column( IsPrimary = true)]
+        public int Id { get; set; }
 
         public int Lv { get; set; }
 
-        public string SkillName { get; set; }
+        /// <summary>
+        /// 技能名称
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 是否K了
+        /// </summary>
+        public bool IsK { get; set; }
     }
 }

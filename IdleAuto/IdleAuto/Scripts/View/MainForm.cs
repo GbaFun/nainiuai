@@ -26,11 +26,6 @@ public partial class MainForm : Form
 {
     public static MainForm Instance;
 
-    public ChromiumWebBrowser browser
-    {
-        get;
-        private set;
-    }
 
     public BroTabManager TabManager;
     private void MainForm_Load(object sender, EventArgs e)
