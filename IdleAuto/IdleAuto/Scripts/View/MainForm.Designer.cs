@@ -27,31 +27,34 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        this.BroTabControl = new System.Windows.Forms.TabControl();
-        this.SuspendLayout();
-        // 
-        // BroTabControl
-        // 
-        this.BroTabControl.Location = new System.Drawing.Point(100, 0);
-        this.BroTabControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-        this.BroTabControl.Name = "BroTabControl";
-        this.BroTabControl.SelectedIndex = 0;
-        this.BroTabControl.Size = new System.Drawing.Size(883, 502);
-        this.BroTabControl.TabIndex = 0;
-        // 
-        // MainForm
-        // 
-        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-        this.BackColor = System.Drawing.SystemColors.ControlLight;
-        this.ClientSize = new System.Drawing.Size(985, 503);
-        this.Controls.Add(this.BroTabControl);
-        this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-        this.Name = "MainForm";
-        this.Text = "奶牛AI";
-        this.Load += new System.EventHandler(this.MainForm_Load);
-        this.ResumeLayout(false);
+            this.BroTabControl = new System.Windows.Forms.TabControl();
+            this.SuspendLayout();
+            // 
+            // BroTabControl
+            // 
+            this.BroTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BroTabControl.Location = new System.Drawing.Point(100, 0);
+            this.BroTabControl.Margin = new System.Windows.Forms.Padding(2);
+            this.BroTabControl.Name = "BroTabControl";
+            this.BroTabControl.SelectedIndex = 0;
+            this.BroTabControl.Size = new System.Drawing.Size(883, 502);
+            this.BroTabControl.TabIndex = 0;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ClientSize = new System.Drawing.Size(985, 503);
+            this.Controls.Add(this.BroTabControl);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "MainForm";
+            this.Text = "奶牛AI";
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.ResumeLayout(false);
 
     }
 

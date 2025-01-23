@@ -144,12 +144,12 @@ namespace IdleAuto.Scripts.View
             }
         }
 
-        private void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private async void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
 
-            MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            await MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
         private void RoleCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
