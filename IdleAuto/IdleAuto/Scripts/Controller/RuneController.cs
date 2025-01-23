@@ -113,11 +113,13 @@ public class RuneController
 
     public async Task<JavascriptResponse> GetRuneNum(int runeId)
     {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
+        return new JavascriptResponse();
+        //return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
     }
     public void UpgradeRune(int runeId, int count)
     {
-        MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
+        return;
+       // MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
     }
 
     private void OnRuneJsInited(params object[] args)
