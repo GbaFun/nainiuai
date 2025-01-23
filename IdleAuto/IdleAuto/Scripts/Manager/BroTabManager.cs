@@ -114,7 +114,7 @@ public class BroTabManager
             return seed;
         }
         SeedIncrease();
-
+        
         var jsTask = new TaskCompletionSource<bool>();
         onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
@@ -126,6 +126,7 @@ public class BroTabManager
         // 将 TabPage 添加到 TabControl
         Tab.TabPages.Add(tabPage);
         Tab.SelectedTab = tabPage;
+        NameUrlDic.TryAdd(key, _seed);
         TabPageDic.TryAdd(_seed, tabPage);
 
         await jsTask.Task;
