@@ -114,7 +114,7 @@ public class BroTabManager
             return seed;
         }
         SeedIncrease();
-        
+
         var jsTask = new TaskCompletionSource<bool>();
         onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);

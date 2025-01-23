@@ -116,14 +116,14 @@ public class RuneController
         onUpgradeRuneCallBack = null;
     }
 
-    public async Task<JavascriptResponse> GetRuneNum(int runeId)
-    {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
-    }
-    public void UpgradeRune(int runeId, int count)
-    {
-        MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
-    }
+    //public async Task<JavascriptResponse> GetRuneNum(int runeId)
+    //{
+    //    return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
+    //}
+    //public void UpgradeRune(int runeId, int count)
+    //{
+    //    MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
+    //}
 
     private void OnRuneJsInited(params object[] args)
     {
