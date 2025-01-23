@@ -90,7 +90,7 @@ public class AuctionController
         var accName = AccountController.Instance.User.AccountName;
         var seed = await MainForm.Instance.TabManager.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
         _broSeed = seed;
-        return MainForm.Instance.TabManager.BroDic[seed];
+        return MainForm.Instance.TabManager.GetBro(seed);
     }
 
     private async Task AutoBuy()
@@ -120,7 +120,7 @@ public class AuctionController
 
         if (!isJumpEnd)
         {
-           
+
             await JumpTo(node);
             await AwaitJsInit();
             await AutoJump();
@@ -258,7 +258,7 @@ public class AuctionController
 
     private async Task<JavascriptResponse> Buy(int eid)
     {
-      
+
         if (_browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await _browser.EvaluateScriptAsync($@"ah.buy({eid});");
@@ -280,7 +280,7 @@ public class AuctionController
     //该方法要写在会执行刷新页面操作之后
     private async Task AwaitJsInit()
     {
-        
+
         //var tcs2 = new TaskCompletionSource<bool>();
         //onJsInitCallBack = (result) => tcs2.SetResult(result);
         //await tcs2.Task;
