@@ -76,7 +76,8 @@ public class EquipController
                 {
                     jumpNextPage = false;
                     P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
-                    var response1 = await GetRepositoryEquips();
+                    var response1 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getRepositoryEquips()");
+                    //await GetRepositoryEquips();
                     if (response1.Success)
                     {
                         var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
@@ -96,19 +97,18 @@ public class EquipController
                     P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                     MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
                     P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
-                    var response2 = await JumpRepositoryPage();
+                    var response2 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"repositoryNext()");
                     if (response2.Success)
                     {
                         if ((bool)response2.Result)
                         {
-                            P.Log("等待仓库切页完成", emLogType.AutoEquip);
-                            var tcs2 = new TaskCompletionSource<bool>();
-                            onJsInitCallBack = (result) => tcs2.SetResult(result);
-                            await tcs2.Task;
+                            //P.Log("等待仓库切页完成", emLogType.AutoEquip);
+                            //var tcs2 = new TaskCompletionSource<bool>();
+                            //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                            //await tcs2.Task;
                             P.Log("仓库切页完成");
                             page++;
                             jumpNextPage = true;
-                            await Task.Delay(500);
                         }
                         else
                         {
@@ -116,6 +116,7 @@ public class EquipController
                             jumpNextPage = false;
                         }
                     }
+                    await Task.Delay(500);
                 } while (jumpNextPage);
 
                 P.Log("缓存仓库完成！！");
@@ -130,7 +131,8 @@ public class EquipController
             {
                 jumpNextPage = false;
                 P.Log($"缓存背包第{page}页装备", emLogType.AutoEquip);
-                var response1 = await GetPackageEquips();
+                var response1 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getPackageEquips()");
+                //GetPackageEquips();
                 if (response1.Success)
                 {
                     var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
@@ -150,15 +152,16 @@ public class EquipController
                 P.Log($"缓存背包第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                 MainForm.Instance.SetLoadContent($"正在缓存背包的装备，当前已缓存数量{repositoryEquips.Count}");
                 P.Log("开始跳转背包下一页", emLogType.AutoEquip);
-                var response2 = await JumpPackagePage();
+                var response2 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"packageNext()");
+                //JumpPackagePage();
                 if (response2.Success)
                 {
                     if ((bool)response2.Result)
                     {
-                        P.Log("等待背包切页完成", emLogType.AutoEquip);
-                        var tcs2 = new TaskCompletionSource<bool>();
-                        onJsInitCallBack = (result) => tcs2.SetResult(result);
-                        await tcs2.Task;
+                        //P.Log("等待背包切页完成", emLogType.AutoEquip);
+                        //var tcs2 = new TaskCompletionSource<bool>();
+                        //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                        //await tcs2.Task;
                         P.Log("背包切页完成", emLogType.AutoEquip);
                         page++;
                         jumpNextPage = true;
@@ -222,7 +225,8 @@ public class EquipController
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
 
             Dictionary<emEquipSort, EquipModel> curEquips = null;
-            var response = await GetCurEquips();
+            var response = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
+            //GetCurEquips();
             if (response.Success)
             {
                 curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
@@ -257,13 +261,14 @@ public class EquipController
                                 if (equip != null && (j == (int)emEquipSort.副手 || j == (int)emEquipSort.主手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2))
                                 {
                                     P.Log($"{(emEquipSort)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
-                                    var response3 = await EquipOff(role, j);
+                                    var response3 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"equipOff({role.RoleId},{j})");
+                                    //EquipOff(role, j);
                                     if (response3.Success)
                                     {
-                                        P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
-                                        var tcs2 = new TaskCompletionSource<bool>();
-                                        onJsInitCallBack = (result) => tcs2.SetResult(result);
-                                        await tcs2.Task;
+                                        //P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
+                                        //var tcs2 = new TaskCompletionSource<bool>();
+                                        //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                                        //await tcs2.Task;
                                         equip.SetAccountInfo(AccountController.Instance.User);
                                         packageEquips.Add(equip.EquipID, equip);
                                     }
@@ -271,14 +276,15 @@ public class EquipController
 
                                 P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换", emLogType.AutoEquip);
 
-                                var response2 = await EquipOn(role, item.Value);
+                                var response2 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"equipOn({role.RoleId},{item.Value.EquipID})");
+                                //EquipOn(role, item.Value);
                                 if (response2.Success)
                                 {
                                     packageEquips.Remove(item.Key);
-                                    P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
-                                    var tcs2 = new TaskCompletionSource<bool>();
-                                    onJsInitCallBack = (result) => tcs2.SetResult(result);
-                                    await tcs2.Task;
+                                    //P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
+                                    //var tcs2 = new TaskCompletionSource<bool>();
+                                    //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                                    //await tcs2.Task;
                                     isSuccess = true;
                                     goto WEAR_EQUIP_FIANLLY;
                                 }
@@ -291,27 +297,29 @@ public class EquipController
                                 if (equip != null && (j == (int)emEquipSort.副手 || j == (int)emEquipSort.主手 || j == (int)emEquipSort.戒指1 || j == (int)emEquipSort.戒指2))
                                 {
                                     P.Log($"{(emItemType)j}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
-                                    var response3 = await EquipOff(role, j);
+                                    var response3 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"equipOff({role.RoleId},{j})");
+                                    //EquipOff(role, j);
                                     if (response3.Success)
                                     {
-                                        P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
-                                        var tcs2 = new TaskCompletionSource<bool>();
-                                        onJsInitCallBack = (result) => tcs2.SetResult(result);
+                                        //P.Log($"等待卸下装备消息返回", emLogType.AutoEquip);
+                                        //var tcs2 = new TaskCompletionSource<bool>();
+                                        //onJsInitCallBack = (result) => tcs2.SetResult(result);
                                         equip.SetAccountInfo(AccountController.Instance.User);
                                         repositoryEquips.Add(equip.EquipID, equip);
-                                        await tcs2.Task;
+                                        //await tcs2.Task;
                                     }
                                 }
 
                                 P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备{targetEquipName}，现在更换", emLogType.AutoEquip);
-                                var response2 = await EquipOn(role, item.Value);
+                                var response2 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"equipOn({role.RoleId},{item.Value.EquipID})");
+                                //EquipOn(role, item.Value);
                                 if (response2.Success)
                                 {
                                     repositoryEquips.Remove(item.Key);
-                                    P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
-                                    var tcs2 = new TaskCompletionSource<bool>();
-                                    onJsInitCallBack = (result) => tcs2.SetResult(result);
-                                    await tcs2.Task;
+                                    //P.Log($"等待更换装备消息返回", emLogType.AutoEquip);
+                                    //var tcs2 = new TaskCompletionSource<bool>();
+                                    //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                                    //await tcs2.Task;
                                     isSuccess = true;
                                     goto WEAR_EQUIP_FIANLLY;
                                 }
@@ -344,41 +352,41 @@ public class EquipController
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
 
-    public async Task<JavascriptResponse> GetCurEquips()
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"getCurEquips()");
-    }
-    public async Task<JavascriptResponse> GetPackageEquips()
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"getPackageEquips()");
-    }
-    public async Task<JavascriptResponse> GetRepositoryEquips()
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"getRepositoryEquips()");
-    }
-    public async Task<JavascriptResponse> JumpRepositoryPage()
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"repositoryNext()");
-    }
-    public async Task<JavascriptResponse> JumpPackagePage()
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"packageNext()");
-    }
-    public async Task<JavascriptResponse> EquipOn(RoleModel role, EquipModel equip)
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.EquipID})");
-    }
-    public async Task<JavascriptResponse> EquipOff(RoleModel role, int etype)
-    {
-        var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
-        return await bro.EvaluateScriptAsync($@"equipOff({role.RoleId},{etype})");
-    }
+    //public async Task<JavascriptResponse> GetCurEquips()
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"getCurEquips()");
+    //}
+    //public async Task<JavascriptResponse> GetPackageEquips()
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"getPackageEquips()");
+    //}
+    //public async Task<JavascriptResponse> GetRepositoryEquips()
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"getRepositoryEquips()");
+    //}
+    //public async Task<JavascriptResponse> JumpRepositoryPage()
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"repositoryNext()");
+    //}
+    //public async Task<JavascriptResponse> JumpPackagePage()
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"packageNext()");
+    //}
+    //public async Task<JavascriptResponse> EquipOn(RoleModel role, EquipModel equip)
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"equipOn({role.RoleId},{equip.EquipID})");
+    //}
+    //public async Task<JavascriptResponse> EquipOff(RoleModel role, int etype)
+    //{
+    //    var bro = MainForm.Instance.TabManager.BroDic[m_equipBroID];
+    //    return await bro.EvaluateScriptAsync($@"equipOff({role.RoleId},{etype})");
+    //}
 
     private void OnEquipJsInited(params object[] args)
     {

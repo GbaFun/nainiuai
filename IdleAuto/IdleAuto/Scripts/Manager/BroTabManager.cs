@@ -3,12 +3,14 @@ using CefSharp.WinForms;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 /// <summary>
 /// 1.确保name+url的窗口只会添加一个浏览器实例
@@ -26,17 +28,17 @@ public class BroTabManager
     /// <summary>
     /// 流水号->浏览器
     /// </summary>
-    public ConcurrentDictionary<int, ChromiumWebBrowser> BroDic;
+    private ConcurrentDictionary<int, ChromiumWebBrowser> BroDic;
 
     /// <summary>
     /// 流水号->选项卡 用于选中选项卡
     /// </summary>
-    public ConcurrentDictionary<int, TabPage> TabPageDic;
+    private ConcurrentDictionary<int, TabPage> TabPageDic;
 
     /// <summary>
     /// 账号名+地址 存浏览器流水号
     /// </summary>
-    public ConcurrentDictionary<string, int> NameUrlDic;
+    private ConcurrentDictionary<string, int> NameUrlDic;
 
     private delegate void OnJsInitCallBack(string jsName);
     private OnJsInitCallBack onJsInitCallBack;
@@ -78,7 +80,6 @@ public class BroTabManager
         return browser;
     }
 
-
     public BroTabManager(TabControl tab)
     {
         this.Tab = tab;
@@ -87,6 +88,18 @@ public class BroTabManager
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
         TabPageDic = new ConcurrentDictionary<int, TabPage>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
+    }
+
+    public ChromiumWebBrowser GetBro(int seed)
+    {
+        return BroDic[seed];
+    }
+    public int GetFocusID()
+    {
+        int seed = 0;
+        var tab = Tab.SelectedTab;
+        seed = TabPageDic.First(x => x.Value == tab).Key;
+        return seed;
     }
 
     private async Task<int> AddTabPage(string name, string url, string jsName = "")
@@ -135,6 +148,7 @@ public class BroTabManager
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return;
     }
+
     public async Task<int> TriggerAddTabPage(string title, string url, string jsName = "")
     {
         // 触发事件
@@ -218,6 +232,18 @@ public class BroTabManager
         BroDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
         GC.Collect();
+    }
+
+    public async Task<JavascriptResponse> TriggerCallJs(int seed, string jsFunc)
+    {
+        var bro = BroDic[seed];
+        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        var jsTask = new TaskCompletionSource<bool>();
+        onJsInitCallBack = (result) => jsTask.SetResult(true);
+        var response2 = await bro.EvaluateScriptAsync(jsFunc);
+        await jsTask.Task;
+        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        return response2;
     }
 
     private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)

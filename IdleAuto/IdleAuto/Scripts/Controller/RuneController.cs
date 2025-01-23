@@ -41,6 +41,9 @@ public class RuneController
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
         //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
+
+        int broIndex = MainForm.Instance.TabManager.GetFocusID();
+
         foreach (var item in cfg)
         {
             P.Log($"开始检查{item.ID}#符文", emLogType.RuneUpgrate);
@@ -53,7 +56,8 @@ public class RuneController
                 await Task.Delay(500);
                 continue;
             }
-            var response = await GetRuneNum(item.ID);
+            var response = await MainForm.Instance.TabManager.TriggerCallJs(broIndex, $@"getRuneNum({item.ID})");
+            //GetRuneNum(item.ID);
             if (response.Success)
             {
                 int curNum = (int)response.Result;
@@ -68,15 +72,16 @@ public class RuneController
                         continue;
                     }
                     P.Log($"开始升级{item.ID}#符文，升级数量{count}", emLogType.RuneUpgrate);
-                    UpgradeRune(item.ID, count);
-                    var tcs = new TaskCompletionSource<bool>();
-                    onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
-                    await tcs.Task;
-                    var tcs2 = new TaskCompletionSource<bool>();
-                    onJsInitCallBack = (result) => tcs2.SetResult(result);
-                    await tcs2.Task;
+                    var response2 = await MainForm.Instance.TabManager.TriggerCallJs(broIndex, $@"upgradeRune({item.ID},{count})");
+                    //UpgradeRune(item.ID, count);
+                    //var tcs = new TaskCompletionSource<bool>();
+                    //onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
+                    //await tcs.Task;
+                    //var tcs2 = new TaskCompletionSource<bool>();
+                    //onJsInitCallBack = (result) => tcs2.SetResult(result);
+                    //await tcs2.Task;
 
-                    if (tcs.Task.Result == false)
+                    if (response2.Success == false)
                     {
                         MessageBox.Show($"自动升级符文失败，详情请查看log文件({Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", emLogType.RuneUpgrate.ToString())})");
                         break;
@@ -111,14 +116,14 @@ public class RuneController
         onUpgradeRuneCallBack = null;
     }
 
-    public async Task<JavascriptResponse> GetRuneNum(int runeId)
-    {
-        return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
-    }
-    public void UpgradeRune(int runeId, int count)
-    {
-        MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
-    }
+    //public async Task<JavascriptResponse> GetRuneNum(int runeId)
+    //{
+    //    return await MainForm.Instance.browser.EvaluateScriptAsync($@"getRuneNum({runeId})");
+    //}
+    //public void UpgradeRune(int runeId, int count)
+    //{
+    //    MainForm.Instance.browser.ExecuteScriptAsync($@"upgradeRune({runeId},{count})");
+    //}
 
     private void OnRuneJsInited(params object[] args)
     {
