@@ -11,14 +11,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.WinForms;
 
-public class AuctionController
+public class AuctionController:BaseController
 {
-    private ChromiumWebBrowser _browser;
 
-    private int _broSeed;
 
-    private delegate void OnJsInitCallBack(bool result);
-    private OnJsInitCallBack onJsInitCallBack;
+
+
     public AuctionController()
     {
     }
@@ -64,7 +62,7 @@ public class AuctionController
     private async Task StartAutoJob()
     {
         _browser = await GetBrowserAsync();
-        await Task.Delay(1500);
+        await Task.Delay(5000);
         await AutoJump();
         await AutoNextPage();
         var isLastPage = await IsLastPage();
@@ -84,14 +82,7 @@ public class AuctionController
     }
 
 
-    private async Task<ChromiumWebBrowser> GetBrowserAsync()
-    {
-        var roleid = AccountController.Instance.User.FirstRole.RoleId;
-        var accName = AccountController.Instance.User.AccountName;
-        var seed = await MainForm.Instance.TabManager.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
-        _broSeed = seed;
-        return MainForm.Instance.TabManager.GetBro(seed);
-    }
+  
 
     private async Task AutoBuy()
     {
@@ -101,7 +92,7 @@ public class AuctionController
             if (CanBuy(item))
             {
                 await Buy(item.Eid);
-                await AwaitJsInit();
+               
                 P.Log($@"购买到:【{item.ETitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
@@ -120,9 +111,7 @@ public class AuctionController
 
         if (!isJumpEnd)
         {
-
             await JumpTo(node);
-            await AwaitJsInit();
             await AutoJump();
         }
         else
@@ -140,8 +129,6 @@ public class AuctionController
         if (!isLast && isJumpEnd)
         {
             await NextPage();
-            await AwaitJsInit();
-
             await AutoBuy();
             await AutoNextPage();
         }
@@ -207,6 +194,7 @@ public class AuctionController
         {
             var data = node.ToLowerCamelCase();
             var d = await _browser.EvaluateScriptAsync($@"ah.jumpTo({data});");
+            await JsInit();
             return d;
         }
         return new JavascriptResponse();
@@ -244,6 +232,7 @@ public class AuctionController
         if (_browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await _browser.EvaluateScriptAsync($@"ah.nextPage();");
+            await JsInit();
         }
     }
     private async Task<Dictionary<int, AHItemModel>> getEqMap()
@@ -262,50 +251,22 @@ public class AuctionController
         if (_browser.CanExecuteJavascriptInMainFrame)
         {
             var d = await _browser.EvaluateScriptAsync($@"ah.buy({eid});");
+            await JsInit();
             return d;
         }
         return null;
     }
 
-    private void OnAhJsInited(params object[] args)
+    protected async Task<ChromiumWebBrowser> GetBrowserAsync()
     {
-        string jsName = args[0] as string;
-        if (jsName == "ah")
-        {
-            onJsInitCallBack?.Invoke(true);
-            onJsInitCallBack = null;
-        }
+        var roleid = AccountController.Instance.User.FirstRole.RoleId;
+        var accName = AccountController.Instance.User.AccountName;
+        var seed = await MainForm.Instance.TabManager.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
+        _broSeed = seed;
+        return MainForm.Instance.TabManager.GetBro(seed);
     }
 
-    //该方法要写在会执行刷新页面操作之后
-    private async Task AwaitJsInit()
-    {
 
-        //var tcs2 = new TaskCompletionSource<bool>();
-        //onJsInitCallBack = (result) => tcs2.SetResult(result);
-        //await tcs2.Task;
-        using (var cts = new CancellationTokenSource())
-        {
-            cts.CancelAfter(TimeSpan.FromMinutes(1));
 
-            var tcs2 = new TaskCompletionSource<bool>();
-
-            onJsInitCallBack = (result) => tcs2.SetResult(result);
-
-            var completedTask = await Task.WhenAny(tcs2.Task, Task.Delay(Timeout.Infinite, cts.Token));
-
-            if (completedTask == tcs2.Task)
-            {
-                await Task.Delay(2000);
-                // Task completed successfully
-                await tcs2.Task; // Ensure any exceptions/cancellation are observed
-            }
-            else
-            {
-                // Task was cancelled
-                throw new OperationCanceledException("The operation was cancelled.");
-            }
-        }
-    }
 
 }

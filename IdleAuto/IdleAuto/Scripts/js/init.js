@@ -15,7 +15,7 @@ let _init = {};
     var dataMap = {}//存储dataid对应装备的数据 
 
     init().then(async () => {
-        await Bridge.invokeEvent('OnInitChar');
+        Bridge.invokeEvent('OnJsInited', 'init');
     })
 
     //创建角色

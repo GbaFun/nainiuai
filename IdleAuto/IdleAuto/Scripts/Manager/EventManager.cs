@@ -24,12 +24,6 @@ public enum emEventType
     /// 升级符文返回
     /// </summary>
     OnUpgradeRuneBack,
-
-    /// <summary>
-    /// 初始化账号 包括角色 组队 工会
-    /// </summary>
-    OnInitChar,
-
     /// <summary>
     /// 角色载入
     /// </summary>
