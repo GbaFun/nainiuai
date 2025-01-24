@@ -71,6 +71,7 @@
     <None Include="Configs\IdleSkillJson.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="Configs\CfgExtension\SkillPointCfg.cs" />
     <Compile Include="Db\FreeDb.cs" />
     <Compile Include="Scripts\Controller\CharacterController.cs" />
     <Compile Include="Scripts\Controller\EquipController.cs" />
@@ -171,6 +172,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\ScanAhCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\SkillPoint.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Document\ProjectStruct.md" />

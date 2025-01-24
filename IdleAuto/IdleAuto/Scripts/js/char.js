@@ -1,5 +1,5 @@
 ﻿
-; class Character {
+ class Character {
     //当前角色id
     cid = 0;
 
@@ -68,7 +68,7 @@
 
     getSkillInfo() {
         if (location.href.indexOf("Character/Detail") == -1) return;
-        var r = [];
+        var r = {};
 
         var arr = $(".skill-container .sr-container").toArray();
         //前五个为主动技能 后三个为组队信息
@@ -84,12 +84,12 @@
                     isK = true;
                 }
             }
-            r.push[{
+            r[skillName] = {
                 type: "主动",
                 lv: lv,
                 name: skillName,
                 isK: isK
-            }];
+            };
 
         }
 
@@ -100,13 +100,54 @@
             var lvStr = item.innerText;
             var lv = lvStr.match(/\d+/)[0];
             var skillName = passiveSkillNameArr[index].innerText;
-            r.push({
+            r[skillName] = {
                 type: skillName.indexOf("光环") > -1 ? "光环" : "被动",
                 lv: lv,
                 name: skillName
-            })
+            };
         })
         return r;
+    }
+    //保存技能 sid为技能id|点数逗号拼接
+    skillSave(data) {
+
+        var data = MERGE_Form({
+            sid: data.sid,
+            cid: _char.cid
+        });
+        POST_Message("SkillSave", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
+            debugger;
+            location.reload();
+        })
+    }
+
+    skillReset() {
+
+        var data = MERGE_Form({
+            cid: _char.cid
+        });
+        POST_Message("SkillReset", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
+            debugger;
+            location.reload();
+        })
+    }
+
+    skillGroupSave(data) {
+
+        var data = MERGE_Form({
+            cid: _char.cid,
+            sid:data.sid
+        });
+        POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
+            location.reload();
+        }).catch((e) => {
+            debugger;
+            location.reload();
+        })
     }
 }
 

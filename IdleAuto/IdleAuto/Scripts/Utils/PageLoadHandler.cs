@@ -21,6 +21,7 @@ public class PageLoadHandler
     public const string EquipPage = "Equipment/Query";
     public const string CharCreate = "Character/Create";
     public const string CharGroup = "Character/Group";
+    public const string CharDetail = "Character/Detail";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)

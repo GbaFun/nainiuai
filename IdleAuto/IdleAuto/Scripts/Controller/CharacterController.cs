@@ -298,7 +298,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task CreateGroup()
         {
-            
+
             var data = new Dictionary<string, object>();
             data["roleid"] = AccountController.Instance.CurRole.RoleId;
             int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 1;
@@ -402,12 +402,14 @@ namespace IdleAuto.Scripts.Controller
         /// 获取人物技能
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SkillModel>> GetSkillInfo()
+        public async Task<Dictionary<string, SkillModel>> GetSkillInfo()
         {
+            //因为是在自动换装那边进入这里 那边只等待了equip.js 加个延迟等待charjs载入
+            await Task.Delay(1000);
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.getSkillInfo();");
-                return d.Result?.ToObject<List<SkillModel>>();
+                return d.Result?.ToObject<Dictionary<string, SkillModel>>();
             }
             else return null;
 
@@ -465,7 +467,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<List<RoleModel>> GetRoles()
         {
-            
+
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_init.getRoleInfo();");
@@ -482,6 +484,170 @@ namespace IdleAuto.Scripts.Controller
             _broSeed = seed;
             return MainForm.Instance.TabManager.GetBro(seed);
         }
+
+        #region 加点
+        public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
+        {
+            _browser = bro;
+            int roleid = role.RoleId;
+            //不在详细页先去详细页读取属性
+            if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+                await JsInit();
+            }
+            //判断下当前技能合不合适 合适就跳过
+            var curSkill = await GetSkillInfo();
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
+            var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+            var isAddPoint = CheckRoleSkill(curSkill, targetSkillPoint);
+            if (isAddPoint)
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
+                await JsInit();
+                await SkillRest();
+                await SkillSave(targetSkillPoint, skillConfig.JobName);
+                var groupid=GetSkillGroup(skillConfig);
+                await SkillGroupSave(groupid);
+            }
+
+        }
+        private async Task SkillRest()
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.skillReset();");
+                await JsInit();
+            }
+        }
+
+        /// <summary>
+        /// 保存技能并返回需要确认的技能组
+        /// </summary>
+        /// <param name="targetSkill"></param>
+        /// <param name="jobname"></param>
+        /// <returns></returns>
+        private async Task SkillSave(Dictionary<string, int> targetSkill, string jobname)
+        {
+            List<string> strList = new List<string>();
+
+            targetSkill.ToList().ForEach(p =>
+            {
+                var s = IdleSkillCfg.Instance.GetIdleSkill(jobname, p.Key);
+                strList.Add($"{s.Id}|{p.Value}");
+
+            });
+            var skillStr = string.Join(",", strList);
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data.Add("sid", skillStr);
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.skillSave({data.ToLowerCamelCase()});");
+                await JsInit();
+            }
+
+        }
+
+        private string GetSkillGroup(SkillPoint config)
+        {
+            List<string> list = new List<string>();
+            config.GroupSkill.ForEach(p =>
+            {
+                var s = IdleSkillCfg.Instance.GetIdleSkill(config.JobName, p);
+                list.Add(s.Id.ToString());
+            });
+            return string.Join(",", list);
+        }
+
+        /// <summary>
+        /// 选技能组
+        /// </summary>
+        /// <param name="targetSkill"></param>
+        /// <param name="jobname"></param>
+        /// <returns></returns>
+        private async Task SkillGroupSave(string sid)
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data.Add("sid", sid);
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.skillGroupSave({data.ToLowerCamelCase()});");
+                await JsInit();
+            }
+        }
+        /// <summary>
+        /// 获取配置匹配当前等级合适的技能字典
+        /// </summary>
+        /// <param name="curLv"></param>
+        /// <param name="config"></param>
+        /// <param name="curSkillList"></param>
+        /// <returns>返回一个技能分配字典</returns>
+        private Dictionary<string, int> GetTargetSkillPoint(int curLv, SkillPoint config)
+        {
+            int pointCount = curLv;//技能点数等于人物等级
+            var targetSkillDic = new Dictionary<String, int>();
+            foreach (var item in config.RemainSkill)
+            {
+                var name = item.Key;
+                var lv = item.Value;
+                targetSkillDic.Add(name, lv);
+                pointCount -= lv;
+            }
+            foreach (var p in config.PrioritySkill)
+            {
+                if (pointCount == 0) break;
+
+                var name = p;
+                var idleSkill = IdleSkillCfg.Instance.GetIdleSkill(config.JobName, p);
+                var maxSkillPoint = idleSkill.CurLvMaxPoint(curLv);//当前等级能加到max是多少
+                if (!targetSkillDic.ContainsKey(name)) targetSkillDic.Add(name, 0);
+                if (pointCount < maxSkillPoint)
+                {
+                    //剩余点数不够加到最大了就按照剩余加
+                    targetSkillDic[name] += pointCount;
+                    pointCount = 0;//加完了
+                }
+                else
+                {
+                    targetSkillDic[name] += maxSkillPoint;
+                    pointCount -= maxSkillPoint;
+                }
+
+            }
+            return targetSkillDic;
+
+        }
+
+        /// <summary>
+        /// 判断一下技能是否合适
+        /// </summary>
+        /// <param name="skills"></param>
+        /// <param name="targetSkillDic"></param>
+        /// <returns></returns>
+        private bool CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic)
+        {
+            bool result = false;
+            foreach (var item in targetSkillDic)
+            {
+                if (!skills.ContainsKey(item.Key))
+                {
+                    //当前技能没点目标技能 
+                    result = true;
+                    break;
+                }
+                else
+                {
+                    //比较下数值
+                    if (skills[item.Key].Lv != item.Value)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            return result;
+        }
+        #endregion
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using IdleAuto.Db;
+using IdleAuto.Scripts.Controller;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -201,7 +202,7 @@ public class EquipController
     {
         MainForm.Instance.ShowLoadingPanel("开始自动修车", emMaskType.AUTO_EQUIPING);
 
-        await StartSaveEquips();
+       // await StartSaveEquips();
 
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         //角色背包装备缓存
@@ -223,6 +224,7 @@ public class EquipController
 
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
+            await CharacterController.Instance.AddSkillPoints(MainForm.Instance.TabManager.GetBro(m_equipBroID),role);
 
             Dictionary<emEquipSort, EquipModel> curEquips = null;
             var response = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
