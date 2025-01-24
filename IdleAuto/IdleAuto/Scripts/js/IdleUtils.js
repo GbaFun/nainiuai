@@ -1,5 +1,5 @@
 ///--json配置文件地址 
-const json_url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json";
+//const json_url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json";
 
 
 function Post(_url, _data, _dataType) {
