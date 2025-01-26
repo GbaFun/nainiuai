@@ -232,9 +232,11 @@
     <Content Include="Scripts\js\login.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\map.js" />
     <Content Include="Scripts\js\rune.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\test.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Art\" />

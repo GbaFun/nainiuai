@@ -22,6 +22,7 @@ public class PageLoadHandler
     public const string CharCreate = "Character/Create";
     public const string CharGroup = "Character/Group";
     public const string CharDetail = "Character/Detail";
+    public const string MapPage = "Map/Dungeon";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -65,6 +66,11 @@ public class PageLoadHandler
         else if (ContainsUrl(url, CharGroup))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
+        else if (ContainsUrl(url, MapPage))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "map.js");
             await LoadGlobalJs(jsPath, browser);
         }
 
@@ -131,7 +137,7 @@ public class PageLoadHandler
 
     }
 
-    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro,string name,string url="")
+    public static async Task LoadCookieAndCache(ChromiumWebBrowser bro, string name, string url = "")
     {
 
         string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
