@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
+    <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Scripts\Model\CommonModel.cs" />
     <Compile Include="Scripts\Model\Enum\GameEnum.cs" />
     <Compile Include="Scripts\Model\EquipModel.cs" />
+    <Compile Include="Scripts\Model\MapModel.cs" />
     <Compile Include="Scripts\Model\RoleModel.cs" />
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
@@ -160,6 +162,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\EquipCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\MapSetting.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\RuneCompandCfg.json">

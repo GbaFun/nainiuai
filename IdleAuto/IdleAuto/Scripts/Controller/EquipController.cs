@@ -215,6 +215,10 @@ public class EquipController
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
+            //测试切图
+            m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
+            await CharacterController.Instance.SwitchMap(MainForm.Instance.TabManager.GetBro(m_equipBroID), role);
+            //测试结束
             if (m_equipBroID == 0)
                 m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
             else
@@ -224,8 +228,8 @@ public class EquipController
 
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
-            await CharacterController.Instance.AddSkillPoints(MainForm.Instance.TabManager.GetBro(m_equipBroID),role);
-
+            // await CharacterController.Instance.AddSkillPoints(MainForm.Instance.TabManager.GetBro(m_equipBroID),role);
+            
             Dictionary<emEquipSort, EquipModel> curEquips = null;
             var response = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
             //GetCurEquips();

@@ -16,7 +16,6 @@ let _map = {};
     let map;
     var step = [];
     var visitedStep = {};
-    window.explore = explore;
     backToMap();
     if (localStorage.getItem("startMap")) {
 

@@ -22,7 +22,7 @@ public class PageLoadHandler
     public const string CharCreate = "Character/Create";
     public const string CharGroup = "Character/Group";
     public const string CharDetail = "Character/Detail";
-    public const string MapPage = "Map/Dungeon";
+    public const string MapPage = "Map";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)

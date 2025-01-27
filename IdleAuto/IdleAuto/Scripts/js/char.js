@@ -1,5 +1,5 @@
 ﻿
- class Character {
+class Character {
     //当前角色id
     cid = 0;
 
@@ -140,7 +140,7 @@
 
         var data = MERGE_Form({
             cid: _char.cid,
-            sid:data.sid
+            sid: data.sid
         });
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
             location.reload();
@@ -148,6 +148,30 @@
             debugger;
             location.reload();
         })
+    }
+
+    mapSwitch(ml) {
+        var data = MERGE_Form({
+            cid: _char.cid,
+            ml: ml
+        })
+        POST_Message("MapSwitch", data, "post", 1500).then((r) => {
+        }).catch((e) => {
+            debugger
+            var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
+            var data = { isSuccess: true, isNeedDungeon: false };
+            if (isNeedDungeon) {
+                data.isSuccess = false;
+                data.isNeedDungeon = true;
+            }
+            Bridge.invokeEvent('OnMapSwitch', data);
+        })
+    }
+
+
+
+    getCurMapLv() {
+        return $(".panel-heading")[0].innerText.match(/\d+/)[0]
     }
 }
 

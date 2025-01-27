@@ -28,11 +28,17 @@ public enum emEventType
     /// 角色载入
     /// </summary>
     OnCharLoaded,
-
     /// <summary>
     /// 角色名冲突
     /// </summary>
-    OnCharNameConflict
+    OnCharNameConflict,
+    
+    /// <summary>
+    /// 地图切换
+    /// </summary>
+    OnMapSwitch
+
+
 }
 
 public class EventManager

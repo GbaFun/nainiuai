@@ -64,6 +64,7 @@ namespace IdleAuto.Scripts.Controller
         {
             EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
             EventManager.Instance.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
+            EventManager.Instance.SubscribeEvent(emEventType.OnMapSwitch, OnMapSwitch);
         }
 
         /// <summary>
@@ -125,6 +126,17 @@ namespace IdleAuto.Scripts.Controller
             {
                 CharNameSeed += 1;
             }
+        }
+
+        /// <summary>
+        /// 起名冲突
+        /// </summary>
+        /// <param name="args"></param>
+        private void OnMapSwitch(params object[] args)
+        {
+            var data = args[0].ToObject<Dictionary<string, object>>();
+            var isSuccess = data["isSuccess"];
+            var isNeedDungeon = data["isNeedDungeon"];
         }
         /// <summary>
         /// 开始
@@ -507,7 +519,7 @@ namespace IdleAuto.Scripts.Controller
                 await JsInit();
                 await SkillRest();
                 await SkillSave(targetSkillPoint, skillConfig.JobName);
-                var groupid=GetSkillGroup(skillConfig);
+                var groupid = GetSkillGroup(skillConfig);
                 await SkillGroupSave(groupid);
             }
 
@@ -646,6 +658,65 @@ namespace IdleAuto.Scripts.Controller
                 }
             }
             return result;
+        }
+        #endregion
+
+        #region 切图
+        public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
+        {
+            _browser = bro;
+            int roleid = role.RoleId;
+            if (bro.Address.IndexOf(PageLoadHandler.MapPage) == -1)
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
+                await JsInit();
+            }
+            var curMapLv = await GetCurMapLv();
+            //检查是否层数合适
+            var setting = MapSettingCfg.Instance.GetSetting(role.Level);
+            if (!setting.CanSwitch(role.Level,curMapLv)) return;
+   
+            int targetLv = setting.MapLv;
+            //尝试抵达
+            await SwitchTo(targetLv,curMapLv);        
+
+
+        }
+
+        private async Task SwitchTo(int targetLv,int curMapLv = 0)
+        {
+
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
+                await JsInit();
+            }
+            var isNeedDungeon = await IsNeedDungeon();
+            if (isNeedDungeon)
+            {
+                int dungeonLv = GetDungeonLv(curMapLv);
+                await SwitchTo(dungeonLv);
+                //开始秘境
+
+                //再次尝试直接抵达
+                await SwitchTo(targetLv,dungeonLv+10);
+            }
+        }
+        private async Task<bool> IsNeedDungeon()
+        {
+            var d = await _browser.EvaluateScriptAsync($@"_char.isNeedDungeon();");
+            return d.Result.ToObject<bool>();
+        }
+
+        private async Task<int> GetCurMapLv()
+        {
+            var d = await _browser.EvaluateScriptAsync($@"_char.getCurMapLv();");
+            return d.Result.ToObject<int>();
+        }
+
+        private int GetDungeonLv(int curLv)
+        {
+            return (curLv / 10) * 10;
         }
         #endregion
 

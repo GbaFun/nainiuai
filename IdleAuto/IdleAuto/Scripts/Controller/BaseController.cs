@@ -41,7 +41,7 @@ public class BaseController
         //await tcs2.Task;
         using (var cts = new CancellationTokenSource())
         {
-            cts.CancelAfter(TimeSpan.FromMinutes(1));
+            cts.CancelAfter(TimeSpan.FromSeconds(5));
 
             var tcs2 = new TaskCompletionSource<bool>();
 
@@ -58,7 +58,7 @@ public class BaseController
             else
             {
                 // Task was cancelled
-                throw new OperationCanceledException("The operation was cancelled.");
+               
             }
         }
     }

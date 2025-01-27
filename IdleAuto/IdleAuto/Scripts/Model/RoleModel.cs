@@ -16,6 +16,8 @@ public class RoleModel
     [Navigate(nameof(CharAttributeModel.RoleId))]
     public List<CharAttributeModel> Attribute { get; set; }
 
+    public MapModel Map { get; set; }
+
     public int Level
     {
         get
