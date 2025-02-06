@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -119,7 +120,10 @@ public class BroTabManager
         SeedIncrease();
 
         var jsTask = new TaskCompletionSource<bool>();
-        onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
+        onJsInitCallBack = (result) =>
+        {
+            if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+        };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
         bro = InitializeChromium(name, url);
@@ -133,6 +137,7 @@ public class BroTabManager
         TabPageDic.TryAdd(_seed, tabPage);
 
         await jsTask.Task;
+
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return _seed;
     }
@@ -143,12 +148,16 @@ public class BroTabManager
         NameUrlDic[name + url] = seed;
         var bro = BroDic[seed];
         var jsTask = new TaskCompletionSource<bool>();
-        onJsInitCallBack = (result) => jsTask.SetResult(jsName == string.Empty || jsName == result);
+        onJsInitCallBack = (result) =>
+        {
+            if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+        };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
         bro.LoadUrl(url);
 
         await jsTask.Task;
+
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return;
     }
@@ -238,13 +247,32 @@ public class BroTabManager
         GC.Collect();
     }
 
+    /// <summary>
+    /// 异步调用js方法，无需等待页面重载
+    /// </summary>
     public async Task<JavascriptResponse> TriggerCallJs(int seed, string jsFunc)
+    {
+        var bro = BroDic[seed];
+        var response2 = await bro.EvaluateScriptAsync(jsFunc);
+        return response2;
+    }
+    /// <summary>
+    /// 异步调用js方法，需等待页面重载
+    /// </summary>
+    public async Task<JavascriptResponse> TriggerCallJsWithReload(int seed, string jsFunc, string jsName)
     {
         var bro = BroDic[seed];
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
         var jsTask = new TaskCompletionSource<bool>();
-        onJsInitCallBack = (result) => jsTask.SetResult(true);
+        onJsInitCallBack = (result) =>
+        {
+            if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+        };
         var response2 = await bro.EvaluateScriptAsync(jsFunc);
+        if (!response2.Success || !(bool)response2.Result)
+        {
+            jsTask.SetResult(false); onJsInitCallBack = null;
+        };
         await jsTask.Task;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return response2;
@@ -292,8 +320,8 @@ public class BroTabManager
     private void OnJsInited(params object[] args)
     {
         string jsName = args[0] as string;
+        P.Log($"OnJsInited:{jsName}");
         onJsInitCallBack?.Invoke(jsName);
-        onJsInitCallBack = null;
     }
 }
 

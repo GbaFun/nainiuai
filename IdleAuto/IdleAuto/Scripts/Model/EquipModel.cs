@@ -55,13 +55,44 @@ public class EquipModel
 
     /// <summary>
     /// 是否是太古
-    /// </summary>
+    /// </summary> 
     public bool IsPerfect { get; set; }
 
     /// <summary>
     /// 是否是绑定
     /// </summary>
     public bool IsLocal { get; set; }
+
+    private AttrV4 m_requareAttr;
+    public AttrV4 RequareAttr
+    {
+        get
+        {
+            if (m_requareAttr != AttrV4.Default)
+            {
+                return m_requareAttr;
+            }
+            int str = 0, dex = 0, vit = 0, eng = 0;
+            Regex regex = new Regex(@"需要力量：\n(?<str>\d+)\n");
+            var match = regex.Match(Content);
+            if (match.Success)
+                str = int.Parse(match.Groups["str"].Value);
+            regex = new Regex(@"需要敏捷：\n(?<dex>\d +)\n");
+            match = regex.Match(Content);
+            if (match.Success)
+                dex = int.Parse(match.Groups["dex"].Value);
+            regex = new Regex(@"需要体力：\n(?<vit>\d +)\n");
+            match = regex.Match(Content);
+            if (match.Success)
+                vit = int.Parse(match.Groups["vit"].Value);
+            regex = new Regex(@"需要精神：\n(?<eng>\d +)\n");
+            match = regex.Match(Content);
+            if (match.Success)
+                eng = int.Parse(match.Groups["eng"].Value);
+
+            return new AttrV4(str, dex, vit, eng);
+        }
+    }
 
     /// <summary>
     /// 装备所属账户ID
@@ -90,3 +121,31 @@ public class EquipModel
     }
 }
 
+public struct AttrV4
+{
+    public int Str;
+    public int Dex;
+    public int Vit;
+    public int Eng;
+
+    public AttrV4(int str, int dex, int vit, int eng)
+    {
+        Str = str;
+        Dex = dex;
+        Vit = vit;
+        Eng = eng;
+    }
+
+    public static AttrV4 Max(AttrV4 a, AttrV4 b)
+        => new AttrV4(Math.Max(a.Str, b.Str), Math.Max(a.Dex, b.Dex), Math.Max(a.Vit, b.Vit), Math.Max(a.Eng, b.Eng));
+
+    public static AttrV4 Default => new AttrV4(0, 0, 0, 0);
+    public static AttrV4 operator +(AttrV4 a, AttrV4 b)
+        => new AttrV4(a.Str + b.Str, a.Dex + b.Dex, a.Vit + b.Vit, a.Eng + b.Eng);
+    public static AttrV4 operator -(AttrV4 a, AttrV4 b)
+        => new AttrV4(a.Str - b.Str, a.Dex - b.Dex, a.Vit - b.Vit, a.Eng - b.Eng);
+    public static bool operator ==(AttrV4 a, AttrV4 b)
+        => a.Str == b.Str && a.Dex == b.Dex && a.Vit == b.Vit && a.Eng == b.Eng;
+    public static bool operator !=(AttrV4 a, AttrV4 b)
+        => a.Str != b.Str && a.Dex != b.Dex && a.Vit != b.Vit && a.Eng != b.Eng;
+}

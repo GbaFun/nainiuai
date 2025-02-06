@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 
 namespace IdleAuto.Scripts.Model
 {
+    public enum emMeetType
+    {
+        [Description("当前已满足")]
+        AlreadyMeet,
+        [Description("加点后满足")]
+        MeetAfterAdd,
+        [Description("重置后满足")]
+        MeetAfterReset,
+        [Description("无法满足")]
+        CanNotMeet
+    }
     public enum CharSpeedType
     {
         [Description("施法速度")]
@@ -81,5 +92,24 @@ namespace IdleAuto.Scripts.Model
         public int Eng { get; set; }
         [Description("精力加点")]
         public int EngAdd { get; set; }
+
+        public emMeetType Meets(AttrV4 requare)
+        {
+            int v1 = Str - requare.Str + Dex - requare.Dex + Vit - requare.Vit + Eng - requare.Eng;
+            if (v1 >= 0)
+                return emMeetType.AlreadyMeet;
+            else if (v1 + Point >= 0)
+                return emMeetType.MeetAfterAdd;
+            else
+            {
+                int v2 = Str - StrAdd - requare.Str + Dex - DexAdd - requare.Dex + Vit - VitAdd - requare.Vit + Eng - EngAdd - requare.Eng;
+                int totalAdd = StrAdd + DexAdd + VitAdd + EngAdd + Point;
+                if (v2 + totalAdd >= 0)
+                {
+                    return emMeetType.MeetAfterReset;
+                }
+            }
+            return emMeetType.CanNotMeet;
+        }
     }
 }

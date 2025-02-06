@@ -76,6 +76,7 @@ function getRepositoryEquips() {
     console.log('start getRepositoryEquips');
     var eMap = {};
     var box = $('.panel-body.equip-box')[0];
+    console.log(box);
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
@@ -85,6 +86,7 @@ function getRepositoryEquips() {
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
     });
+    console.log(eMap);
     return eMap;
 }
 
