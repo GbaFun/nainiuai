@@ -19,6 +19,8 @@ public class BroTabManager
 {
     static object LOCKOBJECT = new object();
 
+    public static BroTabManager Instance;
+
     private TabControl Tab;
 
     /// <summary>
@@ -88,6 +90,7 @@ public class BroTabManager
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
         TabPageDic = new ConcurrentDictionary<int, TabPage>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
+        Instance = this;
     }
 
     public ChromiumWebBrowser GetBro(int seed)

@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FreeSql;
 using CefSharp.WinForms;
+using System.Data;
+using IdleAuto.Scripts.Controller;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -411,6 +413,36 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
+        /// 获取人物属性
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CharBaseAttributeModel> GetCharBaseAtt()
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.getSimpleAttribute();");
+                return d.Result?.ToObject<CharBaseAttributeModel>();
+            }
+            else return null;
+
+        }
+        /// <summary>
+        /// 保存人物属性加点
+        /// </summary>
+        /// <returns></returns>
+        public async Task SaveCharAtt(CharBaseAttributeModel data)
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                //P.Log($"save att:{data.StrAdd}");
+                await _browser.EvaluateScriptAsync($@"_char.attributeSave({data.ToLowerCamelCase()});");
+                return;
+            }
+            else return;
+
+        }
+
+        /// <summary>
         /// 获取人物技能
         /// </summary>
         /// <returns></returns>
@@ -497,7 +529,26 @@ namespace IdleAuto.Scripts.Controller
             return MainForm.Instance.TabManager.GetBro(seed);
         }
 
-        #region 加点
+        #region 属性点
+
+        public async Task<CharBaseAttributeModel> GetAttributeSimpleInfo(ChromiumWebBrowser bro, RoleModel role)
+        {
+            _browser = bro;
+            int roleid = role.RoleId;
+            //不在详细页先去详细页读取属性
+            if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+                await JsInit();
+            }
+
+            var info = await GetCharBaseAtt();
+            return info;
+        }
+
+        #endregion  
+
+        #region 技能
         public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
         {
             _browser = bro;
@@ -674,16 +725,16 @@ namespace IdleAuto.Scripts.Controller
             var curMapLv = await GetCurMapLv();
             //检查是否层数合适
             var setting = MapSettingCfg.Instance.GetSetting(role.Level);
-            if (!setting.CanSwitch(role.Level,curMapLv)) return;
-   
+            if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
+
             int targetLv = setting.MapLv;
             //尝试抵达
-            await SwitchTo(targetLv,curMapLv);        
+            await SwitchTo(targetLv, curMapLv);
 
 
         }
 
-        private async Task SwitchTo(int targetLv,int curMapLv = 0)
+        private async Task SwitchTo(int targetLv, int curMapLv = 0)
         {
 
             if (_browser.CanExecuteJavascriptInMainFrame)
@@ -699,7 +750,7 @@ namespace IdleAuto.Scripts.Controller
                 //开始秘境
 
                 //再次尝试直接抵达
-                await SwitchTo(targetLv,dungeonLv+10);
+                await SwitchTo(targetLv, dungeonLv + 10);
             }
         }
         private async Task<bool> IsNeedDungeon()
@@ -722,3 +773,14 @@ namespace IdleAuto.Scripts.Controller
 
     }
 }
+
+
+/* 加点调用测试
+//var info = await CharacterController.Instance.GetAttributeSimpleInfo(BroTabManager.Instance.GetBro(BroTabManager.Instance.GetFocusID()), AccountController.Instance.User.Roles[1]);
+//P.Log($"point:{info.Point}--csa:{info.StrAdd}");
+//if (info != null && info.Point > 0)
+//{
+//    info.StrAdd += info.Point;
+//    await CharacterController.Instance.SaveCharAtt(info);
+//}
+*/

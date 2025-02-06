@@ -61,4 +61,25 @@ namespace IdleAuto.Scripts.Model
         [Description("是否无视防御")]
         public bool IsIgnoreDef { get; set; }
     }
+    public class CharBaseAttributeModel
+    {
+        [Description("剩余点数")]
+        public int Point { get; set; }
+        [Description("力量")]
+        public int Str { get; set; }
+        [Description("力量加点")]
+        public int StrAdd { get; set; }
+        [Description("敏捷")]
+        public int Dex { get; set; }
+        [Description("敏捷加点")]
+        public int DexAdd { get; set; }
+        [Description("体力")]
+        public int Vit { get; set; }
+        [Description("体力加点")]
+        public int VitAdd { get; set; }
+        [Description("精力")]
+        public int Eng { get; set; }
+        [Description("精力加点")]
+        public int EngAdd { get; set; }
+    }
 }

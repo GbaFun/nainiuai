@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using IdleAuto.Scripts.Controller;
 using System.Text.RegularExpressions;
 using IdleAuto.Scripts.View;
+using CefSharp.DevTools.FedCm;
 
 namespace IdleAuto.Scripts.View
 {
@@ -107,7 +108,7 @@ namespace IdleAuto.Scripts.View
 
         #region 菜单交互事件
 
-        private void BtnInit_Click(object sender, EventArgs e)
+        private async void BtnInit_Click(object sender, EventArgs e)
         {
             if (!CharacterController.Instance.IsAutoInit)
             {

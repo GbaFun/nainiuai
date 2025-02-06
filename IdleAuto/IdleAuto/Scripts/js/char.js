@@ -66,6 +66,65 @@ class Character {
         return obj;
     }
 
+    getSimpleAttribute() {
+        var point = $(".attr-points").first().text();
+        console.log(point);
+        var str = $("#char-str");
+        var strV = str.text();
+        var strAdd = str.data("add");
+        var dex = $("#char-dex");
+        var dexV = dex.text();
+        var dexAdd = dex.data("add");
+        var vit = $("#char-vit");
+        var vitV = vit.text();
+        var vitAdd = vit.data("add");
+        var eng = $("#char-eng");
+        var engV = eng.text();
+        var engAdd = eng.data("add");
+        var obj = {
+            point: point,
+            str: strV,
+            strAdd: strAdd,
+            dex: dexV,
+            dexAdd: dexAdd,
+            vit: vitV,
+            vitAdd: vitAdd,
+            eng: engV,
+            engAdd: engAdd
+        }
+        console.log(obj);
+        return obj;
+    }
+    attributeReset() {
+        var data = MERGE_Form({
+            cid: _char.cid
+        });
+        POST_Message("AttributeReset", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
+            debugger;
+            location.reload();
+        })
+    }
+    attributeSave(data) {
+        console.log("start attributeSave");
+        var data = MERGE_Form({
+            id: _char.cid,
+            csa: data.strAdd,
+            cda: data.dexAdd,
+            cva: data.vitAdd,
+            cea: data.engAdd
+        });
+        console.log(data);
+        POST_Message("AttributeSave", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
+            debugger;
+            location.reload();
+        })
+    }
+
+
     getSkillInfo() {
         if (location.href.indexOf("Character/Detail") == -1) return;
         var r = {};

@@ -15,9 +15,9 @@ public class MapSetting
 
     public int MapLv { get; set; }
 
-    public bool CanSwitch(int roleLv,int curMapLv)
+    public bool CanSwitch(int roleLv, int curMapLv)
     {
-        if (roleLv >= Lv&&curMapLv!=MapLv) return true;
+        if (roleLv >= Lv && curMapLv != MapLv) return true;
         else return false;
     }
 }
@@ -49,7 +49,7 @@ public class MapSettingCfg
     public MapSetting GetSetting(int roleLv)
     {
         var last = Data.Where(p => roleLv >= p.Lv).LastOrDefault();
-        if (last == null) throw new Exception("未配置该级别切图数据");
+        if (last == null) P.Log("未配置该级别切图数据"); //throw new Exception("未配置该级别切图数据");
         return last;
     }
 }
