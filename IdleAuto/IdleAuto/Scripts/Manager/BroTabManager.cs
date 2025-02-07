@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -254,6 +255,7 @@ public class BroTabManager
     {
         var bro = BroDic[seed];
         var response2 = await bro.EvaluateScriptAsync(jsFunc);
+        if (!response2.Success) P.Log($"Success = {response2.Success}, Message = {response2.Message}, Result = {response2.Result}", emLogType.Error);
         return response2;
     }
     /// <summary>
@@ -269,7 +271,7 @@ public class BroTabManager
             if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
         var response2 = await bro.EvaluateScriptAsync(jsFunc);
-        if (!response2.Success || !(bool)response2.Result)
+        if (!response2.Success)
         {
             jsTask.SetResult(false); onJsInitCallBack = null;
         };

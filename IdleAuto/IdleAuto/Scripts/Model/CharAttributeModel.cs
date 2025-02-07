@@ -111,5 +111,24 @@ namespace IdleAuto.Scripts.Model
             }
             return emMeetType.CanNotMeet;
         }
+
+        public bool AddPoint(AttrV4 requare)
+        {
+            var csa = requare.Str - Str;
+            var cda = requare.Dex - Dex;
+            var cva = requare.Vit - Vit;
+            var cea = requare.Eng - Eng;
+            if (Point >= csa + cda + cva + cea)
+            {
+                StrAdd += csa;
+                DexAdd += cda;
+                VitAdd += cva;
+                EngAdd += cea;
+                Point -= csa + cda + cva + cea;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

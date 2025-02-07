@@ -17,13 +17,21 @@ function getCurEquips() {
     console.log('start getCurEquips');
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
+        console.log($(this));
         var sortid = $(this).data('type');
+        console.log(sortid);
         var __equip = $(this).prev();
+        console.log(__equip);
         var id = __equip.data('id');
+        console.log(id);
         var quality = __equip.data('type');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        console.log(quality);
+        var equipContent = $(this).parent().next();
+        console.log(equipContent);
         var content = equipContent.text();
+        console.log(content)
         var e = getEquipInfo(id, sortid, quality, content);
+        console.log(e);
         eMap[e.esort] = e;
     });
 
@@ -47,13 +55,16 @@ function getPackageEquips() {
 }
 
 function getEquipInfo(eid, sortid, quality, content) {
+    console.log("getEquipInfo");
     var e = {};
     e.eid = eid;
     e.esort = sortid;
     e.quality = quality;
+    console.log(content);
     content = content.replace(/^\s*\n/gm, "")
     content = content.replace(/[ ]/g, "")
     e.content = content;
+    console.log(e.content);
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
     var baseName = "未知"
@@ -66,9 +77,14 @@ function getEquipInfo(eid, sortid, quality, content) {
     else if (name[1].includes("秘境"))
         baseName = "秘境";
     e.equipBaseName = baseName;
+    console.log(e.equipBaseName);
     e.equipName = name[1];
+    console.log(e.equipName);
     e.isPerfect = sc[0].includes('★');
+    console.log(e.isPerfect);
     e.isLocal = sc[1].includes("已绑定");
+    console.log(e.isLocal);
+    console.log(e);
     return e;
 }
 

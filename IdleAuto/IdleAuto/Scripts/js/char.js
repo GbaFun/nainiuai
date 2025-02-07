@@ -68,6 +68,7 @@ class Character {
 
     getSimpleAttribute() {
         var point = $(".attr-points").first().text();
+        if (point == "") point = 0;
         console.log(point);
         var str = $("#char-str");
         var strV = str.text();

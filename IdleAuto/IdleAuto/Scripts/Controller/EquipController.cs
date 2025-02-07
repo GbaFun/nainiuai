@@ -58,9 +58,9 @@ public class EquipController
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
             if (m_equipBroID == 0)
-                m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
+                m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
             else
-                await MainForm.Instance.TabManager.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
+                await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
 
             MainForm.Instance.SetLoadContent("开始缓存仓库装备");
 
@@ -75,7 +75,7 @@ public class EquipController
                 {
                     jumpNextPage = false;
                     P.Log($"缓存仓库第{page}页装备", emLogType.AutoEquip);
-                    var response1 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getRepositoryEquips()");
+                    var response1 = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"getRepositoryEquips()");
                     if (response1.Success)
                     {
                         var equips = response1.Result.ToObject<Dictionary<long, EquipModel>>();
@@ -95,7 +95,7 @@ public class EquipController
                     P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                     MainForm.Instance.SetLoadContent($"正在缓存仓库的装备，当前已缓存数量{repositoryEquips.Count}");
                     P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
-                    var response2 = await MainForm.Instance.TabManager.TriggerCallJsWithReload(m_equipBroID, $@"repositoryNext()", "equip");
+                    var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"repositoryNext()", "equip");
                     if (response2.Success && (bool)response2.Result)
                     {
 
@@ -123,7 +123,7 @@ public class EquipController
             {
                 jumpNextPage = false;
                 P.Log($"缓存背包第{page}页装备", emLogType.AutoEquip);
-                var response1 = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getPackageEquips()");
+                var response1 = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"getPackageEquips()");
                 //GetPackageEquips();
                 if (response1.Success)
                 {
@@ -144,7 +144,7 @@ public class EquipController
                 P.Log($"缓存背包第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                 MainForm.Instance.SetLoadContent($"正在缓存背包的装备，当前已缓存数量{repositoryEquips.Count}");
                 P.Log("开始跳转背包下一页", emLogType.AutoEquip);
-                var response2 = await MainForm.Instance.TabManager.TriggerCallJsWithReload(m_equipBroID, $@"packageNext()", "equip");
+                var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"packageNext()", "equip");
                 //JumpPackagePage();
                 if (response2.Success)
                 {
@@ -173,7 +173,7 @@ public class EquipController
         var time1 = new CommonModel() { CommonKey = "EquipSaveTime", CommonValue = DateTime.Now.ToString() };
         FreeDb.Sqlite.InsertOrUpdate<CommonModel>().SetSource(time1).ExecuteAffrows();
 
-        MainForm.Instance.TabManager.DisposePage(m_equipBroID);
+        BroTabManager.Instance.DisposePage(m_equipBroID);
         m_equipBroID = 0;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
@@ -185,6 +185,7 @@ public class EquipController
     private async Task AutoEquip()
     {
         MainForm.Instance.ShowLoadingPanel("开始自动修车", emMaskType.AUTO_EQUIPING);
+        P.Log("开始自动修车", emLogType.AutoEquip);
 
         await StartSaveEquips();
 
@@ -201,22 +202,24 @@ public class EquipController
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
             //测试切图
-            m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
-            await CharacterController.Instance.SwitchMap(MainForm.Instance.TabManager.GetBro(m_equipBroID), role);
+            //m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
+            //await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
             //测试结束
             if (m_equipBroID == 0)
-                m_equipBroID = await MainForm.Instance.TabManager.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
+                m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
             else
-                await MainForm.Instance.TabManager.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
+                await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
 
             packageEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == role.RoleId).ToList().ToDictionary(p => p.EquipID, p => p);
 
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
-            // await CharacterController.Instance.AddSkillPoints(MainForm.Instance.TabManager.GetBro(m_equipBroID),role);
+            P.Log($"正在检查{role.RoleName}的装备", emLogType.AutoEquip);
+
+            // await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(m_equipBroID),role);
 
             Dictionary<emEquipSort, EquipModel> curEquips = null;
-            var response = await MainForm.Instance.TabManager.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
+            var response = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
             if (response.Success)
             {
                 curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
@@ -240,7 +243,7 @@ public class EquipController
                         {
                             if (string.IsNullOrEmpty(targetEquipName) || equip.EquipName.Contains(targetEquipName))
                             {
-                                P.Log($"{role.RoleName}的{equip.EquipBaseName}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
+                                P.Log($"{role.RoleName}的{(emEquipSort)j}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
                                 continue;
                             }
                         }
@@ -277,25 +280,103 @@ public class EquipController
                 {
                     AttrV4.Max(requareV4, item.Value.RequareAttr);
                 }
-                var baseAttr = await CharacterController.Instance.GetAttributeSimpleInfo(MainForm.Instance.TabManager.GetBro(m_equipBroID), role);
-                emMeetType meetType = baseAttr.Meets(requareV4);
-                switch (meetType)
+                bool canWear = false;
+
+                await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Character/Detail?id={role.RoleId}", m_equipBroID, "char");
+                var response3 = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"_char.getSimpleAttribute();");
+                if (response3.Success)
                 {
-                    case emMeetType.AlreadyMeet:
-                        P.Log($"{role.RoleName}的属性满足穿戴条件，开始更换装备", emLogType.AutoEquip);
-                        break;
-                    case emMeetType.MeetAfterAdd:
-                        P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
-                        break;
-                    case emMeetType.MeetAfterReset:
-                        P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
-                        break;
+                    var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
+                    emMeetType meetType = baseAttr.Meets(requareV4);
+                    switch (meetType)
+                    {
+                        case emMeetType.AlreadyMeet:
+                            P.Log($"{role.RoleName}的属性满足穿戴条件，开始更换装备", emLogType.AutoEquip);
+                            canWear = true;
+                            break;
+                        case emMeetType.MeetAfterAdd:
+                            P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
+                            if (baseAttr.AddPoint(requareV4))
+                            {
+                                var response4 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                if (response4.Success)
+                                {
+                                    P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                                    canWear = true;
+                                }
+                            }
+                            break;
+                        case emMeetType.MeetAfterReset:
+                            P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
+                            var response5 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"_char.attributeReset();", "char");
+                            if (response5.Success)
+                            {
+                                P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
+                                var response6 = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"_char.getSimpleAttribute();");
+                                if (response6.Success)
+                                {
+                                    baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
+                                    if (baseAttr.AddPoint(requareV4))
+                                    {
+                                        var response7 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                        if (response7.Success)
+                                        {
+                                            P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                                            canWear = true;
+                                        }
+                                    }
+                                }
+                            }
+                            break;
+                        default:
+                            P.Log($"{role.RoleName}的属性不满足穿戴条件,为保证效率，所有装备不予更换", emLogType.AutoEquip);
+                            break;
+                    }
+
+                    ///满足装备需求属性后仍有属性点剩余，自动加到体力值
+                    if (baseAttr.Point > 0)
+                    {
+                        baseAttr.VitAdd += baseAttr.Point;
+                        baseAttr.Point = 0;
+                        var response8 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                        if (response8.Success)
+                        {
+                            P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                        }
+                    }
+
+                    if (canWear)
+                    {
+                        foreach (var item in towearEquips)
+                        {
+                            ReplaceEquipStruct replaceResult = await WearEquip(item.Value, (int)item.Key, role);
+                            if (replaceResult.IsSuccess)
+                            {
+                                if (replaceResult.ReplacedEquip != null)
+                                {
+                                    //如果有替换下来的装备，加入到仓库装备中
+                                    repositoryEquips.Add(replaceResult.ReplacedEquip.EquipID, replaceResult.ReplacedEquip);
+                                }
+
+                                if (packageEquips.ContainsKey(item.Value.EquipID))
+                                {
+                                    //如果背包中有该装备，从背包中移除
+                                    packageEquips.Remove(item.Value.EquipID);
+                                }
+                                else if (repositoryEquips.ContainsKey(item.Value.EquipID))
+                                {
+                                    //如果仓库中有该装备，从仓库中移除
+                                    repositoryEquips.Remove(item.Value.EquipID);
+                                }
+                            }
+                            P.Log($"{role.RoleName}更换装备{item.Value.EquipName}完成", emLogType.AutoEquip);
+                        }
+                        P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
+                    }
+
+                    P.Log($"{role.RoleName}自动修车完成！\n\t\n\t\n\t", emLogType.AutoEquip);
+                    //BroTabManager.Instance.DisposePage(m_equipBroID);
                 }
-
-
-                MainForm.Instance.TabManager.DisposePage(m_equipBroID);
-
-                P.Log($"{role.RoleName}全部位置装备更换完成\n\t\n\t\n\t", emLogType.AutoEquip);
             }
             #endregion
         }
@@ -304,39 +385,39 @@ public class EquipController
         FreeDb.Sqlite.Update<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
         FreeDb.Sqlite.Update<EquipModel>(packageEquips.Values.ToList()).ExecuteAffrows();
 
-        MainForm.Instance.TabManager.DisposePage(m_equipBroID);
+        BroTabManager.Instance.DisposePage(m_equipBroID);
         m_equipBroID = 0;
 
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
     }
 
-    private async Task<bool> WearEquip(EquipModel equip, int sort, RoleModel role)
+    private async Task<ReplaceEquipStruct> WearEquip(EquipModel equip, int sort, RoleModel role)
     {
+        ReplaceEquipStruct replaceEquipStruct = new ReplaceEquipStruct();
         if (equip != null && (sort == (int)emEquipSort.副手 || sort == (int)emEquipSort.主手 || sort == (int)emEquipSort.戒指1 || sort == (int)emEquipSort.戒指2))
         {
             P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
-            var response3 = await MainForm.Instance.TabManager.TriggerCallJsWithReload(m_equipBroID, $@"equipOff({role.RoleId},{sort})", "equip");
+            var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOff({role.RoleId},{sort})", "equip");
             if (response3.Success)
             {
                 equip.SetAccountInfo(AccountController.Instance.User);
-                //packageEquips.Add(equip.EquipID, equip);
+                replaceEquipStruct.ReplacedEquip = equip;
             }
         }
 
         P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备，现在更换", emLogType.AutoEquip);
 
-        var response2 = await MainForm.Instance.TabManager.TriggerCallJsWithReload(m_equipBroID, $@"equipOn({role.RoleId},{equip.EquipID})", "equip");
+        var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOn({role.RoleId},{equip.EquipID})", "equip");
         if (response2.Success)
         {
-            //packageEquips.Remove(item.Key);
-            return true;
+            replaceEquipStruct.IsSuccess = true;
+            return replaceEquipStruct;
         }
         else
-            return false;
+            replaceEquipStruct.IsSuccess = false;
+        return replaceEquipStruct;
     }
-
-    //private async Task<bool>
 
     private void OnEquipJsInited(params object[] args)
     {
@@ -349,3 +430,8 @@ public class EquipController
     }
 }
 
+public struct ReplaceEquipStruct
+{
+    public bool IsSuccess;
+    public EquipModel ReplacedEquip;
+}

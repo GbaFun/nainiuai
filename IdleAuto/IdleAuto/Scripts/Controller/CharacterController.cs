@@ -413,36 +413,6 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
-        /// 获取人物属性
-        /// </summary>
-        /// <returns></returns>
-        public async Task<CharBaseAttributeModel> GetCharBaseAtt()
-        {
-            if (_browser.CanExecuteJavascriptInMainFrame)
-            {
-                var d = await _browser.EvaluateScriptAsync($@"_char.getSimpleAttribute();");
-                return d.Result?.ToObject<CharBaseAttributeModel>();
-            }
-            else return null;
-
-        }
-        /// <summary>
-        /// 保存人物属性加点
-        /// </summary>
-        /// <returns></returns>
-        public async Task SaveCharAtt(CharBaseAttributeModel data)
-        {
-            if (_browser.CanExecuteJavascriptInMainFrame)
-            {
-                //P.Log($"save att:{data.StrAdd}");
-                await _browser.EvaluateScriptAsync($@"_char.attributeSave({data.ToLowerCamelCase()});");
-                return;
-            }
-            else return;
-
-        }
-
-        /// <summary>
         /// 获取人物技能
         /// </summary>
         /// <returns></returns>
@@ -531,6 +501,21 @@ namespace IdleAuto.Scripts.Controller
 
         #region 属性点
 
+        /// <summary>
+        /// 获取人物属性
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CharBaseAttributeModel> GetCharBaseAtt()
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.getSimpleAttribute();");
+                return d.Result?.ToObject<CharBaseAttributeModel>();
+            }
+            else return null;
+
+        }
+
         public async Task<CharBaseAttributeModel> GetAttributeSimpleInfo(ChromiumWebBrowser bro, RoleModel role)
         {
             _browser = bro;
@@ -544,6 +529,34 @@ namespace IdleAuto.Scripts.Controller
 
             var info = await GetCharBaseAtt();
             return info;
+        }
+
+        /// <summary>
+        /// 保存人物属性加点
+        /// </summary>
+        /// <returns></returns>
+        public async Task SaveCharAtt(CharBaseAttributeModel data)
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                await _browser.EvaluateScriptAsync($@"_char.attributeSave({data.ToLowerCamelCase()});");
+                return;
+            }
+            else return;
+        }
+        /// <summary>
+        /// 重置人物属性加点
+        /// </summary>
+        /// <returns></returns>
+        public async Task ResetCharAtt()
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                //P.Log($"save att:{data.StrAdd}");
+                await _browser.EvaluateScriptAsync($@"_char.attributeReset();");
+                return;
+            }
+            else return;
         }
 
         #endregion  
