@@ -17,21 +17,21 @@ function getCurEquips() {
     console.log('start getCurEquips');
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
-        console.log($(this));
+        //console.log($(this));
         var sortid = $(this).data('type');
-        console.log(sortid);
+        //console.log(sortid);
         var __equip = $(this).prev();
-        console.log(__equip);
+        //console.log(__equip);
         var id = __equip.data('id');
-        console.log(id);
+        //console.log(id);
         var quality = __equip.data('type');
-        console.log(quality);
+        //console.log(quality);
         var equipContent = $(this).parent().next();
-        console.log(equipContent);
+        //console.log(equipContent);
         var content = equipContent.text();
-        console.log(content)
+        //console.log(content)
         var e = getEquipInfo(id, sortid, quality, content);
-        console.log(e);
+        //console.log(e);
         eMap[e.esort] = e;
     });
 
@@ -62,9 +62,11 @@ function getEquipInfo(eid, sortid, quality, content) {
     e.quality = quality;
     console.log(content);
     content = content.replace(/^\s*\n/gm, "")
-    content = content.replace(/[ ]/g, "")
+    console.log(content);
+    //content = content.replace(/[ ]/g, "")
+    //console.log(content);
     e.content = content;
-    console.log(e.content);
+    //console.log(e.content);
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
     var baseName = "未知"
@@ -77,14 +79,14 @@ function getEquipInfo(eid, sortid, quality, content) {
     else if (name[1].includes("秘境"))
         baseName = "秘境";
     e.equipBaseName = baseName;
-    console.log(e.equipBaseName);
+    //console.log(e.equipBaseName);
     e.equipName = name[1];
-    console.log(e.equipName);
+    //console.log(e.equipName);
     e.isPerfect = sc[0].includes('★');
-    console.log(e.isPerfect);
+    //console.log(e.isPerfect);
     e.isLocal = sc[1].includes("已绑定");
-    console.log(e.isLocal);
-    console.log(e);
+    //console.log(e.isLocal);
+    //console.log(e);
     return e;
 }
 
@@ -92,7 +94,7 @@ function getRepositoryEquips() {
     console.log('start getRepositoryEquips');
     var eMap = {};
     var box = $('.panel-body.equip-box')[0];
-    console.log(box);
+    //console.log(box);
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
@@ -102,13 +104,14 @@ function getRepositoryEquips() {
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
     });
-    console.log(eMap);
+    //console.log(eMap);
     return eMap;
 }
 
 function packageNext() {
     var i = $('.panel-body.equip-bag:first').next().find('a:contains("下页")');
     if (i.length == 0) {
+        location.reload();
         return false;
     }
     else {
@@ -119,6 +122,7 @@ function packageNext() {
 function repositoryNext() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("下页")');
     if (i.length == 0) {
+        location.reload();
         return false;
     }
     else {

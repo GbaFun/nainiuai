@@ -73,19 +73,19 @@ public class EquipModel
                 return m_requareAttr;
             }
             int str = 0, dex = 0, vit = 0, eng = 0;
-            Regex regex = new Regex(@"需要力量：\n(?<str>\d+)\n");
+            Regex regex = new Regex(@"需要力量：\n( *)(?<str>\d+)\n");
             var match = regex.Match(Content);
             if (match.Success)
                 str = int.Parse(match.Groups["str"].Value);
-            regex = new Regex(@"需要敏捷：\n(?<dex>\d +)\n");
+            regex = new Regex(@"需要敏捷：\n( *)(?<dex>\d +)\n");
             match = regex.Match(Content);
             if (match.Success)
                 dex = int.Parse(match.Groups["dex"].Value);
-            regex = new Regex(@"需要体力：\n(?<vit>\d +)\n");
+            regex = new Regex(@"需要体力：\n( *)(?<vit>\d +)\n");
             match = regex.Match(Content);
             if (match.Success)
                 vit = int.Parse(match.Groups["vit"].Value);
-            regex = new Regex(@"需要精神：\n(?<eng>\d +)\n");
+            regex = new Regex(@"需要精神：\n( *)(?<eng>\d +)\n");
             match = regex.Match(Content);
             if (match.Success)
                 eng = int.Parse(match.Groups["eng"].Value);

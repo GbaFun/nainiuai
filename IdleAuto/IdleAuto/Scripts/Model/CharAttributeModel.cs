@@ -95,29 +95,48 @@ namespace IdleAuto.Scripts.Model
 
         public emMeetType Meets(AttrV4 requare)
         {
-            int v1 = Str - requare.Str + Dex - requare.Dex + Vit - requare.Vit + Eng - requare.Eng;
-            if (v1 >= 0)
+            if (Str >= requare.Str && Dex >= requare.Dex && Vit >= requare.Vit && Eng >= requare.Eng)
                 return emMeetType.AlreadyMeet;
-            else if (v1 + Point >= 0)
-                return emMeetType.MeetAfterAdd;
-            else
+            int v1 = 0;
+            if (Str < requare.Str)
             {
-                int v2 = Str - StrAdd - requare.Str + Dex - DexAdd - requare.Dex + Vit - VitAdd - requare.Vit + Eng - EngAdd - requare.Eng;
-                int totalAdd = StrAdd + DexAdd + VitAdd + EngAdd + Point;
-                if (v2 + totalAdd >= 0)
-                {
-                    return emMeetType.MeetAfterReset;
-                }
+                v1 += requare.Str - Str;
+            }
+            if (Dex < requare.Dex)
+            {
+                v1 += requare.Dex - Dex;
+            }
+            if (Vit < requare.Vit)
+            {
+                v1 += requare.Vit - Vit;
+            }
+            if (Eng < requare.Eng)
+            {
+                v1 += requare.Eng - Eng;
+            }
+            if (v1 <= Point)
+                return emMeetType.MeetAfterAdd;
+
+            int v2 = Str - StrAdd - requare.Str + Dex - DexAdd - requare.Dex + Vit - VitAdd - requare.Vit + Eng - EngAdd - requare.Eng;
+            int totalAdd = StrAdd + DexAdd + VitAdd + EngAdd + Point;
+            if (v2 + totalAdd >= 0)
+            {
+                return emMeetType.MeetAfterReset;
             }
             return emMeetType.CanNotMeet;
         }
 
         public bool AddPoint(AttrV4 requare)
         {
-            var csa = requare.Str - Str;
-            var cda = requare.Dex - Dex;
-            var cva = requare.Vit - Vit;
-            var cea = requare.Eng - Eng;
+            int csa = 0, cda = 0, cva = 0, cea = 0;
+            if (Str < requare.Str)
+                csa = requare.Str - Str;
+            if (Dex < requare.Dex)
+                cda = requare.Dex - Dex;
+            if (Vit < requare.Vit)
+                cva = requare.Vit - Vit;
+            if (Eng < requare.Eng)
+                cea = requare.Eng - Eng;
             if (Point >= csa + cda + cva + cea)
             {
                 StrAdd += csa;

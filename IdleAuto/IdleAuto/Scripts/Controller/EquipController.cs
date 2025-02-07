@@ -38,16 +38,15 @@ public class EquipController
     {
         var v = FreeDb.Sqlite.Select<CommonModel>().Where(P => P.CommonKey == "EquipSaveTime").ToList();
 
-        if (v.Count > 0)
-        {
-            var time = Convert.ToDateTime(v[0].CommonValue);
-            var t2 = DateTime.Now.Subtract(time);
-            if (DateTime.Now.Subtract(time).TotalHours < 24)
-            {
-                P.Log("24小时内已经保存过装备，无需再次保存", emLogType.AutoEquip);
-                return;
-            }
-        }
+        //if (v.Count > 0)
+        //{
+        //    var time = Convert.ToDateTime(v[0].CommonValue);
+        //    if (DateTime.Now.Subtract(time).TotalHours < 24)
+        //    {
+        //        P.Log("24小时内已经保存过装备，无需再次保存", emLogType.AutoEquip);
+        //        return;
+        //    }
+        //}
 
         FreeDb.Sqlite.Delete<EquipModel>().Where(p => true).ExecuteAffrows();
         MainForm.Instance.ShowLoadingPanel("开始盘点所有装备", emMaskType.AUTO_EQUIPING);
@@ -194,13 +193,14 @@ public class EquipController
         Dictionary<long, EquipModel> packageEquips = new Dictionary<long, EquipModel>();
         //账号仓库装备缓存
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-        Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
 
         repositoryEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == 0).ToList().ToDictionary(p => p.EquipID, p => p);
 
         for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
+            Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
+
             //测试切图
             //m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
             //await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
@@ -249,6 +249,14 @@ public class EquipController
                         }
                         foreach (var item in packageEquips)
                         {
+                            if (towearEquips.ContainsValue(item.Value))
+                            {
+                                continue;
+                            }
+                            if (item.Value.EquipName.Contains(targetEquipName))
+                            {
+                                P.Log($"{role.RoleName}找到与{targetEquipName}同名装备,现检查具体属性是否符合要求", emLogType.AutoEquip);
+                            }
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
                                 towearEquips.Add((emEquipSort)j, item.Value);
@@ -258,6 +266,14 @@ public class EquipController
                         }
                         foreach (var item in repositoryEquips)
                         {
+                            if (towearEquips.ContainsValue(item.Value))
+                            {
+                                continue;
+                            }
+                            if (item.Value.EquipName.Contains(targetEquipName))
+                            {
+                                P.Log($"{role.RoleName}找到与{targetEquipName}同名装备,现检查具体属性是否符合要求", emLogType.AutoEquip);
+                            }
                             if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
                             {
                                 towearEquips.Add((emEquipSort)j, item.Value);
@@ -278,7 +294,7 @@ public class EquipController
                 AttrV4 requareV4 = AttrV4.Default;
                 foreach (var item in towearEquips)
                 {
-                    AttrV4.Max(requareV4, item.Value.RequareAttr);
+                    requareV4 = AttrV4.Max(requareV4, item.Value.RequareAttr);
                 }
                 bool canWear = false;
 
@@ -345,37 +361,41 @@ public class EquipController
                         }
                     }
 
+                    await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "char");
+
                     if (canWear)
                     {
-                        foreach (var item in towearEquips)
+                        for (int j = 0; j < 11; j++)
                         {
-                            ReplaceEquipStruct replaceResult = await WearEquip(item.Value, (int)item.Key, role);
-                            if (replaceResult.IsSuccess)
+                            if (towearEquips.ContainsKey((emEquipSort)j))
                             {
-                                if (replaceResult.ReplacedEquip != null)
+                                EquipModel equip = towearEquips[(emEquipSort)j];
+                                ReplaceEquipStruct replaceResult = await WearEquip(equip, j, role);
+                                if (replaceResult.IsSuccess)
                                 {
-                                    //如果有替换下来的装备，加入到仓库装备中
-                                    repositoryEquips.Add(replaceResult.ReplacedEquip.EquipID, replaceResult.ReplacedEquip);
+                                    if (replaceResult.ReplacedEquip != null)
+                                    {
+                                        //如果有替换下来的装备，加入到仓库装备中
+                                        repositoryEquips.Add(replaceResult.ReplacedEquip.EquipID, replaceResult.ReplacedEquip);
+                                    }
+                                    if (packageEquips.ContainsKey(equip.EquipID))
+                                    {
+                                        //如果背包中有该装备，从背包中移除
+                                        packageEquips.Remove(equip.EquipID);
+                                    }
+                                    else if (repositoryEquips.ContainsKey(equip.EquipID))
+                                    {
+                                        //如果仓库中有该装备，从仓库中移除
+                                        repositoryEquips.Remove(equip.EquipID);
+                                    }
                                 }
-
-                                if (packageEquips.ContainsKey(item.Value.EquipID))
-                                {
-                                    //如果背包中有该装备，从背包中移除
-                                    packageEquips.Remove(item.Value.EquipID);
-                                }
-                                else if (repositoryEquips.ContainsKey(item.Value.EquipID))
-                                {
-                                    //如果仓库中有该装备，从仓库中移除
-                                    repositoryEquips.Remove(item.Value.EquipID);
-                                }
+                                P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                             }
-                            P.Log($"{role.RoleName}更换装备{item.Value.EquipName}完成", emLogType.AutoEquip);
                         }
                         P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
                     }
 
-                    P.Log($"{role.RoleName}自动修车完成！\n\t\n\t\n\t", emLogType.AutoEquip);
-                    //BroTabManager.Instance.DisposePage(m_equipBroID);
+                    P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
                 }
             }
             #endregion
@@ -394,28 +414,39 @@ public class EquipController
 
     private async Task<ReplaceEquipStruct> WearEquip(EquipModel equip, int sort, RoleModel role)
     {
+        Dictionary<emEquipSort, EquipModel> curEquips = null;
         ReplaceEquipStruct replaceEquipStruct = new ReplaceEquipStruct();
-        if (equip != null && (sort == (int)emEquipSort.副手 || sort == (int)emEquipSort.主手 || sort == (int)emEquipSort.戒指1 || sort == (int)emEquipSort.戒指2))
+        replaceEquipStruct.ReplacedEquip = null;
+        replaceEquipStruct.IsSuccess = false;
+        var response = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
+        if (response.Success)
         {
-            P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
-            var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOff({role.RoleId},{sort})", "equip");
-            if (response3.Success)
+            curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+
+
+            if (equip != null && (sort == (int)emEquipSort.副手 || sort == (int)emEquipSort.主手 || sort == (int)emEquipSort.戒指1 || sort == (int)emEquipSort.戒指2))
             {
-                equip.SetAccountInfo(AccountController.Instance.User);
-                replaceEquipStruct.ReplacedEquip = equip;
+                if (curEquips.ContainsKey((emEquipSort)sort))
+                {
+                    P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
+                    var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOff({role.RoleId},{sort})", "equip");
+                    if (response3.Success)
+                    {
+                        equip.SetAccountInfo(AccountController.Instance.User);
+                        replaceEquipStruct.ReplacedEquip = curEquips[(emEquipSort)sort];
+                    }
+                }
+            }
+
+            P.Log($"{role.RoleName}现在更换{(emEquipSort)sort}位置的装备{equip.EquipName}", emLogType.AutoEquip);
+
+            var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOn({role.RoleId},{equip.EquipID})", "equip");
+            if (response2.Success)
+            {
+                replaceEquipStruct.IsSuccess = true;
+                return replaceEquipStruct;
             }
         }
-
-        P.Log($"找到{role.Level}级{role.RoleName}的符合条件的装备，现在更换", emLogType.AutoEquip);
-
-        var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOn({role.RoleId},{equip.EquipID})", "equip");
-        if (response2.Success)
-        {
-            replaceEquipStruct.IsSuccess = true;
-            return replaceEquipStruct;
-        }
-        else
-            replaceEquipStruct.IsSuccess = false;
         return replaceEquipStruct;
     }
 
