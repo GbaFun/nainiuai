@@ -25,6 +25,7 @@ public class RegexUtil
     /// 匹配类型-数值比较
     /// </summary>
     public const string compareNum = "compareNum";
+    public const string skillLvMatch="skillLvMatch";
     public static bool Match(string content, List<RegexMatch> regList)
     {
         foreach (var item in regList)
@@ -32,6 +33,10 @@ public class RegexUtil
             if (item.Type == compareNum)
             {
                 var r = CompareNum(content, item);
+                if (!r) return r;
+            }
+            else if(item.Type==skillLvMatch){
+                  var r = SkillLvMatch(content, item);
                 if (!r) return r;
             }
         }
@@ -45,6 +50,25 @@ public class RegexUtil
     {
         var keywords = regCfg.Keywords.Split(',');
         var match = Regex.Match(content, $@"{keywords[0]}.*?(\d+).*{keywords[1]}");
+        //不匹配直接退出
+        if (!match.Success)
+        {
+            return false;
+        }
+        //命中词条再比较数值
+        var num = Decimal.Parse(match.Groups[1].Value);
+        ComparisonOperator<decimal> comparison = GetDecimalOperator(regCfg.Op);
+        return comparison(num, decimal.Parse(regCfg.Val));
+    }
+
+       /// <summary>
+    /// 技能数值比较
+    /// </summary>
+    /// <returns></returns>
+    private static bool SkillLvMatch(string content, RegexMatch regCfg)
+    {
+        var keywords = regCfg.Keywords.Split(',');
+        var match = Regex.Match(content, $@"\+(\d+)\s{keywords[0]}");
         //不匹配直接退出
         if (!match.Success)
         {
