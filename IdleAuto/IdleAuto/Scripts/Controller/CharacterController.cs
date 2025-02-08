@@ -93,26 +93,25 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         /// <returns></returns>
 
-        private Tuple<int, int> CreateRaceAndType()
+        private Tuple<int, int> CreateRaceAndType(List<RoleModel> roles)
         {
-            var roles = AccountController.Instance.User.Roles;
-            if (roles.Where(p => p.Job == emJob.骑士).Count() < 4)
+            var lastJob = roles.Count == 0 ? null : roles.Last();
+            if (lastJob == null || lastJob.Job == emJob.死骑)
             {
-                var count = roles.Where(p => p.Job == emJob.骑士).Count();
                 return new Tuple<int, int>(1, 5);
             }
-            if (roles.Where(p => p.Job == emJob.死灵).Count() < 4)
+            if (lastJob.Job == emJob.骑士)
             {
                 return new Tuple<int, int>(8, 4);
             }
-            if (roles.Where(p => p.Job == emJob.死骑).Count() < 2)
+            if (lastJob.Job == emJob.死灵)
             {
                 return new Tuple<int, int>(12, 5);
             }
-            if (roles.Where(p => p.Job == emJob.武僧).Count() < 2)
-            {
-                return new Tuple<int, int>(10, 5);
-            }
+            //if (roles.Where(p => p.Job == emJob.武僧).Count() < 2)
+            //{
+            //    return new Tuple<int, int>(10, 5);
+            //}
             return null;
         }
 
@@ -243,21 +242,20 @@ namespace IdleAuto.Scripts.Controller
                 //创建工会
                 await CreateUnion();
             }
-            else
-            {
-                var existMember = await GetExistUnionMember();
-                if (AccountController.Instance.User.Roles == null || existMember == null)
-                {
-                    Console.WriteLine("roles空");
-                }
-                var notInUnionMember = AccountController.Instance.User.Roles.Where(p => !existMember.Contains(p.RoleName)).FirstOrDefault();
-                if (notInUnionMember != null)
-                {
-                    await AddUnionMember(notInUnionMember);
-                    await MakeUnion();
-                }
 
+            var existMember = await GetExistUnionMember();
+            if (AccountController.Instance.User.Roles == null || existMember == null)
+            {
+                Console.WriteLine("roles空");
             }
+            var notInUnionMember = AccountController.Instance.User.Roles.Where(p => !existMember.Contains(p.RoleName)).FirstOrDefault();
+            if (notInUnionMember != null)
+            {
+                await AddUnionMember(notInUnionMember);
+                await MakeUnion();
+            }
+
+
         }
 
         /// <summary>
@@ -459,7 +457,7 @@ namespace IdleAuto.Scripts.Controller
                     await JsInit();
                     var data = new Dictionary<string, object>();
                     data["name"] = await CreateName();
-                    var info = CreateRaceAndType();
+                    var info = CreateRaceAndType(roles);
                     data["race"] = info.Item2;
                     data["type"] = info.Item1;
                     if (_browser.CanExecuteJavascriptInMainFrame)
