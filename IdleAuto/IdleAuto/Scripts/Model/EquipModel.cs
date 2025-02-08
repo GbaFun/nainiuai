@@ -54,6 +54,11 @@ public class EquipModel
     public string EquipName { get; set; }
 
     /// <summary>
+    /// 物品类型
+    /// </summary>
+    public string Category { get; set; }
+
+    /// <summary>
     /// 是否是太古
     /// </summary> 
     public bool IsPerfect { get; set; }
@@ -118,6 +123,19 @@ public class EquipModel
             RoleID = role.RoleId;
             RoleName = role.RoleName;
         }
+    }
+
+    public bool CanWear(RoleModel role)
+    {
+        int needLv = 0;
+        bool 无形 = EquipName.Contains("无形");
+        bool 无法破坏 = Content.Contains("无法破坏");
+        if (无形 && !无法破坏) return false;
+        Regex regex = new Regex(@"需要等级：\n( *)(?<lv>\d+)\n");
+        var match = regex.Match(Content);
+        if (match.Success)
+            needLv = int.Parse(match.Groups["lv"].Value);
+        return role.Level >= needLv;
     }
 }
 

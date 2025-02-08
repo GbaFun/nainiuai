@@ -53,7 +53,7 @@ public enum emEquipSort
 
 public enum emItemType
 {
-    头盔 = 0,
+    帽子 = 0,
     衣服 = 1,
     手套 = 2,
     靴子 = 3,
@@ -68,48 +68,7 @@ public enum emItemType
     珠宝 = 12,
     未知 = 999,
 }
-public enum emItemSubType
-{
-    帽子,
-    衣服,
-    盾,
-    手套,
-    靴子,
-    腰带,
-    头饰,
-    戒指,
-    项链,
-    珠宝,
-    护符,
-    秘境,
-    道具,
-    斧,
-    剑,
-    锤,
-    长矛,
-    匕首,
-    法杖,
-    权杖,
-    弓,
-    十字弓,
-    标枪,
-    投掷武器,
-    法珠,
-    爪,
-    游侠弓,
-    游侠标枪,
-    战士头盔,
-    祭祀刀,
-    牧师副手,
-    手杖,
-    死灵副手,
-    骑士盾牌,
-    萨满头饰,
-    贤者头盔,
-    拳套,
-    手弩,
-    死骑面罩
-}
+
 public enum emItemQuality
 {
     PHYSICAL,       //全部

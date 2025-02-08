@@ -110,15 +110,19 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnInit_Click(object sender, EventArgs e)
         {
-            if (!CharacterController.Instance.IsAutoInit)
-            {
-                CharacterController.Instance.StartInit();
-            }
-            else
-            {
-                CharacterController.Instance.Stop();
-            }
-            BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
+            string bigType = TxtUtil.GetCategory("活动头盔");
+            bigType = TxtUtil.GetCategory("轻型装甲");
+            bigType = TxtUtil.GetCategory("飞矛");
+            bigType = TxtUtil.GetCategory("秘境");
+            //if (!CharacterController.Instance.IsAutoInit)
+            //{
+            //    CharacterController.Instance.StartInit();
+            //}
+            //else
+            //{
+            //    CharacterController.Instance.Stop();
+            //}
+            //BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
         }
 
         private void BtnAutoOnline_Click(object sender, EventArgs e)
