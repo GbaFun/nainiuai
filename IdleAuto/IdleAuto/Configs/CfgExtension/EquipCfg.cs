@@ -23,6 +23,7 @@ public class Equipment : Item
 public class Item
 {
     public string Name { get; set; }
+    public string Category { get; set; }
     public List<string> Content { get; set; } = new List<string>();
     public List<RegexMatch> RegexList { get; set; } = new List<RegexMatch>();
 
@@ -33,6 +34,27 @@ public class Item
         if (RegexList != null && !RegexUtil.Match(attr, RegexList)) return false;
 
         return true;
+    }
+    public bool AdaptAttr(EquipModel equip)
+    {
+        ///如果没有配置名字和装备类型则不匹配
+        if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Category)) return false;
+        if (!string.IsNullOrEmpty(Name) && !equip.EquipName.Contains(Name)) return false;
+        if (!string.IsNullOrEmpty(Category) && !equip.Category.Equals(Category)) return false;
+        if (!Content.All(p => equip.Content.Contains(p))) return false;
+        if (RegexList != null && !RegexUtil.Match(equip.Content, RegexList)) return false;
+
+        return true;
+    }
+
+    public string SimpleName
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Name)) return Category;
+            if (string.IsNullOrEmpty(Category)) return Name;
+            return $"{Name}({Category})";
+        }
     }
 }
 

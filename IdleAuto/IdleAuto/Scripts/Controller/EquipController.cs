@@ -83,6 +83,7 @@ public class EquipController
                             foreach (var item in equips)
                             {
                                 EquipModel equip = item.Value;
+                                equip.Category = TxtUtil.GetCategory(equip.EquipBaseName);
                                 equip.SetAccountInfo(AccountController.Instance.User);
                                 if (!repositoryEquips.ContainsKey(item.Key))
                                     repositoryEquips.Add(item.Key, item.Value);
@@ -132,6 +133,7 @@ public class EquipController
                         foreach (var item in equips)
                         {
                             EquipModel equip = item.Value;
+                            equip.Category = TxtUtil.GetCategory(equip.EquipBaseName);
                             equip.SetAccountInfo(AccountController.Instance.User, role);
                             //CheckEquipType(equip);
                             if (!repositoryEquips.ContainsKey(item.Key))
@@ -237,11 +239,13 @@ public class EquipController
                         //每个部位检查装备前增加500ms得等待时间
                         await Task.Delay(500);
                         Equipment targetEquip = targetEquips.GetEquipBySort((emEquipSort)j);
-                        string targetEquipName = targetEquip.Name;
+                        if (targetEquip == null) continue;
+                        //string targetEquipName = targetEquip.Name;
                         EquipModel equip = null;
                         if (curEquips != null && curEquips.TryGetValue((emEquipSort)j, out equip))
                         {
-                            if (string.IsNullOrEmpty(targetEquipName) || equip.EquipName.Contains(targetEquipName))
+                            equip.Category = TxtUtil.GetCategory(equip.EquipBaseName);
+                            if (targetEquip.AdaptAttr(equip))
                             {
                                 P.Log($"{role.RoleName}的{(emEquipSort)j}位置装备{equip.EquipName}符合要求，无需更换", emLogType.AutoEquip);
                                 continue;
@@ -253,11 +257,8 @@ public class EquipController
                             {
                                 continue;
                             }
-                            if (item.Value.EquipName.Contains(targetEquipName))
-                            {
-                                P.Log($"{role.RoleName}找到与{targetEquipName}同名装备,现检查具体属性是否符合要求", emLogType.AutoEquip);
-                            }
-                            if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
+                            if (!item.Value.CanWear(role)) continue;
+                            if (targetEquip.AdaptAttr(item.Value))
                             {
                                 towearEquips.Add((emEquipSort)j, item.Value);
                                 isSuccess = true;
@@ -270,11 +271,9 @@ public class EquipController
                             {
                                 continue;
                             }
-                            if (item.Value.EquipName.Contains(targetEquipName))
-                            {
-                                P.Log($"{role.RoleName}找到与{targetEquipName}同名装备,现检查具体属性是否符合要求", emLogType.AutoEquip);
-                            }
-                            if (targetEquip.AdaptAttr(item.Value.EquipName, item.Value.Content))
+
+                            if (!item.Value.CanWear(role)) continue;
+                            if (targetEquip.AdaptAttr(item.Value))
                             {
                                 towearEquips.Add((emEquipSort)j, item.Value);
                                 isSuccess = true;
@@ -285,9 +284,9 @@ public class EquipController
                         isSuccess = false;
                         WEAR_EQUIP_FIANLLY:
                         if (isSuccess)
-                            P.Log($"{role.RoleName}查找{targetEquipName}装备完成", emLogType.AutoEquip);
+                            P.Log($"{role.RoleName}查找{targetEquip.SimpleName}装备完成", emLogType.AutoEquip);
                         else
-                            P.Log($"{role.RoleName}查找{targetEquipName}装备失败", emLogType.AutoEquip);
+                            P.Log($"{role.RoleName}查找{targetEquip.SimpleName}装备失败", emLogType.AutoEquip);
                     }
                 }
 
@@ -401,12 +400,11 @@ public class EquipController
             #endregion
         }
         P.Log($"全部角色装备更换完成\n\t\n\t\n\t\n\t\n\t", emLogType.AutoEquip);
+        BroTabManager.Instance.DisposePage(m_equipBroID);
+        m_equipBroID = 0;
 
         FreeDb.Sqlite.Update<EquipModel>(repositoryEquips.Values.ToList()).ExecuteAffrows();
         FreeDb.Sqlite.Update<EquipModel>(packageEquips.Values.ToList()).ExecuteAffrows();
-
-        BroTabManager.Instance.DisposePage(m_equipBroID);
-        m_equipBroID = 0;
 
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         MainForm.Instance.HideLoadingPanel(emMaskType.AUTO_EQUIPING);
@@ -426,7 +424,7 @@ public class EquipController
 
             if (equip != null && (sort == (int)emEquipSort.副手 || sort == (int)emEquipSort.主手 || sort == (int)emEquipSort.戒指1 || sort == (int)emEquipSort.戒指2))
             {
-                if (curEquips.ContainsKey((emEquipSort)sort))
+                if (curEquips != null && curEquips.ContainsKey((emEquipSort)sort))
                 {
                     P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                     var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(m_equipBroID, $@"equipOff({role.RoleId},{sort})", "equip");

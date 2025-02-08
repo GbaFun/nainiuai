@@ -89,6 +89,7 @@
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
     <Compile Include="Scripts\Model\SkillModel.cs" />
+    <Compile Include="Scripts\Utils\TxtUtil.cs" />
     <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
@@ -218,6 +219,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Document\装备底子分类表.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\js\ah.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

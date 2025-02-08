@@ -17,21 +17,13 @@ function getCurEquips() {
     console.log('start getCurEquips');
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
-        //console.log($(this));
         var sortid = $(this).data('type');
-        //console.log(sortid);
         var __equip = $(this).prev();
-        //console.log(__equip);
         var id = __equip.data('id');
-        //console.log(id);
         var quality = __equip.data('type');
-        //console.log(quality);
         var equipContent = $(this).parent().next();
-        //console.log(equipContent);
         var content = equipContent.text();
-        //console.log(content)
         var e = getEquipInfo(id, sortid, quality, content);
-        //console.log(e);
         eMap[e.esort] = e;
     });
 
@@ -45,8 +37,11 @@ function getPackageEquips() {
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
-        var quality = equipItem.data('type');
+        //var quality = equipItem.data('type');
         var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var classname = equipContent.find('p.equip-title:first').attr('class');
+        console.log(classname);
+        var quality = classname.split(' ')[0];
         var content = equipContent.text();
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
@@ -60,33 +55,45 @@ function getEquipInfo(eid, sortid, quality, content) {
     e.eid = eid;
     e.esort = sortid;
     e.quality = quality;
-    console.log(content);
+    //console.log(content);
     content = content.replace(/^\s*\n/gm, "")
-    console.log(content);
-    //content = content.replace(/[ ]/g, "")
+    content = content.replace(/^\s*/gm, "")
+    content = content.replace(/^\t*/gm, "")
     //console.log(content);
     e.content = content;
-    //console.log(e.content);
+    console.log(e.content);
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
-    var baseName = "未知"
+    var baseName = "道具"
     if (quality == "set" || quality == "unique" || quality == "artifact") {
         if (sc[1] != "已绑定") baseName = sc[1];
         else baseName = sc[2];
     }
-    else if (sc[2].includes("可以作为镶嵌物"))
+    else if (sc[1].includes("可以作为镶嵌物")) {
         baseName = "珠宝";
-    else if (name[1].includes("秘境"))
+    }
+    else if (sc[2].includes("可以作为镶嵌物")) {
+        baseName = "珠宝";
+    }
+    else if (name[1].includes("秘境")) {
         baseName = "秘境";
+    }
+    else {
+        if (name[1].includes("的")) {
+            var sc2 = name[1].split("的");
+            baseName = sc2[sc2.length - 1];
+        }
+        else {
+            var sc2 = name[1].split("之");
+            baseName = sc2[sc2.length - 1];
+        }
+    }
+    if (baseName.includes("太古")) baseName = baseName.replace("太古", "");
+    if (baseName.includes("无形")) baseName = baseName.replace("无形", "");
     e.equipBaseName = baseName;
-    //console.log(e.equipBaseName);
     e.equipName = name[1];
-    //console.log(e.equipName);
     e.isPerfect = sc[0].includes('★');
-    //console.log(e.isPerfect);
     e.isLocal = sc[1].includes("已绑定");
-    //console.log(e.isLocal);
-    //console.log(e);
     return e;
 }
 
@@ -98,8 +105,11 @@ function getRepositoryEquips() {
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
-        var quality = equipItem.data('type');
+        //var quality = equipItem.data('type');
         var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var classname = equipContent.find('p.equip-title:first').attr('class');
+        console.log(classname);
+        var quality = classname.split(' ')[0];
         var content = equipContent.text();
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
