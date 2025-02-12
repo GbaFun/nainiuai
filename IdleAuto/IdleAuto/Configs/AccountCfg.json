@@ -1,9 +1,9 @@
 [
   {
-    "username": "RasdSky",
+    "username": "niu1",
     "password": "123456",
-    "account": "南宫",
-    "accountId": 13826420,
+    "account": "铁矿石",
+    "accountId": 13853212,
     "prefix": "MC"
   },
   {
@@ -20,13 +20,7 @@
     "accountId": 13853281,
     "prefix": "MC"
   },
-  {
-    "username": "niu1",
-    "password": "123456",
-    "account": "铁矿石",
-    "accountId": 13853212,
-    "prefix": "MC"
-  },
+
   {
     "username": "niu2",
     "password": "123456",
@@ -67,6 +61,13 @@
     "password": "zxc123",
     "account": "暴走喵星人1",
     "accountId": 13851807,
+    "prefix": "MC"
+  },
+  {
+    "username": "RasdSky",
+    "password": "123456",
+    "account": "南宫",
+    "accountId": 13826420,
     "prefix": "MC"
   },
   {
