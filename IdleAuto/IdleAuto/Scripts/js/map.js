@@ -24,7 +24,7 @@ let _map = {};
         }, 1000)
     }
 
-    function endMap(){
+    function endMap() {
         localStorage.removeItem("startMap");
     }
     async function explore() {
@@ -37,12 +37,10 @@ let _map = {};
         await dfs(curPos[0], curPos[1]);
         await startMove();
         localStorage.setItem("mapStep", JSON.stringify(visitedStep));
-        if ($("span.boss-left").text()=="1") {
+        if ($("span.boss-left").text() == "1") {
             //地图状态变化了需要重新递归地图状态
             explore();
         }
-     
-
     }
 
     async function backToMap() {
@@ -61,13 +59,13 @@ let _map = {};
 
 
     async function startMove() {
-     
+
 
         for (let i = 0; i < step.length; i++) {
-       
+
             await sleep(1000);
             var block = $(`#${step[i]}`);
-            
+
             if (block.hasClass("monster") || block.hasClass("boss")) {
                 localStorage.setItem("mapStep", JSON.stringify(visitedStep));
             }
@@ -178,7 +176,7 @@ let _map = {};
         if (f.hasClass("monster")) {
             location.href = "/Battle/InDungeon?id=" + k + "&bid=" + g;
         } else {
-           
+
             var e = [];
             if (0 < a.pageX && 0 < a.pageY && a.hasOwnProperty("originalEvent") && (a.originalEvent.isTrusted || 1 == a.originalEvent.detail)) {
                 e = $(c).offset();
@@ -221,15 +219,15 @@ let _map = {};
                         $("#not-explore").text(parseInt($("#not-explore").text()) - a.length));
                     $(".current").removeClass("current");
                     f.addClass("current");
-                   
-                
+
+
                 },
                 error: function (XMLHttpRequest) {
                     const responseText = XMLHttpRequest.responseText;
                     if (responseText.indexOf('封号') >= 0) {
                         addBlockNum();
                     }
-                    
+
                 }
             });
         }
