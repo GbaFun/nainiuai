@@ -26,8 +26,7 @@ public class SkillPoint
     /// 需要选上的技能组
     /// </summary>
     public List<string> GroupSkill { get; set; }
-
-
+    public int KeySkillId { get; set; }
 }
 
 public class SkillPointCfg

@@ -104,6 +104,7 @@ class Character {
         POST_Message("AttributeReset", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
             debugger;
             location.reload();
         })
@@ -121,6 +122,7 @@ class Character {
         POST_Message("AttributeSave", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
             debugger;
             location.reload();
         })
@@ -176,9 +178,11 @@ class Character {
             sid: data.sid,
             cid: _char.cid
         });
+        console.log(data);
         POST_Message("SkillSave", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', data);
             debugger;
             location.reload();
         })
@@ -192,6 +196,7 @@ class Character {
         POST_Message("SkillReset", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
             debugger;
             location.reload();
         })
@@ -206,6 +211,21 @@ class Character {
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
             location.reload();
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
+            debugger;
+            location.reload();
+        })
+    }
+    skillKeySave(sid) {
+
+        var data = MERGE_Form({
+            cid: _char.cid,
+            sid: sid
+        });
+        POST_Message("SetKeySkill", data, "post", 1500).then((r) => {
+            location.reload();
+        }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
             debugger;
             location.reload();
         })
@@ -218,6 +238,7 @@ class Character {
         })
         POST_Message("MapSwitch", data, "post", 1500).then((r) => {
         }).catch((e) => {
+            Bridge.invokeEvent('OnPostFailed', e);
             debugger
             var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
             var data = { isSuccess: true, isNeedDungeon: false };

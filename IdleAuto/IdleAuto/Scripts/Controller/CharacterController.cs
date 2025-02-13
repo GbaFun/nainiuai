@@ -67,6 +67,7 @@ namespace IdleAuto.Scripts.Controller
             EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
             EventManager.Instance.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
             EventManager.Instance.SubscribeEvent(emEventType.OnMapSwitch, OnMapSwitch);
+            EventManager.Instance.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
         }
 
         /// <summary>
@@ -130,6 +131,12 @@ namespace IdleAuto.Scripts.Controller
             {
                 CharNameSeed += 1;
             }
+        }
+
+        private void OnPostFailed(params object[] args)
+        {
+            string errorMsg = args[0].ToString();
+            P.Log(errorMsg, emLogType.Error);
         }
 
         /// <summary>
@@ -582,12 +589,19 @@ namespace IdleAuto.Scripts.Controller
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
                 await JsInit();
+                P.Log("开始重置技能加点！", emLogType.AutoEquip);
                 await SkillRest();
                 await SkillSave(targetSkillPoint, skillConfig.JobName);
                 var groupid = GetSkillGroup(skillConfig);
                 await SkillGroupSave(groupid);
             }
 
+            if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+                await JsInit();
+            }
+            await SkillKeySave(skillConfig.KeySkillId);
         }
         private async Task SkillRest()
         {
@@ -606,6 +620,8 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task SkillSave(Dictionary<string, int> targetSkill, string jobname)
         {
+            P.Log("开始技能加点！", emLogType.AutoEquip);
+
             List<string> strList = new List<string>();
 
             targetSkill.ToList().ForEach(p =>
@@ -617,9 +633,18 @@ namespace IdleAuto.Scripts.Controller
             var skillStr = string.Join(",", strList);
             Dictionary<string, object> data = new Dictionary<string, object>();
             data.Add("sid", skillStr);
+            P.Log($"技能加点详情:{skillStr}", emLogType.AutoEquip);
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.skillSave({data.ToLowerCamelCase()});");
+                if (!d.Success)
+                {
+                    P.Log($"技能加点失败：{d.Message}", emLogType.AutoEquip);
+                }
+                else
+                {
+                    P.Log($"技能加点成功！", emLogType.AutoEquip);
+                }
                 await JsInit();
             }
 
@@ -649,6 +674,14 @@ namespace IdleAuto.Scripts.Controller
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.skillGroupSave({data.ToLowerCamelCase()});");
+                if (!d.Success)
+                {
+                    P.Log($"保存携带技能失败：{d.Message}", emLogType.AutoEquip);
+                }
+                else
+                {
+                    P.Log($"保存携带技能成功！", emLogType.AutoEquip);
+                }
                 await JsInit();
             }
         }
@@ -662,6 +695,7 @@ namespace IdleAuto.Scripts.Controller
         private Dictionary<string, int> GetTargetSkillPoint(int curLv, SkillPoint config)
         {
             int pointCount = curLv;//技能点数等于人物等级
+            P.Log($"开始计算技能加点！技能点总数：{pointCount}", emLogType.AutoEquip);
             var targetSkillDic = new Dictionary<String, int>();
             foreach (var item in config.RemainSkill)
             {
@@ -678,7 +712,8 @@ namespace IdleAuto.Scripts.Controller
                 var idleSkill = IdleSkillCfg.Instance.GetIdleSkill(config.JobName, p);
                 var maxSkillPoint = idleSkill.CurLvMaxPoint(curLv);//当前等级能加到max是多少
                 if (!targetSkillDic.ContainsKey(name)) targetSkillDic.Add(name, 0);
-                if (pointCount < maxSkillPoint)
+                int addPoint = maxSkillPoint - targetSkillDic[name];
+                if (pointCount <= addPoint)
                 {
                     //剩余点数不够加到最大了就按照剩余加
                     targetSkillDic[name] += pointCount;
@@ -686,8 +721,8 @@ namespace IdleAuto.Scripts.Controller
                 }
                 else
                 {
-                    targetSkillDic[name] += maxSkillPoint;
-                    pointCount -= maxSkillPoint;
+                    targetSkillDic[name] = maxSkillPoint;
+                    pointCount -= addPoint;
                 }
 
             }
@@ -723,6 +758,21 @@ namespace IdleAuto.Scripts.Controller
                 }
             }
             return result;
+        }
+
+        /// <summary>
+        /// 保存Key技能
+        /// </summary>
+        /// <param name="targetSkill"></param>
+        /// <param name="jobname"></param>
+        /// <returns></returns>
+        private async Task SkillKeySave(int skillId)
+        {
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.skillKeySave({skillId});");
+                await JsInit();
+            }
         }
         #endregion
 

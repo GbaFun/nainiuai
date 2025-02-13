@@ -32,7 +32,7 @@ public enum emEventType
     /// 角色名冲突
     /// </summary>
     OnCharNameConflict,
-    
+
     /// <summary>
     /// 地图切换
     /// </summary>
@@ -42,7 +42,10 @@ public enum emEventType
     /// 检查账号
     /// </summary>
     OnAccountCheck,
-
+    /// <summary>
+    /// jsPost消息失败
+    /// </summary>
+    OnPostFailed,
 
 }
 
