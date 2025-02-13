@@ -138,6 +138,18 @@ public class PageLoadHandler
         }
     }
 
+    public static async void DeleteCookie(ChromiumWebBrowser bro, string name)
+    {
+        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
+        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
+
+        if (File.Exists(cookiePath))
+        {
+            await DevToolUtil.ClearCookiesAsync(bro);
+            File.Delete(cookiePath);
+        }
+    }
+
     public static async Task LoadCookieAndCache(ChromiumWebBrowser bro, string name, string url = "")
     {
 
