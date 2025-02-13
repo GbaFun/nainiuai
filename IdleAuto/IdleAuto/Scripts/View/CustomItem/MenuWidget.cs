@@ -230,5 +230,15 @@ namespace IdleAuto.Scripts.View
         }
 
         #endregion
+
+        private async void BtnClear_Click(object sender, EventArgs e)
+        {
+            var idx = BroTabManager.Instance.GetFocusID();
+            var bro = BroTabManager.Instance.GetBro(idx);
+            await DevToolUtil.ClearCookiesAsync(bro);
+            await DevToolUtil.ClearLocalStorageAsync(bro);
+
+            BroTabManager.Instance.DisposePage(idx);
+        }
     }
 }

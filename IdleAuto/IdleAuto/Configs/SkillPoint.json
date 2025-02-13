@@ -5,8 +5,8 @@
       "min": 1,
       "max": 23
     },
-    "remainSkill": { "牺牲": 1 },
-    "prioritySkill": [ "力量光环" ],
+    "remainSkill": { "奉献": 1 },
+    "prioritySkill": [ "力量光环", "祈祷光环" ],
     "groupSkill": [ "力量光环", "祈祷光环", "奉献" ]
   },
   {
@@ -16,7 +16,7 @@
       "max": 23
     },
     "remainSkill": { "骷髅复生": 1 },
-    "prioritySkill": [ "骷髅法师" ],
+    "prioritySkill": [ "骷髅法师", "骷髅复生" ],
     "groupSkill": [ "骷髅法师", "骷髅复生" ]
   },
   {
@@ -25,8 +25,11 @@
       "min": 1,
       "max": 23
     },
-    "remainSkill": { "冰锋符文": 1 },
-    "prioritySkill": [ "冰霜之镰" ],
+    "remainSkill": {
+      "冰锋符文": 1,
+      "冰霜打击": 1
+    },
+    "prioritySkill": [ "冰霜打击", "冰霜之镰", "死亡寒潮", "冰锋符文" ],
     "groupSkill": [ "冰霜之镰", "冰霜打击", "死亡寒潮", "冰锋符文" ]
   },
   {

@@ -204,8 +204,8 @@ public class EquipController
             Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
 
             //测试切图
-            //m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
-            //await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
+            m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
+            await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
             //测试结束
             if (m_equipBroID == 0)
                 m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", "equip");
