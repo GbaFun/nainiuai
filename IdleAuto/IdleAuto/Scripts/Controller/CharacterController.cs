@@ -738,10 +738,10 @@ namespace IdleAuto.Scripts.Controller
             }
             var curMapLv = await GetCurMapLv();
             //检查是否层数合适
-            var setting = MapSettingCfg.Instance.GetSetting(role.Level);
-            if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
+            //var setting = MapSettingCfg.Instance.GetSetting(role.Level);
+            //if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
 
-            int targetLv = setting.MapLv;
+            int targetLv = 10; //setting.MapLv;
             //尝试抵达
             await SwitchTo(targetLv, curMapLv);
 
@@ -756,16 +756,16 @@ namespace IdleAuto.Scripts.Controller
                 var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
                 await JsInit();
             }
-            var isNeedDungeon = await IsNeedDungeon();
-            if (isNeedDungeon)
-            {
-                int dungeonLv = GetDungeonLv(curMapLv);
-                await SwitchTo(dungeonLv);
-                //开始秘境
+            //var isNeedDungeon = await IsNeedDungeon();
+            //if (isNeedDungeon)
+            //{
+            //    int dungeonLv = GetDungeonLv(curMapLv);
+            //    await SwitchTo(dungeonLv);
+            //    //开始秘境
 
-                //再次尝试直接抵达
-                await SwitchTo(targetLv, dungeonLv + 10);
-            }
+            //    //再次尝试直接抵达
+            //    await SwitchTo(targetLv, dungeonLv + 10);
+            //}
         }
         private async Task<bool> IsNeedDungeon()
         {

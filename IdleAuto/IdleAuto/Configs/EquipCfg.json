@@ -74,10 +74,65 @@
       "category": "权杖",
       "regexList": [
         {
-          "type": "skillLvMatch",
+          "type": "intMatch",
           "keywords": "力量光环",
           "op": ">=",
           "val": 3
+        }
+      ]
+    },
+    "项链": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "戒指1": {
+      "category": "戒指",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "戒指2": {
+      "category": "戒指",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "头盔": {
+      "name": "帽子",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "靴子": {
+      "name": "靴子",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 1
         }
       ]
     }
@@ -92,16 +147,10 @@
       "category": "手杖",
       "regexList": [
         {
-          "type": "skillLvMatch",
+          "type": "intMatch",
           "keywords": "骷髅法师",
           "op": ">=",
-          "val": 2
-        },
-        {
-          "type": "skillLvMatch",
-          "keywords": "骷髅复生",
-          "op": ">=",
-          "val": 2
+          "val": 3
         }
       ]
     },
@@ -109,18 +158,24 @@
       "category": "死灵副手",
       "regexList": [
         {
-          "type": "skillLvMatch",
+          "type": "intMatch",
           "keywords": "骷髅法师",
           "op": ">=",
-          "val": 1
-        },
-        {
-          "type": "skillLvMatch",
-          "keywords": "骷髅复生",
-          "op": ">=",
-          "val": 1
+          "val": 3
         }
       ]
+    },
+    "项链": {
+      "category": "项链",
+      "content": [ "施法速度提升 10%" ]
+    },
+    "戒指1": {
+      "category": "戒指",
+      "content": [ "施法速度提升 10%" ]
+    },
+    "戒指2": {
+      "category": "戒指",
+      "content": [ "施法速度提升 10%" ]
     }
   },
   {
@@ -136,6 +191,33 @@
     "副手": {
       "category": "标枪",
       "content": [ "腐烂" ]
+    },
+    "头盔": {
+      "category": "死骑面罩",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "冰锋符文",
+          "op": ">=",
+          "val": 3
+        }
+      ]
+    },
+    "项链": {
+      "category": "项链",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "戒指1": {
+      "category": "戒指",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "戒指2": {
+      "category": "戒指",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "手套": {
+      "name": "手套",
+      "content": [ "攻击速度提升 10%" ]
     }
   }
   //{
