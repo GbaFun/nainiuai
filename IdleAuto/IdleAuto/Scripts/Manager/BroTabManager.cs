@@ -345,6 +345,7 @@ public class BroTabManager
             int id = GetFocusID();
             var bro = BroDic[id];
             PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
+            bro.Reload();
         }
     }
 }
