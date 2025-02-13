@@ -358,7 +358,9 @@ public class EquipController
                         {
                             P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
                         }
+
                     }
+                    await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(m_equipBroID), role);
 
                     await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "char");
 

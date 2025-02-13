@@ -83,10 +83,13 @@ namespace IdleAuto.Scripts.Controller
             {
 
                 var name = $@"{PrefixName}{24 * index + CharCount + CharNameSeed}";
+                P.Log(name);
                 return name;
             }
 
-            return Names[12 * index + CharCount] + (CharNameSeed == 0 ? "" : CharNameSeed.ToString());
+            var name1 = Names[12 * index + CharCount] + (CharNameSeed == 0 ? "" : CharNameSeed.ToString());
+            P.Log(name1);
+            return name1;
         }
         /// <summary>
         /// 生成种族和职业
@@ -449,8 +452,8 @@ namespace IdleAuto.Scripts.Controller
             if (_browser.Address.IndexOf(PageLoadHandler.HomePage) > -1)
             {
                 var roles = await GetRoles();
-                CharCount = roles.Count;
-                if (roles.Count < 12)
+                CharCount = roles == null ? 0 : roles.Count;
+                if (CharCount < 12)
                 {
                     //不满12个号去建号
                     _browser.LoadUrl("https://www.idleinfinity.cn/Character/Create");

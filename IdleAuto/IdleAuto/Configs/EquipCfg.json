@@ -65,6 +65,24 @@
     }
   },
   {
+    "jobName": "骑士",
+    "lv": {
+      "min": 1,
+      "max": 18
+    },
+    "主手": {
+      "category": "权杖",
+      "regexList": [
+        {
+          "type": "skillLvMatch",
+          "keywords": "力量光环",
+          "op": ">=",
+          "val": 3
+        }
+      ]
+    }
+  },
+  {
     "jobName": "死灵",
     "lv": {
       "min": 1,
@@ -75,11 +93,49 @@
       "regexList": [
         {
           "type": "skillLvMatch",
+          "keywords": "骷髅法师",
+          "op": ">=",
+          "val": 2
+        },
+        {
+          "type": "skillLvMatch",
           "keywords": "骷髅复生",
           "op": ">=",
-          "val": 3
+          "val": 2
         }
       ]
+    },
+    "副手": {
+      "category": "死灵副手",
+      "regexList": [
+        {
+          "type": "skillLvMatch",
+          "keywords": "骷髅法师",
+          "op": ">=",
+          "val": 1
+        },
+        {
+          "type": "skillLvMatch",
+          "keywords": "骷髅复生",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    }
+  },
+  {
+    "jobName": "死骑",
+    "lv": {
+      "min": 1,
+      "max": 18
+    },
+    "主手": {
+      "category": "标枪",
+      "content": [ "腐烂" ]
+    },
+    "副手": {
+      "category": "标枪",
+      "content": [ "腐烂" ]
     }
   }
   //{

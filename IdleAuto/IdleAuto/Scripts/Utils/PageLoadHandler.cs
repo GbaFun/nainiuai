@@ -57,6 +57,8 @@ public class PageLoadHandler
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
             await LoadGlobalJs(jsPath, browser);
+            var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equipattr.js");
+            await LoadGlobalJs(jsPath, browser);
         }
         else if (ContainsUrl(url, CharCreate))
         {
@@ -134,7 +136,6 @@ public class PageLoadHandler
             await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
             await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
         }
-
     }
 
     public static async Task LoadCookieAndCache(ChromiumWebBrowser bro, string name, string url = "")

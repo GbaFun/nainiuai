@@ -55,4 +55,9 @@ public class Account
     /// </summary>
     [JsonProperty("accountId")]
     public int AccountID { get; set; }
+    /// <summary>
+    /// 浏览器版本（登录密钥）
+    /// </summary>
+    [JsonProperty("chromeVersion")]
+    public string ChromeVersion { get; set; }
 }

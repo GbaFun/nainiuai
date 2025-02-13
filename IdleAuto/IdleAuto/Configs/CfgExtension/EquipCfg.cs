@@ -40,6 +40,7 @@ public class Item
         ///如果没有配置名字和装备类型则不匹配
         if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Category)) return false;
         if (!string.IsNullOrEmpty(Name) && !equip.EquipName.Contains(Name)) return false;
+        if (equip.Category == null) equip.Category = TxtUtil.GetCategory(equip.EquipBaseName);
         if (!string.IsNullOrEmpty(Category) && !equip.Category.Equals(Category)) return false;
         if (!Content.All(p => equip.Content.Contains(p))) return false;
         if (RegexList != null && !RegexUtil.Match(equip.Content, RegexList)) return false;

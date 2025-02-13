@@ -20,6 +20,7 @@ class Character {
     }
 
     initCurrentChar() {
+        console.log($("a:contains('消息')")[0]);
         let localtion = $("a:contains('消息')")[0].href;//消息中有当前id
         let url = new URL(localtion);
         let urlParams = new URLSearchParams(url.search);

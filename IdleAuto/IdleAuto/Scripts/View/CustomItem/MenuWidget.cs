@@ -36,10 +36,10 @@ namespace IdleAuto.Scripts.View
                 AccountCombo.Items.Add(account);
             }
 
-            if (AccountCombo.Items.Count > 0)
-            {
-                AccountCombo.SelectedIndex = 0; // Select the first item by default
-            }
+            //if (AccountCombo.Items.Count > 0)
+            //{
+            //    AccountCombo.SelectedIndex = 0; // Select the first item by default
+            //}
         }
         private void ShowRoleCombo()
         {

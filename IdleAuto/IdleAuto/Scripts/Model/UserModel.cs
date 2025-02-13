@@ -14,6 +14,7 @@ public class UserModel
         AccountName = account.AccountName;
         Username = account.Username;
         Password = account.Password;
+        Key = account.ChromeVersion;
         Roles = new List<RoleModel>();
         IsLogin = false;
     }
@@ -34,6 +35,7 @@ public class UserModel
     public string Username { get; set; }
 
     public string Password { get; set; }
+    public string Key { get; set; }
 
     public List<RoleModel> Roles = new List<RoleModel>();
 
@@ -47,7 +49,7 @@ public class UserModel
 
     public void UnionRoles(List<RoleModel> roles)
     {
-      Roles=  Roles.Union(roles).ToList();
+        Roles = Roles.Union(roles).ToList();
     }
 
     public RoleModel FirstRole

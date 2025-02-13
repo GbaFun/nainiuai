@@ -231,6 +231,7 @@
     <Content Include="Scripts\js\equip.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\equipattr.js" />
     <Content Include="Scripts\js\IdleTools.js" />
     <Content Include="Scripts\js\IdleUtils.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
