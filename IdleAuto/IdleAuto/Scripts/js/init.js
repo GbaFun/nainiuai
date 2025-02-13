@@ -16,6 +16,9 @@ let _init = {};
 
     init().then(async () => {
         Bridge.invokeEvent('OnJsInited', 'init');
+        if (location.href.indexOf("Home/Index") > -1) {
+            Bridge.invokeEvent('OnAccountCheck', getAccountName());
+        }
     })
 
     //创建角色
@@ -135,6 +138,11 @@ let _init = {};
         return $($(".panel-body")[0]).find('span.name').map((index, item) => {
             return item.innerText;
         }).get();
+    }
+
+     function getAccountName() {
+        var name = $(".panel-heading")[0].innerText.match(/^(.*?) 已验证/);
+        return name[1];
     }
 
 

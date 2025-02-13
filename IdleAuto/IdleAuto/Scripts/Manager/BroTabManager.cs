@@ -102,7 +102,17 @@ public class BroTabManager
     public int GetFocusID()
     {
         int seed = 0;
-        var tab = Tab.SelectedTab;
+        TabPage tab = null;
+        if (Tab.InvokeRequired)
+        {
+            Tab.Invoke(new Action(() =>
+           {
+
+               tab = Tab.SelectedTab;
+
+           }));
+        }
+        else tab = Tab.SelectedTab;
         seed = TabPageDic.First(x => x.Value == tab).Key;
         return seed;
     }
@@ -298,7 +308,7 @@ public class BroTabManager
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
-        Console.WriteLine(url);
+        EventManager.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
         if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {
             Task.Run(async () =>
@@ -317,6 +327,7 @@ public class BroTabManager
         }
 
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
+
     }
 
     private void OnJsInited(params object[] args)
@@ -324,6 +335,17 @@ public class BroTabManager
         string jsName = args[0] as string;
         P.Log($"OnJsInited:{jsName}");
         onJsInitCallBack?.Invoke(jsName);
+    }
+
+    private void CheckAccount(params object[] args)
+    {
+        string name = args[0] as string;
+        if (AccountController.Instance.User.AccountName != name)
+        {
+            int id = GetFocusID();
+            var bro = BroDic[id];
+            PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
+        }
     }
 }
 

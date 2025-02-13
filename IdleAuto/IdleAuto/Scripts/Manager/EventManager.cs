@@ -36,7 +36,12 @@ public enum emEventType
     /// <summary>
     /// 地图切换
     /// </summary>
-    OnMapSwitch
+    OnMapSwitch,
+
+    /// <summary>
+    /// 检查账号
+    /// </summary>
+    OnAccountCheck,
 
 
 }
