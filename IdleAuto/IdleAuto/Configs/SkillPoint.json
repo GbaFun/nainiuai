@@ -5,7 +5,7 @@
       "min": 1,
       "max": 23
     },
-    "remainSkill": { "牺牲": 1 },
+    "remainSkill": { "牺牲": 1,"祈祷光环": 1,"奉献": 1 },
     "prioritySkill": [ "力量光环" ],
     "groupSkill": [ "力量光环", "祈祷光环", "奉献" ]
   },

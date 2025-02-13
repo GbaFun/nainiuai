@@ -188,7 +188,7 @@ public class EquipController
         MainForm.Instance.ShowLoadingPanel("开始自动修车", emMaskType.AUTO_EQUIPING);
         P.Log("开始自动修车", emLogType.AutoEquip);
 
-        await StartSaveEquips();
+       // await StartSaveEquips();
 
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnEquipJsInited);
         //角色背包装备缓存
@@ -202,7 +202,7 @@ public class EquipController
         {
             RoleModel role = AccountController.Instance.User.Roles[i];
             Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
-
+            
             //测试切图
             //m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
             //await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
@@ -213,12 +213,12 @@ public class EquipController
                 await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Equipment/Query?id={role.RoleId}", m_equipBroID, "equip");
 
             packageEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == AccountController.Instance.User.Id && p.RoleID == role.RoleId).ToList().ToDictionary(p => p.EquipID, p => p);
-
+            await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(m_equipBroID), role);
             #region 检查角色装备
             MainForm.Instance.SetLoadContent($"正在检查{role.RoleName}的装备");
             P.Log($"正在检查{role.RoleName}的装备", emLogType.AutoEquip);
 
-            // await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(m_equipBroID),role);
+             
 
             Dictionary<emEquipSort, EquipModel> curEquips = null;
             var response = await BroTabManager.Instance.TriggerCallJs(m_equipBroID, $@"getCurEquips()");
