@@ -69,6 +69,13 @@
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
+    <None Include="BackUp\Cookies\RasdGch.json" />
+    <None Include="BackUp\Cookies\RasdSky.json" />
+    <None Include="BackUp\Cookies\史蒂夫.json" />
+    <None Include="BackUp\Cookies\打火石.json" />
+    <None Include="BackUp\Cookies\萤石矿.json" />
+    <None Include="BackUp\Cookies\钻石矿.json" />
+    <None Include="BackUp\Cookies\铁矿石.json" />
     <None Include="Configs\IdleSkillJson.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -219,6 +226,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BackUp\Cookies\RasdGch.txt" />
+    <Content Include="BackUp\Cookies\RasdSky.txt" />
+    <Content Include="BackUp\Cookies\南方10086.txt" />
+    <Content Include="BackUp\Cookies\史蒂夫.txt" />
+    <Content Include="BackUp\Cookies\打火石.txt" />
+    <Content Include="BackUp\Cookies\绿宝石.txt" />
+    <Content Include="BackUp\Cookies\萤石矿.txt" />
+    <Content Include="BackUp\Cookies\钻石矿.txt" />
+    <Content Include="BackUp\Cookies\铁矿石.txt" />
     <Content Include="Document\装备底子分类表.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

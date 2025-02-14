@@ -24,11 +24,15 @@ let _map = {};
         }, 1000)
     }
 
-    function endMap() {
-        localStorage.removeItem("startMap");
+
+
+    function startExplore() {
+        localStorage.setItem("startMap", 1);
+        explore();
     }
     async function explore() {
-        localStorage.setItem("startMap", 1);
+        if (location.href.indexOf("InDungeon") == -1) return;
+    
         //地图状态会随着点击变化 重置比较暴力但是方便
         map = Array.from({ length: 20 }, () => Array(20).fill(false));
         step = [];
@@ -41,10 +45,17 @@ let _map = {};
             //地图状态变化了需要重新递归地图状态
             explore();
         }
+        else {
+            //打完了
+            localStorage.removeItem("startMap");
+            localStorage.removeItem("mapStep");
+            Bridge.invokeEvent('OnJsInited', 'DungeonEnd');
+        }
     }
 
     async function backToMap() {
         if (location.href.indexOf("InDungeon") == -1) { return }
+
         const win = $('.turn').first().text().indexOf('战斗胜利') > 0;
         await sleep(5000)
         var href = $("a:contains('返回')").attr("href");
@@ -235,6 +246,6 @@ let _map = {};
 
 
     _map.explore = explore;
-
+    _map.startExplore = startExplore;
 
 })();

@@ -34,9 +34,9 @@ public enum emEventType
     OnCharNameConflict,
 
     /// <summary>
-    /// 地图切换
+    /// 地图切换需要秘境
     /// </summary>
-    OnMapSwitch,
+    OnDungeonRequired,
 
     /// <summary>
     /// 检查账号

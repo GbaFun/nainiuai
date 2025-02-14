@@ -60,14 +60,57 @@ namespace IdleAuto.Scripts.Controller
 
         public int CurRoleIndex { get; set; }
 
+        /// <summary>
+        /// 修车角色当前地图等级
+        /// </summary>
+        private int _curMapLv { get; set; }
+
+        /// <summary>
+        /// 目标地图等级
+        /// </summary>
+        private int _targetMapLv { get; set; }
+
+        private bool _isNeedDungeon { get; set; }
+
+        private int _broId = 0;
+
+        protected delegate void DungeonEnd(bool result);
+        private DungeonEnd _onDungeonEnd;
+
         private static string PrefixName = ConfigUtil.GetAppSetting("PrefixName");
+
+
+        private void OnDungeonEnd(params object[] args)
+        {
+            string param = args[0] as string;
+            if (param == "DungeonEnd")
+            {
+                _onDungeonEnd?.Invoke(true);
+                _onDungeonEnd = null;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        private void OnDungeonRequired(params object[] args)
+        {
+            var data = args[0].ToObject<Dictionary<string, object>>();
+            var isSuccess = data["isSuccess"];
+            var isNeedDungeon = data["isNeedDungeon"];
+            _isNeedDungeon = bool.Parse( isNeedDungeon.ToString() );
+            onJsInitCallBack?.Invoke(true);
+            onJsInitCallBack = null;
+        }
 
         public CharacterController()
         {
             EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
             EventManager.Instance.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
-            EventManager.Instance.SubscribeEvent(emEventType.OnMapSwitch, OnMapSwitch);
+            EventManager.Instance.SubscribeEvent(emEventType.OnDungeonRequired, OnDungeonRequired);
             EventManager.Instance.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
+            _isNeedDungeon = false;
         }
 
         /// <summary>
@@ -139,15 +182,27 @@ namespace IdleAuto.Scripts.Controller
             P.Log(errorMsg, emLogType.Error);
         }
 
-        /// <summary>
-        /// 起名冲突
-        /// </summary>
-        /// <param name="args"></param>
-        private void OnMapSwitch(params object[] args)
+    
+
+        private async Task StartDungeon( ChromiumWebBrowser bro,RoleModel role)
         {
-            var data = args[0].ToObject<Dictionary<string, object>>();
-            var isSuccess = data["isSuccess"];
-            var isNeedDungeon = data["isNeedDungeon"];
+            //开始秘境
+            int dungeonLv = GetDungeonLv(_curMapLv);
+            await SwitchTo(dungeonLv);
+            if (bro.Address.IndexOf("InDungeon") == -1)
+            {
+                bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
+                await JsInit();
+            }
+            //开始秘境
+            var dungeonEndTask = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) => dungeonEndTask.SetResult(result);
+            //开始跑自动秘境
+            var d = await _browser.EvaluateScriptAsync($@"_map.startExplore();");
+            await dungeonEndTask.Task;
+
+            //再次尝试直接抵达
+            await SwitchTo(_targetMapLv);
         }
         /// <summary>
         /// 开始
@@ -777,24 +832,46 @@ namespace IdleAuto.Scripts.Controller
         #endregion
 
         #region 切图
+
+        public async Task StartSwitchMap()
+        {
+
+            for (int i = 0; i <1; i++)
+            {
+                RoleModel role = AccountController.Instance.User.Roles[i];
+                int seed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}","char");
+                var bro = BroTabManager.Instance.GetBro(seed);
+                await SwitchMap(bro, role);
+            }
+        }
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
         {
             _browser = bro;
             int roleid = role.RoleId;
             if (bro.Address.IndexOf(PageLoadHandler.MapPage) == -1)
             {
-                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
+                _browser.LoadUrl( $"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
                 await JsInit();
             }
             var curMapLv = await GetCurMapLv();
+            _curMapLv = curMapLv;
             //检查是否层数合适
-            //var setting = MapSettingCfg.Instance.GetSetting(role.Level);
-            //if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
+            var setting = MapSettingCfg.Instance.GetSetting(role.Level);
+            if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
 
-            int targetLv = 10; //setting.MapLv;
+            int targetLv = setting.MapLv; //setting.MapLv;
+            _targetMapLv = targetLv;
+
+            TaskCompletionSource<bool> dungenonCallback = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) => dungenonCallback.SetResult(result);
             //尝试抵达
             await SwitchTo(targetLv, curMapLv);
-
+            await dungenonCallback.Task;
+            if (_isNeedDungeon)
+            {
+                _isNeedDungeon = false;//进来了就重置
+                await StartDungeon(bro,role);
+            }
 
         }
 
@@ -804,24 +881,10 @@ namespace IdleAuto.Scripts.Controller
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
-                await JsInit();
             }
-            //var isNeedDungeon = await IsNeedDungeon();
-            //if (isNeedDungeon)
-            //{
-            //    int dungeonLv = GetDungeonLv(curMapLv);
-            //    await SwitchTo(dungeonLv);
-            //    //开始秘境
 
-            //    //再次尝试直接抵达
-            //    await SwitchTo(targetLv, dungeonLv + 10);
-            //}
         }
-        private async Task<bool> IsNeedDungeon()
-        {
-            var d = await _browser.EvaluateScriptAsync($@"_char.isNeedDungeon();");
-            return d.Result.ToObject<bool>();
-        }
+
 
         private async Task<int> GetCurMapLv()
         {
@@ -831,7 +894,8 @@ namespace IdleAuto.Scripts.Controller
 
         private int GetDungeonLv(int curLv)
         {
-            return (curLv / 10) * 10;
+            double result = (double)curLv / 10.0;
+            return int.Parse(Math.Ceiling(result).ToString()) * 10;
         }
         #endregion
 

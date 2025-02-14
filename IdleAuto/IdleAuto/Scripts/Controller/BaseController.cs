@@ -13,7 +13,7 @@ public class BaseController
 
     protected int _broSeed;
 
-    static string[] JsNames = new string[] {"ah","char","init" };
+    static string[] JsNames = new string[] {"ah","char","init","map" };
     protected delegate void OnJsInitCallBack(bool result);
     protected OnJsInitCallBack onJsInitCallBack;
 
@@ -22,7 +22,7 @@ public class BaseController
     }
 
 
-    protected void OnAhJsInited(params object[] args)
+    protected void OnAhJsInited( params object[] args)
     {
         string jsName = args[0] as string;
         if (JsNames.Contains(jsName))
@@ -33,7 +33,7 @@ public class BaseController
     }
 
     //该方法要写在会执行刷新页面操作之后
-    protected async Task JsInit()
+    protected async Task JsInit(string jsname="")
     {
 
         //var tcs2 = new TaskCompletionSource<bool>();
@@ -41,7 +41,7 @@ public class BaseController
         //await tcs2.Task;
         using (var cts = new CancellationTokenSource())
         {
-            cts.CancelAfter(TimeSpan.FromSeconds(5));
+            cts.CancelAfter(TimeSpan.FromSeconds(50));
 
             var tcs2 = new TaskCompletionSource<bool>();
 
@@ -51,7 +51,7 @@ public class BaseController
 
             if (completedTask == tcs2.Task)
             {
-                await Task.Delay(3000);
+                await Task.Delay(2000);
                 // Task completed successfully
                 await tcs2.Task; // Ensure any exceptions/cancellation are observed
             }

@@ -240,5 +240,10 @@ namespace IdleAuto.Scripts.View
 
             BroTabManager.Instance.DisposePage(idx);
         }
+
+        private void btnMap_Click(object sender, EventArgs e)
+        {
+            CharacterController.Instance.StartSwitchMap();
+        }
     }
 }

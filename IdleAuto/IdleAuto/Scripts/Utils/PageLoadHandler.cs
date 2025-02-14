@@ -22,7 +22,8 @@ public class PageLoadHandler
     public const string CharCreate = "Character/Create";
     public const string CharGroup = "Character/Group";
     public const string CharDetail = "Character/Detail";
-    public const string MapPage = "Map";
+    public const string MapPage = "Map/Detail";
+    public const string InDungeon = "InDungeon";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -30,13 +31,16 @@ public class PageLoadHandler
         var url = browser.Address;
         //全局js
         await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
-        await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
+        if (!ContainsUrl(url, LoginPage))
+        {
+            await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);
+        }
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
             var voPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "versionOverride.js");
             await LoadJs(jsPath, browser);
-            await LoadGlobalJs(voPath, browser);
+           // await LoadGlobalJs(voPath, browser);
         }
         else if (ContainsUrl(url, HomePage))
         {
@@ -72,7 +76,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, MapPage))
+        else if (ContainsUrl(url, MapPage)||ContainsUrl(url,InDungeon))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "map.js");
             await LoadGlobalJs(jsPath, browser);

@@ -11,13 +11,13 @@ public class MapSetting
     /// <summary>
     /// 人物等级>=这个值则跳到Map
     /// </summary>
-    public int Lv { get; set; }
+    public LevelRange Lv { get; set; }
 
     public int MapLv { get; set; }
 
     public bool CanSwitch(int roleLv, int curMapLv)
     {
-        if (roleLv >= Lv && curMapLv != MapLv) return true;
+        if (Lv.AdaptLevel(roleLv) && curMapLv != MapLv) return true;
         else return false;
     }
 }
@@ -48,7 +48,7 @@ public class MapSettingCfg
 
     public MapSetting GetSetting(int roleLv)
     {
-        var last = Data.Where(p => roleLv >= p.Lv).LastOrDefault();
+        var last = Data.Where(p => p.Lv.AdaptLevel(roleLv)).LastOrDefault();
         if (last == null) P.Log("未配置该级别切图数据"); //throw new Exception("未配置该级别切图数据");
         return last;
     }
