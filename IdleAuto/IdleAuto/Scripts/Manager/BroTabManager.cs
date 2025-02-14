@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -62,7 +63,6 @@ public class BroTabManager
     /// <returns></returns>
     private ChromiumWebBrowser InitializeChromium(string name, string url)
     {
-
         // 创建 CefRequestContextSettings 并指定缓存路径
         var requestContextSettings = new RequestContextSettings
         {
@@ -78,7 +78,16 @@ public class BroTabManager
         browser.KeyboardHandler = new CEFKeyBoardHandler();
         // 等待页面加载完成后执行脚本
         browser.FrameLoadEnd += (sender, e) => OnFrameLoadEnd(sender, e, name, url);
-        browser.FrameLoadStart += OnFrameLoadStart;
+        browser.FrameLoadStart += (sender, e) => OnFrameLoadStart(sender, e, name, url);
+        browser.IsBrowserInitializedChanged += (sender, e) =>
+        {
+            if (browser.IsBrowserInitialized)
+            {
+                P.Log($"Start Load {name} CookieAndCache");
+                PageLoadHandler.LoadCookieAndCache(browser, name, url);
+            }
+        };
+
         BroDic.TryAdd(_seed, browser);
 
         return browser;
@@ -138,6 +147,7 @@ public class BroTabManager
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
         bro = InitializeChromium(name, url);
+
         // 创建 TabPage
         TabPage tabPage = new TabPage(name);
         tabPage.Controls.Add(bro);
@@ -290,11 +300,12 @@ public class BroTabManager
         return response2;
     }
 
-    private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e)
+    private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
     {
+        P.Log($"On {name} FrameLoadStart");
+
         var bro = sender as ChromiumWebBrowser;
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
-
     }
 
     /// <summary>
@@ -309,13 +320,13 @@ public class BroTabManager
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
         EventManager.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
-        if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
-        {
-            Task.Run(async () =>
-            {
-                await PageLoadHandler.LoadCookieAndCache(bro, name, jumpToUrl);
-            });
-        }
+        //if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
+        //{
+        //    Task.Run(async () =>
+        //    {
+        //        await PageLoadHandler.LoadCookieAndCache(bro, name, jumpToUrl);
+        //    });
+        //}
         Task.Run(async () =>
         {
             await PageLoadHandler.LoadJsByUrl(bro);
@@ -323,6 +334,7 @@ public class BroTabManager
 
         if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {
+            P.Log($"Start Save {name} CookieAndCache");
             PageLoadHandler.SaveCookieAndCache(bro);
         }
 
@@ -340,13 +352,14 @@ public class BroTabManager
     private void CheckAccount(params object[] args)
     {
         string name = args[0] as string;
-        if (AccountController.Instance.User.AccountName != name)
-        {
-            int id = GetFocusID();
-            var bro = BroDic[id];
-            PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
-            bro.Reload();
-        }
+        P.Log($"当前选择账号：{AccountController.Instance.User.AccountName}--当前读取缓存账户：{name}");
+        //if (AccountController.Instance.User.AccountName != name)
+        //{
+        //    int id = GetFocusID();
+        //    var bro = BroDic[id];
+        //    PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
+        //    bro.Reload();
+        //}
     }
 }
 
