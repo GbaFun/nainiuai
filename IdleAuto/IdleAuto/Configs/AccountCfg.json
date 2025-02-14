@@ -4,21 +4,24 @@
     "password": "123456",
     "account": "铁矿石",
     "accountId": 13853212,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.32.12"
   },
   {
     "username": "RasdGch",
     "password": "123456",
     "account": "RasdGch",
     "accountId": 13852404,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.24.4"
   },
   {
     "username": "xiaohua1",
     "password": "123456",
     "account": "打火石",
     "accountId": 13853281,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.32.81"
   },
 
   {
@@ -26,55 +29,63 @@
     "password": "123456",
     "account": "绿宝石",
     "accountId": 13853216,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.32.16"
   },
   {
     "username": "yaodui",
     "password": "123456",
     "account": "史蒂夫",
     "accountid": 13846682,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.4.66.82"
   },
   {
     "username": "yaodui1",
     "password": "yaodui",
     "account": "南方10086",
     "accountId": 13852362,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.23.62"
   },
   {
     "username": "yaodui2",
     "password": "123456",
     "account": "萤石矿",
     "accountId": 13853206,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.32.6"
   },
   {
     "username": "yaodui3",
     "password": "123456",
     "account": "钻石矿",
     "accountId": 13853207,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.32.7"
   },
   {
     "username": "15365261391",
     "password": "zxc123",
     "account": "暴走喵星人1",
     "accountId": 13851807,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.5.18.7"
   },
   {
     "username": "RasdSky",
     "password": "123456",
-    "account": "南宫",
+    "account": "RasdSky",
     "accountId": 13826420,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "138.2.65.20"
   },
   {
     "username": "w596931907",
     "password": "596931907",
     "account": "南方小号1",
     "accountId": 12313123,
-    "prefix": "MC"
+    "prefix": "MC",
+    "ChromeVersion": "123.1.31.23"
   }
 ]

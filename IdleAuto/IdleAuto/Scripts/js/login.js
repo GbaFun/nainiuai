@@ -13,12 +13,9 @@
     async function setUsernamePwd() {
         try {
             var user = await Bridge.getSelectedAccount();
-            console.log(user);
             $("#username").val(user.Username);
             $("#password").val(user.Password);
             $("#remember").prop("checked", true);
-            console.log(generatePrint(user.Key));
-
         } catch (error) {
             console.error('Error:', error);
         }
@@ -31,7 +28,8 @@
             }
         });
         return '';
-    } function getRoleInfo() {
+    }
+    function getRoleInfo() {
         var roles = [];
         $(".col-sm-6.col-md-4").each(function () {
             var role = {};
@@ -59,33 +57,4 @@
 
         Bridge.invokeEvent("OnJsInited", "login");
     })
-
-    function generatePrint(id) {
-        const regex = /encrypt\(\`([a-zA-Z0-9]+)\$\{CryptoJS\.SHA256\(rawString\)\.toString\(\)\}\`\);/;
-        var code = document.head.innerHTML.match(regex)[1]
-        const components = {};
-        components.userAgent = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${id} Safari/537.36`;
-        console.log(components.userAgent);
-        components.screen = `${screen.width}x${screen.height}-${screen.colorDepth}`;
-        components.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        ctx.textBaseline = 'top';
-        ctx.fillText('Fingerprint', 2, 2);
-        components.canvas = CryptoJS.MD5(ctx.getImageData(0, 0, 200, 50).data).toString();
-
-        try {
-            const canvas2 = document.createElement('canvas');
-            const gl = canvas2.getContext('webgl');
-            const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-            components.webglVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-            components.webglRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-        } catch (e) { }
-
-        const rawString = JSON.stringify(components);
-        //console.log(rawString);
-        return encrypt(`${code}${CryptoJS.SHA256(rawString).toString()}`);
-    }
-
-
 })();

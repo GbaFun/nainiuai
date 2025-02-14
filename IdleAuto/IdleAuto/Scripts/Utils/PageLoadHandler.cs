@@ -34,7 +34,9 @@ public class PageLoadHandler
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
+            var voPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "versionOverride.js");
             await LoadJs(jsPath, browser);
+            await LoadGlobalJs(voPath, browser);
         }
         else if (ContainsUrl(url, HomePage))
         {
@@ -58,7 +60,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
             await LoadGlobalJs(jsPath, browser);
             var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equipattr.js");
-            await LoadGlobalJs(jsPath, browser);
+            await LoadJs(jsPath2, browser);
         }
         else if (ContainsUrl(url, CharCreate))
         {
