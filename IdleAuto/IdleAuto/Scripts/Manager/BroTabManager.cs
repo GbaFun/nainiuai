@@ -347,7 +347,6 @@ public class BroTabManager
         }
 
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
-
     }
 
     private void OnJsInited(params object[] args)
@@ -361,13 +360,13 @@ public class BroTabManager
     {
         string name = args[0] as string;
         P.Log($"当前选择账号：{AccountController.Instance.User.AccountName}--当前读取缓存账户：{name}");
-        if (AccountController.Instance.User.AccountName != name)
-        {
-            int id = GetFocusID();
-            var bro = BroDic[id];
-            PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
-            bro.Reload();
-        }
+        //if (AccountController.Instance.User.AccountName != name)
+        //{
+        //    int id = GetFocusID();
+        //    var bro = BroDic[id];
+        //    PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
+        //    bro.Reload();
+        //}
     }
 }
 
