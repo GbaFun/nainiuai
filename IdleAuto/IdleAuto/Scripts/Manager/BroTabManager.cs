@@ -300,6 +300,14 @@ public class BroTabManager
         return response2;
     }
 
+    public void ClearBrowsers()
+    {
+        foreach (var item in BroDic)
+        {
+            DisposePage(item.Key);
+        }
+    }
+
     private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
     {
         P.Log($"On {name} FrameLoadStart");
@@ -353,13 +361,13 @@ public class BroTabManager
     {
         string name = args[0] as string;
         P.Log($"当前选择账号：{AccountController.Instance.User.AccountName}--当前读取缓存账户：{name}");
-        //if (AccountController.Instance.User.AccountName != name)
-        //{
-        //    int id = GetFocusID();
-        //    var bro = BroDic[id];
-        //    PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
-        //    bro.Reload();
-        //}
+        if (AccountController.Instance.User.AccountName != name)
+        {
+            int id = GetFocusID();
+            var bro = BroDic[id];
+            PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
+            bro.Reload();
+        }
     }
 }
 

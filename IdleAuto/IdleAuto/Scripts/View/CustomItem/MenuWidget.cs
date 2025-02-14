@@ -11,6 +11,8 @@ using IdleAuto.Scripts.Controller;
 using System.Text.RegularExpressions;
 using IdleAuto.Scripts.View;
 using CefSharp.DevTools.FedCm;
+using CefSharp;
+using System.Threading;
 
 namespace IdleAuto.Scripts.View
 {
@@ -18,6 +20,7 @@ namespace IdleAuto.Scripts.View
     {
         #region UI方法
 
+        private System.Threading.Timer refreshTimer;
         public MenuWidget()
         {
             InitializeComponent();
@@ -25,9 +28,14 @@ namespace IdleAuto.Scripts.View
             ShowRoleCombo();
             EventManager.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadStart, OnBrowserFrameLoadStart);
             EventManager.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadEnd, OnBrowserFrameLoadEnd);
+
+            // 初始化定时器，每隔3小时执行一次
+            refreshTimer = new System.Threading.Timer(OnRefreshTimerElapsed, null, TimeSpan.Zero, TimeSpan.FromHours(3));
         }
+
         private void MenuWidget_Load(object sender, EventArgs e)
         {
+
         }
         private void ShowAccountCombo()
         {
@@ -152,6 +160,40 @@ namespace IdleAuto.Scripts.View
 
             await MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
+
+        private async void BtnClear_Click(object sender, EventArgs e)
+        {
+            var idx = BroTabManager.Instance.GetFocusID();
+            BroTabManager.Instance.DisposePage(idx);
+        }
+
+        private void btnMap_Click(object sender, EventArgs e)
+        {
+            CharacterController.Instance.StartSwitchMap();
+        }
+
+        private void OnRefreshTimerElapsed(object state)
+        {
+            // 执行BtnRefresh的点击事件
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => BtnRefresh_Click(null, EventArgs.Empty)));
+            }
+            else
+            {
+                BtnRefresh_Click(null, EventArgs.Empty);
+            }
+        }
+        private async void BtnRefresh_Click(object sender, EventArgs e)
+        {
+            BroTabManager.Instance.ClearBrowsers();
+            for (int i = 0; i < AccountCombo.Items.Count; i++)
+            {
+                AccountCombo.SelectedIndex = i;
+                await Task.Delay(2000);
+            }
+        }
+
         private void RoleCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //RoleModel role = this.RoleCombo.SelectedItem as RoleModel;
@@ -230,20 +272,5 @@ namespace IdleAuto.Scripts.View
         }
 
         #endregion
-
-        private async void BtnClear_Click(object sender, EventArgs e)
-        {
-            var idx = BroTabManager.Instance.GetFocusID();
-            var bro = BroTabManager.Instance.GetBro(idx);
-            await DevToolUtil.ClearCookiesAsync(bro);
-            await DevToolUtil.ClearLocalStorageAsync(bro);
-
-            BroTabManager.Instance.DisposePage(idx);
-        }
-
-        private void btnMap_Click(object sender, EventArgs e)
-        {
-            CharacterController.Instance.StartSwitchMap();
-        }
     }
 }

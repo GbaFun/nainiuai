@@ -33,6 +33,8 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.BtnRefresh = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
             this.BtnClear = new System.Windows.Forms.Button();
             this.BtnInit = new System.Windows.Forms.Button();
             this.BtnAutoEquip = new System.Windows.Forms.Button();
@@ -53,7 +55,6 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
-            this.btnMap = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
@@ -64,7 +65,7 @@ namespace IdleAuto.Scripts.View
             // 
             // menuPanel
             // 
-            this.menuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.menuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
             this.menuPanel.Controls.Add(this.AccountCombo);
@@ -73,7 +74,7 @@ namespace IdleAuto.Scripts.View
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Margin = new System.Windows.Forms.Padding(0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.Size = new System.Drawing.Size(133, 628);
+            this.menuPanel.Size = new System.Drawing.Size(100, 502);
             this.menuPanel.TabIndex = 0;
             // 
             // AccountCombo
@@ -84,44 +85,62 @@ namespace IdleAuto.Scripts.View
             this.AccountCombo.Location = new System.Drawing.Point(0, 0);
             this.AccountCombo.Margin = new System.Windows.Forms.Padding(0);
             this.AccountCombo.Name = "AccountCombo";
-            this.AccountCombo.Size = new System.Drawing.Size(132, 28);
+            this.AccountCombo.Size = new System.Drawing.Size(100, 24);
             this.AccountCombo.TabIndex = 2;
             this.AccountCombo.SelectedIndexChanged += new System.EventHandler(this.AccountCombo_SelectedIndexChanged);
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.BtnRefresh);
             this.HomeGroup.Controls.Add(this.btnMap);
             this.HomeGroup.Controls.Add(this.BtnClear);
             this.HomeGroup.Controls.Add(this.BtnInit);
             this.HomeGroup.Controls.Add(this.BtnAutoEquip);
             this.HomeGroup.Controls.Add(this.BtnAutoOnline);
             this.HomeGroup.Controls.Add(this.BtnAutoAh);
-            this.HomeGroup.Location = new System.Drawing.Point(0, 50);
-            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Location = new System.Drawing.Point(0, 40);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.HomeGroup.Size = new System.Drawing.Size(133, 288);
+            this.HomeGroup.Size = new System.Drawing.Size(100, 230);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             // 
+            // BtnRefresh
+            // 
+            this.BtnRefresh.Location = new System.Drawing.Point(12, 194);
+            this.BtnRefresh.Name = "BtnRefresh";
+            this.BtnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.BtnRefresh.TabIndex = 5;
+            this.BtnRefresh.Text = "刷新缓存";
+            this.BtnRefresh.UseVisualStyleBackColor = true;
+            this.BtnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(12, 136);
+            this.btnMap.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(75, 24);
+            this.btnMap.TabIndex = 4;
+            this.btnMap.Text = "切图测试";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
             // BtnClear
             // 
-            this.BtnClear.Location = new System.Drawing.Point(16, 239);
-            this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnClear.Location = new System.Drawing.Point(12, 165);
             this.BtnClear.Name = "BtnClear";
-            this.BtnClear.Size = new System.Drawing.Size(100, 29);
+            this.BtnClear.Size = new System.Drawing.Size(75, 23);
             this.BtnClear.TabIndex = 3;
-            this.BtnClear.Text = "清理缓存";
+            this.BtnClear.Text = "关闭当前页";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // BtnInit
             // 
-            this.BtnInit.Location = new System.Drawing.Point(16, 25);
-            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Location = new System.Drawing.Point(12, 20);
             this.BtnInit.Name = "BtnInit";
-            this.BtnInit.Size = new System.Drawing.Size(100, 29);
+            this.BtnInit.Size = new System.Drawing.Size(75, 23);
             this.BtnInit.TabIndex = 2;
             this.BtnInit.Text = "账号初始化";
             this.BtnInit.UseVisualStyleBackColor = true;
@@ -129,10 +148,9 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnAutoEquip
             // 
-            this.BtnAutoEquip.Location = new System.Drawing.Point(16, 98);
-            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoEquip.Location = new System.Drawing.Point(12, 78);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
-            this.BtnAutoEquip.Size = new System.Drawing.Size(100, 29);
+            this.BtnAutoEquip.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoEquip.TabIndex = 1;
             this.BtnAutoEquip.Text = "一键修车";
             this.BtnAutoEquip.UseVisualStyleBackColor = true;
@@ -140,10 +158,9 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnAutoOnline
             // 
-            this.BtnAutoOnline.Location = new System.Drawing.Point(16, 61);
-            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoOnline.Location = new System.Drawing.Point(12, 49);
             this.BtnAutoOnline.Name = "BtnAutoOnline";
-            this.BtnAutoOnline.Size = new System.Drawing.Size(100, 29);
+            this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoOnline.TabIndex = 0;
             this.BtnAutoOnline.Text = "一键点亮";
             this.BtnAutoOnline.UseVisualStyleBackColor = true;
@@ -151,10 +168,9 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnAutoAh
             // 
-            this.BtnAutoAh.Location = new System.Drawing.Point(16, 134);
-            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoAh.Location = new System.Drawing.Point(12, 107);
             this.BtnAutoAh.Name = "BtnAutoAh";
-            this.BtnAutoAh.Size = new System.Drawing.Size(100, 29);
+            this.BtnAutoAh.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoAh.TabIndex = 0;
             this.BtnAutoAh.Text = "开始扫拍";
             this.BtnAutoAh.UseMnemonic = false;
@@ -164,11 +180,11 @@ namespace IdleAuto.Scripts.View
             // JumpGroup
             // 
             this.JumpGroup.Controls.Add(this.LayoutRoot);
-            this.JumpGroup.Location = new System.Drawing.Point(0, 338);
+            this.JumpGroup.Location = new System.Drawing.Point(0, 270);
             this.JumpGroup.Margin = new System.Windows.Forms.Padding(0);
             this.JumpGroup.Name = "JumpGroup";
             this.JumpGroup.Padding = new System.Windows.Forms.Padding(0);
-            this.JumpGroup.Size = new System.Drawing.Size(133, 282);
+            this.JumpGroup.Size = new System.Drawing.Size(100, 226);
             this.JumpGroup.TabIndex = 3;
             this.JumpGroup.TabStop = false;
             this.JumpGroup.Text = "快捷跳转";
@@ -181,10 +197,10 @@ namespace IdleAuto.Scripts.View
             this.LayoutRoot.Controls.Add(this.BtnRank);
             this.LayoutRoot.Controls.Add(this.BtnMaterial);
             this.LayoutRoot.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.LayoutRoot.Location = new System.Drawing.Point(0, 25);
+            this.LayoutRoot.Location = new System.Drawing.Point(0, 20);
             this.LayoutRoot.Margin = new System.Windows.Forms.Padding(0);
             this.LayoutRoot.Name = "LayoutRoot";
-            this.LayoutRoot.Size = new System.Drawing.Size(133, 262);
+            this.LayoutRoot.Size = new System.Drawing.Size(100, 210);
             this.LayoutRoot.TabIndex = 8;
             // 
             // LableRoleTitle
@@ -192,7 +208,7 @@ namespace IdleAuto.Scripts.View
             this.LableRoleTitle.Location = new System.Drawing.Point(0, 0);
             this.LableRoleTitle.Margin = new System.Windows.Forms.Padding(0);
             this.LableRoleTitle.Name = "LableRoleTitle";
-            this.LableRoleTitle.Size = new System.Drawing.Size(133, 25);
+            this.LableRoleTitle.Size = new System.Drawing.Size(100, 20);
             this.LableRoleTitle.TabIndex = 7;
             this.LableRoleTitle.Text = "切换角色";
             this.LableRoleTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -202,39 +218,39 @@ namespace IdleAuto.Scripts.View
             this.RoleCombo.DisplayMember = "RoleName";
             this.RoleCombo.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.RoleCombo.FormattingEnabled = true;
-            this.RoleCombo.Location = new System.Drawing.Point(0, 25);
-            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 6);
+            this.RoleCombo.Location = new System.Drawing.Point(0, 20);
+            this.RoleCombo.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.RoleCombo.Name = "RoleCombo";
-            this.RoleCombo.Size = new System.Drawing.Size(132, 28);
+            this.RoleCombo.Size = new System.Drawing.Size(100, 24);
             this.RoleCombo.TabIndex = 6;
             this.RoleCombo.SelectedIndexChanged += new System.EventHandler(this.RoleCombo_SelectedIndexChanged);
             // 
             // BtnHome
             // 
-            this.BtnHome.Location = new System.Drawing.Point(16, 65);
-            this.BtnHome.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnHome.Location = new System.Drawing.Point(12, 54);
+            this.BtnHome.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnHome.Name = "BtnHome";
-            this.BtnHome.Size = new System.Drawing.Size(100, 29);
+            this.BtnHome.Size = new System.Drawing.Size(75, 23);
             this.BtnHome.TabIndex = 8;
             this.BtnHome.Text = "主页";
             this.BtnHome.UseVisualStyleBackColor = true;
             // 
             // BtnRank
             // 
-            this.BtnRank.Location = new System.Drawing.Point(16, 106);
-            this.BtnRank.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnRank.Location = new System.Drawing.Point(12, 87);
+            this.BtnRank.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnRank.Name = "BtnRank";
-            this.BtnRank.Size = new System.Drawing.Size(100, 29);
+            this.BtnRank.Size = new System.Drawing.Size(75, 23);
             this.BtnRank.TabIndex = 4;
             this.BtnRank.Text = "赛季排行";
             this.BtnRank.UseVisualStyleBackColor = true;
             // 
             // BtnMaterial
             // 
-            this.BtnMaterial.Location = new System.Drawing.Point(16, 147);
-            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.BtnMaterial.Location = new System.Drawing.Point(12, 120);
+            this.BtnMaterial.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnMaterial.Name = "BtnMaterial";
-            this.BtnMaterial.Size = new System.Drawing.Size(100, 29);
+            this.BtnMaterial.Size = new System.Drawing.Size(75, 23);
             this.BtnMaterial.TabIndex = 9;
             this.BtnMaterial.Text = " 材料页面";
             this.BtnMaterial.UseVisualStyleBackColor = true;
@@ -284,7 +300,7 @@ namespace IdleAuto.Scripts.View
             // 
             // LoginGroup
             // 
-            this.LoginGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.LoginGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.LoginGroup.Controls.Add(this.BtnLogin);
             this.LoginGroup.Controls.Add(this.label1);
@@ -325,26 +341,16 @@ namespace IdleAuto.Scripts.View
             this.CurLoginAccount.Text = "当前无账号登录";
             this.CurLoginAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnMap
-            // 
-            this.btnMap.Location = new System.Drawing.Point(16, 170);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(100, 30);
-            this.btnMap.TabIndex = 4;
-            this.btnMap.Text = "切图测试";
-            this.btnMap.UseVisualStyleBackColor = true;
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
-            // 
             // MenuWidget
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Controls.Add(this.menuPanel);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MenuWidget";
-            this.Size = new System.Drawing.Size(133, 629);
+            this.Size = new System.Drawing.Size(100, 503);
             this.Load += new System.EventHandler(this.MenuWidget_Load);
             this.menuPanel.ResumeLayout(false);
             this.HomeGroup.ResumeLayout(false);
@@ -382,5 +388,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button BtnInit;
         private System.Windows.Forms.Button BtnClear;
         private System.Windows.Forms.Button btnMap;
+        private System.Windows.Forms.Button BtnRefresh;
     }
 }
