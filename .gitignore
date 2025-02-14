@@ -58,3 +58,5 @@ $RECYCLE.BIN/
 # Exclude build directories
 bin/
 obj/
+/IdleAuto/IdleAuto/BackUp/Cookies
+/.gitignore
