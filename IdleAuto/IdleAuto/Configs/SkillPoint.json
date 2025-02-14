@@ -6,12 +6,10 @@
       "max": 6
     },
     "remainSkill": {
-      "力量光环": 1,
-      "反抗光环": 1,
       "牺牲": 1
     },
-    "prioritySkill": [ "力量光环", "牺牲", "反抗光环" ],
-    "groupSkill": [ "力量光环", "牺牲", "反抗光环" ],
+    "prioritySkill": [ "牺牲" ],
+    "groupSkill": [ "牺牲" ],
     "keySkillId": 4101 //牺牲
   },
   {
@@ -22,11 +20,9 @@
     },
     "remainSkill": {
       "骷髅复生": 1,
-      "牙": 1,
-      "白骨装甲": 1
     },
-    "prioritySkill": [ "骷髅复生", "牙", "白骨装甲" ],
-    "groupSkill": [ "牙", "骷髅复生", "白骨装甲" ],
+    "prioritySkill": [ "骷髅复生" ],
+    "groupSkill": [ "骷髅复生" ],
     "keySkillId": 8201 //骷髅复生
   },
   {
@@ -36,11 +32,10 @@
       "max": 6
     },
     "remainSkill": {
-      "冰锋符文": 1,
       "冰霜打击": 1
     },
-    "prioritySkill": [ "冰霜打击", "冰锋符文" ],
-    "groupSkill": [ "冰霜打击", "冰锋符文" ],
+    "prioritySkill": [ "冰霜打击" ],
+    "groupSkill": [ "冰霜打击" ],
     "keySkillId": 12104 //冰霜打击
   },
   {
