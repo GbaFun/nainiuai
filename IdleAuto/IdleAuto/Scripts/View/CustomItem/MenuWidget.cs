@@ -30,7 +30,7 @@ namespace IdleAuto.Scripts.View
             EventManager.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadEnd, OnBrowserFrameLoadEnd);
 
             // 初始化定时器，每隔3小时执行一次
-            refreshTimer = new System.Threading.Timer(OnRefreshTimerElapsed, null, TimeSpan.Zero, TimeSpan.FromHours(3));
+            refreshTimer = new System.Threading.Timer(OnRefreshTimerElapsed, null, TimeSpan.FromHours(3), TimeSpan.FromHours(3));
         }
 
         private void MenuWidget_Load(object sender, EventArgs e)
