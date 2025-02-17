@@ -99,7 +99,7 @@ namespace IdleAuto.Scripts.Controller
             var data = args[0].ToObject<Dictionary<string, object>>();
             var isSuccess = data["isSuccess"];
             var isNeedDungeon = data["isNeedDungeon"];
-            _isNeedDungeon = bool.Parse( isNeedDungeon.ToString() );
+            _isNeedDungeon = bool.Parse(isNeedDungeon.ToString());
             onJsInitCallBack?.Invoke(true);
             onJsInitCallBack = null;
         }
@@ -182,9 +182,9 @@ namespace IdleAuto.Scripts.Controller
             P.Log(errorMsg, emLogType.Error);
         }
 
-    
 
-        private async Task StartDungeon( ChromiumWebBrowser bro,RoleModel role)
+
+        private async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role)
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
@@ -195,11 +195,10 @@ namespace IdleAuto.Scripts.Controller
                 await JsInit();
             }
             //开始秘境
-            var dungeonEndTask = new TaskCompletionSource<bool>();
-            onJsInitCallBack = (result) => dungeonEndTask.SetResult(result);
+            this.Signal = "DungeonEnd";
             //开始跑自动秘境
             var d = await _browser.EvaluateScriptAsync($@"_map.startExplore();");
-            await dungeonEndTask.Task;
+            await SignalCallback();
 
             //再次尝试直接抵达
             await SwitchTo(_targetMapLv);
@@ -836,11 +835,12 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartSwitchMap()
         {
 
-            for (int i = 0; i <1; i++)
+            for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
             {
                 RoleModel role = AccountController.Instance.User.Roles[i];
-                int seed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}","char");
-                var bro = BroTabManager.Instance.GetBro(seed);
+                if (_broSeed == 0) _broSeed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
+
+                var bro = BroTabManager.Instance.GetBro(_broSeed);
                 await SwitchMap(bro, role);
             }
         }
@@ -848,9 +848,10 @@ namespace IdleAuto.Scripts.Controller
         {
             _browser = bro;
             int roleid = role.RoleId;
-            if (bro.Address.IndexOf(PageLoadHandler.MapPage) == -1)
+            int curRoleId = await GetRoleId();
+            if (curRoleId != roleid)
             {
-                _browser.LoadUrl( $"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
                 await JsInit();
             }
             var curMapLv = await GetCurMapLv();
@@ -870,7 +871,7 @@ namespace IdleAuto.Scripts.Controller
             if (_isNeedDungeon)
             {
                 _isNeedDungeon = false;//进来了就重置
-                await StartDungeon(bro,role);
+                await StartDungeon(bro, role);
             }
 
         }
@@ -881,6 +882,7 @@ namespace IdleAuto.Scripts.Controller
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
+                await Task.Delay(1000);
             }
 
         }

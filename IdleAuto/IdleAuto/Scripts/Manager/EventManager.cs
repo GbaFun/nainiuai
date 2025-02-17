@@ -47,6 +47,11 @@ public enum emEventType
     /// </summary>
     OnPostFailed,
 
+    /// <summary>
+    /// 监听信号量
+    /// </summary>
+    OnSignal
+
 }
 
 public class EventManager

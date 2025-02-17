@@ -13,6 +13,20 @@
 let _map = {};
 (function () {
 
+    async function init() {
+        try {
+            await CefSharp.BindObjectAsync("Bridge");
+        }
+        catch (e) {
+            console.log("Error:", e);
+        }
+    }
+
+    init().then(async () => {
+        Bridge.invokeEvent('OnJsInited', 'map');
+
+    })
+
     let map;
     var step = [];
     var visitedStep = {};
@@ -26,13 +40,29 @@ let _map = {};
 
 
 
-    function startExplore() {
-        localStorage.setItem("startMap", 1);
-        explore();
+    async function startExplore() {
+       
+ 
+        if (localStorage.getItem("startMap")) {
+
+        }
+        else {
+            localStorage.setItem("startMap", 1);
+            explore();
+        }
     }
     async function explore() {
-        if (location.href.indexOf("InDungeon") == -1) return;
-    
+        if (location.href.indexOf("Map/Dungeon") == -1) return;
+        if ($("span.boss-left").text() != "1")  {
+            //打完了
+            localStorage.removeItem("startMap");
+            localStorage.removeItem("mapStep");
+            exitDungeon()
+            await sleep(2000);
+            Bridge.invokeEvent('OnSignal', 'DungeonEnd');
+            return;
+
+        }
         //地图状态会随着点击变化 重置比较暴力但是方便
         map = Array.from({ length: 20 }, () => Array(20).fill(false));
         step = [];
@@ -45,12 +75,19 @@ let _map = {};
             //地图状态变化了需要重新递归地图状态
             explore();
         }
-        else {
-            //打完了
-            localStorage.removeItem("startMap");
-            localStorage.removeItem("mapStep");
-            Bridge.invokeEvent('OnJsInited', 'DungeonEnd');
-        }
+    }
+
+    async function exitDungeon() {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            cid: _char.cid
+        };
+        debugger;
+        POST_Message("DungeonExit", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
+
+        })
     }
 
     async function backToMap() {

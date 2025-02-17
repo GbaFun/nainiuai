@@ -24,6 +24,7 @@ public class PageLoadHandler
     public const string CharDetail = "Character/Detail";
     public const string MapPage = "Map/Detail";
     public const string InDungeon = "InDungeon";
+    public const string MapDungeon = "Map/Dungeon";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -76,7 +77,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, MapPage) || ContainsUrl(url, InDungeon))
+        else if (ContainsUrl(url, MapPage)||ContainsUrl(url,InDungeon)|| ContainsUrl(url, MapDungeon))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "map.js");
             await LoadGlobalJs(jsPath, browser);

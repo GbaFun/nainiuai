@@ -2,14 +2,14 @@
   {
     "lv": {
       "min": 1,
-      "max": 10
+      "max": 40
     },
-    "mapLv": 12
+    "mapLv": 18
   },
   {
     "lv": {
-      "min": 11,
-      "max": 20
+      "min": 50,
+      "max": 80
     },
     "mapLv": 28
   }
