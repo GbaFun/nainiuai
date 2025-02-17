@@ -162,31 +162,33 @@ public class PageLoadHandler
         string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
         string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
 
-        if (File.Exists(cookiePath))
+        if (!File.Exists(cookiePath))
         {
-            if (ValidCookie(cookiePath))
-            {
-                await DevToolUtil.ClearCookiesAsync(bro);
-                await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
-                if (url == "")
-                {
-                    bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
-                }
-                else
-                {
-                    bro.LoadUrl(url);
-                }
-            }
-
+            File.Create(cookiePath);
+        }
+        else if (!ValidCookie(cookiePath))
+        {
+            File.Delete(cookiePath);
+            File.Create(cookiePath);
         }
 
-        if (File.Exists(stroagePath))
+        await DevToolUtil.ClearCookiesAsync(bro);
+        await DevToolUtil.LoadCookiesAsync(bro, cookiePath);
+        if (url == "")
         {
-
-            await DevToolUtil.ClearLocalStorageAsync(bro);
-            await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
+            bro.LoadUrl("https://www.idleinfinity.cn/Home/Index");
+        }
+        else
+        {
+            bro.LoadUrl(url);
         }
 
+        if (!File.Exists(stroagePath))
+        {
+            File.Create(stroagePath);
+        }
+        await DevToolUtil.ClearLocalStorageAsync(bro);
+        await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
     }
     /// <summary>
     /// 检查cookie是否在有效期
