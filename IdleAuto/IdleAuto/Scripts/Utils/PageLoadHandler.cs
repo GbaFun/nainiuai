@@ -38,9 +38,9 @@ public class PageLoadHandler
         if (ContainsUrl(url, LoginPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            var voPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "versionOverride.js");
-            await LoadJs(jsPath, browser);
-           // await LoadGlobalJs(voPath, browser);
+            //var voPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "versionOverride.js");
+            await LoadGlobalJs(jsPath, browser);
+            // await LoadGlobalJs(voPath, browser);
         }
         else if (ContainsUrl(url, HomePage))
         {
@@ -76,7 +76,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, MapPage)||ContainsUrl(url,InDungeon))
+        else if (ContainsUrl(url, MapPage) || ContainsUrl(url, InDungeon))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "map.js");
             await LoadGlobalJs(jsPath, browser);
