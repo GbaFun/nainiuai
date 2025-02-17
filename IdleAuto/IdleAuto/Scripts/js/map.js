@@ -108,7 +108,8 @@ let _map = {};
 
     async function startMove() {
 
-
+        debugger;
+        step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
             await sleep(1000);
@@ -119,6 +120,45 @@ let _map = {};
             }
             clickBlock(block);
         }
+    }
+
+    //上下左右没有mask且没有怪物的格子不用点击
+    async function filterStep(steps) {
+        var newStep = [];
+        for (let i = 0; i < step.length; i++) {
+            var index = steps[i];
+            var curPos = calPos(index);
+            var up = [curPos[0] - 1, curPos[1]]
+            var down = [curPos[0] + 1, curPos[1]]
+            var left = [curPos[0]  , curPos[1]-1]
+            var right = [curPos[0], curPos[1] + 1]
+            var curBlock = $(`#${index}`);
+            var hasMonster = curBlock.hasClass("monster") || curBlock.hasClass("boss");
+            if (!hasMonster && isBlockIgnore(up, down, left, right)) {
+                visitedStep[index] = true;
+            }
+            else {
+                newStep.push(index);
+            }
+        }
+        return newStep;
+    }
+
+    function isBlockIgnore(up, down, left, right) {
+        var u = calBlockIndex(up);
+        var d = calBlockIndex(down);
+        var l = calBlockIndex(left);
+        var r = calBlockIndex(right);
+        var arr = [];
+        if (up[0] >= 0 && up[0] <= 19) arr.push($(`#${u}`));
+        if (down[0] >= 0 && down[0] <= 19) arr.push($(`#${d}`));
+        if (left[0] >= 0 && left[0] <= 19) arr.push($(`#${l}`));
+        if (right[0] >= 0 && right[0] <= 19) arr.push($(`#${r}`));
+        var r = arr.filter(f => { return f.hasClass("mask") });
+        debugger;
+        if (r.length == 0) return true
+        else return false
+        
     }
     //利用promise实现优雅的暂停
     function sleep(ms) {
@@ -180,6 +220,10 @@ let _map = {};
         var j = Math.floor((id * 1) / 20);
         var i = (id * 1) % 20;
         return [i, j];
+    }
+
+    function calBlockIndex(arr) {
+        return arr[0] + arr[1] * 20;
     }
 
 

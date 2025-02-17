@@ -78,6 +78,12 @@
           "keywords": "力量光环",
           "op": ">=",
           "val": 3
+        },
+        {
+          "type": "intMatch",
+          "keywords": "专注光环",
+          "op": ">=",
+          "val": 3
         }
       ]
     },

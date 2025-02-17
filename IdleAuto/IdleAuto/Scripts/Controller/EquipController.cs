@@ -206,10 +206,10 @@ public class EquipController
             //测试切图
             if (m_equipBroID == 0)
                 m_equipBroID = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
-            else
-                await BroTabManager.Instance.TriggerLoadUrl(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", m_equipBroID, "char");
+          
+                
 
-            await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
+           // await CharacterController.Instance.SwitchMap(BroTabManager.Instance.GetBro(m_equipBroID), role);
             //测试结束
 
             await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(m_equipBroID), role);

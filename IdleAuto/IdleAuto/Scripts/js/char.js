@@ -236,7 +236,7 @@ class Character {
             ml: ml
         })
         POST_Message("MapSwitch", data, "post", 1500).then((r) => {
-            Bridge.invokeEvent('OnDungeonRequired',    { isSuccess: true, isNeedDungeon: false });
+            
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
             var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
@@ -244,8 +244,10 @@ class Character {
             if (isNeedDungeon) {
                 data.isSuccess = false;
                 data.isNeedDungeon = true;
+                Bridge.invokeEvent('OnDungeonRequired', data);
             }
-            Bridge.invokeEvent('OnDungeonRequired', data);
+         
+            location.reload();
         })
     }
 

@@ -188,7 +188,8 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            await SwitchTo(dungeonLv);
+            await SwitchTo(dungeonLv,role);
+            await JsInit();
             if (bro.Address.IndexOf("InDungeon") == -1)
             {
                 bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
@@ -201,7 +202,9 @@ namespace IdleAuto.Scripts.Controller
             await SignalCallback();
 
             //再次尝试直接抵达
-            await SwitchTo(_targetMapLv);
+            _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+            await JsInit();
+            await SwitchTo(_targetMapLv,role);
         }
         /// <summary>
         /// 开始
@@ -835,7 +838,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartSwitchMap()
         {
 
-            for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
+            for (int i = 11; i < AccountController.Instance.User.Roles.Count; i++)
             {
                 RoleModel role = AccountController.Instance.User.Roles[i];
                 if (_broSeed == 0) _broSeed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
@@ -862,12 +865,10 @@ namespace IdleAuto.Scripts.Controller
 
             int targetLv = setting.MapLv; //setting.MapLv;
             _targetMapLv = targetLv;
-
-            TaskCompletionSource<bool> dungenonCallback = new TaskCompletionSource<bool>();
-            onJsInitCallBack = (result) => dungenonCallback.SetResult(result);
+     
             //尝试抵达
-            await SwitchTo(targetLv, curMapLv);
-            await dungenonCallback.Task;
+            await SwitchTo(targetLv, role);
+            await JsInit();
             if (_isNeedDungeon)
             {
                 _isNeedDungeon = false;//进来了就重置
@@ -876,14 +877,14 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        private async Task SwitchTo(int targetLv, int curMapLv = 0)
+        private async Task SwitchTo(int targetLv,RoleModel role)
         {
 
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
-                await Task.Delay(1000);
             }
+          
 
         }
 
