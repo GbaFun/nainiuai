@@ -87,5 +87,29 @@
     "accountId": 13834825,
     "prefix": "MC",
     "chromeVersion": "138.3.48.25"
+  },
+  {
+    "username": "阿绿1",
+    "password": "596931907",
+    "account": "阿绿1",
+    "accountId": 13851718,
+    "prefix": "MC",
+    "chromeVersion": "137.8.48.25"
+  },
+  {
+    "username": "阿绿2",
+    "password": "596931907",
+    "account": "阿绿2",
+    "accountId": 13851719,
+    "prefix": "MC",
+    "chromeVersion": "137.3.55.25"
+  },
+  {
+    "username": "阿绿3",
+    "password": "596931907",
+    "account": "阿绿3",
+    "accountId": 13851719,
+    "prefix": "MC",
+    "chromeVersion": "137.3.59.28"
   }
 ]

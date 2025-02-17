@@ -46,7 +46,7 @@ public class PageLoadHandler
         else if (ContainsUrl(url, HomePage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "login.js");
-            await LoadJs(jsPath, browser);
+            await LoadGlobalJs(jsPath, browser);
             var initPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(initPath, browser);
         }
