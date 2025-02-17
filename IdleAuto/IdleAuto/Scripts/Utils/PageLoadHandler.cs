@@ -77,7 +77,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, MapPage)||ContainsUrl(url,InDungeon)|| ContainsUrl(url, MapDungeon))
+        else if (ContainsUrl(url, MapPage) || ContainsUrl(url, InDungeon) || ContainsUrl(url, MapDungeon))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "map.js");
             await LoadGlobalJs(jsPath, browser);
@@ -137,8 +137,9 @@ public class PageLoadHandler
         string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".json");
         string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".txt");
         var createTime = File.GetCreationTime(cookiePath);
+        var size = File.ReadAllBytes(cookiePath).Length;
         TimeSpan val = DateTime.Now - createTime;
-        if (val.TotalMinutes >= 10 || isDirectUpdate)
+        if (size == 0 || val.TotalMinutes >= 10 || isDirectUpdate)
         {
             await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
             await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
