@@ -166,12 +166,14 @@ public class PageLoadHandler
 
         if (!File.Exists(cookiePath))
         {
-            File.Create(cookiePath);
+            FileStream fs = File.Create(cookiePath);
+            fs.Close();
         }
         else if (!ValidCookie(cookiePath))
         {
             File.Delete(cookiePath);
-            File.Create(cookiePath);
+            FileStream fs = File.Create(cookiePath);
+            fs.Close();
         }
 
         await DevToolUtil.ClearCookiesAsync(bro);
@@ -187,7 +189,8 @@ public class PageLoadHandler
 
         if (!File.Exists(stroagePath))
         {
-            File.Create(stroagePath);
+            FileStream fs = File.Create(stroagePath);
+            fs.Close();
         }
         await DevToolUtil.ClearLocalStorageAsync(bro);
         await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
