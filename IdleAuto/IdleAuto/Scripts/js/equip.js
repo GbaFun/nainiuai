@@ -131,7 +131,11 @@ function packageNext() {
 }
 function packageHasEquips() {
     console.log('start packageHasEquips');
+    var bag = $('.panel-body.equip-bag');
+    debugger;
+    if (bag == undefined || bag.length == 0) return false;
     var box = $('.panel-body.equip-bag')[0];
+    if (box == undefined) return false;
     var equipNum = $(box).children().length;
     console.log(equipNum);
     if (equipNum > 0) return true;

@@ -82,7 +82,7 @@ let _map = {};
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid
         };
-        debugger;
+        //debugger;
         POST_Message("DungeonExit", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
@@ -108,7 +108,7 @@ let _map = {};
 
     async function startMove() {
 
-        debugger;
+        //debugger;
         step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
@@ -155,7 +155,7 @@ let _map = {};
         if (left[0] >= 0 && left[0] <= 19) arr.push($(`#${l}`));
         if (right[0] >= 0 && right[0] <= 19) arr.push($(`#${r}`));
         var r = arr.filter(f => { return f.hasClass("mask") });
-        debugger;
+        //debugger;
         if (r.length == 0) return true
         else return false
         

@@ -47,11 +47,13 @@ public class EquipController
                         var result3 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"packageHasEquips()");
                         if (result3.Success)
                             hasEquips = (bool)result3.Result;
+                        else
+                            hasEquips = false;
                     }
                 }
             }
 
-            await Task.Delay(500);
+            await Task.Delay(1000);
         }
     }
 
@@ -91,7 +93,6 @@ public class EquipController
         //清空当前账号的仓库装备数据库
         FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.AccountID == account.Id).ExecuteAffrows();
         P.Log("开始盘点所有装备", emLogType.AutoEquip);
-
 
         RoleModel role = account.FirstRole;
         await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
@@ -137,7 +138,7 @@ public class EquipController
                 P.Log("仓库最后一页了！", emLogType.AutoEquip);
                 jumpNextPage = false;
             }
-            await Task.Delay(500);
+            await Task.Delay(1500);
         } while (jumpNextPage);
 
         P.Log("缓存仓库完成！！");
@@ -188,7 +189,7 @@ public class EquipController
                 P.Log("仓库最后一页了！", emLogType.AutoEquip);
                 jumpNextPage = false;
             }
-            await Task.Delay(500);
+            await Task.Delay(1000);
         } while (jumpNextPage);
 
         P.Log($"已跳转到仓库最后一页(第{page}页)", emLogType.AutoEquip);
@@ -217,7 +218,7 @@ public class EquipController
                     }
 
                     string eids = string.Join(",", toClear.Keys);
-                    //P.Log(eids);
+                    await Task.Delay(1000);
                     var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                     if (response2.Success)
                     {
@@ -227,6 +228,7 @@ public class EquipController
             }
 
             P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
+            await Task.Delay(1000);
             var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"repositoryPre()", "equip");
             if (response3.Success && (bool)response3.Result)
             {
@@ -240,7 +242,7 @@ public class EquipController
                 P.Log("仓库第一页了！", emLogType.AutoEquip);
                 jumpNextPage = false;
             }
-            await Task.Delay(500);
+            await Task.Delay(1500);
         } while (jumpNextPage);
 
         P.Log("清理仓库完成！！");
@@ -284,7 +286,7 @@ public class EquipController
                 {
                     bool isSuccess = false;
                     //每个部位检查装备前增加500ms得等待时间
-                    await Task.Delay(500);
+                    await Task.Delay(1500);
                     Equipment targetEquip = targetEquips.GetEquipBySort((emEquipSort)j);
                     if (targetEquip == null)
                     {
@@ -303,11 +305,11 @@ public class EquipController
                     }
                     P.Log($"开始查询{role.RoleName}的{(emEquipSort)j}位置装备", emLogType.AutoEquip);
                     Dictionary<long, EquipModel> equips = new Dictionary<long, EquipModel>();
-                    if (string.IsNullOrEmpty(targetEquip.Name))
+                    if (!string.IsNullOrEmpty(targetEquip.Name))
                     {
                         equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == account.Id && p.EquipName.Contains(targetEquip.Name)).ToList().ToDictionary(p => p.EquipID, p => p);
                     }
-                    else if (string.IsNullOrEmpty(targetEquip.Category))
+                    else if (!string.IsNullOrEmpty(targetEquip.Category))
                     {
                         equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == account.Id && p.Category == targetEquip.Category).ToList().ToDictionary(p => p.EquipID, p => p);
                     }
@@ -397,6 +399,8 @@ public class EquipController
 
                 if (canWear)
                 {
+                    await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
+
                     for (int j = 0; j < 11; j++)
                     {
                         if (towearEquips.ContainsKey((emEquipSort)j))
