@@ -24,6 +24,7 @@ public class Item
 {
     public string Name { get; set; }
     public string Category { get; set; }
+    public emItemQuality Quality { get; set; }
     public List<string> Content { get; set; } = new List<string>();
     public List<RegexMatch> RegexList { get; set; } = new List<RegexMatch>();
 

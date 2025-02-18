@@ -65,6 +65,7 @@
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />
+    <Compile Include="Configs\CfgExtension\RetainEquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Scripts\Model\RuneModel.cs" />
     <Compile Include="Scripts\Controller\AuctionController.cs" />
     <Compile Include="Scripts\Model\SkillModel.cs" />
+    <Compile Include="Scripts\Utils\IdleUrlHelper.cs" />
     <Compile Include="Scripts\Utils\TxtUtil.cs" />
     <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
@@ -175,6 +177,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\MapSetting.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\RetainEquipCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\RuneCompandCfg.json">
@@ -269,9 +274,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\test.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\js\versionOverride.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

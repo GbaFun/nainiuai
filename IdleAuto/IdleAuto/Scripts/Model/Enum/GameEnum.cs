@@ -72,6 +72,7 @@ public enum emItemType
 public enum emItemQuality
 {
     PHYSICAL,       //全部
+    SLOT,           //破碎
     BASE,           //普通
     MAGICAL,        //魔法
     RARE,           //稀有
@@ -92,5 +93,5 @@ public enum emMaskType
     /// <summary>
     /// 起号组队工会
     /// </summary>
-    AUTO_INIT=5
+    AUTO_INIT = 5
 }

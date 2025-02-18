@@ -1,10 +1,109 @@
-﻿using System;
+﻿using CefSharp;
+using CefSharp.DevTools.FedCm;
+using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Model;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-public class RepairManager
+public class RepairManager : SingleManagerBase<RepairManager>
 {
+    /// <summary>
+    /// 开始自动修车
+    /// </summary>
+    /// <returns></returns>
+    public async Task AutoRepair(UserModel account)
+    {
+        try
+        {
+            //跳转账户首页
+            int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
+
+            var bro = BroTabManager.Instance.GetBro(repairBroSeed);
+            bro.ShowDevTools();
+
+            //先清理仓库装备
+            await ClearRepository(repairBroSeed, account);
+
+            //将挂机装备放入仓库
+            await EquipToRepository(repairBroSeed, account);
+            //盘点仓库装备
+            await InventoryEquips(repairBroSeed, account);
+
+            //遍历账户下角色修车
+            foreach (var role in account.Roles)
+            {
+                //技能加点
+                await AddSkillPoint(repairBroSeed, account.AccountName, role);
+
+                //切图
+                await SwitchMap(repairBroSeed, account.AccountName, role);
+
+                //自动更换装备
+                await AutoEquip(repairBroSeed, account, role);
+
+                //角色剩余属性点分配
+                await AddAttrPoint(repairBroSeed, account.AccountName, role);
+            }
+
+            MessageBox.Show($"自动修车完成");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"自动修车异常：{ex.Message}");
+        }
+    }
+
+    public async Task ClearRepository(int broSeed, UserModel account)
+    {
+        await EquipController.ClearRepository(broSeed, account);
+    }
+    public async Task EquipToRepository(int broSeed, UserModel account)
+    {
+        await EquipController.EquipsToRepository(broSeed, account);
+    }
+    public async Task InventoryEquips(int broSeed, UserModel account)
+    {
+        await EquipController.InventoryEquips(broSeed, account, true);
+    }
+    public async Task AddSkillPoint(int broSeed, string title, RoleModel role)
+    {
+        await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(broSeed), role);
+    }
+
+    public async Task SwitchMap(int broSeed, string title, RoleModel role)
+    {
+
+    }
+
+    public async Task AutoEquip(int broSeed, UserModel account, RoleModel role)
+    {
+        await EquipController.AutoEquips(broSeed, account, role);
+    }
+    public async Task AddAttrPoint(int broSeed, string title, RoleModel role)
+    {
+        await BroTabManager.Instance.TriggerLoadUrl(title, IdleUrlHelper.RoleUrl(role.RoleId), broSeed, "char");
+        var response3 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"_char.getSimpleAttribute();");
+        if (response3.Success)
+        {
+            var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
+            ///满足装备需求属性后仍有属性点剩余，自动加到体力值
+            if (baseAttr.Point > 0)
+            {
+                baseAttr.VitAdd += baseAttr.Point;
+                baseAttr.Point = 0;
+                var response8 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                if (response8.Success)
+                {
+                    P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                }
+            }
+        }
+    }
 }
 

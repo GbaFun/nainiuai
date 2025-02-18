@@ -4,19 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class SingleManagerBase<T> where T : class, new()
+public abstract class SingleManagerBase<T> where T : SingleManagerBase<T>, new()
 {
-    private static readonly Lazy<T> _instance = new Lazy<T>(() => new T());
+    private static T _instance;
 
-    public static T Instance => _instance.Value;
-
-    protected SingleManagerBase()
+    public static T Instance
     {
-        // 防止外部实例化
-        if (_instance.IsValueCreated)
+        get
         {
-            throw new InvalidOperationException("Cannot create another instance of this singleton class.");
+            if (_instance == null)
+            {
+                _instance = new T();
+                _instance.OnInit();
+            }
+            return _instance;
         }
     }
+
+    protected virtual void OnInit() { }
 }
 

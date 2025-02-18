@@ -1,0 +1,460 @@
+﻿[
+  {
+    "equip": {
+      "category": "珠宝",
+      "content": [ "白热" ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "content": [ "血红" ]
+    },
+    "maxCount": 100
+  },
+
+  ///-------职业前缀-------///
+  {
+    "equip": {
+      "category": "衣服",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "头饰",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "手杖",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "死灵副手",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死灵召唤技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "死骑面罩",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死骑冰霜技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死骑冰霜技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "死骑冰霜技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "骑士盾牌",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "骑士光环技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "头饰",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "骑士光环技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "骑士光环技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "regexList": [
+        {
+          "type": "intMatch",
+          "keywords": "骑士光环技能",
+          "op": ">=",
+          "val": 1
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+
+
+
+
+  {
+    "equip": {
+      "category": "手套",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "靴子",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 26
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "content": [ "攻击速度提升 10%" ]
+    },
+    "maxCount": 24
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "content": [ "施法速度提升 10%" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "content": [ "施法速度提升 10%" ]
+    },
+    "maxCount": 24
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 15
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "更佳的机会取得魔法装备",
+          "op": ">=",
+          "val": 15
+        }
+      ]
+    },
+    "maxCount": 24
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "额外金币从怪物身上取得",
+          "op": ">=",
+          "val": 30
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "regexList": [
+        {
+          "type": "percentMatch",
+          "keywords": "额外金币从怪物身上取得",
+          "op": ">=",
+          "val": 30
+        }
+      ]
+    },
+    "maxCount": 24
+  },
+
+  //-------神器底子-------//
+  //隐秘
+  {
+    "equip": {
+      "category": "衣服",
+      "quality": "slot",
+      "content": [ "凹槽(0/2)" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "衣服",
+      "quality": "base",
+      "content": [ "最大凹槽：2" ]
+    },
+    "maxCount": 12
+  },
+  //叶子
+  {
+    "equip": {
+      "category": "法杖",
+      "quality": "slot",
+      "content": [ "凹槽(0/2)", "+3 烈焰风暴（限法师）" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "法杖",
+      "quality": "base",
+      "content": [ "最大凹槽：2", "+3 烈焰风暴（限法师）" ]
+    },
+    "maxCount": 12
+  },
+  //精神
+  {
+    "equip": {
+      "name": "水晶剑",
+      "quality": "slot",
+      "content": [ "凹槽(0/4)" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "name": "水晶剑",
+      "quality": "base",
+      "content": [ "最大凹槽：4" ]
+    },
+    "maxCount": 12
+  },
+  //知识
+  {
+    "equip": {
+      "name": "头盔",
+      "quality": "slot",
+      "content": [ "凹槽(0/2)" ]
+    },
+    "maxCount": 6
+  },
+  {
+    "equip": {
+      "name": "头盔",
+      "quality": "base",
+      "content": [ "最大凹槽：2" ]
+    },
+    "maxCount": 6
+  },
+  //和平-疾速-刃-信念-天灾-戒律
+  {
+    "equip": {
+      "category": "衣服",
+      "quality": "slot",
+      "content": [
+        "凹槽(0/3)",
+        "类型：轻型"
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "衣服",
+      "quality": "base",
+      "content": [
+        "最大凹槽：3",
+        "类型：轻型"
+      ]
+    },
+    "maxCount": 12
+  },
+  //优雅旋律
+  {
+    "equip": {
+      "category": "游侠标枪",
+      "quality": "slot",
+      "content": [
+        "凹槽(0/3)",
+        "+3 游侠远程技能"
+      ]
+    },
+    "maxCount": 2
+  },
+  {
+    "equip": {
+      "category": "游侠标枪",
+      "quality": "base",
+      "content": [
+        "最大凹槽：3",
+        "+3 游侠远程技能"
+      ]
+    },
+    "maxCount": 2
+  },
+  //亡者遗产
+  {
+    "equip": {
+      "category": "手杖",
+      "quality": "slot",
+      "content": [ "凹槽(0/2)", "+3 骷髅法师", "+3 支配骷髅" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "手杖",
+      "quality": "base",
+      "content": [ "最大凹槽：2", "+3 骷髅法师", "+3 支配骷髅" ]
+    },
+    "maxCount": 12
+  },
+  //亡者遗产
+  {
+    "equip": {
+      "category": "手杖",
+      "quality": "slot",
+      "content": [ "凹槽(0/2)", "+3 骷髅法师", "+3 生生不息" ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "手杖",
+      "quality": "base",
+      "content": [ "最大凹槽：2", "+3 骷髅法师", "+3 生生不息" ]
+    },
+    "maxCount": 12
+  }
+  /////-------神器底子------------/////
+]

@@ -129,8 +129,27 @@ function packageNext() {
         return true;
     }
 }
+function packageHasEquips() {
+    console.log('start packageHasEquips');
+    var box = $('.panel-body.equip-bag')[0];
+    var equipNum = $(box).children().length;
+    console.log(equipNum);
+    if (equipNum > 0) return true;
+    else return false;
+}
 function repositoryNext() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("下页")');
+    if (i.length == 0) {
+        location.reload();
+        return false;
+    }
+    else {
+        i[0].click();
+        return true;
+    }
+}
+function repositoryPre() {
+    var i = $('.panel-body.equip-box:first').next().find('a:contains("上页")');
     if (i.length == 0) {
         location.reload();
         return false;
@@ -165,6 +184,37 @@ function equipOff(cid, etype) {
     POST_Message("EquipOff", data, "html", 2000)
         .then(r => {
             console.log("EquipOff success");
+            location.reload();
+        })
+        .catch(r => {
+            console.log(r);
+        });
+}
+function equipStorage(cid) {
+    console.log('start equipStorage');
+    var data = MERGE_Form({
+        cid: cid,
+    });
+    console.log(data);
+    POST_Message("EquipStoreAll", data, "html", 2000)
+        .then(r => {
+            console.log("equipStorage success");
+            location.reload();
+        })
+        .catch(r => {
+            console.log(r);
+        });
+}
+function equipClear(cid, eids) {
+    console.log('start equipClear');
+    var data = MERGE_Form({
+        cid: cid,
+        eidsbox: eids.replace('-', ','),
+    });
+    console.log(data);
+    POST_Message("EquipSellBoxAll", data, "html", 2000)
+        .then(r => {
+            console.log("equipClear success");
             location.reload();
         })
         .catch(r => {

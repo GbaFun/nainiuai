@@ -64,8 +64,8 @@ public class PageLoadHandler
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
             await LoadGlobalJs(jsPath, browser);
-            var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equipattr.js");
-            await LoadJs(jsPath2, browser);
+            //var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equipattr.js");
+            //await LoadJs(jsPath2, browser);
         }
         else if (ContainsUrl(url, CharCreate))
         {

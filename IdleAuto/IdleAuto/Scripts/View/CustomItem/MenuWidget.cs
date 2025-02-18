@@ -136,7 +136,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoEquip_Click(object sender, EventArgs e)
         {
-            EquipController.Instance.StartAutoEquip();
+            RepairManager.Instance.AutoRepair(AccountController.Instance.User);
         }
         public void BtnAutoAh_Click(object sender, EventArgs e)
         {
