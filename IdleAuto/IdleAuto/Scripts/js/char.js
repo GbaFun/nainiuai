@@ -226,6 +226,7 @@ class Character {
     }
 
     mapSwitch(ml) {
+        debugger
         var data = MERGE_Form({
             cid: _char.cid,
             ml: ml

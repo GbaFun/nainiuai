@@ -838,13 +838,14 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartSwitchMap()
         {
 
-            for (int i = 10; i < AccountController.Instance.User.Roles.Count; i++)
+            for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
             {
                 RoleModel role = AccountController.Instance.User.Roles[i];
                 if (_broSeed == 0) _broSeed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
 
                 var bro = BroTabManager.Instance.GetBro(_broSeed);
                 await SwitchMap(bro, role);
+                await Task.Delay(2000);
             }
         }
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
