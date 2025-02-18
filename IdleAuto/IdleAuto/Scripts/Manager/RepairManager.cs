@@ -23,30 +23,22 @@ public class RepairManager : SingleManagerBase<RepairManager>
         {
             //跳转账户首页
             int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
-
             var bro = BroTabManager.Instance.GetBro(repairBroSeed);
             bro.ShowDevTools();
 
             //先清理仓库装备
             await ClearRepository(repairBroSeed, account);
-
             //将挂机装备放入仓库
             await EquipToRepository(repairBroSeed, account);
             //盘点仓库装备
             await InventoryEquips(repairBroSeed, account);
-
             //遍历账户下角色修车
             foreach (var role in account.Roles)
             {
                 //技能加点
                 await AddSkillPoint(repairBroSeed, account.AccountName, role);
-
-                //切图
-                await SwitchMap(repairBroSeed, account.AccountName, role);
-
                 //自动更换装备
                 await AutoEquip(repairBroSeed, account, role);
-
                 //角色剩余属性点分配
                 await AddAttrPoint(repairBroSeed, account.AccountName, role);
             }
@@ -75,12 +67,6 @@ public class RepairManager : SingleManagerBase<RepairManager>
     {
         await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(broSeed), role);
     }
-
-    public async Task SwitchMap(int broSeed, string title, RoleModel role)
-    {
-
-    }
-
     public async Task AutoEquip(int broSeed, UserModel account, RoleModel role)
     {
         await EquipController.AutoEquips(broSeed, account, role);
