@@ -102,8 +102,8 @@
     <Compile Include="Scripts\Utils\HttpUtil.cs" />
     <Compile Include="Scripts\Utils\ProxyUtil.cs" />
     <Compile Include="Scripts\Utils\TxtUtil.cs" />
-    <Compile Include="Scripts\Utils\IdleUrlHelper.cs"
-             <Compile Include="Scripts\Utils\ConfigUtil.cs" />
+    <Compile Include="Scripts\Utils\IdleUrlHelper.cs"/>
+    <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />
     <Compile Include="Scripts\View\CustomItem\MenuWidget.cs">
