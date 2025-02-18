@@ -50,7 +50,9 @@ public enum emEventType
     /// <summary>
     /// 监听信号量
     /// </summary>
-    OnSignal
+    OnSignal,
+
+    OnIpBan,
 
 }
 
