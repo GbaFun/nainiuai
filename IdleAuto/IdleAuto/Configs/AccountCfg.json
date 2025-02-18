@@ -108,8 +108,58 @@
     "username": "阿绿3",
     "password": "596931907",
     "account": "阿绿3",
-    "accountId": 13851719,
+    "accountId": 13851720,
     "prefix": "MC",
-    "chromeVersion": "137.3.59.28"
+    "chromeVersion": "117.3.59.28"
+  },
+  {
+    "username": "阿绿4",
+    "password": "596931907",
+    "account": "阿绿4",
+    "accountId": 13851721,
+    "prefix": "MC",
+    "chromeVersion": "117.4.59.28"
+  },
+  {
+    "username": "阿绿5",
+    "password": "596931907",
+    "account": "阿绿5",
+    "accountId": 13851722,
+    "prefix": "MC",
+    "chromeVersion": "157.4.59.28"
+  },
+  {
+    "username": "阿绿6",
+    "password": "596931907",
+    "account": "阿绿6",
+    "accountId": 13851723,
+    "prefix": "MC",
+    "chromeVersion": "157.4.59.128"
+  },
+
+  {
+    "username": "阿绿7",
+    "password": "596931907",
+    "account": "阿绿7",
+    "accountId": 13851724,
+    "prefix": "MC",
+    "chromeVersion": "57.4.59.128"
+  },
+
+  {
+    "username": "阿绿8",
+    "password": "596931907",
+    "account": "阿绿8",
+    "accountId": 13851725,
+    "prefix": "MC",
+    "chromeVersion": "157.45.29.128"
+  },
+  {
+    "username": "阿绿9",
+    "password": "596931907",
+    "account": "阿绿9",
+    "accountId": 13851726,
+    "prefix": "MC",
+    "chromeVersion": "157.45.629.128"
   }
 ]

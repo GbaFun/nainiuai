@@ -1,6 +1,8 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
 using MySqlX.XDevAPI.Common;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -25,6 +27,8 @@ public class BroTabManager
     public static BroTabManager Instance;
 
     private TabControl Tab;
+
+    public static string Proxy;
 
     /// <summary>
     /// 返回的流水号
@@ -61,7 +65,7 @@ public class BroTabManager
     /// </summary>
     /// <param name="index">浏览器的流水号</param>
     /// <returns></returns>
-    private ChromiumWebBrowser InitializeChromium(string name, string url)
+    private ChromiumWebBrowser InitializeChromium(string name, string url, string proxy = "")
     {
         // 创建 CefRequestContextSettings 并指定缓存路径
         var requestContextSettings = new RequestContextSettings
@@ -70,8 +74,16 @@ public class BroTabManager
         };
         // 创建 CefRequestContext
         var requestContext = new RequestContext(requestContextSettings);
+
+
         // 创建 ChromiumWebBrowser 实例，并指定 RequestContext
         var browser = new ChromiumWebBrowser(url, requestContext) { Dock = DockStyle.Fill };
+
+        if (!string.IsNullOrWhiteSpace(Proxy))
+        {
+            browser.IsBrowserInitializedChanged += OnIsBrowserInitializedChanged;
+
+        }
         // 绑定对象
         browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
         browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
@@ -91,6 +103,42 @@ public class BroTabManager
         BroDic.TryAdd(_seed, browser);
 
         return browser;
+    }
+
+    private void OnIsBrowserInitializedChanged(object sender, EventArgs e)
+    {
+        var bro = sender as ChromiumWebBrowser;
+        // 在浏览器初始化完成后设置代理
+        SetProxy(bro);
+
+    }
+    public void SetProxy(ChromiumWebBrowser browser)
+    {
+        var proxySettings = new Dictionary<string, object>
+        {
+            {"mode", "fixed_servers"},
+            {"server", Proxy}
+        };
+        Cef.UIThreadTaskFactory.StartNew(() =>
+        {
+            browser.GetBrowser().GetHost().RequestContext.SetPreference("proxy", proxySettings, out string s);
+            // 重新设置RequestHandler以更新代理账号密码
+            browser.RequestHandler = new MyRequestHandler("d2011731996", "v84dygqx");
+            Proxy = "";
+        });
+
+    }
+    private void RemoveProxy(ChromiumWebBrowser browser)
+    {
+        // 在 CEF UI 线程上移除代理
+        Cef.UIThreadTaskFactory.StartNew(() =>
+        {
+            var proxyOptions = new Dictionary<string, object>
+            {
+                ["mode"] = "direct"
+            };
+            browser.GetBrowser().GetHost().RequestContext.SetPreference("proxy", proxyOptions, out string error);
+        });
     }
 
     public BroTabManager(TabControl tab)
@@ -126,7 +174,7 @@ public class BroTabManager
         return seed;
     }
 
-    private async Task<int> AddTabPage(string name, string url, string jsName = "")
+    private async Task<int> AddTabPage(string name, string url, string jsName = "", string proxy = "")
     {
 
         ChromiumWebBrowser bro;
@@ -146,7 +194,7 @@ public class BroTabManager
         };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
-        bro = InitializeChromium(name, url);
+        bro = InitializeChromium(name, url, proxy);
 
         // 创建 TabPage
         TabPage tabPage = new TabPage(name);
@@ -183,7 +231,7 @@ public class BroTabManager
         return;
     }
 
-    public async Task<int> TriggerAddTabPage(string title, string url, string jsName = "")
+    public async Task<int> TriggerAddTabPage(string title, string url, string jsName = "", string proxy = "")
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
@@ -196,7 +244,7 @@ public class BroTabManager
             {
                 try
                 {
-                    var result = await AddTabPage(title, url, jsName);
+                    var result = await AddTabPage(title, url, jsName, proxy);
                     tcs.SetResult(result);
                 }
                 catch (Exception ex)
@@ -208,7 +256,7 @@ public class BroTabManager
         }
         else
         {
-            return await AddTabPage(title, url, jsName);
+            return await AddTabPage(title, url, jsName, proxy);
         }
     }
 
@@ -344,10 +392,12 @@ public class BroTabManager
         {
             P.Log($"Start Save {name} CookieAndCache");
             PageLoadHandler.SaveCookieAndCache(bro);
+            RemoveProxy(bro);
         }
 
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
     }
+
 
     private void OnJsInited(params object[] args)
     {
@@ -367,6 +417,29 @@ public class BroTabManager
         //    PageLoadHandler.DeleteCookie(bro, AccountController.Instance.User.AccountName);
         //    bro.Reload();
         //}
+    }
+
+
+}
+public class MyRequestHandler : CefSharp.Handler.RequestHandler
+{
+    private string _proxyUserName;
+    private string _proxyUserPwd;
+
+    public MyRequestHandler(string proxyUser, string proxyPwd)
+    {
+        _proxyUserName = proxyUser;
+        _proxyUserPwd = proxyPwd;
+    }
+
+    protected override bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
+    {
+        if (isProxy)
+        {
+            callback.Continue(_proxyUserName, _proxyUserPwd);
+            return true;
+        }
+        return base.GetAuthCredentials(chromiumWebBrowser, browser, originUrl, isProxy, host, port, realm, scheme, callback);
     }
 }
 

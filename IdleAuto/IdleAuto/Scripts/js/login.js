@@ -51,6 +51,7 @@ init().then((r) => {
     //登录页逻辑
     if (location.href.indexOf("Login") > -1) {
         setUsernamePwd();
+        checkIP();
     }
 
     //首页保存cookie或者替换cookie
@@ -100,4 +101,10 @@ function generatePrint() {
     const rawString = JSON.stringify(components);
     //console.log(rawString);
     return encrypt(`${code}${CryptoJS.SHA256(rawString).toString()}`);
+}
+
+function checkIP() {
+    var errTxt = $(".validation-summary-errors").text();
+    if (errTxt.indexOf("相同IP") == -1) return;
+    Bridge.invokeEvent('OnIpBan', '');
 }
