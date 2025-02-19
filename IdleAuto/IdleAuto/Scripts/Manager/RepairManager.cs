@@ -26,10 +26,10 @@ public class RepairManager : SingleManagerBase<RepairManager>
             var bro = BroTabManager.Instance.GetBro(repairBroSeed);
             bro.ShowDevTools();
 
-            //将挂机装备放入仓库
-            await EquipToRepository(repairBroSeed, account);
             //先清理仓库装备
             await ClearRepository(repairBroSeed, account);
+            //将挂机装备放入仓库
+            await EquipToRepository(repairBroSeed, account);
             //盘点仓库装备
             await InventoryEquips(repairBroSeed, account);
             //遍历账户下角色修车

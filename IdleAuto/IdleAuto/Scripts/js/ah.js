@@ -104,7 +104,7 @@ let ah = {};
         var curPart = $(".panel-heading button")[1].innerText.trim();
         var curBase = $(".panel-heading button")[2].innerText.trim();
         //是否载入到正确的选项 即三个选项载入完毕
-        //debugger;
+        debugger;
         if (curPart == part && curQuality == quality && (eqbase == null || eqbase == curBase)) {
             return "success";
         }

@@ -122,6 +122,7 @@ class Character {
 
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
+            debugger;
             location.reload();
         })
     }
@@ -181,6 +182,7 @@ class Character {
 
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', data);
+            debugger;
             location.reload();
         })
     }
@@ -194,6 +196,7 @@ class Character {
 
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
+            debugger;
             location.reload();
         })
     }
@@ -208,6 +211,7 @@ class Character {
             location.reload();
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
+            debugger;
             location.reload();
         })
     }
@@ -221,6 +225,7 @@ class Character {
             location.reload();
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
+            debugger;
             location.reload();
         })
     }

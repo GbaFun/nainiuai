@@ -68,7 +68,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 1,
-      "max": 30
+      "max": 18
     },
     "主手": {
       "category": "权杖",
@@ -83,7 +83,7 @@
           "type": "intMatch",
           "keywords": "专注光环",
           "op": ">=",
-          "val": 1
+          "val": 3
         }
       ]
     },
@@ -121,7 +121,7 @@
       ]
     },
     "头盔": {
-      "category": "帽子",
+      "name": "帽子",
       "regexList": [
         {
           "type": "percentMatch",
@@ -132,7 +132,7 @@
       ]
     },
     "靴子": {
-      "category": "靴子",
+      "name": "靴子",
       "regexList": [
         {
           "type": "percentMatch",
@@ -147,7 +147,7 @@
     "jobName": "死灵",
     "lv": {
       "min": 1,
-      "max": 30
+      "max": 18
     },
     "主手": {
       "category": "手杖",
@@ -188,7 +188,7 @@
     "jobName": "死骑",
     "lv": {
       "min": 1,
-      "max": 30
+      "max": 18
     },
     "主手": {
       "category": "标枪",
@@ -222,7 +222,7 @@
       "content": [ "攻击速度提升 10%" ]
     },
     "手套": {
-      "category": "手套",
+      "name": "手套",
       "content": [ "攻击速度提升 10%" ]
     }
   }
