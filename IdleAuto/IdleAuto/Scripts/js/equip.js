@@ -129,17 +129,31 @@ function packageNext() {
         return true;
     }
 }
+
+function repositoryEquipsCount() {
+    console.log('start repositoryEquipsCount');
+    var count = 0;
+    var i = $('.panel-heading:contains("储藏箱")');
+    if (i.length > 0) {
+        var txt = i[0].outerText;
+        var match2 = txt.match(/\d+/gm);
+        count = parseInt(match2[0]);
+    }
+
+    console.log(count);
+    return count;
+}
+
 function packageHasEquips() {
     console.log('start packageHasEquips');
     var bag = $('.panel-body.equip-bag');
-    debugger;
-    if (bag == undefined || bag.length == 0) return false;
+    var count = 0;
+    if (bag == undefined || bag.length == 0) return 0;
     var box = $('.panel-body.equip-bag')[0];
-    if (box == undefined) return false;
-    var equipNum = $(box).children().length;
-    console.log(equipNum);
-    if (equipNum > 0) return true;
-    else return false;
+    if (box == undefined) return 0;
+    count = $(box).children().length;
+    console.log(count);
+    return count;
 }
 function repositoryNext() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("下页")');

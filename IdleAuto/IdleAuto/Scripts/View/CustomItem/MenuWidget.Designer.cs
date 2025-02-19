@@ -65,7 +65,7 @@ namespace IdleAuto.Scripts.View
             // 
             // menuPanel
             // 
-            this.menuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.menuPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.menuPanel.AutoScroll = true;
             this.menuPanel.Controls.Add(this.AccountCombo);
@@ -162,7 +162,7 @@ namespace IdleAuto.Scripts.View
             this.BtnAutoOnline.Name = "BtnAutoOnline";
             this.BtnAutoOnline.Size = new System.Drawing.Size(75, 23);
             this.BtnAutoOnline.TabIndex = 0;
-            this.BtnAutoOnline.Text = "一键点亮";
+            this.BtnAutoOnline.Text = "清理装备";
             this.BtnAutoOnline.UseVisualStyleBackColor = true;
             this.BtnAutoOnline.Click += new System.EventHandler(this.BtnAutoOnline_Click);
             // 
@@ -300,7 +300,7 @@ namespace IdleAuto.Scripts.View
             // 
             // LoginGroup
             // 
-            this.LoginGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.LoginGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.LoginGroup.Controls.Add(this.BtnLogin);
             this.LoginGroup.Controls.Add(this.label1);

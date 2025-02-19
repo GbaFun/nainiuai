@@ -131,7 +131,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoOnline_Click(object sender, EventArgs e)
         {
-
+            RepairManager.Instance.ClearEquips(AccountController.Instance.User);
         }
 
         private void BtnAutoEquip_Click(object sender, EventArgs e)

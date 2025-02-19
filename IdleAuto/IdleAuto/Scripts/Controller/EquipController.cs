@@ -26,34 +26,54 @@ public class EquipController
         P.Log("开始转移角色背包物品到仓库", emLogType.AutoEquip);
         foreach (var role in account.Roles)
         {
+            await Task.Delay(1000);
             //跳转装备详情页面
             await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
 
             P.Log($"开始转移{role.RoleName}的背包物品到仓库", emLogType.AutoEquip);
 
             bool hasEquips = false;
-            var result = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"packageHasEquips()");
-            if (result.Success)
+            await Task.Delay(1000);
+            int boxCount = 0;
+            var response = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"repositoryEquipsCount()");
+            if (response.Success)
             {
-                hasEquips = (bool)result.Result;
-                while (hasEquips)
+                boxCount = (int)response.Result;
+                var result = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"packageHasEquips()");
+                if (result.Success)
                 {
-                    P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
-                    await Task.Delay(1000);
-                    var result2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipStorage({role.RoleId})", "equip");
-                    if (result2.Success)
+                    int bagCount = (int)result.Result;
+                    hasEquips = bagCount > 0;
+                    while (hasEquips)
                     {
-                        P.Log($"{role.RoleName}的背包物品存储到仓库完成", emLogType.AutoEquip);
-                        var result3 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"packageHasEquips()");
-                        if (result3.Success)
-                            hasEquips = (bool)result3.Result;
+                        if (bagCount + boxCount > 3000)
+                        {
+                            P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
+                            break;
+                        }
+
+                        P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
+                        await Task.Delay(1000);
+                        var result2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipStorage({role.RoleId})", "equip");
+                        if (result2.Success)
+                        {
+                            boxCount += bagCount;
+                            P.Log($"{role.RoleName}的背包物品存储到仓库完成", emLogType.AutoEquip);
+                            await Task.Delay(1000);
+                            var result3 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"packageHasEquips()");
+                            if (result3.Success)
+                            {
+                                bagCount = (int)result3.Result;
+                                hasEquips = bagCount > 0;
+                            }
+                            else
+                                hasEquips = false;
+                        }
                         else
                             hasEquips = false;
                     }
                 }
             }
-
-            await Task.Delay(1000);
         }
     }
 
@@ -69,10 +89,6 @@ public class EquipController
         if (account == null || account.Roles.Count <= 0) { MessageBox.Show("账户数据错误，或者账户内没有角色，请检查！"); return; }
 
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-
-        //跳转装备详情页面
-        await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(account.FirstRole.RoleId), broSeed, "equip");
-
         //检查是否需要保存装备
         //如果忽略检查保存时间，直接进行盘点
         if (!ignoreTime)
@@ -95,6 +111,7 @@ public class EquipController
         P.Log("开始盘点所有装备", emLogType.AutoEquip);
 
         RoleModel role = account.FirstRole;
+        await Task.Delay(1000);
         await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
 
         P.Log("开始缓存仓库装备", emLogType.AutoEquip);
@@ -125,6 +142,7 @@ public class EquipController
 
             P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
             P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
+            await Task.Delay(3000);
             var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"repositoryNext()", "equip");
             if (response2.Success && (bool)response2.Result)
             {
@@ -163,6 +181,7 @@ public class EquipController
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
         RetainEquipCfg.Instance.ResetCount();
 
+        await Task.Delay(1000);
         //跳转装备详情页面
         await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(account.FirstRole.RoleId), broSeed, "equip");
 
@@ -176,6 +195,7 @@ public class EquipController
         {
             jumpNextPage = false;
             P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
+            await Task.Delay(3000);
             var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"repositoryNext()", "equip");
             if (response2.Success && (bool)response2.Result)
             {
@@ -189,7 +209,6 @@ public class EquipController
                 P.Log("仓库最后一页了！", emLogType.AutoEquip);
                 jumpNextPage = false;
             }
-            await Task.Delay(1000);
         } while (jumpNextPage);
 
         P.Log($"已跳转到仓库最后一页(第{page}页)", emLogType.AutoEquip);
@@ -201,6 +220,7 @@ public class EquipController
             jumpNextPage = false;
             toClear.Clear();
             P.Log($"检查仓库第{page}页装备", emLogType.AutoEquip);
+            await Task.Delay(2000);
             var response1 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"getRepositoryEquips()");
             if (response1.Success)
             {
@@ -210,7 +230,7 @@ public class EquipController
                     foreach (var item in equips)
                     {
                         item.Value.Category = TxtUtil.GetCategory(item.Value.EquipBaseName);
-                        P.Log($"正在检查装备{item.Value}({item.Value.Quality}-{item.Value.Category})-{item.Key}");
+                        //P.Log($"正在检查装备{item.Value}({item.Value.Quality}-{item.Value.Category})-{item.Key}");
                         if (item.Value.emItemQuality == emItemQuality.SET || item.Value.emItemQuality == emItemQuality.UNIQUE || item.Value.emItemQuality == emItemQuality.ARTIFACT)
                             continue;
                         if (!RetainEquipCfg.Instance.IsRetain(item.Value))
@@ -218,7 +238,7 @@ public class EquipController
                     }
 
                     string eids = string.Join(",", toClear.Keys);
-                    await Task.Delay(1000);
+                    await Task.Delay(2000);
                     var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                     if (response2.Success)
                     {
@@ -228,7 +248,7 @@ public class EquipController
             }
 
             P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"repositoryPre()", "equip");
             if (response3.Success && (bool)response3.Result)
             {
@@ -242,7 +262,6 @@ public class EquipController
                 P.Log("仓库第一页了！", emLogType.AutoEquip);
                 jumpNextPage = false;
             }
-            await Task.Delay(1500);
         } while (jumpNextPage);
 
         P.Log("清理仓库完成！！");
@@ -264,6 +283,7 @@ public class EquipController
 
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
 
+        await Task.Delay(1000);
         //跳转装备详情页面
         await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
 
@@ -317,10 +337,16 @@ public class EquipController
 
                     foreach (var item in equips)
                     {
-                        if (towearEquips.ContainsValue(item.Value))
+                        bool isConflict = false;
+                        foreach (var item1 in towearEquips)
                         {
-                            continue;
+                            if (item1.Value.EquipID == item.Value.EquipID)
+                            {
+                                isConflict = true;
+                                break;
+                            }
                         }
+                        if (isConflict) continue;
                         if (!item.Value.CanWear(role)) continue;
                         if (targetEquip.AdaptAttr(item.Value))
                         {
@@ -333,7 +359,7 @@ public class EquipController
                     isSuccess = false;
                     WEAR_EQUIP_FIANLLY:
                     if (isSuccess)
-                        P.Log($"{role.RoleName}查找{targetEquip.SimpleName}装备完成", emLogType.AutoEquip);
+                        P.Log($"{role.RoleName}查找{targetEquip.SimpleName}[{towearEquips[(emEquipSort)j].EquipID}]装备完成", emLogType.AutoEquip);
                     else
                         P.Log($"{role.RoleName}查找{targetEquip.SimpleName}装备失败", emLogType.AutoEquip);
                 }
@@ -346,7 +372,9 @@ public class EquipController
             }
             bool canWear = false;
 
+            await Task.Delay(1000);
             await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.RoleUrl(role.RoleId), broSeed, "char");
+            await Task.Delay(1000);
             var response3 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"_char.getSimpleAttribute();");
             if (response3.Success)
             {
@@ -362,6 +390,7 @@ public class EquipController
                         P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
                         if (baseAttr.AddPoint(requareV4))
                         {
+                            await Task.Delay(1000);
                             var response4 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
                             if (response4.Success)
                             {
@@ -372,16 +401,19 @@ public class EquipController
                         break;
                     case emMeetType.MeetAfterReset:
                         P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
+                        await Task.Delay(1000);
                         var response5 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"_char.attributeReset();", "char");
                         if (response5.Success)
                         {
                             P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
+                            await Task.Delay(1000);
                             var response6 = await BroTabManager.Instance.TriggerCallJs(broSeed, $@"_char.getSimpleAttribute();");
                             if (response6.Success)
                             {
                                 baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
                                 if (baseAttr.AddPoint(requareV4))
                                 {
+                                    await Task.Delay(1000);
                                     var response7 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
                                     if (response7.Success)
                                     {
@@ -399,6 +431,7 @@ public class EquipController
 
                 if (canWear)
                 {
+                    await Task.Delay(1000);
                     await BroTabManager.Instance.TriggerLoadUrl(account.AccountName, IdleUrlHelper.EquipUrl(role.RoleId), broSeed, "equip");
 
                     for (int j = 0; j < 11; j++)
@@ -416,7 +449,7 @@ public class EquipController
                                 }
 
                                 //从仓库中移除穿戴的装备
-                                FreeDb.Sqlite.Delete<EquipModel>(equip).ExecuteAffrows();
+                                FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.EquipID == equip.EquipID).ExecuteAffrows();
                             }
                             P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                         }
@@ -457,6 +490,7 @@ public class EquipController
                 if (curEquips != null && curEquips.ContainsKey((emEquipSort)sort))
                 {
                     P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
+                    await Task.Delay(1000);
                     var response3 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipOff({role.RoleId},{sort})", "equip");
                     if (response3.Success)
                     {
@@ -468,7 +502,7 @@ public class EquipController
 
 
             P.Log($"{role.RoleName}现在更换{(emEquipSort)sort}位置的装备{equip.EquipName}", emLogType.AutoEquip);
-
+            await Task.Delay(1000);
             var response2 = await BroTabManager.Instance.TriggerCallJsWithReload(broSeed, $@"equipOn({role.RoleId},{equip.EquipID})", "equip");
             if (response2.Success)
             {

@@ -51,6 +51,18 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
+    public async Task ClearEquips(UserModel account)
+    {
+        //跳转账户首页
+        int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
+        var bro = BroTabManager.Instance.GetBro(repairBroSeed);
+        bro.ShowDevTools();
+        //将挂机装备放入仓库
+        await EquipToRepository(repairBroSeed, account);
+        //先清理仓库装备
+        await ClearRepository(repairBroSeed, account);
+    }
+
     public async Task ClearRepository(int broSeed, UserModel account)
     {
         await EquipController.ClearRepository(broSeed, account);
