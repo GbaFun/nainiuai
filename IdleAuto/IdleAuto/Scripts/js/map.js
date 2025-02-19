@@ -53,6 +53,7 @@ let _map = {};
     }
     async function explore() {
         if (location.href.indexOf("Map/Dungeon") == -1) return;
+        debugger
         if ($("span.boss-left").text() != "1")  {
             //打完了
             localStorage.removeItem("startMap");
@@ -107,6 +108,11 @@ let _map = {};
 
 
     async function startMove() {
+        var bossBlock = $("a.boss");
+        if (bossBlock.length == 1) {
+            clickBlock(bossBlock);
+        }
+        await sleep(500);
         step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
@@ -139,10 +145,11 @@ let _map = {};
             else {
                 newStep.push(index);
             }
-            if (hasMonster && visitedStep[index] == false) {
+            if (hasMonster ) {
                 monsterStep.push(index);
             }
-        } 
+        }
+        debugger
         newStep= newStep.concat(monsterStep);
         return newStep;
     }
