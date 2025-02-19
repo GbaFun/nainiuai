@@ -82,7 +82,7 @@ let _map = {};
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid
         };
-        debugger;
+        
         POST_Message("DungeonExit", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
@@ -107,8 +107,6 @@ let _map = {};
 
 
     async function startMove() {
-
-        debugger;
         step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
@@ -125,40 +123,57 @@ let _map = {};
     //上下左右没有mask且没有怪物的格子不用点击
     async function filterStep(steps) {
         var newStep = [];
+        var monsterStep = [];
         for (let i = 0; i < step.length; i++) {
             var index = steps[i];
             var curPos = calPos(index);
-            var up = [curPos[0] - 1, curPos[1]]
-            var down = [curPos[0] + 1, curPos[1]]
-            var left = [curPos[0]  , curPos[1]-1]
-            var right = [curPos[0], curPos[1] + 1]
+            var up = [curPos[0], curPos[1]-1]
+            var down = [curPos[0] , curPos[1]+1]
+            var left = [curPos[0]-1  , curPos[1]]
+            var right = [curPos[0]+1, curPos[1] ]
             var curBlock = $(`#${index}`);
             var hasMonster = curBlock.hasClass("monster") || curBlock.hasClass("boss");
-            if (!hasMonster && isBlockIgnore(up, down, left, right)) {
+            if (isBlockIgnore(up, down, left, right,curBlock)) {
                 visitedStep[index] = true;
             }
             else {
                 newStep.push(index);
             }
-        }
+            if (hasMonster && visitedStep[index] == false) {
+                monsterStep.push(index);
+            }
+        } 
+        newStep= newStep.concat(monsterStep);
         return newStep;
     }
 
-    function isBlockIgnore(up, down, left, right) {
+    function isBlockIgnore(up, down, left, right,curBlock) {
         var u = calBlockIndex(up);
         var d = calBlockIndex(down);
         var l = calBlockIndex(left);
         var r = calBlockIndex(right);
-        var arr = [];
-        if (up[0] >= 0 && up[0] <= 19) arr.push($(`#${u}`));
-        if (down[0] >= 0 && down[0] <= 19) arr.push($(`#${d}`));
-        if (left[0] >= 0 && left[0] <= 19) arr.push($(`#${l}`));
-        if (right[0] >= 0 && right[0] <= 19) arr.push($(`#${r}`));
-        var r = arr.filter(f => { return f.hasClass("mask") });
-        debugger;
-        if (r.length == 0) return true
-        else return false
-        
+        var uBlock, dBlock, lBlock, rBlock;
+        if (up[1] >= 0 && up[1] <= 19) uBlock=$(`#${u}`);
+        if (down[1] >= 0 && down[1] <= 19) dBlock=$(`#${d}`);
+        if (left[0] >= 0 && left[0] <= 19) lBlock=$(`#${l}`);
+        if (right[0] >= 0 && right[0] <= 19) rBlock = $(`#${r}`);
+        if (uBlock) {
+            //上面有mask且没有top围墙
+            if (uBlock.hasClass("mask") && !curBlock.hasClass("top")) return false;
+        }
+        if (dBlock) {
+            
+            if (dBlock.hasClass("mask") && !dBlock.hasClass("top")) return false;
+        }
+        if (lBlock) {
+
+            if (lBlock.hasClass("mask") && !curBlock.hasClass("left")) return false;
+        }
+        if (rBlock) {
+
+            if (rBlock.hasClass("mask") && !rBlock.hasClass("left")) return false;
+        }
+        return true;
     }
     //利用promise实现优雅的暂停
     function sleep(ms) {
@@ -223,7 +238,7 @@ let _map = {};
     }
 
     function calBlockIndex(arr) {
-        return arr[0] + arr[1] * 20;
+        return arr[0] + arr[1]*20 ;
     }
 
 
