@@ -132,10 +132,10 @@ public class PageLoadHandler
     #region 载入替换cookie
 
 
-    public static async void SaveCookieAndCache(ChromiumWebBrowser bro, bool isDirectUpdate = false)
+    public static async void SaveCookieAndCache(ChromiumWebBrowser bro,string name, bool isDirectUpdate = false)
     {
-        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".json");
-        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", AccountController.Instance.User.AccountName + ".txt");
+        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name+ ".json");
+        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
         var createTime = File.GetCreationTime(cookiePath);
         var size = File.ReadAllBytes(cookiePath).Length;
         TimeSpan val = DateTime.Now - createTime;

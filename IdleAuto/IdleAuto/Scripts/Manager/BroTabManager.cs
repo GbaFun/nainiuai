@@ -391,7 +391,7 @@ public class BroTabManager
         if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {
             P.Log($"Start Save {name} CookieAndCache");
-            PageLoadHandler.SaveCookieAndCache(bro);
+            PageLoadHandler.SaveCookieAndCache(bro,name);
             RemoveProxy(bro);
         }
 
