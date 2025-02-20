@@ -38,6 +38,16 @@ let _map = {};
         }, 1000)
     }
 
+    if (location.href.indexOf("Map/Dungeon") > -1) {
+        $($(".panel-heading")[0]).append($("<button>", {
+            text: "开始秘境",
+            style: "color:#ff8281",
+            click: () => {
+                localStorage.setItem("startMap", 1);
+                explore();
+            }
+        }));
+    }
 
 
     async function startExplore() {
@@ -52,7 +62,8 @@ let _map = {};
         }
     }
     async function explore() {
-        if (location.href.indexOf("Map/Dungeon") == -1) return;
+        debugger
+        if (!(location.href.indexOf("Map/Dungeon") >-1 ||location.href.indexOf("Map/DungeonForBmap") > -1)) return;
         debugger
         if ($("span.boss-left").text() != "1")  {
             //打完了
