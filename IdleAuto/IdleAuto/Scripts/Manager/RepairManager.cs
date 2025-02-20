@@ -59,6 +59,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         bro.ShowDevTools();
         //将挂机装备放入仓库
         await EquipToRepository(repairBroSeed, account);
+        await Task.Delay(3000);
         //先清理仓库装备
         await ClearRepository(repairBroSeed, account);
     }
