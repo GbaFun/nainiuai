@@ -16,6 +16,7 @@ public class LevelRange
         return level >= Min && level <= Max;
     }
 }
+
 public class Equipment : Item
 {
     public emItemType emEquipType { get; set; }
