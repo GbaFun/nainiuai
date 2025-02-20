@@ -82,6 +82,7 @@
     </None>
     <Compile Include="Configs\CfgExtension\SkillPointCfg.cs" />
     <Compile Include="Db\FreeDb.cs" />
+    <Compile Include="Scripts\BroWindow.cs" />
     <Compile Include="Scripts\Controller\CharacterController.cs" />
     <Compile Include="Scripts\Controller\EquipController.cs" />
     <Compile Include="Scripts\Controller\LoadingController.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Scripts\Utils\HttpUtil.cs" />
     <Compile Include="Scripts\Utils\ProxyUtil.cs" />
     <Compile Include="Scripts\Utils\TxtUtil.cs" />
-    <Compile Include="Scripts\Utils\IdleUrlHelper.cs"/>
+    <Compile Include="Scripts\Utils\IdleUrlHelper.cs" />
     <Compile Include="Scripts\Utils\ConfigUtil.cs" />
     <Compile Include="Scripts\Utils\RegexUtil.cs" />
     <Compile Include="Scripts\Utils\SerializeUtil.cs" />

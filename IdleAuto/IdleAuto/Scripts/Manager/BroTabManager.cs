@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using IdleAuto.Scripts;
 using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -194,6 +195,9 @@ public class BroTabManager
         };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
+        var broWindow = new BroWindow(name, url);
+        broWindow.SetSeed(_seed);
+        
         bro = InitializeChromium(name, url, proxy);
 
         // 创建 TabPage
