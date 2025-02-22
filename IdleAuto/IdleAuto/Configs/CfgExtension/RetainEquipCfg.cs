@@ -1,4 +1,5 @@
-﻿using IdleAuto.Configs.CfgExtension;
+﻿using AttributeMatch;
+using IdleAuto.Configs.CfgExtension;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,9 @@ public class RetainEquipCfg
     {
         foreach (var item in Equips)
         {
-            if (item.Equip.AdaptAttr(equip) && item.AddCount())
+            if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {
+                P.Log(report.MatchWeight.ToString());
                 return true;
             }
         }

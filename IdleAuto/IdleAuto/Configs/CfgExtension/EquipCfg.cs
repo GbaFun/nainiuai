@@ -4,6 +4,7 @@ using System.IO;
 using IdleAuto.Configs.CfgExtension;
 using Newtonsoft.Json;
 using System.Linq;
+using AttributeMatch;
 
 
 public class LevelRange
@@ -17,46 +18,23 @@ public class LevelRange
     }
 }
 
-public class Equipment : Item
+public class Equipment
 {
     public emItemType emEquipType { get; set; }
-}
-public class Item
-{
-    public string Name { get; set; }
     public string Category { get; set; }
-    public emItemQuality Quality { get; set; }
-    public List<string> Content { get; set; } = new List<string>();
-    public List<RegexMatch> RegexList { get; set; } = new List<RegexMatch>();
+    public string Quality { get; set; }
+    public List<AttributeCondition> Conditions { get; set; }
 
-    public bool AdaptAttr(string name, string attr)
+    public bool AdaptAttr(EquipModel equip, out AttributeMatchReport report)
     {
-        if (!name.Contains(Name)) return false;
-        if (!Content.All(p => attr.Contains(p))) return false;
-        if (RegexList != null && !RegexUtil.Match(attr, RegexList)) return false;
-
-        return true;
-    }
-    public bool AdaptAttr(EquipModel equip)
-    {
-        ///如果没有配置名字和装备类型则不匹配
-        if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Category)) return false;
-        if (!string.IsNullOrEmpty(Name) && !equip.EquipName.Contains(Name)) return false;
-        if (equip.Category == null) equip.Category = TxtUtil.GetCategory(equip.EquipBaseName);
-        if (!string.IsNullOrEmpty(Category) && !equip.Category.Equals(Category)) return false;
-        if (!Content.All(p => equip.Content.Contains(p))) return false;
-        if (RegexList != null && !RegexUtil.Match(equip.Content, RegexList)) return false;
-
-        return true;
+        return AttributeMatchUtil.Match(equip, this, out report);
     }
 
     public string SimpleName
     {
         get
         {
-            if (string.IsNullOrEmpty(Name)) return Category;
-            if (string.IsNullOrEmpty(Category)) return Name;
-            return $"{Name}({Category})";
+            return Category;
         }
     }
 }
@@ -66,19 +44,19 @@ public class Equipments
     public string JobName;
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
     public LevelRange Lv { get; set; }
-    public Equipment 主手 { get; set; }
-    public Equipment 副手 { get; set; }
-    public Equipment 头盔 { get; set; }
-    public Equipment 护符 { get; set; }
-    public Equipment 项链 { get; set; }
-    public Equipment 戒指1 { get; set; }
-    public Equipment 戒指2 { get; set; }
-    public Equipment 衣服 { get; set; }
-    public Equipment 腰带 { get; set; }
-    public Equipment 手套 { get; set; }
-    public Equipment 靴子 { get; set; }
+    public List<Equipment> 主手 { get; set; }
+    public List<Equipment> 副手 { get; set; }
+    public List<Equipment> 头盔 { get; set; }
+    public List<Equipment> 护符 { get; set; }
+    public List<Equipment> 项链 { get; set; }
+    public List<Equipment> 戒指1 { get; set; }
+    public List<Equipment> 戒指2 { get; set; }
+    public List<Equipment> 衣服 { get; set; }
+    public List<Equipment> 腰带 { get; set; }
+    public List<Equipment> 手套 { get; set; }
+    public List<Equipment> 靴子 { get; set; }
 
-    public Equipment GetEquipBySort(emEquipSort type)
+    public List<Equipment> GetEquipBySort(emEquipSort type)
     {
         switch (type)
         {

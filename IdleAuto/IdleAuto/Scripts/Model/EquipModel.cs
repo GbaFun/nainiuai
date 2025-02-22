@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AttributeMatch;
 
 
 public class EquipModel
@@ -29,7 +30,7 @@ public class EquipModel
     {
         get
         {
-            return (emItemQuality)Enum.Parse(typeof(emItemQuality), Quality.ToUpper());
+            return Quality.ToEnumQuality();
         }
     }
 

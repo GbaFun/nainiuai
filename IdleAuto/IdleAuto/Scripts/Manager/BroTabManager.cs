@@ -195,9 +195,9 @@ public class BroTabManager
         };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
-        var broWindow = new BroWindow(name, url);
+        var broWindow = new BroWindow(0, name, url);
         broWindow.SetSeed(_seed);
-        
+
         bro = InitializeChromium(name, url, proxy);
 
         // 创建 TabPage
@@ -347,6 +347,10 @@ public class BroTabManager
         {
             jsTask.SetResult(false); onJsInitCallBack = null;
         };
+
+        await Task.Delay(1000);
+        bro.Reload();
+
         await jsTask.Task;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return response2;
@@ -362,7 +366,7 @@ public class BroTabManager
 
     private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
     {
-        P.Log($"On {name} FrameLoadStart");
+        P.Log($"On {name} FrameLoadStart URL:{jumpToUrl} Time:{DateTime.Now}", emLogType.Warning);
 
         var bro = sender as ChromiumWebBrowser;
         EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
@@ -379,7 +383,7 @@ public class BroTabManager
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
-        EventManager.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
+        //EventManager.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
         //if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         //{
         //    Task.Run(async () =>
@@ -395,7 +399,7 @@ public class BroTabManager
         if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         {
             P.Log($"Start Save {name} CookieAndCache");
-            PageLoadHandler.SaveCookieAndCache(bro,name);
+            PageLoadHandler.SaveCookieAndCache(bro, name);
             RemoveProxy(bro);
         }
 

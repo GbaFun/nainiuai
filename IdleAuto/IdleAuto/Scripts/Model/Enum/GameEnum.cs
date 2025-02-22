@@ -1,8 +1,114 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿public enum emCategory
+{
+    全部 = 0,
+    帽子,
+    衣服,
+    盾,
+    手套,
+    靴子,
+    腰带,
+    头饰,
+    戒指,
+    项链,
+    珠宝,
+    护符,
+    秘境,
+    斧,
+    剑,
+    锤,
+    长矛,
+    匕首,
+    法杖,
+    权杖,
+    弓,
+    十字弓,
+    标枪,
+    投掷武器,
+    法珠,
+    爪,
+    游侠弓,
+    游侠标枪,
+    战士头盔,
+    祭祀刀,
+    牧师副手,
+    手杖,
+    死灵副手,
+    骑士盾牌,
+    萨满头饰,
+    贤者头盔,
+    拳套,
+    手弩,
+    死骑面罩,
+
+    //混合类型
+    武器,
+    副手,
+    头部,
+}
+public enum emAttrType
+{
+    名称 = 0,
+    词缀,
+    力量,
+    敏捷,
+    体力,
+    精力,
+    生命,
+    法力,
+    凹槽,
+    增强伤害,
+    物理伤害,
+    魔法伤害,
+    元素抗性,
+    抗电,
+    抗火,
+    抗毒,
+    抗寒,
+    单项元素抗性之和,
+    最大伤害,
+    最小伤害,
+    毒素伤害,
+    物品掉率,
+    更佳魔法装备,
+    额外金币取得,
+    施法速度,
+    攻击速度,
+    所有技能,
+    技能等级,
+    职业全系技能,
+    指定职业全系技能,
+    职业单系技能,
+    指定职业单系技能,
+    伤害转换,
+    召唤最大数量,
+    自定义
+}
+public enum emOperateType
+{
+    大于,
+    大于等于,
+    小于,
+    小于等于,
+    等于,
+    不等于,
+    在范围内
+}
+public enum emMatchType
+{
+    //必须满足的条件
+    必需,
+    //可选条件
+    可选,
+    //可配置与其他条件互斥
+    互斥,
+    //可配置与其他条件关联，至少满足其中一项
+    任一
+}
+public enum emMatchResult
+{
+    完美满足 = 0,
+    仅满足必须条件,
+}
 
 public enum emJob
 {
@@ -71,16 +177,16 @@ public enum emItemType
 
 public enum emItemQuality
 {
-    PHYSICAL,       //全部
-    SLOT,           //破碎
-    BASE,           //普通
-    MAGICAL,        //魔法
-    RARE,           //稀有
-    CRAFT,          //手工
-    SET,            //套装
-    UNIQUE,         //传奇
-    ARTIFACT,       //神器
-    HOLY,           //圣衣
+    全部,           //全部
+    破碎,           //灰色
+    普通,           //白色
+    魔法,           //魔法
+    稀有,           //稀有
+    手工,           //手工
+    套装,           //套装
+    传奇,           //传奇
+    神器,           //神器
+    圣衣,           //圣衣
 }
 
 public enum emMaskType

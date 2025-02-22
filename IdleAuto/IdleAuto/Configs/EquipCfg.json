@@ -2,146 +2,204 @@
   {
     "jobName": "骑士",
     "lv": {
-      "min": 90,
-      "max": 100
-    },
-    "主手": {
-      "name": "末日",
-      "content": [ "+2 所有技能" ],
-      "regexList": [
-        {
-          "type": "compareNum",
-          "keywords": "赋予,冰冻光环",
-          "op": ">=",
-          "val": 12
-        }
-      ]
-    },
-    "副手": {
-      "name": "梦境",
-      "content": [ "+2 所有技能" ],
-      "regexList": [
-        {
-          "type": "compareNum",
-          "keywords": "赋予,冲击光环",
-          "op": ">=",
-          "val": 15
-        }
-      ]
-    },
-    "头盔": {
-      "name": "敏锐之眼",
-      "content": [ "+2 骑士光环技能", "+3 审判光环" ]
-    },
-    "护符": {
-      "name": "龙珠",
-      "content": [ "+3 所有技能" ]
-    },
-    "项链": {
-      "name": "炽天使之韵",
-      "content": [ "+2 所有技能", "+2 骑士光环技能" ]
-    },
-    "戒指1": {
-      "name": "灵魂之戒",
-      "content": [ "+2 所有技能" ]
-    },
-    "戒指2": {
-      "name": "灵魂之戒",
-      "content": [ "+2 所有技能" ]
-    },
-    "衣服": {
-      "name": "苏醒王者★"
-    },
-    "腰带": {
-      "name": "吉利安火盆★"
-    },
-    "手套": {
-      "name": "极速之击",
-      "content": [ "+2 骑士光环技能", "+3 审判光环" ]
-    },
-    "靴子": {
-      "name": "圣洁之靴",
-      "content": [ "+2 骑士光环技能", "+3 审判光环" ]
-    }
-  },
-  {
-    "jobName": "骑士",
-    "lv": {
       "min": 1,
       "max": 30
     },
-    "主手": {
-      "category": "权杖",
-      "regexList": [
-        {
-          "type": "intMatch",
-          "keywords": "力量光环",
-          "op": ">=",
-          "val": 3
-        },
-        {
-          "type": "intMatch",
-          "keywords": "专注光环",
-          "op": ">=",
-          "val": 3
-        }
-      ]
-    },
-    "项链": {
-      "category": "项链",
-      "regexList": [
-        {
-          "type": "percentMatch",
-          "keywords": "更佳的机会取得魔法装备",
-          "op": ">=",
-          "val": 1
-        }
-      ]
-    },
-    "戒指1": {
-      "category": "戒指",
-      "regexList": [
-        {
-          "type": "percentMatch",
-          "keywords": "更佳的机会取得魔法装备",
-          "op": ">=",
-          "val": 1
-        }
-      ]
-    },
-    "戒指2": {
-      "category": "戒指",
-      "regexList": [
-        {
-          "type": "percentMatch",
-          "keywords": "更佳的机会取得魔法装备",
-          "op": ">=",
-          "val": 1
-        }
-      ]
-    },
-    "头盔": {
-      "name": "帽子",
-      "regexList": [
-        {
-          "type": "percentMatch",
-          "keywords": "更佳的机会取得魔法装备",
-          "op": ">=",
-          "val": 1
-        }
-      ]
-    },
-    "靴子": {
-      "name": "靴子",
-      "regexList": [
-        {
-          "type": "percentMatch",
-          "keywords": "更佳的机会取得魔法装备",
-          "op": ">=",
-          "val": 1
-        }
-      ]
-    }
+    "主手": [
+      {
+        "category": "权杖",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "力量光环,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士权杖",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "拯救光环,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士权杖",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "忏悔,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士权杖",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "奉献,3"
+          }
+        ]
+      }
+    ],
+    "副手": [
+      {
+        "category": "盾|骑士盾牌",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "力量光环,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士副手",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "拯救光环,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士副手",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "忏悔,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士副手",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "奉献,3"
+          }
+        ]
+      }
+    ],
+    "头盔": [
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "所有技能",
+            "conditionContent": "1"
+          }
+        ]
+      },
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业全系技能",
+            "conditionContent": "骑士,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业单系技能",
+            "conditionContent": "骑士,光环,1"
+          }
+        ]
+      }
+    ],
+    "项链": [
+      {
+        "category": "项链",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士项链",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士项链",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指1": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指2": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "靴子": [
+      {
+        "category": "靴子",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士靴子",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "骑士靴子",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ]
   },
   {
     "jobName": "死灵",
@@ -149,40 +207,210 @@
       "min": 1,
       "max": 30
     },
-    "主手": {
-      "category": "手杖",
-      "regexList": [
-        {
-          "type": "intMatch",
-          "keywords": "骷髅法师",
-          "op": ">=",
-          "val": 3
-        }
-      ]
-    },
-    "副手": {
-      "category": "死灵副手",
-      "regexList": [
-        {
-          "type": "intMatch",
-          "keywords": "骷髅法师",
-          "op": ">=",
-          "val": 3
-        }
-      ]
-    },
-    "项链": {
-      "category": "项链",
-      "content": [ "施法速度提升 10%" ]
-    },
-    "戒指1": {
-      "category": "戒指",
-      "content": [ "施法速度提升 10%" ]
-    },
-    "戒指2": {
-      "category": "戒指",
-      "content": [ "施法速度提升 10%" ]
-    }
+    "主手": [
+      {
+        "category": "手杖",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "骷髅法师,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵手杖",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "支配骷髅,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵手杖",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "生生不息,3"
+          },
+          {
+            "matchType": "可选",
+
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "副手": [
+      {
+        "category": "死灵副手",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "骷髅法师,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵副手",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "支配骷髅,3"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵副手",
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "生生不息,3"
+          },
+          {
+            "matchType": "可选",
+
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "头盔": [
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业全系技能",
+            "conditionContent": "死灵,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业单系技能",
+            "conditionContent": "死灵,召唤,1"
+          },
+          {
+            "matchType": "可选",
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          }
+        ]
+      },
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵头盔",
+            "operate": "大于等于",
+            "attributeType": "所有技能",
+            "conditionContent": "1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵头盔",
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "项链": [
+      {
+        "category": "项链",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵项链",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵项链",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指1": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指2": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+            "operate": "大于等于",
+            "attributeType": "施法速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死灵戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ]
   },
   {
     "jobName": "死骑",
@@ -190,40 +418,227 @@
       "min": 1,
       "max": 30
     },
-    "主手": {
-      "category": "标枪",
-      "content": [ "腐烂" ]
-    },
-    "副手": {
-      "category": "标枪",
-      "content": [ "腐烂" ]
-    },
-    "头盔": {
-      "category": "死骑面罩",
-      "regexList": [
-        {
-          "type": "intMatch",
-          "keywords": "冰锋符文",
-          "op": ">=",
-          "val": 3
-        }
-      ]
-    },
-    "项链": {
-      "category": "项链",
-      "content": [ "攻击速度提升 10%" ]
-    },
-    "戒指1": {
-      "category": "戒指",
-      "content": [ "攻击速度提升 10%" ]
-    },
-    "戒指2": {
-      "category": "戒指",
-      "content": [ "攻击速度提升 10%" ]
-    },
-    "手套": {
-      "name": "手套",
-      "content": [ "攻击速度提升 10%" ]
-    }
+    "主手": [
+      {
+        "category": "武器",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "等于",
+            "attributeType": "自定义",
+            "conditionContent": "单手伤害"
+          },
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "攻击速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "可选",
+
+            "operate": "大于等于",
+            "attributeType": "毒素伤害",
+            "conditionContent": "20"
+          }
+        ]
+      }
+    ],
+    "副手": [
+      {
+        "category": "武器",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "等于",
+            "attributeType": "自定义",
+            "conditionContent": "单手伤害"
+          },
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "毒素伤害",
+            "conditionContent": "180"
+          }
+        ]
+      }
+    ],
+    "头盔": [
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "所有技能",
+            "conditionContent": "1"
+          }
+        ]
+      },
+      {
+        "category": "头部",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业全系技能",
+            "conditionContent": "死骑,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业单系技能",
+            "conditionContent": "死骑,鲜血,1"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑头盔",
+            "operate": "大于等于",
+            "attributeType": "指定职业单系技能",
+            "conditionContent": "死骑,冰霜,1"
+          }
+        ]
+      },
+      {
+        "category": "死骑面罩",
+        "quality": "魔法|稀有",
+        "conditions": [
+          {
+            "matchType": "必需",
+
+            "operate": "大于等于",
+            "attributeType": "技能等级",
+            "conditionContent": "冰霜之镰,3"
+          }
+        ]
+      }
+    ],
+    "项链": [
+      {
+        "category": "项链",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑项链",
+            "operate": "大于等于",
+            "attributeType": "攻击速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑项链",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑项链",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指1": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "攻击速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "戒指2": [
+      {
+        "category": "戒指",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "攻击速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑戒指",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ],
+    "手套": [
+      {
+        "category": "手套",
+        "quality": "全部",
+        "conditions": [
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑手套",
+            "operate": "大于等于",
+            "attributeType": "攻击速度",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑手套",
+            "operate": "大于等于",
+            "attributeType": "更佳魔法装备",
+            "conditionContent": "10"
+          },
+          {
+            "matchType": "任一",
+            "matchGroupName": "死骑手套",
+            "operate": "大于等于",
+            "attributeType": "额外金币取得",
+            "conditionContent": "10"
+          }
+        ]
+      }
+    ]
   }
 ]

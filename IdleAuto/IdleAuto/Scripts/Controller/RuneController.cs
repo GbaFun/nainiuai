@@ -35,7 +35,6 @@ public class RuneController
     {
         //Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
         long start = DateTime.Now.Ticks;
-        MainForm.Instance.ShowLoadingPanel("开始一键升级符文", emMaskType.RUNE_UPDATING);
         P.Log("开始一键升级符文", emLogType.RuneUpgrate);
         EventManager.Instance.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
@@ -48,7 +47,6 @@ public class RuneController
         {
             P.Log($"开始检查{item.ID}#符文", emLogType.RuneUpgrate);
             long duration = (DateTime.Now.Ticks - start) / 10000;
-            MainForm.Instance.SetLoadContent($"当前升级符文：{item.ID}#       耗时：{duration}ms");
             //如果配置保留数量为-1，则不处理
             if (item.CompandNum == -1)
             {
@@ -93,7 +91,6 @@ public class RuneController
         P.Log($"全部符文升级完成\n\t\n\t\n\t\n\t\n\t", emLogType.RuneUpgrate);
         EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
-        MainForm.Instance.HideLoadingPanel(emMaskType.RUNE_UPDATING);
     }
 
     private void OnEventUpgradeRuneBack(params object[] args)

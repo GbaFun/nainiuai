@@ -101,27 +101,39 @@ function getRepositoryEquips() {
     console.log('start getRepositoryEquips');
     var eMap = {};
     var box = $('.panel-body.equip-box')[0];
-    //console.log(box);
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
-        //var quality = equipItem.data('type');
         var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
         var classname = equipContent.find('p.equip-title:first').attr('class');
-        console.log(classname);
         var quality = classname.split(' ')[0];
         var content = equipContent.text();
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
     });
-    //console.log(eMap);
+    return eMap;
+}
+function getPackageEquips() {
+    console.log('start getPackageEquips');
+    var eMap = {};
+    var box = $('.panel-body.equip-bag')[0];
+    $(box).children().each(function () {
+        var equipItem = $(this).find('span:first');
+        var id = equipItem.data('id');
+        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var classname = equipContent.find('p.equip-title:first').attr('class');
+        var quality = classname.split(' ')[0];
+        var content = equipContent.text();
+        var e = getEquipInfo(id, 999, quality, content);
+        eMap[e.eid] = e;
+    });
     return eMap;
 }
 
 function packageNext() {
     var i = $('.panel-body.equip-bag:first').next().find('a:contains("下页")');
     if (i.length == 0) {
-        location.reload();
+        //location.reload();
         return false;
     }
     else {
@@ -140,7 +152,20 @@ function repositoryEquipsCount() {
         count = parseInt(match2[0]);
     }
 
-    console.log(count);
+    console.log(`储藏箱装备总量：${count}`);
+    return count;
+}
+function packageEquipsCount() {
+    console.log('start packageEquipsCount');
+    var count = 0;
+    var i = $('.panel-heading:contains("背包")');
+    if (i.length > 0) {
+        var txt = i[0].outerText;
+        var match2 = txt.match(/\d+/gm);
+        count = parseInt(match2[0]);
+    }
+
+    console.log(`背包装备总量：${count}`);
     return count;
 }
 
@@ -158,7 +183,7 @@ function packageHasEquips() {
 function repositoryNext() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("下页")');
     if (i.length == 0) {
-        location.reload();
+        //location.reload();
         return false;
     }
     else {
@@ -169,7 +194,7 @@ function repositoryNext() {
 function repositoryPre() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("上页")');
     if (i.length == 0) {
-        location.reload();
+        //location.reload();
         return false;
     }
     else {
@@ -184,10 +209,9 @@ function equipOn(cid, eid) {
         cid: cid,
         eid: eid,
     });
-    POST_Message("EquipOn", data, "html", 2000)
+    POST_Message("EquipOn", data, "html", 1000)
         .then(r => {
             console.log("EquipOn success");
-            location.reload();
         })
         .catch(r => {
             console.log(r);
@@ -199,10 +223,9 @@ function equipOff(cid, etype) {
         cid: cid,
         cet: etype,
     });
-    POST_Message("EquipOff", data, "html", 2000)
+    POST_Message("EquipOff", data, "html", 1000)
         .then(r => {
             console.log("EquipOff success");
-            location.reload();
         })
         .catch(r => {
             console.log(r);
@@ -214,10 +237,9 @@ function equipStorage(cid) {
         cid: cid,
     });
     console.log(data);
-    POST_Message("EquipStoreAll", data, "html", 2000)
+    POST_Message("EquipStoreAll", data, "html", 1000)
         .then(r => {
             console.log("equipStorage success");
-            location.reload();
         })
         .catch(r => {
             console.log(r);
@@ -230,10 +252,9 @@ function equipClear(cid, eids) {
         eidsbox: eids.replace('-', ','),
     });
     console.log(data);
-    POST_Message("EquipSellBoxAll", data, "html", 2000)
+    POST_Message("EquipSellBoxAll", data, "html", 1000)
         .then(r => {
             console.log("equipClear success");
-            location.reload();
         })
         .catch(r => {
             console.log(r);

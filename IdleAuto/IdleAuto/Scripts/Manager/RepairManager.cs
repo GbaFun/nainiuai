@@ -1,5 +1,7 @@
-﻿using CefSharp;
+﻿using AttributeMatch;
+using CefSharp;
 using CefSharp.DevTools.FedCm;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Controller;
 using IdleAuto.Scripts.Model;
 using System;
@@ -21,24 +23,23 @@ public class RepairManager : SingleManagerBase<RepairManager>
     {
         try
         {
+            EquipController equipController = new EquipController();
             //跳转账户首页
             int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
             var bro = BroTabManager.Instance.GetBro(repairBroSeed);
             bro.ShowDevTools();
 
-            //先清理仓库装备
-            await ClearRepository(repairBroSeed, account);
             //将挂机装备放入仓库
-            await EquipToRepository(repairBroSeed, account);
+            await EquipToRepository(repairBroSeed, equipController, account);
             //盘点仓库装备
-            await InventoryEquips(repairBroSeed, account);
+            await InventoryEquips(repairBroSeed, equipController, account);
             //遍历账户下角色修车
             foreach (var role in account.Roles)
             {
                 //技能加点
                 await AddSkillPoint(repairBroSeed, account.AccountName, role);
                 //自动更换装备
-                await AutoEquip(repairBroSeed, account, role);
+                await AutoEquip(repairBroSeed, equipController, account, role);
                 //角色剩余属性点分配
                 await AddAttrPoint(repairBroSeed, account.AccountName, role);
             }
@@ -53,36 +54,33 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public async Task ClearEquips(UserModel account)
     {
+        EquipController equipController = new EquipController();
         //跳转账户首页
         int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
         var bro = BroTabManager.Instance.GetBro(repairBroSeed);
         bro.ShowDevTools();
-        //将挂机装备放入仓库
-        await EquipToRepository(repairBroSeed, account);
-        await Task.Delay(3000);
-        //先清理仓库装备
-        await ClearRepository(repairBroSeed, account);
+        await ClearRepository(repairBroSeed, equipController, account);
     }
 
-    public async Task ClearRepository(int broSeed, UserModel account)
+    public async Task ClearRepository(int broSeed, EquipController controller, UserModel account)
     {
-        await EquipController.ClearRepository(broSeed, account);
+        await controller.ClearRepository(broSeed, account);
     }
-    public async Task EquipToRepository(int broSeed, UserModel account)
+    public async Task EquipToRepository(int broSeed, EquipController controller, UserModel account)
     {
-        await EquipController.EquipsToRepository(broSeed, account);
+        await controller.EquipsToRepository(broSeed, account);
     }
-    public async Task InventoryEquips(int broSeed, UserModel account)
+    public async Task InventoryEquips(int broSeed, EquipController controller, UserModel account)
     {
-        await EquipController.InventoryEquips(broSeed, account, true);
+        await controller.InventoryEquips(broSeed, account, true);
     }
     public async Task AddSkillPoint(int broSeed, string title, RoleModel role)
     {
         await CharacterController.Instance.AddSkillPoints(BroTabManager.Instance.GetBro(broSeed), role);
     }
-    public async Task AutoEquip(int broSeed, UserModel account, RoleModel role)
+    public async Task AutoEquip(int broSeed, EquipController controller, UserModel account, RoleModel role)
     {
-        await EquipController.AutoEquips(broSeed, account, role);
+        await controller.AutoEquips(broSeed, account, role);
     }
     public async Task AddAttrPoint(int broSeed, string title, RoleModel role)
     {
