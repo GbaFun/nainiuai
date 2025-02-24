@@ -132,17 +132,20 @@ public class PageLoadHandler
     #region 载入替换cookie
 
 
-    public static async void SaveCookieAndCache(ChromiumWebBrowser bro,string name, bool isDirectUpdate = false)
+    public static async void SaveCookieAndCache(ChromiumWebBrowser bro, string name, bool isDirectUpdate = false)
     {
-        string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name+ ".json");
-        string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
-        var createTime = File.GetCreationTime(cookiePath);
-        var size = File.ReadAllBytes(cookiePath).Length;
-        TimeSpan val = DateTime.Now - createTime;
-        if (size == 0 || val.TotalMinutes >= 10 || isDirectUpdate)
+        if (bro.CanExecuteJavascriptInMainFrame)
         {
-            await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
-            await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
+            string stroagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".json");
+            string cookiePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie", name + ".txt");
+            var createTime = File.GetCreationTime(cookiePath);
+            var size = File.ReadAllBytes(cookiePath).Length;
+            TimeSpan val = DateTime.Now - createTime;
+            if (size == 0 || val.TotalMinutes >= 10 || isDirectUpdate)
+            {
+                await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
+                await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
+            }
         }
     }
 

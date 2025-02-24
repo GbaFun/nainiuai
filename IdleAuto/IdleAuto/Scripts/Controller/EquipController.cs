@@ -65,6 +65,7 @@ public class EquipController
                     if (bagCount + boxCount > 3000)
                     {
                         P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
+                        hasEquips = false;
                         break;
                     }
 
@@ -628,7 +629,6 @@ public class EquipController
             P.Log($"开始查询数据库装备", emLogType.AutoEquip);
             List<EquipModel> findEquips = new List<EquipModel>();
             var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId).ToList();
-            //&& AttributeMatchUtil.MatchCategory(p, targetEquip.Category) && AttributeMatchUtil.MatchQuallity(p, targetEquip.Quality)).ToList();
             foreach (var item in __equips)
             {
                 if (AttributeMatchUtil.MatchCategory(item, targetEquip.Category) && AttributeMatchUtil.MatchQuallity(item, targetEquip.Quality))

@@ -85,7 +85,19 @@ function getEquipInfo(eid, sortid, quality, content) {
         }
         else {
             var sc2 = name[1].split("之");
-            baseName = sc2[sc2.length - 1];
+            if (sc2.length > 2)
+                baseName = sc2[sc2.length - 2] + "之" + sc2[sc2.length - 1];
+            else {
+                if (sc2[sc2.length - 1].length <= 1) {
+                    var c = sc2[sc2.length - 1];
+                    if (c == "斧" || c == "矛" || c == "叉" || c == "爪")
+                        baseName = sc2[sc2.length - 1];
+                    else
+                        baseName = name[1];
+                }
+                else
+                    baseName = sc2[sc2.length - 1];
+            }
         }
     }
     if (baseName.includes("太古")) baseName = baseName.replace("太古", "");
