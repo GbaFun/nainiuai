@@ -343,14 +343,15 @@ public class BroTabManager
             if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
         var response2 = await bro.EvaluateScriptAsync(jsFunc);
-
-        await Task.Delay(1000);
-        bro.Reload();
-
-        if (!response2.Success)
+        //if (!response2.Success)
+        //{
+        //    jsTask.SetResult(false); onJsInitCallBack = null;
+        //}
+        //else
         {
-            jsTask.SetResult(false); onJsInitCallBack = null;
-        };
+            await Task.Delay(1000);
+            bro.Reload();
+        }
 
         await jsTask.Task;
         EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);

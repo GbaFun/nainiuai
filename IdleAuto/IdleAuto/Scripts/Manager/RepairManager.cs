@@ -29,17 +29,17 @@ public class RepairManager : SingleManagerBase<RepairManager>
             var bro = BroTabManager.Instance.GetBro(repairBroSeed);
             bro.ShowDevTools();
 
-            //将挂机装备放入仓库
-            await EquipToRepository(repairBroSeed, equipController, account);
-            //盘点仓库装备
-            await InventoryEquips(repairBroSeed, equipController, account);
+            ////将挂机装备放入仓库
+            //await EquipToRepository(repairBroSeed, equipController, account);
+            ////盘点仓库装备
+            //await InventoryEquips(repairBroSeed, equipController, account);
             //遍历账户下角色修车
             foreach (var role in account.Roles)
             {
-                //技能加点
-                await AddSkillPoint(repairBroSeed, account.AccountName, role);
-                //自动更换装备
-                await AutoEquip(repairBroSeed, equipController, account, role);
+                ////技能加点
+                //await AddSkillPoint(repairBroSeed, account.AccountName, role);
+                ////自动更换装备
+                //await AutoEquip(repairBroSeed, equipController, account, role);
                 //角色剩余属性点分配
                 await AddAttrPoint(repairBroSeed, account.AccountName, role);
             }
@@ -55,11 +55,12 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public async Task ClearEquips(UserModel account)
     {
         EquipController equipController = new EquipController();
-        //跳转账户首页
-        int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
-        var bro = BroTabManager.Instance.GetBro(repairBroSeed);
-        bro.ShowDevTools();
-        await ClearRepository(repairBroSeed, equipController, account);
+        FreeDb.Sqlite.Delete<EquipModel>().Where(p => true).ExecuteAffrows();
+        ////跳转账户首页
+        //int repairBroSeed = await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, IdleUrlHelper.HomeUrl(), "char");
+        //var bro = BroTabManager.Instance.GetBro(repairBroSeed);
+        //bro.ShowDevTools();
+        //await ClearRepository(repairBroSeed, equipController, account);
     }
 
     public async Task ClearRepository(int broSeed, EquipController controller, UserModel account)
