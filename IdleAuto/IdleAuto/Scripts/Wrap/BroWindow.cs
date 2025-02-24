@@ -1,6 +1,8 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using IdleAuto.Scripts.Controller;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,26 +10,57 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace IdleAuto.Scripts
+namespace IdleAuto.Scripts.Wrap
 {
     public class BroWindow
     {
         private ChromiumWebBrowser _bro;
 
+        private Bridge _bridge;
+
+        public EventManager EventMa;
+
+        public BaseController BaseController;
+
+        public CharacterController CharController;
+
         private string _proxy;
 
         private int _seed;
 
-        public void SetSeed(int seed)
+        private ConcurrentDictionary<string, bool> SignalDic;
+
+        private void SetSeed(int seed)
         {
             this._seed = seed;
         }
 
-        public BroWindow(int seed,string name, string url, string proxy = "")
+        public BroWindow(int seed, string name, string url, string proxy = "")
         {
             SetSeed(seed);
+
+            this.EventMa = new EventManager();
+            _bridge = new Bridge(seed, EventMa);
+            this.BaseController = new BaseController();
+            this.CharController = new CharacterController();
+            SignalDic = new ConcurrentDictionary<string, bool>();
+            SubscribeEvent();
             this._bro = InitializeChromium(name, url, proxy);
 
+        }
+
+        private void SubscribeEvent()
+        {
+            EventMa.SubscribeEvent(emEventType.OnSignal, CharController.OnSignalCallback);
+            EventMa.SubscribeEvent(emEventType.OnDungeonRequired, CharController.OnDungeonRequired);
+            //EventMa.SubscribeEvent(emEventType.OnCharNameConflict);
+        }
+
+
+
+        public ChromiumWebBrowser GetBro()
+        {
+            return _bro;
         }
 
 
@@ -57,7 +90,7 @@ namespace IdleAuto.Scripts
             }
             // 绑定对象
             browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
-            browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
+            browser.JavascriptObjectRepository.Register("Bridge", _bridge, isAsync: true, options: BindingOptions.DefaultBinder);
             browser.KeyboardHandler = new CEFKeyBoardHandler();
             // 等待页面加载完成后执行脚本
             browser.FrameLoadEnd += (sender, e) => OnFrameLoadEnd(sender, e, name, url);
@@ -117,7 +150,7 @@ namespace IdleAuto.Scripts
             P.Log($"On {name} FrameLoadStart");
 
             var bro = sender as ChromiumWebBrowser;
-            EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
+            EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
 
         /// <summary>
@@ -131,7 +164,7 @@ namespace IdleAuto.Scripts
         {
             var bro = sender as ChromiumWebBrowser;
             string url = bro.Address;
-       
+
             Task.Run(async () =>
             {
                 await PageLoadHandler.LoadJsByUrl(bro);
@@ -140,12 +173,35 @@ namespace IdleAuto.Scripts
             if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
             {
                 P.Log($"Start Save {name} CookieAndCache");
-                PageLoadHandler.SaveCookieAndCache(bro, name);
-                RemoveProxy(bro);
+                // PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie
+                // RemoveProxy(bro);
             }
 
-            EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
+            EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
         }
 
+
     }
+    public class MyRequestHandler : CefSharp.Handler.RequestHandler
+    {
+        private string _proxyUserName;
+        private string _proxyUserPwd;
+
+        public MyRequestHandler(string proxyUser, string proxyPwd)
+        {
+            _proxyUserName = proxyUser;
+            _proxyUserPwd = proxyPwd;
+        }
+
+        protected override bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
+        {
+            if (isProxy)
+            {
+                callback.Continue(_proxyUserName, _proxyUserPwd);
+                return true;
+            }
+            return base.GetAuthCredentials(chromiumWebBrowser, browser, originUrl, isProxy, host, port, realm, scheme, callback);
+        }
+    }
+
 }

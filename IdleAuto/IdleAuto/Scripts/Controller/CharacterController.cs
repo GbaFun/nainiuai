@@ -94,21 +94,17 @@ namespace IdleAuto.Scripts.Controller
         /// 
         /// </summary>
         /// <param name="args"></param>
-        private void OnDungeonRequired(params object[] args)
+        public void OnDungeonRequired(params object[] args)
         {
             var data = args[0].ToObject<Dictionary<string, object>>();
             var isSuccess = data["isSuccess"];
             var isNeedDungeon = data["isNeedDungeon"];
             _isNeedDungeon = bool.Parse(isNeedDungeon.ToString());
-            onJsInitCallBack?.Invoke(true);
-            onJsInitCallBack = null;
         }
 
         public CharacterController()
         {
-            EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
-            EventManager.Instance.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
-            EventManager.Instance.SubscribeEvent(emEventType.OnDungeonRequired, OnDungeonRequired);
+
             EventManager.Instance.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
             _isNeedDungeon = false;
         }
@@ -188,23 +184,37 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            await SwitchTo(dungeonLv,role);
-            await JsInit();
+            await SignalCallback("charReload", async () =>
+            {
+                await SwitchTo(dungeonLv);
+            });
+
+
             if (bro.Address.IndexOf("InDungeon") == -1)
             {
-                bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
-                await JsInit();
+                await SignalCallback("charReload", () =>
+                {
+                    _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
+                });
+
             }
-            //开始秘境
-            this.Signal = "DungeonEnd";
-            //开始跑自动秘境
-            var d = await _browser.EvaluateScriptAsync($@"_map.startExplore();");
-            await SignalCallback();
+
+            await SignalCallback("DungeonEnd", async () =>
+            {
+                await _browser.EvaluateScriptAsync($@"_map.startExplore();");
+            });
 
             //再次尝试直接抵达
-            _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
-            await JsInit();
-            await SwitchTo(_targetMapLv,role);
+            await SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+            });
+
+            await SignalCallback("charReload", async () =>
+            {
+                await SwitchTo(_targetMapLv);
+            });
+
         }
         /// <summary>
         /// 开始
@@ -835,29 +845,24 @@ namespace IdleAuto.Scripts.Controller
 
         #region 切图
 
-        public async Task StartSwitchMap()
+        public async Task StartSwitchMap(ChromiumWebBrowser bro, UserModel user)
         {
-
-            for (int i = 0; i < AccountController.Instance.User.Roles.Count; i++)
+            _browser = bro;
+            for (int i = 0; i < user.Roles.Count; i++)
             {
-                RoleModel role = AccountController.Instance.User.Roles[i];
-                if (_broSeed == 0) _broSeed = await BroTabManager.Instance.TriggerAddTabPage(AccountController.Instance.User.AccountName, $"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}", "char");
-
-                var bro = BroTabManager.Instance.GetBro(_broSeed);
+                await Task.Delay(1000);
+                RoleModel role = user.Roles[i];
                 await SwitchMap(bro, role);
-                await Task.Delay(2000);
+                await Task.Delay(1000);
             }
         }
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
         {
-            _browser = bro;
             int roleid = role.RoleId;
-            int curRoleId = await GetRoleId();
-            if (curRoleId != roleid)
+            await SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
-                await JsInit();
-            }
+            });
             var curMapLv = await GetCurMapLv();
             _curMapLv = curMapLv;
             //检查是否层数合适
@@ -866,10 +871,12 @@ namespace IdleAuto.Scripts.Controller
 
             int targetLv = setting.MapLv; //setting.MapLv;
             _targetMapLv = targetLv;
-     
-            //尝试抵达
-            await SwitchTo(targetLv, role);
-            await JsInit();
+            await SignalRaceCallBack(new string[] {  "charReload" }, async () =>
+            {
+                await SwitchTo(targetLv);
+
+            });
+
             if (_isNeedDungeon)
             {
                 _isNeedDungeon = false;//进来了就重置
@@ -878,15 +885,9 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        private async Task SwitchTo(int targetLv,RoleModel role)
+        private async Task SwitchTo(int targetLv)
         {
-
-            if (_browser.CanExecuteJavascriptInMainFrame)
-            {
-                var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
-            }
-          
-
+            var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
         }
 
 

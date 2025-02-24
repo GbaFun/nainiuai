@@ -70,6 +70,9 @@
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
+    <Compile Include="Scripts\Controller\FlowController.cs" />
+    <Compile Include="Scripts\Manager\TabManager.cs" />
+    <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
     <None Include="BackUp\Cookies\RasdSky.json" />
     <None Include="BackUp\Cookies\史蒂夫.json" />
@@ -82,7 +85,6 @@
     </None>
     <Compile Include="Configs\CfgExtension\SkillPointCfg.cs" />
     <Compile Include="Db\FreeDb.cs" />
-    <Compile Include="Scripts\BroWindow.cs" />
     <Compile Include="Scripts\Controller\CharacterController.cs" />
     <Compile Include="Scripts\Controller\EquipController.cs" />
     <Compile Include="Scripts\Controller\LoadingController.cs" />

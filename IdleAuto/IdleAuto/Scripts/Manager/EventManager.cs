@@ -58,6 +58,11 @@ public enum emEventType
 
 public class EventManager
 {
+
+    public EventManager()
+    {
+        eventDic = new Dictionary<emEventType, Action<object[]>>();
+    }
     private static EventManager instance;
     public static EventManager Instance
     {

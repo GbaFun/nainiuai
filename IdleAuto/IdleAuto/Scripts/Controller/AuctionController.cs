@@ -52,7 +52,7 @@ public class AuctionController:BaseController
     public async void StartScan()
     {
         IsStart = true;
-        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+       // EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         await StartAutoJob();
     }
 
@@ -137,7 +137,7 @@ public class AuctionController:BaseController
     public void StopScan()
     {
         IsStart = false;
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+      //  EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         Task.Run(() =>
         {
             Thread.Sleep(60000);

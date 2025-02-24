@@ -9,23 +9,29 @@ using System.Windows.Forms;
 
 public class Bridge
 {
-    /// <summary>
-    /// 读取账号配置 在js端调用
-    /// </summary>
-    /// <returns></returns>
-    public object GetSelectedAccount()
-    {
-        return AccountController.Instance.User;
-    }
+    private int _seed { get; set; }
 
-    public List<DemandEquip> GetAhDemandEquip()
+    private EventManager _eventMa { get; set; }
+
+    public Bridge(int seed = -1, EventManager eventMa = null)
     {
-        return ScanAhCfg.Instance.Data;
+        _seed = seed;
+        _eventMa = eventMa;
+    }
+    public int GetSeed()
+    {
+        return _seed;
     }
 
     public void InvokeEvent(string eventName, params object[] args)
     {
-        EventManager.Instance.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
+        if (_eventMa != null)
+        {
+            _eventMa.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
+        }
+        else EventManager.Instance.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
     }
+
+
 }
 

@@ -28,6 +28,7 @@ public partial class MainForm : Form
 
 
     public BroTabManager TabManager;
+    private TabManager _tabManager;
     private void MainForm_Load(object sender, EventArgs e)
     {
     }
@@ -38,6 +39,7 @@ public partial class MainForm : Form
         Instance = this;
         // 初始化 TabManager，并传递 TabControl
         TabManager = new BroTabManager(BroTabControl);
+        _tabManager = new TabManager(BroTabControl);
         this.Controls.Add(new MenuWidget());
     }
 }

@@ -1,4 +1,5 @@
-﻿using CefSharp.WinForms;
+﻿using CefSharp;
+using CefSharp.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -18,60 +19,79 @@ public class BaseController
     protected delegate void OnJsInitCallBack(bool result);
     protected OnJsInitCallBack onJsInitCallBack;
 
-    protected OnJsInitCallBack onSignal = null;
-
-    private string _signal = "";
-    public string Signal
-    {
-        get { return _signal; }
-        set
-        {
-            //只能在js回调的委托里面更改信号量
-            if (_signal != "") throw new Exception("上一个信号量未接受到回调:"+_signal);
-            _signal = value;
-        }
-    }
-
-    public BaseController()
-    {
-        EventManager.Instance.SubscribeEvent(emEventType.OnSignal, OnSignal);
-    }
+    /// <summary>
+    /// 等待特定信号的委托
+    /// </summary>
+    /// <param name="signal"></param>
+    protected delegate void OnSignalCallBack(string signal);
+    protected OnSignalCallBack onSignalCallBack;
 
 
-    protected void OnAhJsInited(params object[] args)
-    {
-        string jsName = args[0] as string;
-
-        if (JsNames.Contains(jsName))
-        {
-            onJsInitCallBack?.Invoke(true);
-            onJsInitCallBack = null;
-        }
-    }
-
-    protected void OnSignal(params object[] args)
+    public void OnSignalCallback(params object[] args)
     {
         string t = args[0] as string;
-        if (t == Signal)
-        {
-            onSignal?.Invoke(true);
-            onSignal = null;
-            _signal = "";
-        }
+        onSignalCallBack?.Invoke(t);
     }
 
-    public async Task SignalCallback()
+    /// <summary>
+    /// 执行一个js或者跳转页面 等待js使用特定信号回调
+    /// </summary>
+    /// <param name="signal"></param>
+    /// <param name="js"></param>
+    /// <param name="urlToJump"></param>
+    /// <returns></returns>
+    public async Task SignalCallback(string signal, Action act)
     {
-       
+
         var tcs2 = new TaskCompletionSource<bool>();
-        if (onSignal != null)
+        if (onSignalCallBack != null)
         {
             throw new Exception("重复添加信号事件方法");
         }
-        onSignal = (result) => tcs2.SetResult(result);
-        await tcs2.Task; 
-        
+        onSignalCallBack = (result) =>
+        {
+            if (result == signal)
+            {
+                tcs2.SetResult(true);
+                onSignalCallBack = null;
+            }
+        };
+        act.Invoke();
+        await tcs2.Task;
+
     }
+
+    /// <summary>
+    /// 一个方法多种结果 只需等待其中一种结果的情况用这个 比如切图可能会异常可能会直接切过去
+    /// </summary>
+    /// <param name="signals"></param>
+    /// <param name="act"></param>
+    /// <returns></returns>
+    public async Task SignalRaceCallBack(string[] signals, Action act)
+    {
+        var tcs2 = new TaskCompletionSource<bool>();
+        if (onSignalCallBack != null)
+        {
+            throw new Exception("重复添加信号事件方法");
+        }
+        onSignalCallBack = (result) =>
+        {
+            if (signals.Contains(result))
+            {
+                tcs2.SetResult(true);
+                onSignalCallBack = null;
+            }
+        };
+        act.Invoke();
+        await tcs2.Task;
+
+    }
+
+
+
+
+
+
 
 
     //该方法要写在会执行刷新页面操作之后
@@ -86,7 +106,7 @@ public class BaseController
             cts.CancelAfter(TimeSpan.FromSeconds(50));
 
             var tcs2 = new TaskCompletionSource<bool>();
-        
+
 
             onJsInitCallBack = (result) => tcs2.SetResult(result);
 

@@ -8,6 +8,7 @@ class Character {
             this.initCurrentChar();
             if (this.cid > 0) Bridge.invokeEvent('OnCharLoaded', _char.cid);
             Bridge.invokeEvent('OnJsInited', 'char');
+            Bridge.invokeEvent('OnSignal', 'charReload');
         });
     }
     async init() {
@@ -245,7 +246,7 @@ class Character {
             if (isNeedDungeon) {
                 data.isSuccess = false;
                 data.isNeedDungeon = true;
-                Bridge.invokeEvent('OnDungeonRequired', data);
+                Bridge.invokeEvent('OnDungeonRequired', data);//触发秘境异常不会刷页面 如果页面刷新了说明切图成功
             }
          
             location.reload();

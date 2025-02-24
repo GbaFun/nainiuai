@@ -169,7 +169,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            CharacterController.Instance.StartSwitchMap();
+            FlowController.StartMapSwitch();
         }
 
         private void OnRefreshTimerElapsed(object state)
