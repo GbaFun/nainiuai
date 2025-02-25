@@ -475,11 +475,27 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<Dictionary<string, SkillModel>> GetSkillInfo()
         {
-            //因为是在自动换装那边进入这里 那边只等待了equip.js 加个延迟等待charjs载入
-            await Task.Delay(1000);
+
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.getSkillInfo();");
+                return d.Result?.ToObject<Dictionary<string, SkillModel>>();
+            }
+            else return null;
+
+        }
+
+
+        /// <summary>
+        /// 获取人物技能
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Dictionary<string, SkillModel>> GetSkillConfig()
+        {
+
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.getSkillConfig();");
                 return d.Result?.ToObject<Dictionary<string, SkillModel>>();
             }
             else return null;
@@ -622,9 +638,11 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartAddSkill(ChromiumWebBrowser bro, UserModel user)
         {
             _browser = bro;
-            foreach (var role in user.Roles)
+            for (int i = 0; i < user.Roles.Count; i++)
             {
-
+                var role = user.Roles[i];
+                await AddSkillPoints(_browser, role);
+                await Task.Delay(2000);
             }
 
         }
@@ -634,40 +652,64 @@ namespace IdleAuto.Scripts.Controller
             _browser = bro;
             int roleid = role.RoleId;
             //不在详细页先去详细页读取属性
-            if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
-            {
-                _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
-                await JsInit();
-            }
-            //判断下当前技能合不合适 合适就跳过
-            var curSkill = await GetSkillInfo();
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
-            var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
-            var isAddPoint = CheckRoleSkill(curSkill, targetSkillPoint);
-            if (isAddPoint)
+            await SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
-                await JsInit();
+            });
+
+            //判断下当前技能合不合适 合适就跳过
+            var curSkill = await GetSkillConfig();
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
+            var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+            var r = CheckRoleSkill(curSkill, targetSkillPoint);
+            var isNeedRest = r.Item1;
+            var isNeedAdd = r.Item2;
+            if (isNeedAdd || isNeedRest)
+            {
+
+
+
                 P.Log("开始重置技能加点！", emLogType.AutoEquip);
-                await SkillRest();
-                await SkillSave(targetSkillPoint, skillConfig.JobName);
+                if (isNeedRest) await SignalCallback("charReload", async () =>
+                   {
+                       await SkillRest();
+                   });
+
+                await SignalCallback("charReload", async () =>
+                {
+                    await SkillSave(targetSkillPoint, skillConfig.JobName);
+                });
+
                 var groupid = GetSkillGroup(skillConfig);
-                await SkillGroupSave(groupid);
+                await SignalCallback("charReload", async () =>
+                {
+                    await SkillGroupSave(groupid);
+                });
+
             }
 
             if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
             {
-                _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
-                await JsInit();
+                await SignalCallback("charReload", () =>
+                {
+                    _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+
+                });
+
             }
-            await SkillKeySave(skillConfig.KeySkillId);
+
+            await SignalCallback("charReload", async () =>
+            {
+                await SkillKeySave(skillConfig.KeySkillId);
+            });
+
         }
         private async Task SkillRest()
         {
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.skillReset();");
-                await JsInit();
+
             }
         }
 
@@ -704,7 +746,7 @@ namespace IdleAuto.Scripts.Controller
                 {
                     P.Log($"技能加点成功！", emLogType.AutoEquip);
                 }
-                await JsInit();
+
             }
 
         }
@@ -741,7 +783,7 @@ namespace IdleAuto.Scripts.Controller
                 {
                     P.Log($"保存携带技能成功！", emLogType.AutoEquip);
                 }
-                await JsInit();
+
             }
         }
         /// <summary>
@@ -771,7 +813,7 @@ namespace IdleAuto.Scripts.Controller
                 var idleSkill = IdleSkillCfg.Instance.GetIdleSkill(config.JobName, p);
                 var maxSkillPoint = idleSkill.CurLvMaxPoint(curLv);//当前等级能加到max是多少
                 if (!targetSkillDic.ContainsKey(name)) targetSkillDic.Add(name, 0);
-                int addPoint = maxSkillPoint - targetSkillDic[name];
+                int addPoint = maxSkillPoint - targetSkillDic[name];//减去remain中已经配置的点剩下需要加多少点
                 if (pointCount <= addPoint)
                 {
                     //剩余点数不够加到最大了就按照剩余加
@@ -780,7 +822,7 @@ namespace IdleAuto.Scripts.Controller
                 }
                 else
                 {
-                    targetSkillDic[name] = maxSkillPoint;
+                    targetSkillDic[name] += addPoint;
                     pointCount -= addPoint;
                 }
 
@@ -795,28 +837,34 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="skills"></param>
         /// <param name="targetSkillDic"></param>
         /// <returns></returns>
-        private bool CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic)
+        private Tuple<bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic)
         {
-            bool result = false;
+            var noZeroSkill = skills.Where(p => p.Value.Lv > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
+            bool isNeedReset = false;//需要重置
+            bool isNeedAdd = false;//需要加点
             foreach (var item in targetSkillDic)
             {
-                if (!skills.ContainsKey(item.Key))
+                //加的技能不包含在目标技能
+                if (!noZeroSkill.ContainsKey(item.Key))
                 {
                     //当前技能没点目标技能 
-                    result = true;
+                    isNeedReset = true;
                     break;
                 }
-                else
+
+                //比较下数值
+                if (noZeroSkill[item.Key].Lv != item.Value)
                 {
-                    //比较下数值
-                    if (skills[item.Key].Lv != item.Value)
+                    if (noZeroSkill[item.Key].Lv > item.Value)//如果已经加的技能大于计算出的技能则需要重置才能加点
                     {
-                        result = true;
+                        isNeedReset = true;
                         break;
                     }
+                    isNeedAdd = true;
                 }
+
             }
-            return result;
+            return new Tuple<bool, bool>(isNeedReset, isNeedAdd);
         }
 
         /// <summary>
@@ -830,7 +878,6 @@ namespace IdleAuto.Scripts.Controller
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.skillKeySave({skillId});");
-                await JsInit();
             }
         }
         #endregion

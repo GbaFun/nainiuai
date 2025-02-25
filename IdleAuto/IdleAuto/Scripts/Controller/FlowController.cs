@@ -26,8 +26,10 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task StartAddSkill()
         {
-            foreach (var account in AccountCfg.Instance.Accounts)
+            for (int i=3;i<AccountCfg.Instance.Accounts.Count;i++)
             {
+                var account= AccountCfg.Instance.Accounts[i];
+                if (account.AccountName == "铁矿石") continue;
                 var user = new UserModel(account);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 await window.CharController.StartAddSkill(window.GetBro(), window.User);
