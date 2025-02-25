@@ -24,6 +24,8 @@ namespace IdleAuto.Scripts.Wrap
 
         public CharacterController CharController;
 
+        public UserModel User;
+
         private string _proxy;
 
         private int _seed;
@@ -35,25 +37,37 @@ namespace IdleAuto.Scripts.Wrap
             this._seed = seed;
         }
 
-        public BroWindow(int seed, string name, string url, string proxy = "")
+        public BroWindow(int seed, UserModel user, string url, string proxy = "")
         {
             SetSeed(seed);
-
+            User = user;
             this.EventMa = new EventManager();
             _bridge = new Bridge(seed, EventMa);
             this.BaseController = new BaseController();
             this.CharController = new CharacterController();
             SignalDic = new ConcurrentDictionary<string, bool>();
             SubscribeEvent();
-            this._bro = InitializeChromium(name, url, proxy);
+            this._bro = InitializeChromium(User.AccountName, url, proxy);
 
         }
 
         private void SubscribeEvent()
         {
             EventMa.SubscribeEvent(emEventType.OnSignal, CharController.OnSignalCallback);
+            EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
             EventMa.SubscribeEvent(emEventType.OnDungeonRequired, CharController.OnDungeonRequired);
             //EventMa.SubscribeEvent(emEventType.OnCharNameConflict);
+        }
+
+        public void SetInstanceUser(params object[] args)
+        {
+            if (args.Length == 3)
+            {
+                bool isSuccess = (bool)args[0];
+                string account = args[1] as string;
+                List<RoleModel> roles = args[2].ToObject<List<RoleModel>>();
+                User.Roles = roles;
+            }
         }
 
 

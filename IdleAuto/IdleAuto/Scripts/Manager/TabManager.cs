@@ -73,18 +73,18 @@ public class TabManager
     /// <param name="url">跳转url</param>
     /// <param name="jsName">必须等待某个js载入完成才能保证逻辑正确执行</param>
     /// <returns></returns>
-    public async Task<int> AddBroToTap(string name, string url, string jsName)
+    public async Task<int> AddBroToTap(UserModel user, string url)
     {
-        var seed = AddTabPage(name);
+        var seed = AddTabPage(user.AccountName);
         var tabPage = TabPageDic[seed];
 
         var jsTask = new TaskCompletionSource<bool>();
         //等待特定js载入完成
         onJsInitCallBack = (result) =>
         {
-            if (jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+            if ("login" == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
-        var window = new BroWindow(seed, name, url);
+        var window = new BroWindow(seed, user, url);
         window.EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
         tabPage.Controls.Add(window.GetBro());
         await jsTask.Task;
@@ -92,7 +92,7 @@ public class TabManager
         BroWindowDic.TryAdd(seed, window);
         return seed;
     }
-    public async Task<int> TriggerAddBroToTap(string name, string url, string jsName)
+    public async Task<int> TriggerAddBroToTap(UserModel user)
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
@@ -105,7 +105,7 @@ public class TabManager
             {
                 try
                 {
-                    var result = await AddBroToTap(name, url, jsName);
+                    var result = await AddBroToTap(user, "https://www.idleinfinity.cn/Home/Index");
                     tcs.SetResult(result);
                 }
                 catch (Exception ex)
@@ -117,7 +117,7 @@ public class TabManager
         }
         else
         {
-            return await AddBroToTap(name, url, jsName);
+            return await AddBroToTap(user, "https://www.idleinfinity.cn/Home/Index");
         }
     }
 
@@ -156,6 +156,26 @@ public class TabManager
         {
             _seed++;
         }
+    }
+
+    public void DisposePage(int seed)
+    {
+     
+        var tabPage = TabPageDic[seed];
+        if (Tab.InvokeRequired)
+        {
+            Tab.Invoke(new Action(() =>
+            {
+                Tab.TabPages.Remove(tabPage);
+            }));
+        }
+        else
+        {
+            Tab.TabPages.Remove(tabPage);
+        }
+        BroWindowDic.TryRemove(seed, out _);
+        TabPageDic.TryRemove(seed, out _);
+        GC.Collect();
     }
 
 }

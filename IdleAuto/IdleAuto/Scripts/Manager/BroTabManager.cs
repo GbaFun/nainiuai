@@ -196,7 +196,7 @@ public class BroTabManager
         };
         EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
-        var broWindow = new BroWindow(0, name, url);
+       // var broWindow = new BroWindow(0, name, url);
         bro = InitializeChromium(name, url, proxy);
 
         // 创建 TabPage

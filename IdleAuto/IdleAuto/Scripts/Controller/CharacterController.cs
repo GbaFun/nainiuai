@@ -10,6 +10,7 @@ using FreeSql;
 using CefSharp.WinForms;
 using System.Data;
 using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Wrap;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -637,6 +638,16 @@ namespace IdleAuto.Scripts.Controller
         #endregion  
 
         #region 技能
+        public async Task StartAddSkill(ChromiumWebBrowser bro, UserModel user)
+        {
+            _browser = bro;
+            foreach (var role in user.Roles)
+            {
+
+            }
+
+        }
+
         public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
         {
             _browser = bro;
@@ -852,7 +863,7 @@ namespace IdleAuto.Scripts.Controller
             {
                 await Task.Delay(1000);
                 RoleModel role = user.Roles[i];
-                await SwitchMap(bro, role);
+                await SwitchMap(_browser, role);
                 await Task.Delay(1000);
             }
         }
@@ -871,11 +882,11 @@ namespace IdleAuto.Scripts.Controller
 
             int targetLv = setting.MapLv; //setting.MapLv;
             _targetMapLv = targetLv;
-            await SignalRaceCallBack(new string[] {  "charReload" }, async () =>
-            {
-                await SwitchTo(targetLv);
+            await SignalRaceCallBack(new string[] { "charReload" }, async () =>
+           {
+               await SwitchTo(targetLv);
 
-            });
+           });
 
             if (_isNeedDungeon)
             {
@@ -903,6 +914,7 @@ namespace IdleAuto.Scripts.Controller
             return int.Parse(Math.Ceiling(result).ToString()) * 10;
         }
         #endregion
+
 
     }
 }

@@ -155,10 +155,11 @@ namespace IdleAuto.Scripts.View
 
         private async void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //切换角色将不再打开页面
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
 
-            await MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            //await MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
 
         private async void BtnClear_Click(object sender, EventArgs e)
@@ -170,6 +171,10 @@ namespace IdleAuto.Scripts.View
         private void btnMap_Click(object sender, EventArgs e)
         {
             FlowController.StartMapSwitch();
+        }
+        private void BtnSkillPoint_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void OnRefreshTimerElapsed(object state)
@@ -187,11 +192,7 @@ namespace IdleAuto.Scripts.View
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
             BroTabManager.Instance.ClearBrowsers();
-            for (int i = 0; i < AccountCombo.Items.Count; i++)
-            {
-                AccountCombo.SelectedIndex = i;
-                await Task.Delay(2000);
-            }
+            FlowController.RefreshCookie();
         }
 
         private void RoleCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -271,6 +272,15 @@ namespace IdleAuto.Scripts.View
             return result;
         }
 
+
         #endregion
+
+        private void btnHomePage_Click(object sender, EventArgs e)
+        {
+            Account item = this.AccountCombo.SelectedItem as Account;
+            AccountController.Instance.User = new UserModel(item);
+
+             MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+        }
     }
 }
