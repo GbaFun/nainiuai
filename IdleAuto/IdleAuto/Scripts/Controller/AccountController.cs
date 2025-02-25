@@ -1,4 +1,5 @@
 ﻿using IdleAuto.Scripts.Utils;
+using IdleAuto.Scripts.Wrap;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,6 +13,7 @@ public class AccountController
 {
     private static object lockObject = new object();
     private static AccountController instance;
+    private EventSystem EventSystem;
     public static AccountController Instance
     {
         get
@@ -28,9 +30,10 @@ public class AccountController
     public AccountController()
     {
         User = null;
-        EventManager.Instance.SubscribeEvent(emEventType.OnLoginSuccess, OnLoginSuccess);
-        EventManager.Instance.SubscribeEvent(emEventType.OnCharLoaded, OnCharLoaded);
-        EventManager.Instance.SubscribeEvent(emEventType.OnIpBan, RestIp);
+        EventSystem = new EventSystem();
+        EventSystem.SubscribeEvent(emEventType.OnLoginSuccess, OnLoginSuccess);
+        EventSystem.SubscribeEvent(emEventType.OnCharLoaded, OnCharLoaded);
+        EventSystem.SubscribeEvent(emEventType.OnIpBan, RestIp);
     }
 
     //当前登录账号
@@ -53,7 +56,7 @@ public class AccountController
                 if (!User.IsLogin)
                 {
                     User.SetLogin(isSuccess, account, roles);
-                    EventManager.Instance.InvokeEvent(emEventType.OnAccountDirty, null);
+                    EventSystem.InvokeEvent(emEventType.OnAccountDirty, null);
                 }
                 else
                 {
@@ -103,7 +106,7 @@ public class AccountController
         string ip = arr[0];
         int port = int.Parse(arr[1]);
         BroTabManager.Proxy = proxyServer;
-        await MainForm.Instance.TabManager.TriggerAddTabPage(User.AccountName, "https://www.idleinfinity.cn/Home/Login", proxy: proxyServer);
+        await BroTabManager.Instance.TriggerAddTabPage(User.AccountName, "https://www.idleinfinity.cn/Home/Login", proxy: proxyServer);
         return;
 
     }

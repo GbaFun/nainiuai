@@ -52,7 +52,7 @@ public class AuctionController:BaseController
     public async void StartScan()
     {
         IsStart = true;
-       // EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+       // EventSystem.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         await StartAutoJob();
     }
 
@@ -137,11 +137,11 @@ public class AuctionController:BaseController
     public void StopScan()
     {
         IsStart = false;
-      //  EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+      //  EventSystem.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         Task.Run(() =>
         {
             Thread.Sleep(60000);
-            MainForm.Instance.TabManager.DisposePage(_broSeed);
+            BroTabManager.Instance.DisposePage(_broSeed);
         });
     }
 
@@ -261,9 +261,9 @@ public class AuctionController:BaseController
     {
         var roleid = AccountController.Instance.User.FirstRole.RoleId;
         var accName = AccountController.Instance.User.AccountName;
-        var seed = await MainForm.Instance.TabManager.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
+        var seed = await BroTabManager.Instance.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
         _broSeed = seed;
-        return MainForm.Instance.TabManager.GetBro(seed);
+        return BroTabManager.Instance.GetBro(seed);
     }
 
 

@@ -15,9 +15,9 @@ namespace IdleAuto.Scripts.Controller
         public static async Task StartMapSwitch()
         {
             var user = AccountController.Instance.User;
-            int seed = await TabManager.Instance.TriggerAddBroToTap(user);
-            var window = TabManager.Instance.GetWindow(seed);
+            var window = await TabManager.Instance.TriggerAddBroToTap(user);
             await window.CharController.StartSwitchMap(window.GetBro(), window.User);
+            window.Close();
         }
 
         /// <summary>
@@ -29,10 +29,9 @@ namespace IdleAuto.Scripts.Controller
             foreach (var account in AccountCfg.Instance.Accounts)
             {
                 var user = new UserModel(account);
-                int seed = await TabManager.Instance.TriggerAddBroToTap(user);
-                var window = TabManager.Instance.GetWindow(seed);
+                var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 await window.CharController.StartAddSkill(window.GetBro(), window.User);
-                TabManager.Instance.DisposePage(seed);
+                window.Close();
             }
 
 
@@ -44,7 +43,7 @@ namespace IdleAuto.Scripts.Controller
             foreach (var account in AccountCfg.Instance.Accounts)
             {
                 AccountController.Instance.User = new UserModel(account);
-                await MainForm.Instance.TabManager.TriggerAddTabPage(account.AccountName, "https://www.idleinfinity.cn/Home/Index");
+                await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, "https://www.idleinfinity.cn/Home/Index");
                 await Task.Delay(2000);
             }
 

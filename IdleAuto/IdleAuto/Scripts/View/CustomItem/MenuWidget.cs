@@ -13,6 +13,7 @@ using IdleAuto.Scripts.View;
 using CefSharp.DevTools.FedCm;
 using CefSharp;
 using System.Threading;
+using System.Security.Principal;
 
 namespace IdleAuto.Scripts.View
 {
@@ -25,9 +26,9 @@ namespace IdleAuto.Scripts.View
         {
             InitializeComponent();
             ShowAccountCombo();
-            ShowRoleCombo();
-            EventManager.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadStart, OnBrowserFrameLoadStart);
-            EventManager.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadEnd, OnBrowserFrameLoadEnd);
+            //ShowRoleCombo();
+            //EventSystem.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadStart, OnBrowserFrameLoadStart);
+            //EventSystem.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadEnd, OnBrowserFrameLoadEnd);
 
             // 初始化定时器，每隔3小时执行一次
             //refreshTimer = new System.Threading.Timer(OnRefreshTimerElapsed, null, TimeSpan.FromHours(3), TimeSpan.FromHours(3));
@@ -43,11 +44,6 @@ namespace IdleAuto.Scripts.View
             {
                 AccountCombo.Items.Add(account);
             }
-
-            //if (AccountCombo.Items.Count > 0)
-            //{
-            //    AccountCombo.SelectedIndex = 0; // Select the first item by default
-            //}
         }
         private void ShowRoleCombo()
         {
@@ -56,7 +52,8 @@ namespace IdleAuto.Scripts.View
                 RoleCombo.Items.Clear();
                 RoleCombo.SelectedIndex = -1;
                 RoleCombo.Text = "";
-                foreach (var role in AccountController.Instance.User.Roles)
+                UserModel account = TabManager.Instance.GetWindow().User;
+                foreach (var role in account.Roles)
                 {
                     RoleCombo.Items.Add(role);
                 }
@@ -102,6 +99,10 @@ namespace IdleAuto.Scripts.View
             this.menuPanel.Controls.Add(this.AhGroup);
             this.menuPanel.Controls.Add(this.JumpGroup);
         }
+        private void ShowNoneMenu()
+        {
+            this.menuPanel.Controls.Clear();
+        }
 
         private void RefreshRole(RoleModel role)
         {
@@ -118,15 +119,15 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnInit_Click(object sender, EventArgs e)
         {
-            if (!CharacterController.Instance.IsAutoInit)
-            {
-                CharacterController.Instance.StartInit();
-            }
-            else
-            {
-                CharacterController.Instance.Stop();
-            }
-            BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
+            //if (!CharacterController.Instance.IsAutoInit)
+            //{
+            //    CharacterController.Instance.StartInit();
+            //}
+            //else
+            //{
+            //    CharacterController.Instance.Stop();
+            //}
+            //BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
         }
 
         private void BtnAutoOnline_Click(object sender, EventArgs e)
@@ -158,8 +159,7 @@ namespace IdleAuto.Scripts.View
             //切换角色将不再打开页面
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
-
-            //await MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
         }
 
         private async void BtnClear_Click(object sender, EventArgs e)
@@ -242,6 +242,10 @@ namespace IdleAuto.Scripts.View
             {
                 this.Invoke(new Action(() => ShowRoleMenu()));
             }
+            else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.EquipPage))
+            {
+                this.Invoke(new Action(() => ShowRoleMenu()));
+            }
             else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.MaterialPage))
             {
                 this.Invoke(new Action(() => ShowMaterialMenu()));
@@ -249,6 +253,10 @@ namespace IdleAuto.Scripts.View
             else if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.AhPage))
             {
                 this.Invoke(new Action(() => ShowAhMenu()));
+            }
+            else
+            {
+                this.Invoke(new Action(() => ShowNoneMenu()));
             }
 
             //检查url是否包含角色id，刷新角色选则内容
@@ -280,7 +288,7 @@ namespace IdleAuto.Scripts.View
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
 
-             MainForm.Instance.TabManager.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            BroTabManager.Instance.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
     }
 }

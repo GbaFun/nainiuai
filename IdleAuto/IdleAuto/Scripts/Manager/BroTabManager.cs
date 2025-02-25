@@ -31,6 +31,7 @@ public class BroTabManager
     private TabControl Tab;
 
     public static string Proxy;
+    private EventSystem EventSystem;
 
     /// <summary>
     /// 返回的流水号
@@ -151,6 +152,7 @@ public class BroTabManager
         BroDic = new ConcurrentDictionary<int, ChromiumWebBrowser>();
         TabPageDic = new ConcurrentDictionary<int, TabPage>();
         NameUrlDic = new ConcurrentDictionary<string, int>();
+        EventSystem = new EventSystem();
         Instance = this;
     }
 
@@ -194,9 +196,9 @@ public class BroTabManager
         {
             if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
-        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
-       // var broWindow = new BroWindow(0, name, url);
+        // var broWindow = new BroWindow(0, name, url);
         bro = InitializeChromium(name, url, proxy);
 
         // 创建 TabPage
@@ -210,7 +212,7 @@ public class BroTabManager
 
         await jsTask.Task;
 
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return _seed;
     }
 
@@ -224,13 +226,13 @@ public class BroTabManager
         {
             if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
-        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
         bro.LoadUrl(url);
 
         await jsTask.Task;
 
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return;
     }
 
@@ -335,7 +337,7 @@ public class BroTabManager
     public async Task<JavascriptResponse> TriggerCallJsWithReload(int seed, string jsFunc, string jsName)
     {
         var bro = BroDic[seed];
-        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
         var jsTask = new TaskCompletionSource<bool>();
         onJsInitCallBack = (result) =>
         {
@@ -353,7 +355,7 @@ public class BroTabManager
         }
 
         await jsTask.Task;
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
+        EventSystem.UnsubscribeEvent(emEventType.OnJsInited, OnJsInited);
         return response2;
     }
 
@@ -370,7 +372,7 @@ public class BroTabManager
         P.Log($"On {name} FrameLoadStart URL:{jumpToUrl} Time:{DateTime.Now}", emLogType.Warning);
 
         var bro = sender as ChromiumWebBrowser;
-        EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
+        EventSystem.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
     }
 
     /// <summary>
@@ -384,7 +386,7 @@ public class BroTabManager
     {
         var bro = sender as ChromiumWebBrowser;
         string url = bro.Address;
-        //EventManager.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
+        //EventSystem.Instance.SubscribeEvent(emEventType.OnAccountCheck, CheckAccount);
         //if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
         //{
         //    Task.Run(async () =>
@@ -404,7 +406,7 @@ public class BroTabManager
             RemoveProxy(bro);
         }
 
-        EventManager.Instance.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
+        EventSystem.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
     }
 
 

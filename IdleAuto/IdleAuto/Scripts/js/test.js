@@ -850,7 +850,7 @@ function idleInit() {
         }
 
         function mapMove() {
-            debugger;
+            //debugger;
             if (map[id] !== 'start') return;
             // 有boss先打boss
             const bossBlock = $('.boss').eq(0);

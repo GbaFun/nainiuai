@@ -18,7 +18,7 @@ namespace IdleAuto.Scripts.Wrap
 
         private Bridge _bridge;
 
-        public EventManager EventMa;
+        private EventSystem EventMa;
 
         public BaseController BaseController;
 
@@ -32,6 +32,9 @@ namespace IdleAuto.Scripts.Wrap
 
         private ConcurrentDictionary<string, bool> SignalDic;
 
+        private delegate void OnJsInitCallBack(string jsName);
+        private OnJsInitCallBack onJsInitCallBack;
+
         private void SetSeed(int seed)
         {
             this._seed = seed;
@@ -41,25 +44,79 @@ namespace IdleAuto.Scripts.Wrap
         {
             SetSeed(seed);
             User = user;
-            this.EventMa = new EventManager();
+            this.EventMa = new EventSystem();
             _bridge = new Bridge(seed, EventMa);
             this.BaseController = new BaseController();
             this.CharController = new CharacterController();
             SignalDic = new ConcurrentDictionary<string, bool>();
-            SubscribeEvent();
-            this._bro = InitializeChromium(User.AccountName, url, proxy);
-
-        }
-
-        private void SubscribeEvent()
-        {
             EventMa.SubscribeEvent(emEventType.OnSignal, CharController.OnSignalCallback);
             EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
             EventMa.SubscribeEvent(emEventType.OnDungeonRequired, CharController.OnDungeonRequired);
-            //EventMa.SubscribeEvent(emEventType.OnCharNameConflict);
+            EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
+
+            this._bro = InitializeChromium(User.AccountName, url, proxy);
+        }
+        public void Close()
+        {
+            EventMa.Dispose();
+            TabManager.Instance.DisposePage(_seed);
         }
 
-        public void SetInstanceUser(params object[] args)
+        public ChromiumWebBrowser GetBro()
+        {
+            return _bro;
+        }
+        public void SubscribeEvent(emEventType eventType, Action<object[]> callback)
+        {
+            EventMa.SubscribeEvent(eventType, callback);
+        }
+        public void UnsubscribeEvent(emEventType eventType, Action<object[]> callback)
+        {
+            EventMa.UnsubscribeEvent(eventType, callback);
+        }
+
+        public async Task<LoadUrlAsyncResponse> LoadUrl(string url)
+        {
+            return await _bro.LoadUrlAsync(url);
+        }
+        public async Task<LoadUrlAsyncResponse> LoadUrlWaitJsInit(string url, string jsName, int outTime = 5000)
+        {
+            var res = await _bro.LoadUrlAsync(url);
+            if (res.Success)
+            {
+                var jsTask = new TaskCompletionSource<bool>();
+                onJsInitCallBack = (result) =>
+                {
+                    if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+                };
+                await jsTask.Task;
+
+                return res;
+            }
+            else { return res; }
+        }
+        public async Task<JavascriptResponse> CallJs(string jsFunc)
+        {
+            return await _bro.EvaluateScriptAsync(jsFunc);
+        }
+
+        public async Task<JavascriptResponse> CallJsWithReload(string jsFunc, string jsName)
+        {
+            var response = await _bro.EvaluateScriptAsync(jsFunc);
+
+            await Task.Delay(1000);
+            var jsTask = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) =>
+            {
+                if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+            };
+            _bro.Reload();
+
+            await jsTask.Task;
+            return response;
+        }
+
+        private void SetInstanceUser(params object[] args)
         {
             if (args.Length == 3)
             {
@@ -70,13 +127,12 @@ namespace IdleAuto.Scripts.Wrap
             }
         }
 
-
-
-        public ChromiumWebBrowser GetBro()
+        private void OnJsInited(params object[] args)
         {
-            return _bro;
+            string jsName = args[0] as string;
+            //P.Log($"OnJsInited:{jsName}");
+            onJsInitCallBack?.Invoke(jsName);
         }
-
 
         /// <summary>
         /// 
@@ -158,7 +214,6 @@ namespace IdleAuto.Scripts.Wrap
             });
         }
 
-
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
             P.Log($"On {name} FrameLoadStart");
@@ -193,8 +248,6 @@ namespace IdleAuto.Scripts.Wrap
 
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
         }
-
-
     }
     public class MyRequestHandler : CefSharp.Handler.RequestHandler
     {

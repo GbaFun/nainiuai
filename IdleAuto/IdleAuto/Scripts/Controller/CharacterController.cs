@@ -16,8 +16,6 @@ namespace IdleAuto.Scripts.Controller
 {
     public class CharacterController : BaseController
     {
-        static readonly object LOCAKOBJECT = new object();
-
         static string[] Names = new string[]{
         "草泥马", "苦力怕", "烈焰人", "远古守卫", "恶魂", "幻翼", "史莱姆", "唤魔者", "凋零", "女巫", "掠夺者", "猪灵",
         "钻石", "煤矿石", "铁矿石", "铜矿石", "青金石", "金矿石", "黑曜石", "绿宝石", "石英石", "萤石", "下届合金", "紫水晶",
@@ -31,18 +29,6 @@ namespace IdleAuto.Scripts.Controller
         "打火石", "木屋", "TNT", "铁轨机", "刷线机", "地狱门", "刷怪笼", "附魔台", "末影珍珠", "熔岩桶", "烟花火箭", "火焰弹"
     };
 
-        private static CharacterController instance;
-        public static CharacterController Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new CharacterController();
-                }
-                return instance;
-            }
-        }
         /// <summary>
         /// 是否在自动初始化状态
         /// </summary>
@@ -105,8 +91,6 @@ namespace IdleAuto.Scripts.Controller
 
         public CharacterController()
         {
-
-            EventManager.Instance.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
             _isNeedDungeon = false;
         }
 
@@ -167,10 +151,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="args"></param>
         private void OnCharNameConflict(params object[] args)
         {
-            lock (LOCAKOBJECT)
-            {
-                CharNameSeed += 1;
-            }
+            CharNameSeed += 1;
         }
 
         private void OnPostFailed(params object[] args)
@@ -570,9 +551,9 @@ namespace IdleAuto.Scripts.Controller
         {
 
             var accName = AccountController.Instance.User.AccountName;
-            var seed = await MainForm.Instance.TabManager.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Home/Index");
+            var seed = await BroTabManager.Instance.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Home/Index");
             _broSeed = seed;
-            return MainForm.Instance.TabManager.GetBro(seed);
+            return BroTabManager.Instance.GetBro(seed);
         }
 
         #region 属性点

@@ -11,9 +11,9 @@ public class Bridge
 {
     private int _seed { get; set; }
 
-    private EventManager _eventMa { get; set; }
+    private EventSystem _eventMa { get; set; }
 
-    public Bridge(int seed = -1, EventManager eventMa = null)
+    public Bridge(int seed = -1, EventSystem eventMa = null)
     {
         _seed = seed;
         _eventMa = eventMa;
@@ -29,7 +29,9 @@ public class Bridge
         {
             _eventMa.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
         }
-        else EventManager.Instance.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
+        else
+            throw (new Exception("请先初始化事件控制器！"));
+        //else _eventMa.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
     }
 
 

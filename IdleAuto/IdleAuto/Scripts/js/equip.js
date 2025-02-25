@@ -55,16 +55,14 @@ function getEquipInfo(eid, sortid, quality, content) {
     e.eid = eid;
     e.esort = sortid;
     e.quality = quality;
-    //console.log(content);
     content = content.replace(/^\s*\n/gm, "")
     content = content.replace(/^\s*/gm, "")
     content = content.replace(/^\t*/gm, "")
-    //console.log(content);
     e.content = content;
-    console.log(e.content);
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
-    var baseName = "道具"
+    var baseName = name[1];
+
     if (quality == "set" || quality == "unique" || quality == "artifact") {
         if (sc[1] != "已绑定") baseName = sc[1];
         else baseName = sc[2];
@@ -78,30 +76,41 @@ function getEquipInfo(eid, sortid, quality, content) {
     else if (name[1].includes("秘境")) {
         baseName = "秘境";
     }
+    else if (name[1].includes("药水") || name[1].includes("宝箱") || name[1].includes("改名卡")) {
+        baseName = "道具";
+    }
     else {
-        if (name[1].includes("的")) {
-            var sc2 = name[1].split("的");
+        var sbname = name[1].replace("太古", "").replace("无形", "");
+        if (sbname.includes("的")) {
+            var sc2 = sbname.split("的");
             baseName = sc2[sc2.length - 1];
         }
         else {
-            var sc2 = name[1].split("之");
-            if (sc2.length > 2)
-                baseName = sc2[sc2.length - 2] + "之" + sc2[sc2.length - 1];
-            else {
+            var sc2 = sbname.split("之");
+            if (sc2.length > 1) {
                 if (sc2[sc2.length - 1].length <= 1) {
                     var c = sc2[sc2.length - 1];
                     if (c == "斧" || c == "矛" || c == "叉" || c == "爪")
                         baseName = sc2[sc2.length - 1];
                     else
-                        baseName = name[1];
+                        baseName = sbname;
                 }
-                else
-                    baseName = sc2[sc2.length - 1];
+                else {
+                    var c1 = sc2[sc2.length - 2];
+                    var c2 = sc2[sc2.length - 1];
+                    if (c2 == "法珠" && c1 == "鹰") {
+                        baseName = "鹰之法珠";
+                    }
+                    else
+                        baseName = sc2[sc2.length - 1];
+                }
             }
         }
     }
+
     if (baseName.includes("太古")) baseName = baseName.replace("太古", "");
     if (baseName.includes("无形")) baseName = baseName.replace("无形", "");
+
     e.equipBaseName = baseName;
     e.equipName = name[1];
     e.isPerfect = sc[0].includes('★');

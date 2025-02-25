@@ -13,6 +13,7 @@ using FreeSql.Sqlite;
 
 public class RuneController
 {
+    private EventSystem EventSystem;
     private static RuneController instance;
     public static RuneController Instance
     {
@@ -36,12 +37,12 @@ public class RuneController
         //Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
         long start = DateTime.Now.Ticks;
         P.Log("开始一键升级符文", emLogType.RuneUpgrate);
-        EventManager.Instance.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
-        EventManager.Instance.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
+        EventSystem.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
+        EventSystem.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
         //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
         List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
 
-        int broIndex = MainForm.Instance.TabManager.GetFocusID();
+        int broIndex = BroTabManager.Instance.GetFocusID();
 
         foreach (var item in cfg)
         {
@@ -54,7 +55,7 @@ public class RuneController
                 await Task.Delay(500);
                 continue;
             }
-            var response = await MainForm.Instance.TabManager.TriggerCallJs(broIndex, $@"getRuneNum({item.ID})");
+            var response = await BroTabManager.Instance.TriggerCallJs(broIndex, $@"getRuneNum({item.ID})");
             //GetRuneNum(item.ID);
             if (response.Success)
             {
@@ -70,7 +71,7 @@ public class RuneController
                         continue;
                     }
                     P.Log($"开始升级{item.ID}#符文，升级数量{count}", emLogType.RuneUpgrate);
-                    var response2 = await MainForm.Instance.TabManager.TriggerCallJs(broIndex, $@"upgradeRune({item.ID},{count})");
+                    var response2 = await BroTabManager.Instance.TriggerCallJs(broIndex, $@"upgradeRune({item.ID},{count})");
                     //UpgradeRune(item.ID, count);
                     //var tcs = new TaskCompletionSource<bool>();
                     //onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
@@ -89,8 +90,8 @@ public class RuneController
         }
 
         P.Log($"全部符文升级完成\n\t\n\t\n\t\n\t\n\t", emLogType.RuneUpgrate);
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
-        EventManager.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
+        EventSystem.UnsubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
+        EventSystem.UnsubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
     }
 
     private void OnEventUpgradeRuneBack(params object[] args)

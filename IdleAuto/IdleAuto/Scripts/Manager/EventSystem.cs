@@ -56,26 +56,17 @@ public enum emEventType
 
 }
 
-public class EventManager
+public class EventSystem
 {
 
-    public EventManager()
+
+    public EventSystem()
     {
         eventDic = new Dictionary<emEventType, Action<object[]>>();
     }
-    private static EventManager instance;
-    public static EventManager Instance
+    public void Dispose()
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new EventManager();
-                instance.eventDic = new Dictionary<emEventType, Action<object[]>>();
-            }
-            return instance;
-        }
-
+        eventDic = null;
     }
 
     private Dictionary<emEventType, Action<object[]>> eventDic;
@@ -98,7 +89,6 @@ public class EventManager
             eventDic[eventType] -= action;
         }
     }
-
     public void InvokeEvent(emEventType eventType, params object[] args)
     {
         if (eventDic.ContainsKey(eventType))

@@ -62,9 +62,9 @@ let _map = {};
         }
     }
     async function explore() {
-        debugger
+        //debugger
         if (!(location.href.indexOf("Map/Dungeon") >-1 ||location.href.indexOf("Map/DungeonForBmap") > -1)) return;
-        debugger
+        //debugger
         if ($("span.boss-left").text() != "1")  {
             //打完了
             localStorage.removeItem("startMap");
@@ -160,7 +160,7 @@ let _map = {};
                 monsterStep.push(index);
             }
         }
-        debugger
+        //debugger
         newStep= newStep.concat(monsterStep);
         return newStep;
     }

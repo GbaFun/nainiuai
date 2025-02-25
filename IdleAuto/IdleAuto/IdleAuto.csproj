@@ -89,7 +89,7 @@
     <Compile Include="Scripts\Controller\EquipController.cs" />
     <Compile Include="Scripts\Controller\LoadingController.cs" />
     <Compile Include="Scripts\Controller\RuneController.cs" />
-    <Compile Include="Scripts\Manager\EventManager.cs" />
+    <Compile Include="Scripts\Manager\EventSystem.cs" />
     <Compile Include="Scripts\Manager\FileLogManager.cs" />
     <Compile Include="Scripts\Manager\RepairManager.cs" />
     <Compile Include="Scripts\Manager\SingleManagerBase.cs" />

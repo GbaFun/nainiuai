@@ -29,7 +29,7 @@ let _init = {};
             type: data.type,
             race: data.race
         };
-        debugger;
+        //debugger;
         POST_Message("Create", data, "post", 1500).then((r) => {
             location.href = "Home/Index";
         }).catch((e) => {
@@ -73,7 +73,7 @@ let _init = {};
             cname: data.cname,
             gname: data.gname
         };
-        debugger;
+        //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
             location.reload();
         }).catch((e) => {
@@ -88,7 +88,7 @@ let _init = {};
             cname: data.cname,
             gname: data.gname
         };
-        debugger;
+        //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
             location.reload();
         }).catch((e) => {
@@ -103,7 +103,7 @@ let _init = {};
             cname: data.cname,
             gid: $($($(".panel-inverse")[2]).find("a[data-gid]")[2]).attr("data-gid")
         };
-        debugger;
+        //debugger;
         POST_Message("GroupAddChar", data, "post", 1500).then((r) => {
             location.reload();
         }).catch((e) => {

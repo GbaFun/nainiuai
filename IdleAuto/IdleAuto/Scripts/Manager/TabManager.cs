@@ -73,7 +73,7 @@ public class TabManager
     /// <param name="url">跳转url</param>
     /// <param name="jsName">必须等待某个js载入完成才能保证逻辑正确执行</param>
     /// <returns></returns>
-    public async Task<int> AddBroToTap(UserModel user, string url)
+    public async Task<BroWindow> AddBroToTap(UserModel user, string url)
     {
         var seed = AddTabPage(user.AccountName);
         var tabPage = TabPageDic[seed];
@@ -85,14 +85,14 @@ public class TabManager
             if ("login" == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
         var window = new BroWindow(seed, user, url);
-        window.EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
+        window.SubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
         tabPage.Controls.Add(window.GetBro());
         await jsTask.Task;
-        window.EventMa.UnsubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
+        window.UnsubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
         BroWindowDic.TryAdd(seed, window);
-        return seed;
+        return window;
     }
-    public async Task<int> TriggerAddBroToTap(UserModel user)
+    public async Task<BroWindow> TriggerAddBroToTap(UserModel user)
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
@@ -100,12 +100,12 @@ public class TabManager
         if (Tab.InvokeRequired)
         {
             // 使用 TaskCompletionSource<int> 来等待 Invoke 的结果
-            var tcs = new TaskCompletionSource<int>();
+            var tcs = new TaskCompletionSource<BroWindow>();
             Tab.Invoke(new Action(async () =>
             {
                 try
                 {
-                    var result = await AddBroToTap(user, "https://www.idleinfinity.cn/Home/Index");
+                    var result = await AddBroToTap(user, IdleUrlHelper.HomeUrl());
                     tcs.SetResult(result);
                 }
                 catch (Exception ex)
@@ -117,13 +117,17 @@ public class TabManager
         }
         else
         {
-            return await AddBroToTap(user, "https://www.idleinfinity.cn/Home/Index");
+            return await AddBroToTap(user, IdleUrlHelper.HomeUrl());
         }
     }
 
     public BroWindow GetWindow(int seed)
     {
         return BroWindowDic[seed];
+    }
+    public BroWindow GetWindow()
+    {
+        return BroWindowDic[GetFocusID()];
     }
 
     private void OnJsinitCallBack(params object[] args)
@@ -133,7 +137,7 @@ public class TabManager
         onJsInitCallBack?.Invoke(jsName);
     }
 
-    public int GetFocusID()
+    private int GetFocusID()
     {
         int seed = 0;
         TabPage tab = null;
@@ -160,7 +164,7 @@ public class TabManager
 
     public void DisposePage(int seed)
     {
-     
+
         var tabPage = TabPageDic[seed];
         if (Tab.InvokeRequired)
         {

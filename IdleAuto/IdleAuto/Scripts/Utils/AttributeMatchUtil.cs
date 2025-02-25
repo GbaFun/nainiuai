@@ -811,7 +811,10 @@ namespace AttributeMatch
 
         public static string GetCategory(string itemName)
         {
-            return Categories.TryGetValue(itemName, out var category) ? category : itemName;
+            if (Categories.TryGetValue(itemName, out var category))
+                return category;
+            else
+                return itemName;
         }
     }
 
