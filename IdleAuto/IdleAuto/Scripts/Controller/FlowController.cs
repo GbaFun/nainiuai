@@ -26,7 +26,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task StartAddSkill()
         {
-            for (int i=3;i<AccountCfg.Instance.Accounts.Count;i++)
+            for (int i=0;i<AccountCfg.Instance.Accounts.Count;i++)
             {
                 var account= AccountCfg.Instance.Accounts[i];
                 if (account.AccountName == "铁矿石") continue;

@@ -664,29 +664,28 @@ namespace IdleAuto.Scripts.Controller
             var r = CheckRoleSkill(curSkill, targetSkillPoint);
             var isNeedRest = r.Item1;
             var isNeedAdd = r.Item2;
-            if (isNeedAdd || isNeedRest)
+
+
+
+            P.Log("开始重置技能加点！", emLogType.AutoEquip);
+            if (isNeedRest) await SignalCallback("charReload", async () =>
+               {
+                   await SkillRest();
+               });
+
+            //重置一定加点
+            if (isNeedAdd||isNeedRest) await SignalCallback("charReload", async () =>
             {
+                await SkillSave(targetSkillPoint, skillConfig.JobName);
+            });
+
+            var groupid = GetSkillGroup(skillConfig);
+            await SignalCallback("charReload", async () =>
+            {
+                await SkillGroupSave(groupid);
+            });
 
 
-
-                P.Log("开始重置技能加点！", emLogType.AutoEquip);
-                if (isNeedRest) await SignalCallback("charReload", async () =>
-                   {
-                       await SkillRest();
-                   });
-
-                await SignalCallback("charReload", async () =>
-                {
-                    await SkillSave(targetSkillPoint, skillConfig.JobName);
-                });
-
-                var groupid = GetSkillGroup(skillConfig);
-                await SignalCallback("charReload", async () =>
-                {
-                    await SkillGroupSave(groupid);
-                });
-
-            }
 
             if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
             {
@@ -840,6 +839,10 @@ namespace IdleAuto.Scripts.Controller
         private Tuple<bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic)
         {
             var noZeroSkill = skills.Where(p => p.Value.Lv > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
+            if (noZeroSkill.Count == 0)
+            {
+                return new Tuple<bool, bool>(false, true);
+            }
             bool isNeedReset = false;//需要重置
             bool isNeedAdd = false;//需要加点
             foreach (var item in targetSkillDic)
