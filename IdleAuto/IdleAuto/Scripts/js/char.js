@@ -103,9 +103,9 @@ class Character {
             cid: charid
         });
         POST_Message("AttributeReset", data, "post", 1500).then((r) => {
-
+            location.reload();
         }).catch((e) => {
-            //location.reload();
+            location.reload();
         })
     }
     attributeSave(charid, data) {
@@ -119,9 +119,9 @@ class Character {
         });
         console.log(_data);
         POST_Message("AttributeSave", _data, "post", 1500).then((r) => {
-
+            location.reload();
         }).catch((e) => {
-            //location.reload();
+            location.reload();
         })
     }
 

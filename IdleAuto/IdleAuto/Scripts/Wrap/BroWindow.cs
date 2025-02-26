@@ -116,6 +116,18 @@ namespace IdleAuto.Scripts.Wrap
             await jsTask.Task;
             return response;
         }
+        public async Task<JavascriptResponse> CallJsWaitReload(string jsFunc, string jsName)
+        {
+            var jsTask = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) =>
+            {
+                if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+            };
+            var response = await _bro.EvaluateScriptAsync(jsFunc);
+
+            await jsTask.Task;
+            return response;
+        }
 
         private void SetInstanceUser(params object[] args)
         {
