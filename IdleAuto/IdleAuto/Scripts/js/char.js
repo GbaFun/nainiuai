@@ -128,7 +128,31 @@ class Character {
         })
     }
 
+    //读取人物配置的技能
+    getSkillConfig() {
+        //两系技能合并一下
+        var skillArr = $($(".panel")[0]).find(".skill-name").toArray().concat($($(".panel")[1]).find(".skill-name").toArray());
 
+        //选中的技能
+        var groupSkillArr = $($(".panel")[2]).find(".skill-name").toArray();
+        var r = {};
+     
+        for (var i = 0; i < skillArr.length; i++) {
+            var item = skillArr[i];
+            var skillName = $(item).find("span")[1].innerText;
+            var pointAdd = $(item).attr("data-add") * 1;
+
+
+            r[skillName] = {
+                lv: pointAdd,
+                name: skillName,
+            };
+        }
+        return r;
+  
+    }
+
+    //读取人物详细页的技能
     getSkillInfo() {
         if (location.href.indexOf("Character/Detail") == -1) return;
         var r = {};
@@ -209,6 +233,7 @@ class Character {
             sid: data.sid
         });
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
+            debugger;
             location.reload();
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
@@ -238,7 +263,7 @@ class Character {
             ml: ml
         })
         POST_Message("MapSwitch", data, "post", 1500).then((r) => {
-            
+
         }).catch((e) => {
             Bridge.invokeEvent('OnPostFailed', e);
             var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
@@ -248,7 +273,7 @@ class Character {
                 data.isNeedDungeon = true;
                 Bridge.invokeEvent('OnDungeonRequired', data);//触发秘境异常不会刷页面 如果页面刷新了说明切图成功
             }
-         
+
             location.reload();
         })
     }

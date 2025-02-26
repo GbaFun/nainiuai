@@ -173,7 +173,7 @@ namespace IdleAuto.Scripts.View
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
-
+            FlowController.StartAddSkill();
         }
 
         private void OnRefreshTimerElapsed(object state)

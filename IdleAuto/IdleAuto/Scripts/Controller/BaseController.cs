@@ -58,7 +58,7 @@ public class BaseController
         };
         act.Invoke();
         await tcs2.Task;
-
+        await Task.Delay(1000);
     }
 
     /// <summary>
