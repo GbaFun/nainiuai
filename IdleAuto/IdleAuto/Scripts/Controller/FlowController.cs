@@ -26,9 +26,9 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task StartAddSkill()
         {
-            for (int i=0;i<AccountCfg.Instance.Accounts.Count;i++)
+            for (int i = 0; i < AccountCfg.Instance.Accounts.Count; i++)
             {
-                var account= AccountCfg.Instance.Accounts[i];
+                var account = AccountCfg.Instance.Accounts[i];
                 if (account.AccountName == "铁矿石") continue;
                 var user = new UserModel(account);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
@@ -45,8 +45,9 @@ namespace IdleAuto.Scripts.Controller
             foreach (var account in AccountCfg.Instance.Accounts)
             {
                 AccountController.Instance.User = new UserModel(account);
-                await BroTabManager.Instance.TriggerAddTabPage(account.AccountName, "https://www.idleinfinity.cn/Home/Index");
+                var window = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
                 await Task.Delay(2000);
+                window.Close();
             }
 
         }
