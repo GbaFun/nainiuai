@@ -44,7 +44,7 @@ public class EquipController
         P.Log($"开始转移{role.RoleName}的背包物品到仓库", emLogType.AutoEquip);
         await Task.Delay(1000);
         P.Log($"跳转{role.RoleName}的装备详情页面", emLogType.AutoEquip);
-        var response = await win.LoadUrl(IdleUrlHelper.EquipUrl(role.RoleId));
+        var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (response.Success)
         {
             bool hasEquips = false;
@@ -378,21 +378,39 @@ public class EquipController
                         List<EquipModel> matchEquips = GetMatchEquipBySort(account.Id, role, (emEquipSort)j, curEquip, targetEquips);
                         if (matchEquips.Count > 0)
                         {
-                            if (matchEquips.First().EquipID == curEquip.EquipID)
+                            if (curEquip != null && matchEquips.First().EquipID == curEquip.EquipID)
                             {
                                 P.Log($"当前穿戴的装备为找到的最佳装备，无需更换", emLogType.AutoEquip);
-                                break;
+                                continue;
                             }
                             else
                             {
                                 P.Log($"找到最佳装备{matchEquips.First().EquipName}，准备更换", emLogType.AutoEquip);
-                                towearEquips.Add((emEquipSort)j, matchEquips.First());
+                                {
+                                    foreach (var item in matchEquips)
+                                    {
+                                        bool canWear = true;
+                                        foreach (var item1 in towearEquips)
+                                        {
+                                            if (item1.Value.EquipID == item.EquipID)
+                                            {
+                                                canWear = false;
+                                                break;
+                                            }
+                                        }
+                                        if (canWear)
+                                        {
+                                            towearEquips.Add((emEquipSort)j, item);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                         else
                         {
                             P.Log($"未找到匹配的装备，跳过该部位换装！", emLogType.AutoEquip);
-                            break;
+                            continue;
                         }
                     }
                 }
@@ -578,8 +596,6 @@ public class EquipController
         {
             curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
 
-
-            //if (equip != null && (sort == (int)emEquipSort.副手 || sort == (int)emEquipSort.主手 || sort == (int)emEquipSort.戒指1 || sort == (int)emEquipSort.戒指2))
             {
                 if (curEquips != null && curEquips.ContainsKey((emEquipSort)sort))
                 {
@@ -664,8 +680,9 @@ public class EquipController
 
             P.Log($"比较完成，共找到{matchEquips.Count}个符合要求的装备", emLogType.AutoEquip);
             if (matchEquipMap.Count > 0)
-            {
                 matchEquips = matchEquipMap.Values.OrderBy(p => matchReports[p.EquipID].MatchWeight).ToList();
+            if (matchEquipMap.Count > 1)
+            {
                 P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);
                 break;
             }

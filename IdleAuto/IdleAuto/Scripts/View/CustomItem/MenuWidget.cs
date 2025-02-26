@@ -164,8 +164,7 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnClear_Click(object sender, EventArgs e)
         {
-            var idx = BroTabManager.Instance.GetFocusID();
-            BroTabManager.Instance.DisposePage(idx);
+            TabManager.Instance.GetWindow().Close();
         }
 
         private void btnMap_Click(object sender, EventArgs e)

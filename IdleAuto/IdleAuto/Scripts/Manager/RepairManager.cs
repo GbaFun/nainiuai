@@ -36,11 +36,11 @@ public class RepairManager : SingleManagerBase<RepairManager>
             foreach (var role in account.Roles)
             {
                 //技能加点
-                await AddSkillPoint(window, role);
+                //await AddSkillPoint(window, role);
                 //自动更换装备
                 await AutoEquip(window, equipController, account, role);
                 //角色剩余属性点分配
-                await AddAttrPoint(window, role);
+                //await AddAttrPoint(window, role);
             }
 
             MessageBox.Show($"自动修车完成");

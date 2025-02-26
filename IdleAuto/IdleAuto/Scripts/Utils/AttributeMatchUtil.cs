@@ -160,6 +160,13 @@ namespace AttributeMatch
                 case emAttrType.抗寒:
                 case emAttrType.最大伤害:
                 case emAttrType.最小伤害:
+                case emAttrType.物品掉率:
+                case emAttrType.施法速度:
+                case emAttrType.攻击速度:
+                case emAttrType.更佳魔法装备:
+                case emAttrType.额外金币取得:
+                case emAttrType.所有技能:
+                case emAttrType.伤害转换:
                     result.IsMatch = MatchBaseAttr(_equip, _condition);
                     break;
                 case emAttrType.单项元素抗性之和:
