@@ -14,13 +14,13 @@
 (function () {
     getLibrary().then(data => {
         // console.log(data);
-        addScriptToHead(data);
+        //addScriptToHead(data);
         async function asyncLanuch() {
             onLaunch();
         }
         asyncLanuch();
     }).catch((_url, xhr, status, error) => {
-        alert('从(' + _url + ')获取数据失败!请确认重载', function () { location.reload(); });
+        // alert('从(' + _url + ')获取数据失败!请确认重载', function () { location.reload(); });
     });
 })();
 
@@ -84,7 +84,7 @@ function onLaunch() {
             let urlParams = new URLSearchParams(url.search);
             let id = urlParams.get("id");
             this.currentId = id;
-            //在地图页面修正离线状态,其他页面每次刷新初始化都是在线状态 
+            //在地图页面修正离线状态,其他页面每次刷新初始化都是在线状态
             if (window.location.href.indexOf("Map/Detail") > -1) {
                 var btns = $('a:contains("离线挂机")');
                 var localObj = JSON.parse(localStorage.getItem(charStatus));
@@ -577,7 +577,7 @@ function onLaunch() {
                         //     compandStore(regexResult[1], count);
                         // }
                     });
-                    localStorage.setItem('storedCompandCounts', JSON.stringify(storedCompandCounts)); // 存储到 localStorage 
+                    localStorage.setItem('storedCompandCounts', JSON.stringify(storedCompandCounts)); // 存储到 localStorage
 
                     //进入一键升级模式
                     autoCompandMode = true;
@@ -791,9 +791,37 @@ function onLaunch() {
     /***************一键血白end**********************/
 }
 
+function deepMerge(target, ...sources) {
+    for (let source of sources) {
+        for (let key in source) {
+            if (source.hasOwnProperty(key)) {
+                if (typeof target[key] === 'object' && typeof source[key] === 'object') {
+                    deepMerge(target[key], source[key]);
+                } else {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
+}
+//保存对象到本地缓存，有则合并,无则直接新增
+function saveMergeStatus(obj, key) {
+    var localObj = localStorage.getItem(key);
+    localObj = JSON.parse(localObj);
+    if (!!!localObj) {
+        var str = JSON.stringify(obj);
+        localStorage.setItem(key, str);
+    }
+    else {
 
+        var t = deepMerge(localObj, obj);
+        var saveStr = JSON.stringify(t);
+        localStorage.setItem(key, saveStr);
+    }
+}
 
-//#region  INIT 
+//#region  INIT
 function addScriptToHead(src) {
     const script = document.createElement('script');
     script.text = src;
@@ -813,9 +841,7 @@ function getLibrary(_timeout = 5000) {
                 resolve(data);
             },
             error: function (xhr, status, error) {
-                // 请求失败时的操作
-                // console.log('从(' + _url + ')获取JS脚本失败!');
-                reject(_url, xhr, status, error);
+                resolve(data);
             }
         });
     });

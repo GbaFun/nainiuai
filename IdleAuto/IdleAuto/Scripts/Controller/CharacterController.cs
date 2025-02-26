@@ -59,23 +59,21 @@ namespace IdleAuto.Scripts.Controller
 
         private bool _isNeedDungeon { get; set; }
 
-        private int _broId = 0;
 
-        protected delegate void DungeonEnd(bool result);
-        private DungeonEnd _onDungeonEnd;
 
+
+        /// <summary>
+        /// 起号前置
+        /// </summary>
         private static string PrefixName = ConfigUtil.GetAppSetting("PrefixName");
 
+        /// <summary>
+        /// 同步来源
+        /// </summary>
+        private static string FilterSource = ConfigUtil.GetAppSetting("FilterSource");
 
-        private void OnDungeonEnd(params object[] args)
-        {
-            string param = args[0] as string;
-            if (param == "DungeonEnd")
-            {
-                _onDungeonEnd?.Invoke(true);
-                _onDungeonEnd = null;
-            }
-        }
+
+
 
         /// <summary>
         /// 
@@ -506,6 +504,22 @@ namespace IdleAuto.Scripts.Controller
         /// 获取人物技能
         /// </summary>
         /// <returns></returns>
+        public async Task<List<string>> GetSkillGroup()
+        {
+
+            if (_browser.CanExecuteJavascriptInMainFrame)
+            {
+                var d = await _browser.EvaluateScriptAsync($@"_char.getSkillGroup();");
+                return d.Result?.ToObject<List<string>>();
+            }
+            else return null;
+
+        }
+
+        /// <summary>
+        /// 获取人物技能
+        /// </summary>
+        /// <returns></returns>
         public async Task<int> GetRoleId()
         {
 
@@ -659,12 +673,13 @@ namespace IdleAuto.Scripts.Controller
 
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
+            List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
             var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
-            var r = CheckRoleSkill(curSkill, targetSkillPoint);
+            var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill);
             var isNeedRest = r.Item1;
             var isNeedAdd = r.Item2;
-
+            var isNeedSetGroup = r.Item3;
 
 
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
@@ -674,16 +689,16 @@ namespace IdleAuto.Scripts.Controller
                });
 
             //重置一定加点
-            if (isNeedAdd||isNeedRest) await SignalCallback("charReload", async () =>
-            {
-                await SkillSave(targetSkillPoint, skillConfig.JobName);
-            });
+            if (isNeedAdd || isNeedRest) await SignalCallback("charReload", async () =>
+              {
+                  await SkillSave(targetSkillPoint, skillConfig.JobName);
+              });
 
             var groupid = GetSkillGroup(skillConfig);
-            await SignalCallback("charReload", async () =>
-            {
-                await SkillGroupSave(groupid);
-            });
+            if (isNeedSetGroup) await SignalCallback("charReload", async () =>
+              {
+                  await SkillGroupSave(groupid);
+              });
 
 
 
@@ -836,15 +851,25 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="skills"></param>
         /// <param name="targetSkillDic"></param>
         /// <returns></returns>
-        private Tuple<bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic)
+        private Tuple<bool, bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic, List<string> curGroupSkill)
         {
             var noZeroSkill = skills.Where(p => p.Value.Lv > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
             if (noZeroSkill.Count == 0)
             {
-                return new Tuple<bool, bool>(false, true);
+                return new Tuple<bool, bool, bool>(false, true, true);
             }
             bool isNeedReset = false;//需要重置
             bool isNeedAdd = false;//需要加点
+            bool isNeedSetGroup = false;//需要重设携带技能
+
+            foreach (var item in curGroupSkill)
+            {
+                if (!targetSkillDic.ContainsKey(item))
+                {
+                    isNeedSetGroup = true;
+                    break;
+                }
+            }
             foreach (var item in targetSkillDic)
             {
                 //加的技能不包含在目标技能
@@ -867,7 +892,7 @@ namespace IdleAuto.Scripts.Controller
                 }
 
             }
-            return new Tuple<bool, bool>(isNeedReset, isNeedAdd);
+            return new Tuple<bool, bool, bool>(isNeedReset, isNeedAdd, isNeedSetGroup);
         }
 
         /// <summary>
@@ -933,6 +958,8 @@ namespace IdleAuto.Scripts.Controller
         }
 
 
+
+
         private async Task<int> GetCurMapLv()
         {
             var d = await _browser.EvaluateScriptAsync($@"_char.getCurMapLv();");
@@ -945,7 +972,32 @@ namespace IdleAuto.Scripts.Controller
             return int.Parse(Math.Ceiling(result).ToString()) * 10;
         }
         #endregion
+        #region 复制过滤
 
+        public async Task StartSyncFilter(ChromiumWebBrowser bro, UserModel user)
+        {
+            _browser = bro;
+
+            await Task.Delay(1000);
+            RoleModel role = user.Roles[0];
+            await SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl("https://www.idleinfinity.cn/Config/Query?id=");
+            });
+            await SignalCallback("charReload", async () =>
+            {
+                await CopyConfig();
+            });
+
+        }
+        private async Task CopyConfig()
+        {
+            var data = new Dictionary<string, object>();
+            data.Add("name", FilterSource);
+            var d = await _browser.EvaluateScriptAsync($@"_char.copyConfig({data.ToLowerCamelCase()});");
+            Console.WriteLine(d.Message);
+        }
+        #endregion
 
     }
 }

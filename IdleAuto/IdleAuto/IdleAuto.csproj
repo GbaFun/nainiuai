@@ -72,6 +72,7 @@
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
+    <Compile Include="Scripts\Model\TaskProgress.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
     <None Include="BackUp\Cookies\RasdSky.json" />
@@ -200,6 +201,9 @@
     <None Include="Configs\ScanAhCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Configs\SkillPoint-bak.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Configs\SkillPoint.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -263,7 +267,9 @@
     <Content Include="Scripts\js\equipattr.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\js\IdleTools.js" />
+    <Content Include="Scripts\js\IdleTools.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\js\IdleUtils.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -289,5 +289,10 @@ namespace IdleAuto.Scripts.View
 
             BroTabManager.Instance.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
         }
+
+        private void btnSyncFilter_Click(object sender, EventArgs e)
+        {
+            FlowController.SyncFilter();
+        }
     }
 }

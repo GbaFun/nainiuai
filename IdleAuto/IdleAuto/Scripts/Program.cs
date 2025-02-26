@@ -1,4 +1,6 @@
-﻿using IdleAuto.Db;
+﻿using CefSharp;
+using CefSharp.WinForms;
+using IdleAuto.Db;
 using IdleAuto.Scripts.View;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,16 @@ namespace IdleAuto
         [STAThread]
         static void Main()
         {  // 设置全局异常处理
+            var settings = new CefSettings
+            {
+                // 禁用 GPU 加速
+                CefCommandLineArgs = { ["disable-gpu"] = "1", ["disable-webgl"] = "1", ["mute-audio"] = "1" },
+          
+            };
+            if (Cef.IsInitialized==null||!Cef.IsInitialized.Value)
+            {
+                Cef.Initialize(settings);
+            }
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.EnableVisualStyles();

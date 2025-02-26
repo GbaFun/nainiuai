@@ -136,7 +136,7 @@ class Character {
         //选中的技能
         var groupSkillArr = $($(".panel")[2]).find(".skill-name").toArray();
         var r = {};
-     
+
         for (var i = 0; i < skillArr.length; i++) {
             var item = skillArr[i];
             var skillName = $(item).find("span")[1].innerText;
@@ -149,7 +149,20 @@ class Character {
             };
         }
         return r;
-  
+
+    }
+
+    //获取携带技能
+    getSkillGroup() {
+        //选中的技能
+        var groupSkillArr = $($(".panel")[2]).find(".skill-name").toArray();
+        var arr = [];
+        for (var i = 0; i < groupSkillArr.length; i++) {
+            var item = groupSkillArr[i];
+            var name = $(item).text().split(" ")[1];
+            arr.push(name);
+        }
+        return arr;
     }
 
     //读取人物详细页的技能
@@ -274,6 +287,18 @@ class Character {
                 Bridge.invokeEvent('OnDungeonRequired', data);//触发秘境异常不会刷页面 如果页面刷新了说明切图成功
             }
 
+            location.reload();
+        })
+    }
+
+    copyConfig(data) {
+        var data = MERGE_Form({
+            cid: _char.cid,
+            cname:data.name
+        })
+        POST_Message("ConfigCopy", data, "post", 1500).then((r) => {
+
+        }).catch((e) => {
             location.reload();
         })
     }

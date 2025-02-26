@@ -38,7 +38,10 @@ namespace IdleAuto.Scripts.Controller
 
 
         }
-
+        /// <summary>
+        /// 刷新cookie
+        /// </summary>
+        /// <returns></returns>
         public static async Task RefreshCookie()
         {
             BroTabManager.Instance.ClearBrowsers();
@@ -49,6 +52,25 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(2000);
                 window.Close();
             }
+
+        }
+
+        /// <summary>
+        /// 同步过滤
+        /// </summary>
+        /// <returns></returns>
+        public static async Task SyncFilter()
+        {
+            for (int i = 2; i < AccountCfg.Instance.Accounts.Count; i++)
+            {
+                var account = AccountCfg.Instance.Accounts[i];
+                if (account.AccountName == "铁矿石") continue;
+                var user = new UserModel(account);
+                var window = await TabManager.Instance.TriggerAddBroToTap(user);
+                await window.CharController.StartSyncFilter(window.GetBro(), window.User);
+                window.Close();
+            }
+
 
         }
     }
