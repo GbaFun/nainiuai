@@ -190,7 +190,7 @@ namespace IdleAuto.Scripts.View
         }
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
-            BroTabManager.Instance.ClearBrowsers();
+            TabManager.Instance.DisposePage();
             FlowController.RefreshCookie();
         }
 

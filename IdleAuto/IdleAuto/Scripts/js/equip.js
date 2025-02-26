@@ -92,8 +92,9 @@ function getEquipInfo(eid, sortid, quality, content) {
                     var c = sc2[sc2.length - 1];
                     if (c == "斧" || c == "矛" || c == "叉" || c == "爪")
                         baseName = sc2[sc2.length - 1];
-                    else
-                        baseName = sbname;
+                    else {
+                        baseName = sc2[sc2.length - 2] + "之" + sc2[sc2.length - 1];
+                    }
                 }
                 else {
                     var c1 = sc2[sc2.length - 2];

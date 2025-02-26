@@ -181,6 +181,15 @@ public class TabManager
         TabPageDic.TryRemove(seed, out _);
         GC.Collect();
     }
+    public void DisposePage()
+    {
+        List<int> seeds = BroWindowDic.Keys.ToList();
+        for (int i = 0; i < seeds.Count; i++)
+        {
+            DisposePage(seeds[i]);
+        }
+        seeds.Clear();
+    }
 
 }
 
