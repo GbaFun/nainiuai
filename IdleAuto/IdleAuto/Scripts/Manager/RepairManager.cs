@@ -26,21 +26,22 @@ public class RepairManager : SingleManagerBase<RepairManager>
         {
             BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
             EquipController equipController = new EquipController();
-            //window.GetBro().ShowDevTools();
+            window.GetBro().ShowDevTools();
 
-            //将挂机装备放入仓库
-            await EquipToRepository(window, equipController, account);
-            //盘点仓库装备
-            await InventoryEquips(window, equipController, account);
+            ////将挂机装备放入仓库
+            //await EquipToRepository(window, equipController, account);
+            ////盘点仓库装备
+            //await InventoryEquips(window, equipController, account);
             //遍历账户下角色修车
-            foreach (var role in account.Roles)
+            //foreach (var role in account.Roles)
             {
                 //技能加点
                 //await AddSkillPoint(window, role);
                 //自动更换装备
-                await AutoEquip(window, equipController, account, role);
+                //await AutoEquip(window, equipController, account, role);
                 //角色剩余属性点分配
-                //await AddAttrPoint(window, role);
+                var role = account.FirstRole;
+                await AddAttrPoint(window, role);
             }
 
             MessageBox.Show($"自动修车完成");
@@ -122,26 +123,35 @@ public class RepairManager : SingleManagerBase<RepairManager>
     }
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {
+        P.Log($"开始跳转{role.RoleName}的角色详情页");
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.RoleUrl(role.RoleId), "char");
         if (result.Success)
         {
-            var response3 = await win.CallJs($@"_char.getSimpleAttribute();");
-            if (response3.Success)
+            P.Log($"跳转{role.RoleName}的角色详情页完成");
+
+            await Task.Delay(1000);
+            P.Log($"开始重置{role.RoleName}的属性加点");
+            var response0 = await win.CallJsWithReload($@"_char.attributeReset({role.RoleId})", "char");
+            if (response0.Success)
             {
-                var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
-                ///满足装备需求属性后仍有属性点剩余，自动加到体力值
-                if (baseAttr.Point > 0)
-                {
-                    baseAttr.VitAdd += baseAttr.Point;
-                    baseAttr.Point = 0;
-                    var response8 = await win.CallJsWithReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
-                    if (response8.Success)
-                    {
-                        P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
-                    }
-                }
+                P.Log($"{role.RoleName}的属性重置完成", emLogType.AutoEquip);
+                //var response3 = await win.CallJs($@"_char.getSimpleAttribute();");
+                //if (response3.Success)
+                //{
+                //    var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
+                //    ///满足装备需求属性后仍有属性点剩余，自动加到体力值
+                //    if (baseAttr.Point > 0)
+                //    {
+                //        baseAttr.VitAdd += baseAttr.Point;
+                //        baseAttr.Point = 0;
+                //        var response8 = await win.CallJsWithReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
+                //        if (response8.Success)
+                //        {
+                //            P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                //        }
+                //    }
+                //}
             }
         }
     }
 }
-

@@ -81,14 +81,15 @@ namespace IdleAuto.Scripts.Wrap
         }
         public async Task<LoadUrlAsyncResponse> LoadUrlWaitJsInit(string url, string jsName, int outTime = 5000)
         {
+            var jsTask = new TaskCompletionSource<bool>();
+            onJsInitCallBack = (result) =>
+            {
+                if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+            };
+
             var res = await _bro.LoadUrlAsync(url);
             if (res.Success)
             {
-                var jsTask = new TaskCompletionSource<bool>();
-                onJsInitCallBack = (result) =>
-                {
-                    if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
-                };
                 await jsTask.Task;
 
                 return res;
@@ -102,14 +103,14 @@ namespace IdleAuto.Scripts.Wrap
 
         public async Task<JavascriptResponse> CallJsWithReload(string jsFunc, string jsName)
         {
-            var response = await _bro.EvaluateScriptAsync(jsFunc);
-
-            await Task.Delay(1000);
             var jsTask = new TaskCompletionSource<bool>();
             onJsInitCallBack = (result) =>
             {
                 if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
             };
+            var response = await _bro.EvaluateScriptAsync(jsFunc);
+
+            await Task.Delay(1000);
             _bro.Reload();
 
             await jsTask.Task;
@@ -130,7 +131,7 @@ namespace IdleAuto.Scripts.Wrap
         private void OnJsInited(params object[] args)
         {
             string jsName = args[0] as string;
-            //P.Log($"OnJsInited:{jsName}");
+            P.Log($"OnJsInited:{jsName}");
             onJsInitCallBack?.Invoke(jsName);
         }
 
@@ -242,7 +243,7 @@ namespace IdleAuto.Scripts.Wrap
             if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
             {
                 P.Log($"Start Save {name} CookieAndCache");
-                 PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie
+                PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie
                 // RemoveProxy(bro);
             }
 

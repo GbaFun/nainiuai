@@ -98,33 +98,30 @@ class Character {
         console.log(obj);
         return obj;
     }
-    attributeReset() {
+    attributeReset(charid) {
         var data = MERGE_Form({
-            cid: _char.cid
+            cid: charid
         });
         POST_Message("AttributeReset", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
-            location.reload();
+            //location.reload();
         })
     }
-    attributeSave(data) {
+    attributeSave(charid, data) {
         console.log("start attributeSave");
-        var data = MERGE_Form({
-            id: _char.cid,
+        var _data = MERGE_Form({
+            id: charid,
             csa: data.strAdd,
             cda: data.dexAdd,
             cva: data.vitAdd,
             cea: data.engAdd
         });
-        console.log(data);
-        POST_Message("AttributeSave", data, "post", 1500).then((r) => {
+        console.log(_data);
+        POST_Message("AttributeSave", _data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
-            debugger;
-            location.reload();
+            //location.reload();
         })
     }
 
@@ -219,8 +216,6 @@ class Character {
         POST_Message("SkillSave", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', data);
-            debugger;
             location.reload();
         })
     }
@@ -233,8 +228,6 @@ class Character {
         POST_Message("SkillReset", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
-            debugger;
             location.reload();
         })
     }
@@ -246,11 +239,8 @@ class Character {
             sid: data.sid
         });
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
-            debugger;
             location.reload();
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
-            debugger;
             location.reload();
         })
     }
@@ -263,14 +253,11 @@ class Character {
         POST_Message("SetKeySkill", data, "post", 1500).then((r) => {
             location.reload();
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
-            debugger;
             location.reload();
         })
     }
 
     mapSwitch(ml) {
-        debugger
         var data = MERGE_Form({
             cid: _char.cid,
             ml: ml
@@ -278,7 +265,6 @@ class Character {
         POST_Message("MapSwitch", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            Bridge.invokeEvent('OnPostFailed', e);
             var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
             var data = { isSuccess: true, isNeedDungeon: false };
             if (isNeedDungeon) {
@@ -294,7 +280,7 @@ class Character {
     copyConfig(data) {
         var data = MERGE_Form({
             cid: _char.cid,
-            cname:data.name
+            cname: data.name
         })
         POST_Message("ConfigCopy", data, "post", 1500).then((r) => {
 
