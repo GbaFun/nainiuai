@@ -70,8 +70,10 @@
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
+    <Compile Include="Scripts\Controller\EfficiencyController.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
+    <Compile Include="Scripts\Model\Efficency.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
@@ -266,6 +268,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\equipattr.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\js\guaji.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\IdleTools.js">

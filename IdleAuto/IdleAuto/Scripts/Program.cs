@@ -33,7 +33,6 @@ namespace IdleAuto
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
-
         }
         // 处理 UI 线程中的未处理异常
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

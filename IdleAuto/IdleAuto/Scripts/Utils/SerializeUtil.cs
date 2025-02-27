@@ -36,21 +36,28 @@ public static class SerializeUtil
 
     public static T ToObject<T>(this object obj)
     {
-        // 将dynamic对象序列化为JSON字符串
-        string jsonString = JsonConvert.SerializeObject(obj);
-        // 将JSON字符串反序列化为指定类型的对象
-        return JsonConvert.DeserializeObject<T>(jsonString);
+        try
+        { // 将dynamic对象序列化为JSON字符串
+            string jsonString = JsonConvert.SerializeObject(obj);
+            // 将JSON字符串反序列化为指定类型的对象
+            return JsonConvert.DeserializeObject<T>(jsonString);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+
     }
 
     public static T ToUpperCamelCase<T>(this string str)
     {
-    
+
         return JsonConvert.DeserializeObject<T>(str, UpperSetting);
     }
 
     public static string ToLowerCamelCase(this object obj)
     {
-    
+
         return JsonConvert.SerializeObject(obj, LowerSetting);
     }
 

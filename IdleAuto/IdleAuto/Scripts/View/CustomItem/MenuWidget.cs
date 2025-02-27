@@ -294,5 +294,10 @@ namespace IdleAuto.Scripts.View
         {
             FlowController.SyncFilter();
         }
+
+        private void btnMonitor_Click(object sender, EventArgs e)
+        {
+            FlowController.StartEfficencyMonitor();
+        }
     }
 }

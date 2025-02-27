@@ -55,6 +55,7 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
+            this.btnMonitor = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.JumpGroup.SuspendLayout();
@@ -99,9 +100,9 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.Controls.Add(this.BtnAutoOnline);
             this.HomeGroup.Controls.Add(this.BtnAutoAh);
             this.HomeGroup.Location = new System.Drawing.Point(0, 38);
-            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Size = new System.Drawing.Size(133, 288);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
@@ -110,7 +111,7 @@ namespace IdleAuto.Scripts.View
             // BtnRefresh
             // 
             this.BtnRefresh.Location = new System.Drawing.Point(16, 242);
-            this.BtnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.BtnRefresh.Name = "BtnRefresh";
             this.BtnRefresh.Size = new System.Drawing.Size(100, 29);
             this.BtnRefresh.TabIndex = 5;
@@ -132,7 +133,7 @@ namespace IdleAuto.Scripts.View
             // BtnClear
             // 
             this.BtnClear.Location = new System.Drawing.Point(16, 206);
-            this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(4);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(100, 29);
             this.BtnClear.TabIndex = 3;
@@ -143,7 +144,7 @@ namespace IdleAuto.Scripts.View
             // BtnInit
             // 
             this.BtnInit.Location = new System.Drawing.Point(16, 25);
-            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Margin = new System.Windows.Forms.Padding(4);
             this.BtnInit.Name = "BtnInit";
             this.BtnInit.Size = new System.Drawing.Size(100, 29);
             this.BtnInit.TabIndex = 2;
@@ -154,7 +155,7 @@ namespace IdleAuto.Scripts.View
             // BtnAutoEquip
             // 
             this.BtnAutoEquip.Location = new System.Drawing.Point(16, 98);
-            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoEquip.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
             this.BtnAutoEquip.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoEquip.TabIndex = 1;
@@ -165,7 +166,7 @@ namespace IdleAuto.Scripts.View
             // BtnAutoOnline
             // 
             this.BtnAutoOnline.Location = new System.Drawing.Point(16, 61);
-            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoOnline.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoOnline.Name = "BtnAutoOnline";
             this.BtnAutoOnline.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoOnline.TabIndex = 0;
@@ -176,7 +177,7 @@ namespace IdleAuto.Scripts.View
             // BtnAutoAh
             // 
             this.BtnAutoAh.Location = new System.Drawing.Point(16, 134);
-            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoAh.Name = "BtnAutoAh";
             this.BtnAutoAh.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoAh.TabIndex = 0;
@@ -204,6 +205,7 @@ namespace IdleAuto.Scripts.View
             this.LayoutRoot.Controls.Add(this.BtnSkillPoint);
             this.LayoutRoot.Controls.Add(this.btnHomePage);
             this.LayoutRoot.Controls.Add(this.btnSyncFilter);
+            this.LayoutRoot.Controls.Add(this.btnMonitor);
             this.LayoutRoot.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.LayoutRoot.Location = new System.Drawing.Point(0, 25);
             this.LayoutRoot.Margin = new System.Windows.Forms.Padding(0);
@@ -352,6 +354,17 @@ namespace IdleAuto.Scripts.View
             this.CurLoginAccount.Text = "当前无账号登录";
             this.CurLoginAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnMonitor
+            // 
+            this.btnMonitor.Location = new System.Drawing.Point(16, 188);
+            this.btnMonitor.Margin = new System.Windows.Forms.Padding(16, 6, 0, 6);
+            this.btnMonitor.Name = "btnMonitor";
+            this.btnMonitor.Size = new System.Drawing.Size(100, 32);
+            this.btnMonitor.TabIndex = 6;
+            this.btnMonitor.Text = "效率监控";
+            this.btnMonitor.UseVisualStyleBackColor = true;
+            this.btnMonitor.Click += new System.EventHandler(this.btnMonitor_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -400,5 +413,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button BtnClear;
         private System.Windows.Forms.Button btnMap;
         private System.Windows.Forms.Button BtnRefresh;
+        private System.Windows.Forms.Button btnMonitor;
     }
 }
