@@ -216,6 +216,7 @@ class Character {
         POST_Message("SkillSave", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
+            debugger
             location.reload();
         })
     }

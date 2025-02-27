@@ -858,11 +858,15 @@ namespace IdleAuto.Scripts.Controller
             {
                 return new Tuple<bool, bool, bool>(false, true, true);
             }
+            if(noZeroSkill.Keys.Count != targetSkillDic.Keys.Count)
+            {
+                return new Tuple<bool, bool, bool>(true, true, true);
+            }
             bool isNeedReset = false;//需要重置
             bool isNeedAdd = false;//需要加点
             bool isNeedSetGroup = false;//需要重设携带技能
 
-            foreach (var item in curGroupSkill)
+            foreach (var item in curGroupSkill.Where(p=>p!="普通攻击"&&p!= "基础法术"&&p!="空缺"))
             {
                 if (!targetSkillDic.ContainsKey(item))
                 {
@@ -915,12 +919,39 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartSwitchMap(ChromiumWebBrowser bro, UserModel user)
         {
             _browser = bro;
+            //查询未完成的任务
             for (int i = 0; i < user.Roles.Count; i++)
             {
-                await Task.Delay(1000);
                 RoleModel role = user.Roles[i];
+                var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).ToList();
+                var unfinishedTask = list.Count > 0 ? list[0] : null;
+                TaskProgress task = null;
+                if (unfinishedTask == null)
+                {
+                    task = new TaskProgress() { IsEnd = false, Type = emTaskType.MapSwitch, UserName = user.AccountName, Roleid = role.RoleId };
+                    var rows = FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(task).ExecuteAffrows();
+                }
+                else
+                {
+                    var index = user.Roles.FindIndex(p => p.RoleId == unfinishedTask.Roleid);
+                    i = index + 1;
+                    role = user.Roles[i];//重定位未完成的role
+
+                }
+                await Task.Delay(1000);
                 await SwitchMap(_browser, role);
                 await Task.Delay(1000);
+                if (unfinishedTask != null)
+                {
+                    unfinishedTask.Roleid = role.RoleId;
+                    task = unfinishedTask;
+                }
+                if (i == user.Roles.Count - 1)
+                {
+                    task.IsEnd = true;
+
+                }
+                FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(task).ExecuteAffrows();
             }
         }
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)

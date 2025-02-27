@@ -73,6 +73,7 @@
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
+    <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
     <None Include="BackUp\Cookies\RasdSky.json" />
@@ -201,10 +202,10 @@
     <None Include="Configs\ScanAhCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configs\SkillPoint-bak.json">
+    <None Include="Configs\SkillPoint.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configs\SkillPoint.json">
+    <None Include="Configs\SkillPoint-bak.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Document\ProjectStruct.md" />
