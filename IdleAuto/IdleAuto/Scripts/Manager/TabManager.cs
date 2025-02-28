@@ -51,8 +51,6 @@ public class TabManager
 
     private int AddTabPage(string name)
     {
-
-
         SeedIncrease();
 
         // 创建 TabPage

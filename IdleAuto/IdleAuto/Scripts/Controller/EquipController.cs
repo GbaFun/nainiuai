@@ -690,45 +690,39 @@ public class EquipController
 
         return matchEquips;
     }
+    private Dictionary<long, EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
+    {
+        Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
+        Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();
+
+        P.Log($"开始查询数据库装备", emLogType.AutoEquip);
+        List<EquipModel> findEquips = new List<EquipModel>();
+        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid).ToList();
+        foreach (var item in __equips)
+        {
+            if (AttributeMatchUtil.MatchCategory(item, target.Category) && AttributeMatchUtil.MatchQuallity(item, target.Quality))
+            {
+                findEquips.Add(item);
+            }
+        }
+        P.Log($"查询数据库装备完成,共找到{findEquips.Count}个装备", emLogType.AutoEquip);
+
+        P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
+        foreach (var item in findEquips)
+        {
+            if (AttributeMatchUtil.Match(item, target, out AttributeMatchReport report))
+            {
+                matchReports.Add(item.EquipID, report);
+                matchEquipMap.Add(item.EquipID, item);
+            }
+        }
+        reportMap = matchReports;
+        return matchEquipMap;
+    }
+
     private Equipments GetEquipConfig(emJob job, int level)
     {
         return EquipCfg.Instance.GetEquipmentByJobAndLevel(job, level);
-    }
-    private bool GetBestMatchEquips(long accountID, Equipment targetEquip, out EquipModel equip)
-    {
-        equip = null;
-        var equips = GetMatchEquips(accountID, targetEquip, out var reportMap);
-        if (equips.Count <= 0)
-        {
-            equips.Sort((a, b) =>
-            {
-                var report_a = reportMap[a.EquipID];
-                var report_b = reportMap[b.EquipID];
-                return report_a.MatchWeight.CompareTo(report_b.MatchWeight);
-            });
-            equip = equips.First();
-        }
-        return equip == null;
-    }
-    private List<EquipModel> GetMatchEquips(long accountID, Equipment targetEquip, out Dictionary<long, AttributeMatchReport> reportMap)
-    {
-        List<EquipModel> selectEquips = new List<EquipModel>();
-        List<EquipModel> matchEquips = new List<EquipModel>();
-        reportMap = new Dictionary<long, AttributeMatchReport>();
-
-        selectEquips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountID && AttributeMatchUtil.MatchCategory(p, targetEquip.Category) && AttributeMatchUtil.MatchQuallity(p, targetEquip.Quality)).ToList();
-        if (selectEquips.Count > 0)
-        {
-            foreach (var item in selectEquips)
-            {
-                if (AttributeMatchUtil.Match(item, targetEquip, out AttributeMatchReport report))
-                {
-                    reportMap.Add(item.EquipID, report);
-                    matchEquips.Add(item);
-                }
-            }
-        }
-        return matchEquips;
     }
 }
 

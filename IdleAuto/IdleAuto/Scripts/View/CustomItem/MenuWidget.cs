@@ -159,7 +159,7 @@ namespace IdleAuto.Scripts.View
             //切换角色将不再打开页面
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
-            await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+            //await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
         }
 
         private async void BtnClear_Click(object sender, EventArgs e)
