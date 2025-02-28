@@ -167,6 +167,8 @@ namespace AttributeMatch
                 case emAttrType.额外金币取得:
                 case emAttrType.所有技能:
                 case emAttrType.伤害转换:
+                case emAttrType.需要力量:
+                case emAttrType.需要敏捷:
                     result.IsMatch = MatchBaseAttr(_equip, _condition);
                     break;
                 case emAttrType.单项元素抗性之和:
@@ -304,6 +306,12 @@ namespace AttributeMatch
                     break;
                 case emAttrType.伤害转换:
                     regexAttr = $@"\+(?<v>\d+) [\u4e00-\u9fa5]+转换";
+                    break;
+                case emAttrType.需要力量:
+                    regexAttr = $@"需要力量： (?<v>\d+)";
+                    break;
+                case emAttrType.需要敏捷:
+                    regexAttr = $@"需要敏捷： (?<v>\d+)";
                     break;
             }
             int attrValue = 0;

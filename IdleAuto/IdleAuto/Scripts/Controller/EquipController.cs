@@ -13,6 +13,7 @@ using AttributeMatch;
 using CefSharp.DevTools.FedCm;
 using CefSharp.WinForms;
 using IdleAuto.Scripts.Wrap;
+using System.Security.Principal;
 
 public class EquipController
 {
@@ -370,47 +371,15 @@ public class EquipController
                 var targetEquips = GetEquipConfig(role.Job, role.Level);
                 if (targetEquips != null)
                 {
-                    for (int j = 0; j < 11; j++)
+                    P.Log("获取{role.Level}级{role.Job}配置的装备成功");
+                    foreach (var suit in targetEquips.EquipSuit)
                     {
-                        P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
-                        EquipModel curEquip = null;
-                        curEquips.TryGetValue((emEquipSort)j, out curEquip);
-                        List<EquipModel> matchEquips = GetMatchEquipBySort(account.Id, role, (emEquipSort)j, curEquip, targetEquips);
-                        if (matchEquips.Count > 0)
+                        var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips);
+                        if (suitEquips.IsSuccess)
                         {
-                            if (curEquip != null && matchEquips.First().EquipID == curEquip.EquipID)
-                            {
-                                P.Log($"当前穿戴的装备为找到的最佳装备，无需更换", emLogType.AutoEquip);
-                                continue;
-                            }
-                            else
-                            {
-                                P.Log($"找到最佳装备{matchEquips.First().EquipName}，准备更换", emLogType.AutoEquip);
-                                {
-                                    foreach (var item in matchEquips)
-                                    {
-                                        bool canWear = true;
-                                        foreach (var item1 in towearEquips)
-                                        {
-                                            if (item1.Value.EquipID == item.EquipID)
-                                            {
-                                                canWear = false;
-                                                break;
-                                            }
-                                        }
-                                        if (canWear)
-                                        {
-                                            towearEquips.Add((emEquipSort)j, item);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            P.Log($"未找到匹配的装备，跳过该部位换装！", emLogType.AutoEquip);
-                            continue;
+                            P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
+                            towearEquips = suitEquips.ToWearEquips;
+                            break;
                         }
                     }
                 }
@@ -576,6 +545,64 @@ public class EquipController
         }
     }
 
+    private EquipSuitMatchStruct MatchEquipSuit(int accountId, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips)
+    {
+        EquipSuitMatchStruct result = new EquipSuitMatchStruct();
+        result.MatchSuitName = equipSuit.SuitName;
+        result.ToWearEquips = new Dictionary<emEquipSort, EquipModel>();
+        result.IsSuccess = true;
+        List<long> toWearEquipIds = new List<long>();
+        for (int j = 0; j < 11; j++)
+        {
+            P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
+            EquipModel curEquip = null;
+            curEquips.TryGetValue((emEquipSort)j, out curEquip);
+            Equipment equipment = equipSuit.GetEquipBySort((emEquipSort)j);
+            if (equipment == null)
+            {
+                P.Log($"{role.RoleName}{(emEquipSort)j}位置的装备没有找到配置，无需更换!");
+                continue;
+            }
+            List<EquipModel> matchEquips = GetMatchEquipBySort(accountId, role, (emEquipSort)j, curEquip, equipment);
+            if (matchEquips.Count > 0)
+            {
+                if (curEquip != null && matchEquips.First().EquipID == curEquip.EquipID)
+                {
+                    P.Log($"当前穿戴的装备为找到的最佳装备，无需更换", emLogType.AutoEquip);
+                    continue;
+                }
+                else
+                {
+                    P.Log($"找到最佳装备{matchEquips.First().EquipName}，准备更换", emLogType.AutoEquip);
+
+                    foreach (var item in matchEquips)
+                    {
+                        if (!toWearEquipIds.Contains(item.EquipID))
+                        {
+                            result.ToWearEquips.Add((emEquipSort)j, item);
+                            toWearEquipIds.Add(item.EquipID);
+                            break;
+                        }
+                    }
+
+                    if (!result.ToWearEquips.ContainsKey((emEquipSort)j))
+                    {
+                        result.IsSuccess = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                P.Log($"未找到匹配的装备，跳过该部位换装！", emLogType.AutoEquip);
+                result.IsSuccess = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
     /// <summary>
     /// 穿戴装备
     /// </summary>
@@ -630,62 +657,45 @@ public class EquipController
     /// <param name="curEquip"></param>
     /// <param name="targetConfig"></param>
     /// <returns></returns>
-    private List<EquipModel> GetMatchEquipBySort(int accountId, RoleModel role, emEquipSort sort, EquipModel curEquip, Equipments targetConfig)
+    private List<EquipModel> GetMatchEquipBySort(int accountId, RoleModel role, emEquipSort sort, EquipModel curEquip, Equipment targetConfig)
     {
         List<EquipModel> matchEquips = new List<EquipModel>();
         Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
         Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();
 
-        P.Log($"开始检查{role.RoleName}的{sort}位置是否有配置可穿戴的装备", emLogType.AutoEquip);
-        if (targetConfig == null)
+        P.Log($"开始查询数据库装备", emLogType.AutoEquip);
+        List<EquipModel> findEquips = new List<EquipModel>();
+        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId).ToList();
+        foreach (var item in __equips)
         {
-            P.Log($"未找到{role.Level}级{role.Job}的装备配置,无需更换", emLogType.AutoEquip);
-            return matchEquipMap.Values.ToList();
+            if (AttributeMatchUtil.MatchCategory(item, targetConfig.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Quality))
+            {
+                findEquips.Add(item);
+            }
         }
-        var targets = targetConfig.GetEquipBySort(sort);
-        if (targets == null || targets.Count == 0)
+        P.Log($"查询数据库装备完成,共找到{findEquips.Count}个装备", emLogType.AutoEquip);
+        if (curEquip != null)
         {
-            P.Log($"{role.RoleName}的{sort}位置装备配置不存在，无需更换", emLogType.AutoEquip);
-            return matchEquipMap.Values.ToList();
+            P.Log($"当前部位已穿戴装备，将此装备一并加入匹配列表参与比较！");
+            findEquips.Add(curEquip);
         }
 
-        foreach (var targetEquip in targets)
+        P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
+        foreach (var item in findEquips)
         {
-            P.Log($"开始查询数据库装备", emLogType.AutoEquip);
-            List<EquipModel> findEquips = new List<EquipModel>();
-            var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId).ToList();
-            foreach (var item in __equips)
+            if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
             {
-                if (AttributeMatchUtil.MatchCategory(item, targetEquip.Category) && AttributeMatchUtil.MatchQuallity(item, targetEquip.Quality))
-                {
-                    findEquips.Add(item);
-                }
+                matchReports.Add(item.EquipID, report);
+                matchEquipMap.Add(item.EquipID, item);
             }
-            P.Log($"查询数据库装备完成,共找到{findEquips.Count}个装备", emLogType.AutoEquip);
-            if (curEquip != null)
-            {
-                P.Log($"当前部位已穿戴装备，将此装备一并加入匹配列表参与比较！");
-                findEquips.Add(curEquip);
-            }
+        }
 
-            P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
-            foreach (var item in findEquips)
-            {
-                if (AttributeMatchUtil.Match(item, targetEquip, out AttributeMatchReport report))
-                {
-                    matchReports.Add(item.EquipID, report);
-                    matchEquipMap.Add(item.EquipID, item);
-                }
-            }
-
-            P.Log($"比较完成，共找到{matchEquips.Count}个符合要求的装备", emLogType.AutoEquip);
-            if (matchEquipMap.Count > 0)
-                matchEquips = matchEquipMap.Values.OrderBy(p => matchReports[p.EquipID].MatchWeight).ToList();
-            if (matchEquipMap.Count > 1)
-            {
-                P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);
-                break;
-            }
+        P.Log($"比较完成，共找到{matchEquips.Count}个符合要求的装备", emLogType.AutoEquip);
+        if (matchEquipMap.Count > 0)
+            matchEquips = matchEquipMap.Values.OrderBy(p => matchReports[p.EquipID].MatchWeight).ToList();
+        if (matchEquipMap.Count > 1)
+        {
+            P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);
         }
 
         return matchEquips;
@@ -730,4 +740,10 @@ public struct ReplaceEquipStruct
 {
     public bool IsSuccess;
     public EquipModel ReplacedEquip;
+}
+public struct EquipSuitMatchStruct
+{
+    public bool IsSuccess;
+    public string MatchSuitName;
+    public Dictionary<emEquipSort, EquipModel> ToWearEquips;
 }

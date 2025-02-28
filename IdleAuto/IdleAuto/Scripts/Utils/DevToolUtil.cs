@@ -78,6 +78,8 @@ public class DevToolUtil
 
     public static async Task SaveLocalStorageAsync(ChromiumWebBrowser browser, string filename)
     {
+        if (!browser.CanExecuteJavascriptInMainFrame)
+            return;
         FileUtil.EnsureDirectoryExists(filename);
         var script = @"
                 (function() {

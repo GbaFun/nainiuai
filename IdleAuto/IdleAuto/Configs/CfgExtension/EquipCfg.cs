@@ -44,19 +44,24 @@ public class Equipments
     public string JobName;
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
     public LevelRange Lv { get; set; }
-    public List<Equipment> 主手 { get; set; }
-    public List<Equipment> 副手 { get; set; }
-    public List<Equipment> 头盔 { get; set; }
-    public List<Equipment> 护符 { get; set; }
-    public List<Equipment> 项链 { get; set; }
-    public List<Equipment> 戒指1 { get; set; }
-    public List<Equipment> 戒指2 { get; set; }
-    public List<Equipment> 衣服 { get; set; }
-    public List<Equipment> 腰带 { get; set; }
-    public List<Equipment> 手套 { get; set; }
-    public List<Equipment> 靴子 { get; set; }
+    public List<EquipSuit> EquipSuit { get; set; }
+}
+public class EquipSuit
+{
+    public string SuitName { get; set; }
+    public Equipment 主手 { get; set; }
+    public Equipment 副手 { get; set; }
+    public Equipment 头盔 { get; set; }
+    public Equipment 护符 { get; set; }
+    public Equipment 项链 { get; set; }
+    public Equipment 戒指1 { get; set; }
+    public Equipment 戒指2 { get; set; }
+    public Equipment 衣服 { get; set; }
+    public Equipment 腰带 { get; set; }
+    public Equipment 手套 { get; set; }
+    public Equipment 靴子 { get; set; }
 
-    public List<Equipment> GetEquipBySort(emEquipSort type)
+    public Equipment GetEquipBySort(emEquipSort type)
     {
         switch (type)
         {

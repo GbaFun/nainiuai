@@ -282,12 +282,12 @@ namespace IdleAuto.Scripts.View
 
         #endregion
 
-        private void btnHomePage_Click(object sender, EventArgs e)
+        private async void btnHomePage_Click(object sender, EventArgs e)
         {
             Account item = this.AccountCombo.SelectedItem as Account;
             AccountController.Instance.User = new UserModel(item);
-
-            BroTabManager.Instance.TriggerAddTabPage(item.AccountName, "https://www.idleinfinity.cn/Home/Index");
+            var user = AccountController.Instance.User;
+            var window = await TabManager.Instance.TriggerAddBroToTap(user);
         }
 
         private void btnSyncFilter_Click(object sender, EventArgs e)

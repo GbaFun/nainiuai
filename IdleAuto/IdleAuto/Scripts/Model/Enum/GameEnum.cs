@@ -81,6 +81,8 @@ public enum emAttrType
     指定职业单系技能,
     伤害转换,
     召唤最大数量,
+    需要力量,
+    需要敏捷,
     自定义
 }
 public enum emOperateType
