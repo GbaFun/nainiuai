@@ -30,7 +30,6 @@ namespace IdleAuto.Scripts.Wrap
 
         private int _seed;
 
-        private ConcurrentDictionary<string, bool> SignalDic;
 
         private delegate void OnJsInitCallBack(string jsName);
         private OnJsInitCallBack onJsInitCallBack;
@@ -46,9 +45,7 @@ namespace IdleAuto.Scripts.Wrap
             User = user;
             this.EventMa = new EventSystem();
             _bridge = new Bridge(seed, EventMa);
-            this.BaseController = new BaseController();
             this.CharController = new CharacterController();
-            SignalDic = new ConcurrentDictionary<string, bool>();
             EventMa.SubscribeEvent(emEventType.OnSignal, CharController.OnSignalCallback);
             EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
             EventMa.SubscribeEvent(emEventType.OnDungeonRequired, CharController.OnDungeonRequired);
@@ -59,6 +56,7 @@ namespace IdleAuto.Scripts.Wrap
         public void Close()
         {
             EventMa.Dispose();
+            _bro = null;
             TabManager.Instance.DisposePage(_seed);
         }
 

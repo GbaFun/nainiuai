@@ -1,5 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 public class BaseController
 {
     protected ChromiumWebBrowser _browser;
+
+    protected BroWindow _win;
 
     protected int _broSeed;
 
@@ -26,6 +29,15 @@ public class BaseController
     protected delegate void OnSignalCallBack(string signal);
     protected OnSignalCallBack onSignalCallBack;
 
+    public BaseController(BroWindow win)
+    {
+        this._win = win;
+    }
+
+    public BaseController()
+    {
+
+    }
 
     public void OnSignalCallback(params object[] args)
     {
