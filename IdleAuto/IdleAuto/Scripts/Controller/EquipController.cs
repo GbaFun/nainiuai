@@ -74,7 +74,7 @@ public class EquipController
 
                         await Task.Delay(1000);
                         P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
-                        var result2 = await win.CallJsWithReload($@"equipStorage({role.RoleId})", "equip");
+                        var result2 = await win.CallJsWaitReload($@"equipStorage({role.RoleId})", "equip");
                         if (result2.Success)
                         {
                             boxCount += bagCount;
@@ -287,7 +287,7 @@ public class EquipController
                                         string eids = string.Join(",", toClear.Keys);
                                         await Task.Delay(1000);
                                         P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
-                                        var response5 = await win.CallJsWithReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
+                                        var response5 = await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                                         if (response5.Success)
                                         {
                                             P.Log($"清理仓库第{page}页装备完成,当前清理装备数量:{toClear.Count}", emLogType.AutoEquip);
@@ -628,7 +628,7 @@ public class EquipController
                 {
                     P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                     await Task.Delay(1000);
-                    var response3 = await win.CallJsWithReload($@"equipOff({role.RoleId},{sort})", "equip");
+                    var response3 = await win.CallJsWaitReload($@"equipOff({role.RoleId},{sort})", "equip");
                     if (response3.Success)
                     {
                         equip.SetAccountInfo(account);
@@ -639,7 +639,7 @@ public class EquipController
 
             P.Log($"{role.RoleName}现在更换{(emEquipSort)sort}位置的装备{equip.EquipName}", emLogType.AutoEquip);
             await Task.Delay(1000);
-            var response2 = await win.CallJsWithReload($@"equipOn({role.RoleId},{equip.EquipID})", "equip");
+            var response2 = await win.CallJsWaitReload($@"equipOn({role.RoleId},{equip.EquipID})", "equip");
             if (response2.Success)
             {
                 replaceEquipStruct.IsSuccess = true;
