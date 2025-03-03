@@ -556,7 +556,8 @@ public class EquipController
         {
             P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
             EquipModel curEquip = null;
-            curEquips.TryGetValue((emEquipSort)j, out curEquip);
+            if (curEquips != null)
+                curEquips.TryGetValue((emEquipSort)j, out curEquip);
             Equipment equipment = equipSuit.GetEquipBySort((emEquipSort)j);
             if (equipment == null)
             {

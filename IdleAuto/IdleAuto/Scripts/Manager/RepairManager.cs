@@ -29,9 +29,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
             //window.GetBro().ShowDevTools();
 
             //将挂机装备放入仓库
-            await EquipToRepository(window, equipController, account);
+            //await EquipToRepository(window, equipController, account);
             //盘点仓库装备
-            await InventoryEquips(window, equipController, account);
+            //await InventoryEquips(window, equipController, account);
             //遍历账户下角色修车
             foreach (var role in account.Roles)
             {
@@ -51,6 +51,23 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
+    public async Task UpdateEquips(UserModel account)
+    {
+        BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
+        EquipController equipController = new EquipController();
+        //window.GetBro().ShowDevTools();
+
+        //将挂机装备放入仓库
+        await EquipToRepository(window, equipController, account);
+        //盘点仓库装备
+        await InventoryEquips(window, equipController, account);
+    }
+
+    /// <summary>
+    /// 清理仓库
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns></returns>
     public async Task ClearEquips(UserModel account)
     {
         try

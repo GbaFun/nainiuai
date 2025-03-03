@@ -289,14 +289,14 @@
               "conditionContent": "骷髅法师,3"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵手杖",
               "operate": "大于等于",
               "attributeType": "技能等级",
               "conditionContent": "支配骷髅,3"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵手杖",
               "operate": "大于等于",
               "attributeType": "技能等级",
@@ -323,14 +323,14 @@
               "conditionContent": "骷髅法师,3"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵副手",
               "operate": "大于等于",
               "attributeType": "技能等级",
               "conditionContent": "支配骷髅,3"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵副手",
               "operate": "大于等于",
               "attributeType": "技能等级",
@@ -345,32 +345,39 @@
             }
           ]
         },
-        "头盔": {
-          "category": "头部",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "任一",
-              "matchGroupName": "死灵头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业全系技能",
-              "conditionContent": "死灵,1"
-            },
-            {
-              "matchType": "任一",
-              "matchGroupName": "死灵头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业单系技能",
-              "conditionContent": "死灵,召唤,1"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "施法速度",
-              "conditionContent": "10"
-            }
-          ]
-        },
+        //"头盔": {
+        //  "category": "头部",
+        //  "quality": "全部",
+        //  "conditions": [
+        //    {
+        //      "matchType": "任一",
+        //      "matchGroupName": "死灵头盔",
+        //      "operate": "大于等于",
+        //      "attributeType": "所有技能",
+        //      "conditionContent": "1"
+        //    },
+        //    {
+        //      "matchType": "任一",
+        //      "matchGroupName": "死灵头盔",
+        //      "operate": "大于等于",
+        //      "attributeType": "指定职业全系技能",
+        //      "conditionContent": "死灵,1"
+        //    },
+        //    {
+        //      "matchType": "任一",
+        //      "matchGroupName": "死灵头盔",
+        //      "operate": "大于等于",
+        //      "attributeType": "指定职业单系技能",
+        //      "conditionContent": "死灵,召唤,1"
+        //    },
+        //    {
+        //      "matchType": "可选",
+        //      "operate": "大于等于",
+        //      "attributeType": "施法速度",
+        //      "conditionContent": "10"
+        //    }
+        //  ]
+        //},
         "项链": {
           "category": "项链",
           "quality": "全部",
@@ -382,14 +389,14 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵项链",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵项链",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
@@ -408,14 +415,14 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵戒指",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵戒指",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
@@ -434,14 +441,14 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵戒指",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死灵戒指",
               "operate": "大于等于",
               "attributeType": "额外金币取得",

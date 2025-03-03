@@ -296,10 +296,10 @@ namespace AttributeMatch
                     regexAttr = $@"\+(?<v>\d+)% 额外金币从怪物身上取得";
                     break;
                 case emAttrType.施法速度:
-                    regexAttr = $@"施法速度提升 \+(?<v>\d+)%";
+                    regexAttr = $@"施法速度提升 (?<v>\d+)%";
                     break;
                 case emAttrType.攻击速度:
-                    regexAttr = $@"攻击速度提升 \+(?<v>\d+)%";
+                    regexAttr = $@"攻击速度提升 (?<v>\d+)%";
                     break;
                 case emAttrType.所有技能:
                     regexAttr = $@"\+(?<v>\d+) 所有技能";

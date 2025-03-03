@@ -35,11 +35,11 @@ partial class MainForm
             this.BroTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BroTabControl.Location = new System.Drawing.Point(100, 0);
+            this.BroTabControl.Location = new System.Drawing.Point(200, 0);
             this.BroTabControl.Margin = new System.Windows.Forms.Padding(2);
             this.BroTabControl.Name = "BroTabControl";
             this.BroTabControl.SelectedIndex = 0;
-            this.BroTabControl.Size = new System.Drawing.Size(883, 502);
+            this.BroTabControl.Size = new System.Drawing.Size(783, 502);
             this.BroTabControl.TabIndex = 0;
             // 
             // MainForm

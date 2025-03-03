@@ -45,20 +45,6 @@ namespace IdleAuto.Scripts.View
                 AccountCombo.Items.Add(account);
             }
         }
-        private void ShowRoleCombo()
-        {
-            if (RoleCombo.Created)
-            {
-                RoleCombo.Items.Clear();
-                RoleCombo.SelectedIndex = -1;
-                RoleCombo.Text = "";
-                UserModel account = TabManager.Instance.GetWindow().User;
-                foreach (var role in account.Roles)
-                {
-                    RoleCombo.Items.Add(role);
-                }
-            }
-        }
 
         private void ShowLoginMenu()
         {
@@ -74,22 +60,18 @@ namespace IdleAuto.Scripts.View
             this.menuPanel.Controls.Clear();
             this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.HomeGroup);
-            this.menuPanel.Controls.Add(this.JumpGroup);
-            ShowRoleCombo();
         }
         private void ShowRoleMenu()
         {
             this.menuPanel.Controls.Clear();
             this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.RoleGroup);
-            this.menuPanel.Controls.Add(this.JumpGroup);
         }
         private void ShowMaterialMenu()
         {
             this.menuPanel.Controls.Clear();
             this.menuPanel.Controls.Add(this.AccountCombo);
             this.menuPanel.Controls.Add(this.RuneGroup);
-            this.menuPanel.Controls.Add(this.JumpGroup);
         }
         private void ShowAhMenu()
         {
@@ -97,21 +79,12 @@ namespace IdleAuto.Scripts.View
             this.menuPanel.Controls.Add(this.AccountCombo);
             this.AhGroup.Controls.Add(this.BtnAutoAh);
             this.menuPanel.Controls.Add(this.AhGroup);
-            this.menuPanel.Controls.Add(this.JumpGroup);
         }
         private void ShowNoneMenu()
         {
             this.menuPanel.Controls.Clear();
         }
 
-        private void RefreshRole(RoleModel role)
-        {
-            if (RoleCombo.Created)
-            {
-                RoleCombo.SelectedItem = role;
-                RoleCombo.Text = role.RoleName;
-            }
-        }
 
         #endregion
 
@@ -194,32 +167,6 @@ namespace IdleAuto.Scripts.View
             FlowController.RefreshCookie();
         }
 
-        private void RoleCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //RoleModel role = this.RoleCombo.SelectedItem as RoleModel;
-
-            //string url = browser.Address;
-            //Match result = RegexRoleUrl(url);
-
-            //if (result.Success)
-            //{
-            //    string id = result.Groups[1].Value;
-            //    if (role.RoleId == int.Parse(id))
-            //    {
-            //        return;
-            //    }
-            //    else
-            //    {
-            //        url = url.Replace(id, role.RoleId.ToString());
-            //        browser.Load(url);
-            //    }
-            //}
-            //else
-            //{
-            //    browser.Load($"https://www.idleinfinity.cn/Character/Detail?id={role.RoleId}");
-            //}
-        }
-
         #endregion
 
         #region 监听事件
@@ -259,17 +206,17 @@ namespace IdleAuto.Scripts.View
             }
 
             //检查url是否包含角色id，刷新角色选则内容
-            Match result = RegexRoleUrl(url);
-            if (result.Success)
-            {
-                if (int.TryParse(result.Groups[1].Value, out int id))
-                {
-                    id = int.Parse(result.Groups[1].Value);
-                    RoleModel role = RoleCombo.Items.Cast<RoleModel>().FirstOrDefault(s => s.RoleId == id);
-                    if (role == null) return;//先跳过一下
-                    this.Invoke(new Action(() => RefreshRole(role)));
-                }
-            }
+            //Match result = RegexRoleUrl(url);
+            //if (result.Success)
+            //{
+            //    if (int.TryParse(result.Groups[1].Value, out int id))
+            //    {
+            //        id = int.Parse(result.Groups[1].Value);
+            //        RoleModel role = RoleCombo.Items.Cast<RoleModel>().FirstOrDefault(s => s.RoleId == id);
+            //        if (role == null) return;//先跳过一下
+            //        this.Invoke(new Action(() => RefreshRole(role)));
+            //    }
+            //}
             //this.Invoke(new Action(() => HideLoadingPanel()));
         }
         private Match RegexRoleUrl(string url)
@@ -298,6 +245,11 @@ namespace IdleAuto.Scripts.View
         private void btnMonitor_Click(object sender, EventArgs e)
         {
             FlowController.StartEfficencyMonitor();
+        }
+
+        private void BtnInventory_Click(object sender, EventArgs e)
+        {
+            RepairManager.Instance.UpdateEquips(AccountController.Instance.User);
         }
     }
 }
