@@ -841,7 +841,7 @@ function getLibrary(_timeout = 5000) {
                 resolve(data);
             },
             error: function (xhr, status, error) {
-                resolve(data);
+                resolve(status);
             }
         });
     });

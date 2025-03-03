@@ -701,7 +701,7 @@ public class EquipController
 
         return matchEquips;
     }
-    private Dictionary<long, EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
+    public Dictionary<long, EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
     {
         Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
         Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();

@@ -41,10 +41,8 @@
         return arr;
     }
 
-   
-
 
     _guaji.getData = getData;
-    _map.startExplore = startExplore;
+ 
 
 })();

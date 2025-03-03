@@ -127,7 +127,7 @@ let _map = {};
         step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
-            await sleep(1000);
+            await sleep(1500);
             var block = $(`#${step[i]}`);
 
             if (block.hasClass("monster") || block.hasClass("boss")) {

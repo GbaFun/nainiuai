@@ -11,6 +11,7 @@ public class IdleUrlHelper
     public const string Role = "Character/Detail";
     public const string Equip = "Equipment/Query";
     public const string Ah = "Auction/Query";
+    public const string Inlay = "Equipment/Inlay";
     private const string m_roleArg = "id=";
     public static string HomeUrl()
     {
@@ -35,5 +36,10 @@ public class IdleUrlHelper
     public static string AhUrl(int roleId)
     {
         return $"{Idle}/{Ah}?{m_roleArg}{roleId}";
+    }
+
+    public static string InlayUrl(int roleid,long eid)
+    {
+        return $"{Idle}/{Inlay}?id={roleid}&eid={eid}&pi=0&pt=&et=&pi2=0&pt2=&et2=&aid=";
     }
 }

@@ -86,5 +86,18 @@ namespace IdleAuto.Scripts.Controller
                 window.Close();
             }
         }
+
+        public static async Task MakeArtifact()
+        {
+            var account = AccountCfg.Instance.Accounts[1];
+            var user = new UserModel(account);
+            var window = await TabManager.Instance.TriggerAddBroToTap(user);
+            var control = new ArtifactController(window);
+            var condition=ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
+            var eqControll = new EquipController();
+            var baseEq=eqControll.GetMatchEquips(account.AccountID, condition,out _).ToList().FirstOrDefault();
+            await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
+            
+        }
     }
 }

@@ -1,0 +1,14 @@
+﻿{
+  "低力量隐密":{
+    "category": "衣服",
+    "quality": "破碎",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "小于等于",
+        "attributeType": "需要力量",
+        "conditionContent": 30
+      }
+    ]
+  }
+}

@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
+    <Compile Include="Configs\CfgExtension\ArtifactBaseCfg.cs" />
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />
     <Compile Include="Configs\CfgExtension\RetainEquipCfg.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Configs\CfgExtension\RuneLogicPriceCfg.cs" />
     <Compile Include="Configs\CfgExtension\ScanAhCfg.cs" />
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
+    <Compile Include="Scripts\Controller\ArtifactController.cs" />
     <Compile Include="Scripts\Controller\EfficiencyController.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
@@ -84,6 +86,9 @@
     <None Include="BackUp\Cookies\萤石矿.json" />
     <None Include="BackUp\Cookies\钻石矿.json" />
     <None Include="BackUp\Cookies\铁矿石.json" />
+    <None Include="Configs\ArtifactBaseCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Configs\IdleSkillJson.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -281,6 +286,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\init.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\js\inlay.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\js\login.js">

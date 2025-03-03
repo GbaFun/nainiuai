@@ -239,7 +239,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            FlowController.SyncFilter();
+            FlowController.MakeArtifact();
+            //FlowController.SyncFilter();
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)

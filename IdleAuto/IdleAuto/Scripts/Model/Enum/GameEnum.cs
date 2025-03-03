@@ -1,4 +1,6 @@
-﻿public enum emCategory
+﻿using System.ComponentModel;
+
+public enum emCategory
 {
     全部 = 0,
     帽子,
@@ -202,4 +204,12 @@ public enum emMaskType
     /// 起号组队工会
     /// </summary>
     AUTO_INIT = 5
+}
+
+
+
+public enum emArtifactBase
+{
+    [Description("隐密")]
+    低力量隐密,
 }

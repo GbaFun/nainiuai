@@ -6,14 +6,16 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AttributeMatch;
-
+using FreeSql.DataAnnotations;
 
 public class EquipModel
 {
+    
     /// <summary>
     /// 装备唯一ID
     /// </summary>
     [JsonProperty("eid")]
+    [Column(IsPrimary = true)]
     public long EquipID { get; set; }
     /// <summary>
     /// 装备栏位,非装备类物品忽略
