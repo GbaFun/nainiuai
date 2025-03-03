@@ -109,6 +109,7 @@ namespace IdleAuto.Scripts.Wrap
             var response = await _bro.EvaluateScriptAsync(jsFunc);
 
             await Task.Delay(1000);
+            P.Log("Start Reload With Js CallFunc Finished!");
             _bro.Reload();
 
             await jsTask.Task;

@@ -234,7 +234,7 @@ namespace AttributeMatch
         /// <returns></returns>
         private static bool MatchBaseAttr(EquipModel _equip, AttributeCondition _condition)
         {
-            bool ismatch;
+            bool ismatch = false;
             string regexAttr = "";
             switch (_condition.AttributeType)
             {
@@ -308,10 +308,10 @@ namespace AttributeMatch
                     regexAttr = $@"\+(?<v>\d+) [\u4e00-\u9fa5]+转换";
                     break;
                 case emAttrType.需要力量:
-                    regexAttr = $@"需要力量： (?<v>\d+)";
+                    regexAttr = $@"需要力量：\n(?<v>\d+)";
                     break;
                 case emAttrType.需要敏捷:
-                    regexAttr = $@"需要敏捷： (?<v>\d+)";
+                    regexAttr = $@"需要敏捷：\n(?<v>\d+)";
                     break;
             }
             int attrValue = 0;
@@ -320,9 +320,8 @@ namespace AttributeMatch
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
+                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
             }
-
-            ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
 
             return ismatch;
         }
@@ -336,6 +335,7 @@ namespace AttributeMatch
         private static bool MatchPoisonAttr(EquipModel _equip, AttributeCondition _condition)
         {
             //_condition.ConditionContent = "240" --+40 毒素伤害，持续6次
+            bool ismatch = false;
             string regexAttr = $@"\+(?<v1>\d+) 毒素伤害，持续(?<v2>\d+)次";
             int attrValue = 0;
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
@@ -345,9 +345,8 @@ namespace AttributeMatch
                 int v1 = int.Parse(match.Groups["v1"].Value);
                 int v2 = int.Parse(match.Groups["v2"].Value);
                 attrValue = v1 * v2;
+                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
             }
-
-            bool ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
 
             return ismatch;
         }
@@ -360,7 +359,7 @@ namespace AttributeMatch
         /// <returns></returns>
         private static bool MatchSlot(EquipModel _equip, AttributeCondition _condition)
         {
-            bool ismatch;
+            bool ismatch = false;
             string regexStr;
             Regex regex;
             Match match;
@@ -375,8 +374,9 @@ namespace AttributeMatch
                     if (match.Success)
                     {
                         slotValue = int.Parse(match.Groups["v"].Value);
+                        emOperateType = emOperateType.大于等于;
+                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType);
                     }
-                    emOperateType = emOperateType.大于等于;
                     break;
                 case emItemQuality.破碎:
                     regexStr = @"凹槽\(0\/(?<v>\d+)\)";
@@ -385,10 +385,10 @@ namespace AttributeMatch
                     if (match.Success)
                     {
                         slotValue = int.Parse(match.Groups["v"].Value);
+                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType);
                     }
                     break;
             }
-            ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType);
             return ismatch;
         }
 
@@ -438,7 +438,7 @@ namespace AttributeMatch
         /// <returns></returns>
         private static bool MatchSkill(EquipModel _equip, AttributeCondition _condition)
         {
-            bool ismatch;
+            bool ismatch = false;
 
             string regexAttr = "";
             string[] scondition = _condition.ConditionContent.Split(',');
@@ -475,8 +475,8 @@ namespace AttributeMatch
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
+                ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate);
             }
-            ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate);
             return ismatch;
         }
 

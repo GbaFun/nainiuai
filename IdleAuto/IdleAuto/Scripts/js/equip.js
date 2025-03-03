@@ -234,11 +234,11 @@ function equipOn(cid, eid) {
     POST_Message("EquipOn", data, "html", 1000)
         .then(r => {
             console.log("EquipOn success");
-            location.reload();
+            reloadPage();
         })
         .catch(r => {
             console.log(r);
-            location.reload();
+            reloadPage();
         });
 }
 function equipOff(cid, etype) {
@@ -250,11 +250,11 @@ function equipOff(cid, etype) {
     POST_Message("EquipOff", data, "html", 1000)
         .then(r => {
             console.log("EquipOff success");
-            location.reload();
+            reloadPage();
         })
         .catch(r => {
             console.log(r);
-            location.reload();
+            reloadPage();
         });
 }
 function equipStorage(cid) {
@@ -266,11 +266,11 @@ function equipStorage(cid) {
     POST_Message("EquipStoreAll", data, "html", 1000)
         .then(r => {
             console.log("equipStorage success");
-            location.reload();
+            reloadPage();
         })
         .catch(r => {
             console.log(r);
-            location.reload();
+            reloadPage();
         });
 }
 function equipClear(cid, eids) {
@@ -283,10 +283,15 @@ function equipClear(cid, eids) {
     POST_Message("EquipSellBoxAll", data, "html", 1000)
         .then(r => {
             console.log("equipClear success");
-            location.reload();
+            reloadPage();
         })
         .catch(r => {
             console.log(r);
-            location.reload();
+            reloadPage();
         });
+}
+
+async function reloadPage() {
+    await sleep(1000);
+    location.reload();
 }

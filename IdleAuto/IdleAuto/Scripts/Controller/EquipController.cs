@@ -424,7 +424,7 @@ public class EquipController
                                     {
                                         await Task.Delay(1000);
                                         P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
-                                        var response4 = await win.CallJsWithReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                        var response4 = await win.CallJsWaitReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
                                         if (response4.Success)
                                         {
                                             P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
@@ -447,7 +447,7 @@ public class EquipController
                                     P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
                                     await Task.Delay(1000);
                                     P.Log($"开始{role.RoleName}的重置加点", emLogType.AutoEquip);
-                                    var response5 = await win.CallJsWithReload($@"_char.attributeReset();", "char");
+                                    var response5 = await win.CallJsWaitReload($@"_char.attributeReset();", "char");
                                     if (response5.Success)
                                     {
                                         P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
@@ -461,7 +461,7 @@ public class EquipController
                                             if (baseAttr.AddPoint(requareV4))
                                             {
                                                 await Task.Delay(1000);
-                                                var response7 = await win.CallJsWithReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                                var response7 = await win.CallJsWaitReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
                                                 if (response7.Success)
                                                 {
                                                     P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);

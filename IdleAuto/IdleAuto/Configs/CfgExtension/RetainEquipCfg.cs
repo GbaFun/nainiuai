@@ -42,7 +42,6 @@ public class RetainEquipCfg
         {
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {
-                P.Log(report.MatchWeight.ToString());
                 return true;
             }
         }

@@ -53,6 +53,7 @@ namespace IdleAuto.Scripts.View
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
             this.BtnInventory = new System.Windows.Forms.Button();
+            this.BtnTest = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.RuneGroup.SuspendLayout();
@@ -86,6 +87,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.BtnTest);
             this.HomeGroup.Controls.Add(this.BtnInventory);
             this.HomeGroup.Controls.Add(this.btnHomePage);
             this.HomeGroup.Controls.Add(this.BtnInit);
@@ -317,6 +319,15 @@ namespace IdleAuto.Scripts.View
             this.BtnInventory.UseVisualStyleBackColor = true;
             this.BtnInventory.Click += new System.EventHandler(this.BtnInventory_Click);
             // 
+            // BtnTest
+            // 
+            this.BtnTest.Location = new System.Drawing.Point(12, 415);
+            this.BtnTest.Name = "BtnTest";
+            this.BtnTest.Size = new System.Drawing.Size(75, 23);
+            this.BtnTest.TabIndex = 11;
+            this.BtnTest.Text = "测试";
+            this.BtnTest.UseVisualStyleBackColor = true;
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -361,5 +372,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button BtnRefresh;
         private System.Windows.Forms.Button btnMonitor;
         private System.Windows.Forms.Button BtnInventory;
+        private System.Windows.Forms.Button BtnTest;
     }
 }
