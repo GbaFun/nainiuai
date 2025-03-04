@@ -292,6 +292,6 @@ function equipClear(cid, eids) {
 }
 
 async function reloadPage() {
-    await sleep(1000);
-    location.reload();
+    //await sleep(1000);
+    //location.reload();
 }

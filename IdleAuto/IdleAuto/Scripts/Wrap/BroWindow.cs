@@ -228,9 +228,10 @@ namespace IdleAuto.Scripts.Wrap
 
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
+         
             P.Log($"On {name} FrameLoadStart");
-
             var bro = sender as ChromiumWebBrowser;
+            P.Log($"On {name} FrameLoadStart");
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
 

@@ -10,14 +10,38 @@ function Post(_url, _data, _dataType) {
             data: _data,
             dataType: _dataType,
 
-            success: function (result) {
-                resolve(result);
+            success: function (result, status, xhr) {
+                resolve({ result: result, status: status, xhr: xhr });
             },
 
             error: function (request, state, ex) {
                 reject(request);
             }
         });
+    });
+}
+
+function FetchPost(_url, _data) {
+    var formData = new FormData();
+    for (var key in _data) {
+        formData.append(key, _data[key]);
+    }
+    return new Promise((resolve, reject) => {
+        fetch(_url, {
+            method: "POST",
+            redirect: 'manual',
+
+            body: formData, // 请求体
+        }).then(response => {
+            if (response.type == "opaqueredirect") {
+                location.reload();
+            }
+            resolve(response);
+        }).catch(err => {
+            debugger
+            console.log(err);
+            reject(err)
+        })
     });
 }
 
@@ -31,7 +55,7 @@ async function POST_Message(url, data, dataType, timeout = 2000) {
     console.log('Start POST Message');
     await sleep(timeout);
     console.log(timeout / 1000 + "秒后")
-    return Post(url, data, dataType)
+    return FetchPost(url, data)
 
 }
 

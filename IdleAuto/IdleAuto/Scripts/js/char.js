@@ -103,9 +103,9 @@ class Character {
             cid: charid
         });
         POST_Message("AttributeReset", data, "post", 1500).then((r) => {
-            location.reload();
+            //location.reload();
         }).catch((e) => {
-            location.reload();
+           // location.reload();
         })
     }
     attributeSave(charid, data) {
@@ -119,9 +119,9 @@ class Character {
         });
         console.log(_data);
         POST_Message("AttributeSave", _data, "post", 1500).then((r) => {
-            location.reload();
+           // location.reload();
         }).catch((e) => {
-            location.reload();
+           // location.reload();
         })
     }
 
@@ -217,7 +217,7 @@ class Character {
 
         }).catch((e) => {
             debugger
-            location.reload();
+            // location.reload();
         })
     }
 
@@ -229,7 +229,7 @@ class Character {
         POST_Message("SkillReset", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            location.reload();
+            // location.reload();
         })
     }
 
@@ -240,9 +240,9 @@ class Character {
             sid: data.sid
         });
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
-            location.reload();
+            //location.reload();
         }).catch((e) => {
-            location.reload();
+            // location.reload();
         })
     }
     skillKeySave(sid) {
@@ -252,10 +252,14 @@ class Character {
             sid: sid
         });
         POST_Message("SetKeySkill", data, "post", 1500).then((r) => {
-            location.reload();
+            // location.reload();
         }).catch((e) => {
-            location.reload();
+            //location.reload();
         })
+    }
+    //是否设置了Key
+    hasKey() {
+        return $("span.label.label-danger:contains('K')").not('.sr-only, .skill-pve-key').length == 1;
     }
 
     mapSwitch(ml) {
@@ -286,7 +290,7 @@ class Character {
         POST_Message("ConfigCopy", data, "post", 1500).then((r) => {
 
         }).catch((e) => {
-            location.reload();
+            //location.reload();
         })
     }
 

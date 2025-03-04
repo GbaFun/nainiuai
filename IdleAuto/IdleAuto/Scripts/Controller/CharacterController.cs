@@ -87,7 +87,7 @@ namespace IdleAuto.Scripts.Controller
             _isNeedDungeon = bool.Parse(isNeedDungeon.ToString());
         }
 
-        public CharacterController():base()
+        public CharacterController() : base()
         {
             _isNeedDungeon = false;
         }
@@ -652,7 +652,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartAddSkill(ChromiumWebBrowser bro, UserModel user)
         {
             _browser = bro;
-            for (int i =0; i < user.Roles.Count; i++)
+            for (int i = 0; i < user.Roles.Count; i++)
             {
                 var role = user.Roles[i];
                 await AddSkillPoints(_browser, role);
@@ -711,8 +711,10 @@ namespace IdleAuto.Scripts.Controller
                 });
 
             }
+            var s = await _browser.EvaluateScriptAsync("_char.hasKey()");
+            var hasKey = s.Result.ToObject<bool>();
 
-            await SignalCallback("charReload", async () =>
+            if (!hasKey) await SignalCallback("charReload", async () =>
             {
                 await SkillKeySave(skillConfig.KeySkillId);
             });
@@ -858,15 +860,19 @@ namespace IdleAuto.Scripts.Controller
             {
                 return new Tuple<bool, bool, bool>(false, true, true);
             }
-            if(noZeroSkill.Keys.Count != targetSkillDic.Keys.Count)
+            if (noZeroSkill.Keys.Count != targetSkillDic.Keys.Count)
             {
                 return new Tuple<bool, bool, bool>(true, true, true);
             }
             bool isNeedReset = false;//需要重置
             bool isNeedAdd = false;//需要加点
             bool isNeedSetGroup = false;//需要重设携带技能
-
-            foreach (var item in curGroupSkill.Where(p=>p!="普通攻击"&&p!= "基础法术"&&p!="空缺"))
+            var groupList = curGroupSkill.Where(p => p != "普通攻击" && p != "基础法术" && p != "空缺").ToList();
+            if (groupList.Count == 0)
+            {
+                isNeedSetGroup = true;
+            }
+            foreach (var item in groupList)
             {
                 if (!targetSkillDic.ContainsKey(item))
                 {

@@ -12,10 +12,12 @@
 
     init().then(async () => {
         readData();
+        getRuneCount();
         Bridge.invokeEvent('OnJsInited', 'inlay');
 
     })
 
+    let nextRuneArr = [];//记录接下来要插的符文用于判断能不能做
 
     function makeArtifact(data) {
         if (isEnd()) {
@@ -27,9 +29,26 @@
             alert("底子没有这个神器");
         }
         debugger;
-        var rune = getCurRune(name);
-        insertRune(rune);
-  
+        var nextRune = getCurRune(name);
+        if (!checkRuneEnough(name, nextRune)) {
+            return -1;
+        }
+        insertRune(nextRune);
+        return 1;
+    }
+
+    function checkRuneEnough(name, nextRune) {
+        var targetRuneArr = map[name];
+        var index = targetRuneArr.indexOf(nextRune);
+        var isEnough = true;
+        for (var i = index; i < targetRuneArr.length; i++) {
+            var rune = targetRuneArr[i];
+            userRuneMap[rune * 1]--;
+            if (userRuneMap[rune * 1] < 0) {
+                isEnough = false
+            }
+        }
+        return isEnough;
     }
     //获取现在要插的符文
     function getCurRune(name) {
@@ -57,12 +76,14 @@
         }
     }
 
-    function insertRune(rune) {
+     async function insertRune(rune) {
         var data = {
             eid2: rune
         };
-        POST_Message("RuneInlay", MERGE_Form(data)).then().catch((r) => {
-            location.reload();
+        await POST_Message("RuneInlay", MERGE_Form(data)).then((r) => {
+         
+        }).catch((r, status, xhr) => {
+            
         });
     }
 
@@ -92,9 +113,28 @@
 
         });
     }
+
+    let userRuneMap = {};//存用户符文数量
+    function getRuneCount() {
+        $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function (index,item) {
+
+            var $pElement = $(this).find('p:first'); // 获取当前容器下的第一个 <p> 元素
+
+            var runeName = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+
+            var currentRuneCount = parseInt($(this).find('p:first .artifact').last().text().trim()); // 获取符文数量
+            if (index <= 32) {
+                userRuneMap[index + 1] = currentRuneCount;
+            }
+        });
+    }
+    
+
     _inlay.makeArtifact = makeArtifact;
     _inlay.isEnd = isEnd;
     _inlay.map = map;
+    _inlay.userRuneMap = userRuneMap;
+    _inlay.insertRune = insertRune;
 
 
 })();

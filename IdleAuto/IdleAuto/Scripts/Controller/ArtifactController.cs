@@ -34,16 +34,22 @@ namespace IdleAuto.Scripts.Controller
             if (isEnd)
             {
                 baseEq.Quality = "artifact";
-                var rows = FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(baseEq).ExecuteAffrows();
+                baseEq.EquipName = art.GetEnumDescription();
+                var rows = FreeDb.Sqlite.Update<EquipModel>().SetSource(baseEq).ExecuteAffrows();
                 return baseEq.EquipID;
             }
-        
+
             var name = art.GetEnumDescription();//神器名字
             var data = new Dictionary<string, object>();
             data.Add("name", name);
-            await _win.CallJsWaitReload($"_inlay.makeArtifact({data.ToLowerCamelCase()})", "inlay");
-      
-            
+            var makeResult = await _win.CallJsWaitReload($"_inlay.makeArtifact({data.ToLowerCamelCase()})", "inlay");
+
+            var isEnough = makeResult.Result.ToObject<int>();
+            if (isEnough == -1)
+            {
+                return -1;
+            }
+
             if (!isEnd)
             {
                 await MakeArtifact(art, baseEq, roleid);

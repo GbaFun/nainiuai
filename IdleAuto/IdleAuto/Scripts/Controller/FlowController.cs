@@ -89,15 +89,19 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task MakeArtifact()
         {
-            var account = AccountCfg.Instance.Accounts[1];
+            var account = AccountCfg.Instance.Accounts[19];
             var user = new UserModel(account);
             var window = await TabManager.Instance.TriggerAddBroToTap(user);
             var control = new ArtifactController(window);
-            var condition=ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
+            var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
             var eqControll = new EquipController();
-            var baseEq=eqControll.GetMatchEquips(account.AccountID, condition,out _).ToList().FirstOrDefault();
-            await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
-            
+            var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
+            if (baseEq.Value != null)
+            {
+             long equipId=   await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
+            }
+
+
         }
     }
 }
