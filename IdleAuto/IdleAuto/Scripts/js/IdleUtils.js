@@ -21,28 +21,78 @@ function Post(_url, _data, _dataType) {
     });
 }
 
-function FetchPost(_url, _data) {
-    var formData = new FormData();
-    for (var key in _data) {
+async function FetchPost(_url, _data) {
+    const formData = new FormData();
+    for (const key in _data) {
         formData.append(key, _data[key]);
     }
+
     return new Promise((resolve, reject) => {
         fetch(_url, {
             method: "POST",
             redirect: 'manual',
-
-            body: formData, // 请求体
-        }).then(response => {
-            if (response.type == "opaqueredirect") {
-                location.reload();
-            }
-            resolve(response);
-        }).catch(err => {
-            debugger
-            console.log(err);
-            reject(err)
+            body: formData,
         })
+            .then(async response => { // 将回调声明为async函数
+                if (response.type === "opaqueredirect") {
+                    location.reload();
+                    return;
+                }
+                if (response.status === 500) {
+                    try {
+                        const str = await getResponseText(response.body);
+                        reject({ responseText: str });
+                    } catch (error) {
+                        reject(error);
+                    }
+                } else {
+                    resolve(response);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                reject(err);
+            });
     });
+}
+
+async function getResponseText(stream) {
+    const reader = stream.getReader();
+    let accumulatedString = '';
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            accumulatedString += new TextDecoder().decode(value);
+        }
+        return accumulatedString;
+    } finally {
+        reader.releaseLock(); // 确保释放Reader锁
+    }
+}
+
+
+async function getResponseText(stream) {
+    let accumulatedString = '';
+
+    // 假设 stream 是你的 ReadableStream 对象
+    const reader = stream.getReader();
+
+    function readStream() {
+        return reader.read().then(({ done, value }) => {
+            if (done) {
+                return accumulatedString; // 返回累积的字符串
+            }
+            accumulatedString += new TextDecoder().decode(value); // 将新的数据块解码并添加到累积字符串中
+            return readStream(); // 递归读取直到流结束
+        });
+    }
+
+    await readStream();
+    debugger
+    return accumulatedString;
+    
 }
 
 //利用promise实现优雅的暂停

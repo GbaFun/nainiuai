@@ -268,8 +268,9 @@ class Character {
             ml: ml
         })
         POST_Message("MapSwitch", data, "post", 1500).then((r) => {
-
+            debugger
         }).catch((e) => {
+            debugger
             var isNeedDungeon = e.responseText.indexOf('请先击杀上一层秘境BOSS') > -1
             var data = { isSuccess: true, isNeedDungeon: false };
             if (isNeedDungeon) {
