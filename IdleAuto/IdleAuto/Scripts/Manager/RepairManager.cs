@@ -139,6 +139,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     }
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {
+        await Task.Delay(1000);
         P.Log($"开始跳转{role.RoleName}的角色详情页");
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.RoleUrl(role.RoleId), "char");
         if (result.Success)

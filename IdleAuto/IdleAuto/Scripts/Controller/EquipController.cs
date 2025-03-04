@@ -424,7 +424,7 @@ public class EquipController
                                     {
                                         await Task.Delay(1000);
                                         P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
-                                        var response4 = await win.CallJsWaitReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                        var response4 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
                                         if (response4.Success)
                                         {
                                             P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
@@ -447,7 +447,7 @@ public class EquipController
                                     P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
                                     await Task.Delay(1000);
                                     P.Log($"开始{role.RoleName}的重置加点", emLogType.AutoEquip);
-                                    var response5 = await win.CallJsWaitReload($@"_char.attributeReset();", "char");
+                                    var response5 = await win.CallJsWaitReload($@"_char.attributeReset({role.RoleId});", "char");
                                     if (response5.Success)
                                     {
                                         P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
@@ -461,7 +461,7 @@ public class EquipController
                                             if (baseAttr.AddPoint(requareV4))
                                             {
                                                 await Task.Delay(1000);
-                                                var response7 = await win.CallJsWaitReload($@"_char.attributeSave({baseAttr.ToLowerCamelCase()});", "char");
+                                                var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
                                                 if (response7.Success)
                                                 {
                                                     P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
@@ -565,6 +565,17 @@ public class EquipController
                 continue;
             }
             List<EquipModel> matchEquips = GetMatchEquipBySort(accountId, role, (emEquipSort)j, curEquip, equipment);
+            for (int i = 0; i < matchEquips.Count;)
+            {
+                if (matchEquips[0].CanWear(role))
+                {
+                    break;
+                }
+                else
+                {
+                    matchEquips.RemoveAt(0);
+                }
+            }
             if (matchEquips.Count > 0)
             {
                 if (curEquip != null && matchEquips.First().EquipID == curEquip.EquipID)
@@ -586,14 +597,14 @@ public class EquipController
                         }
                     }
 
-                    if (!result.ToWearEquips.ContainsKey((emEquipSort)j))
+                    if (!result.ToWearEquips.ContainsKey((emEquipSort)j) && equipment.Necessary)
                     {
                         result.IsSuccess = false;
                         break;
                     }
                 }
             }
-            else
+            else if (equipment.Necessary)
             {
                 P.Log($"未找到匹配的装备，跳过该部位换装！", emLogType.AutoEquip);
                 result.IsSuccess = false;
@@ -691,7 +702,7 @@ public class EquipController
             }
         }
 
-        P.Log($"比较完成，共找到{matchEquips.Count}个符合要求的装备", emLogType.AutoEquip);
+        P.Log($"比较完成，共找到{matchEquipMap.Count}个符合要求的装备", emLogType.AutoEquip);
         if (matchEquipMap.Count > 0)
             matchEquips = matchEquipMap.Values.OrderBy(p => matchReports[p.EquipID].MatchWeight).ToList();
         if (matchEquipMap.Count > 1)

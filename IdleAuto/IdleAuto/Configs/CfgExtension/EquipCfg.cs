@@ -23,6 +23,7 @@ public class Equipment
     public emItemType emEquipType { get; set; }
     public string Category { get; set; }
     public string Quality { get; set; }
+    public bool Necessary { get; set; }
     public List<AttributeCondition> Conditions { get; set; }
 
     public bool AdaptAttr(EquipModel equip, out AttributeMatchReport report)

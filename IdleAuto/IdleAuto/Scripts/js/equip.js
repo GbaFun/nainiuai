@@ -231,14 +231,14 @@ function equipOn(cid, eid) {
         cid: cid,
         eid: eid,
     });
-    POST_Message("EquipOn", data, "html", 1000)
+    POST_Message("EquipOn", data, "post", 1000)
         .then(r => {
             console.log("EquipOn success");
-            reloadPage();
+            //reloadPage();
         })
         .catch(r => {
             console.log(r);
-            reloadPage();
+            //reloadPage();
         });
 }
 function equipOff(cid, etype) {
@@ -247,7 +247,7 @@ function equipOff(cid, etype) {
         cid: cid,
         cet: etype,
     });
-    POST_Message("EquipOff", data, "html", 1000)
+    POST_Message("EquipOff", data, "post", 1000)
         .then(r => {
             console.log("EquipOff success");
             reloadPage();
@@ -263,14 +263,14 @@ function equipStorage(cid) {
         cid: cid,
     });
     console.log(data);
-    POST_Message("EquipStoreAll", data, "html", 1000)
+    POST_Message("EquipStoreAll", data, "post", 1000)
         .then(r => {
             console.log("equipStorage success");
-            reloadPage();
+            //reloadPage();
         })
         .catch(r => {
             console.log(r);
-            reloadPage();
+            //reloadPage();
         });
 }
 function equipClear(cid, eids) {
@@ -280,18 +280,18 @@ function equipClear(cid, eids) {
         eidsbox: eids.replace('-', ','),
     });
     console.log(data);
-    POST_Message("EquipSellBoxAll", data, "html", 1000)
+    POST_Message("EquipSellBoxAll", data, "post", 1000)
         .then(r => {
             console.log("equipClear success");
-            reloadPage();
+            //reloadPage();
         })
         .catch(r => {
             console.log(r);
-            reloadPage();
+            //reloadPage();
         });
 }
 
 async function reloadPage() {
-    //await sleep(1000);
-    //location.reload();
+    await sleep(1000);
+    location.reload();
 }

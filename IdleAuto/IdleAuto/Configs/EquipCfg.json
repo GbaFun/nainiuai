@@ -11,13 +11,14 @@
         "主手": {
           "category": "权杖",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
 
               "operate": "大于等于",
               "attributeType": "技能等级",
-              "conditionContent": "力量光环,3"
+              "conditionContent": "力量光环,2"
             },
             {
               "matchType": "可选",
@@ -31,13 +32,14 @@
         "副手": {
           "category": "盾|骑士盾牌",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
 
               "operate": "大于等于",
               "attributeType": "技能等级",
-              "conditionContent": "力量光环,3"
+              "conditionContent": "力量光环,2"
             },
             {
               "matchType": "可选",
@@ -50,51 +52,89 @@
         },
         "头盔": {
           "category": "帽子|头饰",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
-              "matchType": "任一",
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
               "conditionContent": "1"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
               "conditionContent": "骑士,1"
             },
             {
-              "matchType": "任一",
-              "matchGroupName": "骑士头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业单系技能",
-              "conditionContent": "骑士,光环,1"
-            }
-          ]
-        },
-        "项链": {
-          "category": "项链",
-          "quality": "全部",
-          "conditions": [
-            {
               "matchType": "可选",
-              "matchGroupName": "骑士项链",
+              "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "骑士,光环,1"
             },
             {
               "matchType": "可选",
-              "matchGroupName": "骑士项链",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
               "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "项链": {
+          "category": "项链",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "骑士项链",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "骑士,光环,1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "骑士项链",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "任一",
               "matchGroupName": "骑士项链",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
@@ -104,17 +144,30 @@
         },
         "戒指1": {
           "category": "戒指",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "任一",
               "matchGroupName": "骑士戒指",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士戒指",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
@@ -124,17 +177,30 @@
         },
         "戒指2": {
           "category": "戒指",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "任一",
               "matchGroupName": "骑士戒指",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士戒指",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
@@ -144,121 +210,117 @@
         },
         "靴子": {
           "category": "靴子",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "可选",
-              "matchGroupName": "骑士靴子",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
-            }
-          ]
-        }
-      },
-      {
-        "suitName": "骑士MF装",
-        "主手": {
-          "category": "权杖",
-          "quality": "全部",
-          "conditions": [
+            },
             {
-              "matchType": "必需",
-
-              "operate": "大于等于",
-              "attributeType": "技能等级",
-              "conditionContent": "力量光环,1"
-            }
-          ]
-        },
-        "项链": {
-          "category": "项链",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "必需",
-              "matchGroupName": "骑士戒指",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            }
-          ]
-        },
-        "戒指1": {
-          "category": "戒指",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "必需",
-              "matchGroupName": "骑士戒指",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            }
-          ]
-        },
-        "戒指2": {
-          "category": "戒指",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "任一",
-              "matchGroupName": "骑士戒指",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            }
-          ]
-        }
-      },
-      {
-        "suitName": "骑士金币装",
-        "主手": {
-          "category": "权杖",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "必需",
-
-              "operate": "大于等于",
-              "attributeType": "技能等级",
-              "conditionContent": "力量光环,1"
-            }
-          ]
-        },
-        "项链": {
-          "category": "项链",
-          "quality": "全部",
-          "conditions": [
-            {
-              "matchType": "必需",
-              "matchGroupName": "骑士戒指",
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
               "conditionContent": "10"
             }
           ]
         },
-        "戒指1": {
-          "category": "戒指",
-          "quality": "全部",
+        "衣服": {
+          "category": "衣服",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
-              "matchGroupName": "骑士戒指",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
               "conditionContent": "10"
             }
           ]
         },
-        "戒指2": {
-          "category": "戒指",
-          "quality": "全部",
+        "手套": {
+          "category": "手套",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
-              "matchType": "任一",
-              "matchGroupName": "骑士戒指",
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "攻击速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "必需",
+              "operate": "小于",
+              "attributeType": "施法速度",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "护符": {
+          "category": "护符",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "腰带": {
+          "category": "腰带",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
               "conditionContent": "10"
@@ -280,6 +342,7 @@
         "主手": {
           "category": "手杖",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -314,6 +377,7 @@
         "副手": {
           "category": "死灵副手",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -345,42 +409,44 @@
             }
           ]
         },
-        //"头盔": {
-        //  "category": "头部",
-        //  "quality": "全部",
-        //  "conditions": [
-        //    {
-        //      "matchType": "任一",
-        //      "matchGroupName": "死灵头盔",
-        //      "operate": "大于等于",
-        //      "attributeType": "所有技能",
-        //      "conditionContent": "1"
-        //    },
-        //    {
-        //      "matchType": "任一",
-        //      "matchGroupName": "死灵头盔",
-        //      "operate": "大于等于",
-        //      "attributeType": "指定职业全系技能",
-        //      "conditionContent": "死灵,1"
-        //    },
-        //    {
-        //      "matchType": "任一",
-        //      "matchGroupName": "死灵头盔",
-        //      "operate": "大于等于",
-        //      "attributeType": "指定职业单系技能",
-        //      "conditionContent": "死灵,召唤,1"
-        //    },
-        //    {
-        //      "matchType": "可选",
-        //      "operate": "大于等于",
-        //      "attributeType": "施法速度",
-        //      "conditionContent": "10"
-        //    }
-        //  ]
-        //},
+        "头盔": {
+          "category": "头部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "所有技能",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "指定职业全系技能",
+              "conditionContent": "死灵,1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "10"
+            }
+          ]
+        },
         "项链": {
           "category": "项链",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -407,6 +473,7 @@
         "戒指1": {
           "category": "戒指",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -433,6 +500,7 @@
         "戒指2": {
           "category": "戒指",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -455,6 +523,95 @@
               "conditionContent": "10"
             }
           ]
+        },
+        "靴子": {
+          "category": "靴子",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "衣服": {
+          "category": "衣服",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "手套": {
+          "category": "手套",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "护符": {
+          "category": "护符",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "腰带": {
+          "category": "腰带",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
         }
       }
     ]
@@ -469,8 +626,9 @@
       {
         "suitName": "死骑套装",
         "主手": {
-          "category": "武器",
-          "quality": "全部",
+          "category": "斧|剑|锤|匕首|标枪|投掷武器",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -480,8 +638,7 @@
               "conditionContent": "单手伤害"
             },
             {
-              "matchType": "必需",
-
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "攻击速度",
               "conditionContent": "10"
@@ -496,8 +653,9 @@
           ]
         },
         "副手": {
-          "category": "武器",
-          "quality": "全部",
+          "category": "斧|剑|锤|匕首|标枪|投掷武器",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "必需",
@@ -507,7 +665,7 @@
               "conditionContent": "单手伤害"
             },
             {
-              "matchType": "必需",
+              "matchType": "可选",
 
               "operate": "大于等于",
               "attributeType": "毒素伤害",
@@ -517,7 +675,8 @@
         },
         "头盔": {
           "category": "头部",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "任一",
@@ -552,6 +711,7 @@
         "项链": {
           "category": "项链",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "任一",
@@ -579,6 +739,7 @@
         "戒指1": {
           "category": "戒指",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "任一",
@@ -606,6 +767,7 @@
         "戒指2": {
           "category": "戒指",
           "quality": "全部",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "任一",
@@ -632,7 +794,8 @@
         },
         "手套": {
           "category": "手套",
-          "quality": "全部",
+          "quality": "魔法|稀有|传奇|套装",
+          "necessary": 0,
           "conditions": [
             {
               "matchType": "任一",
@@ -651,6 +814,87 @@
             {
               "matchType": "任一",
               "matchGroupName": "死骑手套",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "衣服": {
+          "category": "衣服",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "攻击速度",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "护符": {
+          "category": "护符",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "毒素伤害",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "最大伤害",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "最小伤害",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "腰带": {
+          "category": "腰带",
+          "quality": "魔法|稀有|传奇|套装",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
               "conditionContent": "10"

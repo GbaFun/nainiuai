@@ -714,7 +714,7 @@ function onLaunch() {
                 rune: rune,
                 count: count
             });
-            POST_Message("RuneUpgrade", data, "html", 2000)
+            POST_Message("RuneUpgrade", data, "post", 2000)
                 .then(r => {
                     compandMode = true;
                     location.reload();
