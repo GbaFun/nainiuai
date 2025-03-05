@@ -67,6 +67,7 @@ let _map = {};
         //debugger
         if ($("span.boss-left").text() != "1")  {
             //打完了
+            debugger
             localStorage.removeItem("startMap");
             localStorage.removeItem("mapStep");
             exitDungeon()
@@ -95,10 +96,12 @@ let _map = {};
             cid: _char.cid
         };
         
-        POST_Message("DungeonExit", data, "post", 1500).then((r) => {
-
+        POST_Message("DungeonExit", data, false).then((r) => {
+            
+            
         }).catch((e) => {
-
+            
+            
         })
     }
 
@@ -106,10 +109,11 @@ let _map = {};
         if (location.href.indexOf("InDungeon") == -1) { return }
 
         const win = $('.turn').first().text().indexOf('战斗胜利') > 0;
-        await sleep(5000)
         var href = $("a:contains('返回')").attr("href");
         if (win) {
+            await sleep(10000)
             location.href = href;
+          
         }
         else {
             //记录失败次数 
@@ -119,11 +123,11 @@ let _map = {};
 
 
     async function startMove() {
+        await sleep(500);
         var bossBlock = $("a.boss");
         if (bossBlock.length == 1) {
             clickBlock(bossBlock);
         }
-        await sleep(500);
         step = await filterStep(step);
         for (let i = 0; i < step.length; i++) {
 
@@ -280,7 +284,8 @@ let _map = {};
         }
 
     }
-
+    //页面没跳转之前有连续进入怪物图的风险 判断一下阻止后续移动
+    var isInDungeon = false;
     function clickBlock(block) {
         const idMatch = location.href.match(/id=(\d+)/i);
         const id = idMatch[1];
@@ -289,7 +294,9 @@ let _map = {};
         const rect = document.getElementById(block.attr('id')).getBoundingClientRect();
         const x = Math.round(rect.left + width / 3 + (width / 4 * Math.random(id))) + $(window).scrollLeft();
         const y = Math.round(rect.top + height / 3 + (height / 4 * Math.random(id))) + $(window).scrollTop();
-        ajaxMove(block, { pageX: x, pageY: y, originalEvent: { isTrusted: true } });
+        if (!isInDungeon) {
+            ajaxMove(block, { pageX: x, pageY: y, originalEvent: { isTrusted: true } });
+        }
     }
 
     function ajaxMove(block, a) {
@@ -299,6 +306,7 @@ let _map = {};
         const k = $("#cid").val();
         const td = localStorage.getItem("t");
         if (f.hasClass("monster")) {
+            isInDungeon = true;
             location.href = "/Battle/InDungeon?id=" + k + "&bid=" + g;
         } else {
 

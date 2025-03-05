@@ -21,7 +21,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task StartMonitor(UserModel user)
         {
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             await _win.LoadUrlWaitJsInit("https://www.idleinfinity.cn/Battle/Guaji", "guaji");
             var data = await _win.CallJs($"_guaji.getData()");
             var arr = data.Result.ToObject<List<Efficency>>();

@@ -21,7 +21,7 @@ function Post(_url, _data, _dataType) {
     });
 }
 
-async function FetchPost(_url, _data) {
+async function FetchPost(_url, _data, needReload = true) {
     const formData = new FormData();
     for (const key in _data) {
         formData.append(key, _data[key]);
@@ -35,7 +35,7 @@ async function FetchPost(_url, _data) {
         })
             .then(async response => { // 将回调声明为async函数
                 if (response.type === "opaqueredirect") {
-                    location.reload();
+                    needReload && location.reload();
                     return;
                 }
                 if (response.status === 500) {
@@ -101,11 +101,11 @@ function sleep(ms) {
 }
 
 //异步
-async function POST_Message(url, data, dataType, timeout = 2000) {
+async function POST_Message(url, data, needReload = true, timeout = 2000) {
     console.log('Start POST Message');
     await sleep(timeout);
     console.log(timeout / 1000 + "秒后")
-    return FetchPost(url, data)
+    return FetchPost(url, data,needReload)
 
 }
 
