@@ -193,8 +193,9 @@ namespace IdleAuto.Scripts.Controller
 
             await SignalCallback("charReload", async () =>
             {
-                await SwitchTo(_targetMapLv);
+                await SwitchTo(_curMapLv+10);
             });
+           await SwitchMap(bro, role);
 
         }
         /// <summary>

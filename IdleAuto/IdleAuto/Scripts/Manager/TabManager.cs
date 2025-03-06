@@ -177,7 +177,7 @@ public class TabManager
         }
         BroWindowDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
-        GC.Collect();
+        
     }
     public void DisposePage()
     {

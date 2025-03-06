@@ -318,7 +318,7 @@ public class BroTabManager
         }
         BroDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
-        GC.Collect();
+        
     }
 
     /// <summary>
