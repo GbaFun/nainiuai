@@ -71,8 +71,6 @@ let _map = {};
             localStorage.removeItem("startMap");
             localStorage.removeItem("mapStep");
             exitDungeon()
-            await sleep(2000);
-            Bridge.invokeEvent('OnSignal', 'DungeonEnd');
             return;
 
         }
@@ -97,10 +95,12 @@ let _map = {};
         };
         
         POST_Message("DungeonExit", data, false).then((r) => {
-            
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'DungeonEnd');
             
         }).catch((e) => {
-            
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'DungeonEnd');
             
         })
     }

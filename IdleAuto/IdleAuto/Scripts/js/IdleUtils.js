@@ -36,6 +36,7 @@ async function FetchPost(_url, _data, needReload = true) {
             .then(async response => { // 将回调声明为async函数
                 if (response.type === "opaqueredirect") {
                     needReload && location.reload();
+                    resolve(response)
                     return;
                 }
                 if (response.status === 500) {

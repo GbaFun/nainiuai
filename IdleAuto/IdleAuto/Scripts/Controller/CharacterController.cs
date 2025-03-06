@@ -184,6 +184,7 @@ namespace IdleAuto.Scripts.Controller
                 await _browser.EvaluateScriptAsync($@"_map.startExplore();");
             });
 
+            await Task.Delay(2000);
             //再次尝试直接抵达
             await SignalCallback("charReload", () =>
             {

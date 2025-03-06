@@ -77,6 +77,7 @@
     <Compile Include="Scripts\Manager\TabManager.cs" />
     <Compile Include="Scripts\Model\Efficency.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
+    <Compile Include="Scripts\Utils\DbUtil.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
