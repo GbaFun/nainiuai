@@ -17,14 +17,15 @@ namespace IdleAuto
         /// </summary>
         [STAThread]
         static void Main()
-        {  // 设置全局异常处理
+        {
+            //设置全局异常处理
             var settings = new CefSettings
             {
                 // 禁用 GPU 加速
-                CefCommandLineArgs = { ["disable-gpu"] = "1", ["disable-webgl"] = "1", ["mute-audio"] = "1" },
-          
+                CefCommandLineArgs = { ["disable-webgl"] = "1", ["mute-audio"] = "1" },
+
             };
-            if (Cef.IsInitialized==null||!Cef.IsInitialized.Value)
+            if (Cef.IsInitialized == null || !Cef.IsInitialized.Value)
             {
                 Cef.Initialize(settings);
             }

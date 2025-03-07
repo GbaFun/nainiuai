@@ -13,6 +13,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 public class RepairManager : SingleManagerBase<RepairManager>
 {

@@ -62,12 +62,8 @@ function getEquipInfo(eid, sortid, quality, content) {
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
     var baseName = name[1];
-
-    if (quality == "set" || quality == "unique" || quality == "artifact") {
-        if (sc[1] != "已绑定") baseName = sc[1];
-        else baseName = sc[2];
-    }
-    else if (sc[1].includes("可以作为镶嵌物")) {
+    debugger;
+    if (sc[1].includes("可以作为镶嵌物")) {
         baseName = "珠宝";
     }
     else if (sc[2].includes("可以作为镶嵌物")) {
@@ -78,6 +74,10 @@ function getEquipInfo(eid, sortid, quality, content) {
     }
     else if (name[1].includes("药水") || name[1].includes("宝箱") || name[1].includes("改名卡")) {
         baseName = "道具";
+    }
+    else if (quality == "set" || quality == "unique" || quality == "artifact") {
+        if (sc[1] != "已绑定") baseName = sc[1];
+        else baseName = sc[2];
     }
     else {
         var sbname = name[1].replace("太古", "").replace("无形", "");

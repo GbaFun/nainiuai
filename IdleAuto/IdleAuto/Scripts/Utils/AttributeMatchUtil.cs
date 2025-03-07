@@ -184,7 +184,10 @@ namespace AttributeMatch
                     result.IsMatch = MatchPoisonAttr(_equip, _condition);
                     break;
                 case emAttrType.自定义:
-                    result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
+                    if (_condition.Operate == emOperateType.不等于)
+                        result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
+                    else
+                        result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
                     break;
             }
 
@@ -838,9 +841,10 @@ namespace AttributeMatch
     public class JobBaseAttributeUtil
     {
         private const string filePath = "Document/职业基础属性表.txt";
-        private static readonly Dictionary<emJob, AttrV4> JobBaseAttributes;
+        private static Dictionary<emJob, AttrV4> JobBaseAttributes;
         private static void LoadJobBaseAttributes()
         {
+            JobBaseAttributes = new Dictionary<emJob, AttrV4>();
             var lines = File.ReadAllLines(filePath);
             for (int i = 2; i < lines.Length; i++)
             {

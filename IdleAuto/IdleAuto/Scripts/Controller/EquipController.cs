@@ -747,6 +747,10 @@ public class EquipController
     {
         return EquipCfg.Instance.GetEquipmentByJobAndLevel(job, level);
     }
+
+    public async Task Test(BroWindow win)
+    {
+    }
 }
 
 public struct ReplaceEquipStruct
