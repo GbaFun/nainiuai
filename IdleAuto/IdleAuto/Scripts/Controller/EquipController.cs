@@ -390,149 +390,43 @@ public class EquipController
 
                 if (towearEquips.Count > 0)
                 {
-                    P.Log($"开始检查待穿戴装备的属性需求", emLogType.AutoEquip);
-                    AttrV4 requareV4 = AttrV4.Default;
-                    foreach (var item in towearEquips)
+                    bool canWear = await AutoAttributeSave(win, role, towearEquips.Values.ToList());
+                    if (canWear)
                     {
-                        requareV4 = AttrV4.Max(requareV4, item.Value.RequareAttr);
-                    }
-                    P.Log($"检查待穿戴装备的属性需求成功，需要（力-{requareV4.Str}，敏-{requareV4.Dex}，体-{requareV4.Vit}，精-{requareV4.Eng}）", emLogType.AutoEquip);
-
-                    P.Log($"开始检查角色{role.RoleName}的属性是否满足穿戴条件", emLogType.AutoEquip);
-                    bool canWear = false;
-                    await Task.Delay(1000);
-                    P.Log($"跳转角色{role.RoleName}详情页面", emLogType.AutoEquip);
-                    var result2 = await win.LoadUrlWaitJsInit(IdleUrlHelper.RoleUrl(role.RoleId), "char");
-                    if (result2.Success)
-                    {
-                        P.Log($"获取角色{role.RoleName}四维属性", emLogType.AutoEquip);
-                        var response3 = await win.CallJs($@"_char.getSimpleAttribute();");
-                        if (response3.Success)
+                        await Task.Delay(1000);
+                        var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+                        if (result3.Success)
                         {
-                            var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
-                            P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
-                            AttrV4 jobAttr = JobBaseAttributeUtil.JobBaseAttr(role.Job);
-                            emMeetType meetType = baseAttr.Meets(requareV4, jobAttr);
-                            switch (meetType)
+                            for (int j = 0; j < 11; j++)
                             {
-                                case emMeetType.AlreadyMeet:
-                                    P.Log($"{role.RoleName}的属性满足穿戴条件，开始更换装备", emLogType.AutoEquip);
-                                    canWear = true;
-                                    break;
-                                case emMeetType.MeetAfterAdd:
-                                    P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
-                                    if (baseAttr.AddPoint(requareV4, jobAttr))
-                                    {
-                                        await Task.Delay(1000);
-                                        P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
-                                        var response4 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
-                                        if (response4.Success)
-                                        {
-                                            P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
-                                            canWear = true;
-                                        }
-                                        else
-                                        {
-
-                                            P.Log($"{role.RoleName}的属性加点错误", emLogType.AutoEquip);
-                                            canWear = false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        P.Log($"{role.RoleName}的属性计算错误", emLogType.AutoEquip);
-                                        canWear = false;
-                                    }
-                                    break;
-                                case emMeetType.MeetAfterReset:
-                                    P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
-                                    await Task.Delay(1000);
-                                    P.Log($"开始{role.RoleName}的重置加点", emLogType.AutoEquip);
-                                    var response5 = await win.CallJsWaitReload($@"_char.attributeReset({role.RoleId});", "char");
-                                    if (response5.Success)
-                                    {
-                                        P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
-                                        await Task.Delay(1000);
-                                        P.Log($"获取角色{role.RoleName}四维属性", emLogType.AutoEquip);
-                                        var response6 = await win.CallJs($@"_char.getSimpleAttribute();");
-                                        if (response6.Success)
-                                        {
-                                            baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
-                                            P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
-                                            if (baseAttr.AddPoint(requareV4, jobAttr))
-                                            {
-                                                await Task.Delay(1000);
-                                                var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
-                                                if (response7.Success)
-                                                {
-                                                    P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
-                                                    canWear = true;
-                                                }
-                                                else
-                                                {
-
-                                                    P.Log($"{role.RoleName}的属性加点错误", emLogType.AutoEquip);
-                                                    canWear = false;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                P.Log($"{role.RoleName}的属性计算错误", emLogType.AutoEquip);
-                                                canWear = false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        P.Log($"{role.RoleName}的重置加点错误", emLogType.AutoEquip);
-                                        canWear = false;
-                                    }
-                                    break;
-                                default:
-                                    P.Log($"{role.RoleName}的属性不满足穿戴条件,为保证效率，所有装备不予更换", emLogType.AutoEquip);
-                                    canWear = false;
-                                    break;
-                            }
-
-                            if (canWear)
-                            {
-                                await Task.Delay(1000);
-                                var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                                if (result3.Success)
+                                if (towearEquips.ContainsKey((emEquipSort)j))
                                 {
-                                    for (int j = 0; j < 11; j++)
+                                    EquipModel equip = towearEquips[(emEquipSort)j];
+                                    ReplaceEquipStruct replaceResult = await WearEquip(win, equip, j, account, role);
+                                    if (replaceResult.IsSuccess)
                                     {
-                                        if (towearEquips.ContainsKey((emEquipSort)j))
+                                        if (replaceResult.ReplacedEquip != null)
                                         {
-                                            EquipModel equip = towearEquips[(emEquipSort)j];
-                                            ReplaceEquipStruct replaceResult = await WearEquip(win, equip, j, account, role);
-                                            if (replaceResult.IsSuccess)
-                                            {
-                                                if (replaceResult.ReplacedEquip != null)
-                                                {
-                                                    replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
-                                                    //如果有替换下来的装备，加入到仓库装备中
-                                                    FreeDb.Sqlite.Insert<EquipModel>(replaceResult.ReplacedEquip).ExecuteAffrows();
-                                                }
-
-                                                //从仓库中移除穿戴的装备
-                                                FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.EquipID == equip.EquipID).ExecuteAffrows();
-                                            }
-                                            P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
+                                            replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
+                                            //如果有替换下来的装备，加入到仓库装备中
+                                            FreeDb.Sqlite.Insert<EquipModel>(replaceResult.ReplacedEquip).ExecuteAffrows();
                                         }
+
+                                        //从仓库中移除穿戴的装备
+                                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.EquipID == equip.EquipID).ExecuteAffrows();
                                     }
-                                    P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
+                                    P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                                 }
                             }
-                            else
-                            {
-                                P.Log($"{role.RoleName}的属性需求不满足，跳过更换装备流程", emLogType.AutoEquip);
-                            }
-
-                            P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
+                            P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
                         }
-                        P.Log($"{role.RoleName}的装备更换完成\n\t\n\t", emLogType.AutoEquip);
                     }
+                    else
+                    {
+                        P.Log($"{role.RoleName}的属性需求不满足，跳过更换装备流程", emLogType.AutoEquip);
+                    }
+
+                    P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
                 }
                 else
                 {
@@ -660,6 +554,123 @@ public class EquipController
             }
         }
         return replaceEquipStruct;
+    }
+
+    /// <summary>
+    /// 根据需要替换的装备列表，自动加点满足装备需求
+    /// </summary>
+    /// <param name="win">执行逻辑的浏览器</param>
+    /// <param name="role">执行逻辑的角色</param>
+    /// <param name="towearEquips">要穿戴的装备列表</param>
+    /// <returns>是否能满足条件</returns>
+    public async Task<bool> AutoAttributeSave(BroWindow win, RoleModel role, List<EquipModel> towearEquips)
+    {
+        P.Log($"开始检查待穿戴装备的属性需求", emLogType.AutoEquip);
+        AttrV4 requareV4 = AttrV4.Default;
+        foreach (var item in towearEquips)
+        {
+            requareV4 = AttrV4.Max(requareV4, item.RequareAttr);
+        }
+        P.Log($"检查待穿戴装备的属性需求成功，需要（力-{requareV4.Str}，敏-{requareV4.Dex}，体-{requareV4.Vit}，精-{requareV4.Eng}）", emLogType.AutoEquip);
+
+        P.Log($"开始检查角色{role.RoleName}的属性是否满足穿戴条件", emLogType.AutoEquip);
+        bool canWear = false;
+        await Task.Delay(1000);
+        P.Log($"跳转角色{role.RoleName}详情页面", emLogType.AutoEquip);
+        var result2 = await win.LoadUrlWaitJsInit(IdleUrlHelper.RoleUrl(role.RoleId), "char");
+        if (result2.Success)
+        {
+            P.Log($"获取角色{role.RoleName}四维属性", emLogType.AutoEquip);
+            var response3 = await win.CallJs($@"_char.getSimpleAttribute();");
+            if (response3.Success)
+            {
+                var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
+                P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
+                AttrV4 jobAttr = JobBaseAttributeUtil.JobBaseAttr(role.Job);
+                emMeetType meetType = baseAttr.Meets(requareV4, jobAttr);
+                switch (meetType)
+                {
+                    case emMeetType.AlreadyMeet:
+                        P.Log($"{role.RoleName}的属性满足穿戴条件，开始更换装备", emLogType.AutoEquip);
+                        canWear = true;
+                        break;
+                    case emMeetType.MeetAfterAdd:
+                        P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
+                        if (baseAttr.AddPoint(requareV4, jobAttr))
+                        {
+                            await Task.Delay(1000);
+                            P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
+                            var response4 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
+                            if (response4.Success)
+                            {
+                                P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                                canWear = true;
+                            }
+                            else
+                            {
+
+                                P.Log($"{role.RoleName}的属性加点错误", emLogType.AutoEquip);
+                                canWear = false;
+                            }
+                        }
+                        else
+                        {
+                            P.Log($"{role.RoleName}的属性计算错误", emLogType.AutoEquip);
+                            canWear = false;
+                        }
+                        break;
+                    case emMeetType.MeetAfterReset:
+                        P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
+                        await Task.Delay(1000);
+                        P.Log($"开始{role.RoleName}的重置加点", emLogType.AutoEquip);
+                        var response5 = await win.CallJsWaitReload($@"_char.attributeReset({role.RoleId});", "char");
+                        if (response5.Success)
+                        {
+                            P.Log($"{role.RoleName}重置加点完成", emLogType.AutoEquip);
+                            await Task.Delay(1000);
+                            P.Log($"获取角色{role.RoleName}四维属性", emLogType.AutoEquip);
+                            var response6 = await win.CallJs($@"_char.getSimpleAttribute();");
+                            if (response6.Success)
+                            {
+                                baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
+                                P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
+                                if (baseAttr.AddPoint(requareV4, jobAttr))
+                                {
+                                    await Task.Delay(1000);
+                                    var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
+                                    if (response7.Success)
+                                    {
+                                        P.Log($"{role.RoleName}的属性加点完成", emLogType.AutoEquip);
+                                        canWear = true;
+                                    }
+                                    else
+                                    {
+
+                                        P.Log($"{role.RoleName}的属性加点错误", emLogType.AutoEquip);
+                                        canWear = false;
+                                    }
+                                }
+                                else
+                                {
+                                    P.Log($"{role.RoleName}的属性计算错误", emLogType.AutoEquip);
+                                    canWear = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            P.Log($"{role.RoleName}的重置加点错误", emLogType.AutoEquip);
+                            canWear = false;
+                        }
+                        break;
+                    default:
+                        P.Log($"{role.RoleName}的属性不满足穿戴条件,为保证效率，所有装备不予更换", emLogType.AutoEquip);
+                        canWear = false;
+                        break;
+                }
+            }
+        }
+        return canWear;
     }
 
     /// <summary>
