@@ -10,7 +10,7 @@ using FreeSql.DataAnnotations;
 
 public class EquipModel
 {
-    
+
     /// <summary>
     /// 装备唯一ID
     /// </summary>

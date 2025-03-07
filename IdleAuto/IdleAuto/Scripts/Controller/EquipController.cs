@@ -411,7 +411,8 @@ public class EquipController
                         {
                             var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
                             P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
-                            emMeetType meetType = baseAttr.Meets(requareV4);
+                            AttrV4 jobAttr = JobBaseAttributeUtil.JobBaseAttr(role.Job);
+                            emMeetType meetType = baseAttr.Meets(requareV4, jobAttr);
                             switch (meetType)
                             {
                                 case emMeetType.AlreadyMeet:
@@ -420,7 +421,7 @@ public class EquipController
                                     break;
                                 case emMeetType.MeetAfterAdd:
                                     P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
-                                    if (baseAttr.AddPoint(requareV4))
+                                    if (baseAttr.AddPoint(requareV4, jobAttr))
                                     {
                                         await Task.Delay(1000);
                                         P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
@@ -458,7 +459,7 @@ public class EquipController
                                         {
                                             baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
                                             P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
-                                            if (baseAttr.AddPoint(requareV4))
+                                            if (baseAttr.AddPoint(requareV4, jobAttr))
                                             {
                                                 await Task.Delay(1000);
                                                 var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");

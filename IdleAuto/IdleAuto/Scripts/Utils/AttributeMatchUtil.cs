@@ -832,6 +832,46 @@ namespace AttributeMatch
                 return itemName;
         }
     }
+    /// <summary>
+    /// 职业基础数据类
+    /// </summary>
+    public class JobBaseAttributeUtil
+    {
+        private const string filePath = "Document/职业基础属性表.txt";
+        private static readonly Dictionary<emJob, AttrV4> JobBaseAttributes;
+        private static void LoadJobBaseAttributes()
+        {
+            var lines = File.ReadAllLines(filePath);
+            for (int i = 2; i < lines.Length; i++)
+            {
+                var parts = lines[i].Split('\t');
+                if (parts.Length < 7) continue;
+
+                if (Enum.TryParse(parts[0], out emJob job))
+                {
+                    var attr = new AttrV4(
+                        int.Parse(parts[3]), // 力量
+                        int.Parse(parts[4]), // 敏捷
+                        int.Parse(parts[5]), // 体力
+                        int.Parse(parts[6])  // 精力
+                    );
+                    JobBaseAttributes[job] = attr;
+                }
+            }
+        }
+
+        public static AttrV4 JobBaseAttr(emJob job)
+        {
+            if (JobBaseAttributes == null || JobBaseAttributes.Count == 0)
+            {
+                LoadJobBaseAttributes();
+            }
+            if (JobBaseAttributes.TryGetValue(job, out var attr))
+                return attr;
+            else
+                throw new ArgumentException($"Invalid job type: {job}");
+        }
+    }
 
     /// <summary>
     /// 物品品质工具类，根据配置的品质字段获取物品品质枚举

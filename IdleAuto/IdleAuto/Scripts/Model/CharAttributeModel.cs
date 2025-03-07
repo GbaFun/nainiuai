@@ -93,31 +93,37 @@ namespace IdleAuto.Scripts.Model
         [Description("精力加点")]
         public int EngAdd { get; set; }
 
-        public emMeetType Meets(AttrV4 requare)
+        public emMeetType Meets(AttrV4 requare, AttrV4 baseAttr)
         {
-            if (Str >= requare.Str && Dex >= requare.Dex && Vit >= requare.Vit && Eng >= requare.Eng)
+            int absoluteStr, absoluteDex, absoluteVit, absoluteEng;
+            absoluteStr = baseAttr.Str + StrAdd;
+            absoluteDex = baseAttr.Dex + DexAdd;
+            absoluteVit = baseAttr.Vit + VitAdd;
+            absoluteEng = baseAttr.Eng + EngAdd;
+
+            if (absoluteStr >= requare.Str && absoluteDex >= requare.Dex && absoluteVit >= requare.Vit && absoluteEng >= requare.Eng)
                 return emMeetType.AlreadyMeet;
             int v1 = 0;
-            if (Str < requare.Str)
+            if (absoluteStr < requare.Str)
             {
-                v1 += requare.Str - Str;
+                v1 += requare.Str - absoluteStr;
             }
-            if (Dex < requare.Dex)
+            if (absoluteDex < requare.Dex)
             {
-                v1 += requare.Dex - Dex;
+                v1 += requare.Dex - absoluteDex;
             }
-            if (Vit < requare.Vit)
+            if (absoluteVit < requare.Vit)
             {
-                v1 += requare.Vit - Vit;
+                v1 += requare.Vit - absoluteVit;
             }
-            if (Eng < requare.Eng)
+            if (absoluteEng < requare.Eng)
             {
-                v1 += requare.Eng - Eng;
+                v1 += requare.Eng - absoluteEng;
             }
             if (v1 <= Point)
                 return emMeetType.MeetAfterAdd;
 
-            int v2 = Str - StrAdd - requare.Str + Dex - DexAdd - requare.Dex + Vit - VitAdd - requare.Vit + Eng - EngAdd - requare.Eng;
+            int v2 = baseAttr.Str - requare.Str + baseAttr.Dex - requare.Dex + baseAttr.Vit - requare.Vit + baseAttr.Eng - requare.Eng;
             int totalAdd = StrAdd + DexAdd + VitAdd + EngAdd + Point;
             if (v2 + totalAdd >= 0)
             {
@@ -126,17 +132,23 @@ namespace IdleAuto.Scripts.Model
             return emMeetType.CanNotMeet;
         }
 
-        public bool AddPoint(AttrV4 requare)
+        public bool AddPoint(AttrV4 requare, AttrV4 baseAttr)
         {
+            int absoluteStr, absoluteDex, absoluteVit, absoluteEng;
+            absoluteStr = baseAttr.Str + StrAdd;
+            absoluteDex = baseAttr.Dex + DexAdd;
+            absoluteVit = baseAttr.Vit + VitAdd;
+            absoluteEng = baseAttr.Eng + EngAdd;
+
             int csa = 0, cda = 0, cva = 0, cea = 0;
-            if (Str < requare.Str)
-                csa = requare.Str - Str;
-            if (Dex < requare.Dex)
-                cda = requare.Dex - Dex;
-            if (Vit < requare.Vit)
-                cva = requare.Vit - Vit;
-            if (Eng < requare.Eng)
-                cea = requare.Eng - Eng;
+            if (absoluteStr < requare.Str)
+                csa = requare.Str - absoluteStr;
+            if (absoluteDex < requare.Dex)
+                cda = requare.Dex - absoluteDex;
+            if (absoluteVit < requare.Vit)
+                cva = requare.Vit - absoluteVit;
+            if (absoluteEng < requare.Eng)
+                cea = requare.Eng - absoluteEng;
             if (Point >= csa + cda + cva + cea)
             {
                 StrAdd += csa;
