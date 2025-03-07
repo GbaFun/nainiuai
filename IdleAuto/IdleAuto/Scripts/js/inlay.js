@@ -28,7 +28,6 @@
         if (target == undefined) {
             alert("底子没有这个神器");
         }
-        debugger;
         var nextRune = getCurRune(name);
         if (!checkRuneEnough(name, nextRune)) {
             return -1;
@@ -56,7 +55,6 @@
         if (runeElements.length == 0) return map[name][0];
         //已插符文最后一个
         var LastRune = $(runeElements[runeElements.length - 1]).next().find('.artifact.equip-title').text().match(/\d+/)[0];
-        debugger
         var lastIndex = map[name].indexOf(LastRune)
         return map[name][lastIndex+1];
 

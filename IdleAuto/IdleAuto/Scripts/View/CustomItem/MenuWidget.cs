@@ -239,8 +239,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            FlowController.MakeArtifact();
-            //FlowController.SyncFilter();
+           // FlowController.MakeArtifact();
+            FlowController.SyncFilter();
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -251,6 +251,11 @@ namespace IdleAuto.Scripts.View
         private void BtnInventory_Click(object sender, EventArgs e)
         {
             RepairManager.Instance.UpdateEquips(AccountController.Instance.User);
+        }
+
+        private void btnTestArtifact_Click(object sender, EventArgs e)
+        {
+            FlowController.MakeArtifactTest();
         }
     }
 }
