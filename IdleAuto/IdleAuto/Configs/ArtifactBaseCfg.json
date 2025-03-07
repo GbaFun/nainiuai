@@ -5,9 +5,17 @@
     "conditions": [
       {
         "matchType": "必需",
+        "matchGroupName": "隐密条件",
         "operate": "小于等于",
         "attributeType": "需要力量",
         "conditionContent": 30
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "隐密条件",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
       }
     ]
   }

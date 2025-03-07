@@ -112,8 +112,8 @@ namespace IdleAuto.Scripts.Controller
                 if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
                 var user = new UserModel(account);
 
-                await RepairManager.Instance.ClearEquips(user);
-                await RepairManager.Instance.UpdateEquips(user);
+                //await RepairManager.Instance.ClearEquips(user);
+                //await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
                 var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
