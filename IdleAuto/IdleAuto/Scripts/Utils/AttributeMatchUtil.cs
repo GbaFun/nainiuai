@@ -131,18 +131,23 @@ namespace AttributeMatch
             AttributeMatchResult result = new AttributeMatchResult()
             {
                 IsMatch = false,
-                Condition = _condition
+                Condition = _condition,
+                MatchWeight = 0
             };
+            int weight = 0;
             switch (_condition.AttributeType)
             {
                 case emAttrType.名称:
-                    result.IsMatch = MatchName(_equip, _condition);
+                    result.IsMatch = MatchName(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.词缀:
-                    result.IsMatch = MatchAffix(_equip, _condition);
+                    result.IsMatch = MatchAffix(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.凹槽:
-                    result.IsMatch = MatchSlot(_equip, _condition);
+                    result.IsMatch = MatchSlot(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.力量:
                 case emAttrType.敏捷:
@@ -169,25 +174,30 @@ namespace AttributeMatch
                 case emAttrType.伤害转换:
                 case emAttrType.需要力量:
                 case emAttrType.需要敏捷:
-                    result.IsMatch = MatchBaseAttr(_equip, _condition);
+                    result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.单项元素抗性之和:
-                    result.IsMatch = MatchResistance(_equip, _condition);
+                    result.IsMatch = MatchResistance(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.技能等级:
                 case emAttrType.职业全系技能:
                 case emAttrType.职业单系技能:
                 case emAttrType.召唤最大数量:
-                    result.IsMatch = MatchSkill(_equip, _condition);
+                    result.IsMatch = MatchSkill(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.毒素伤害:
-                    result.IsMatch = MatchPoisonAttr(_equip, _condition);
+                    result.IsMatch = MatchPoisonAttr(_equip, _condition, out weight);
+                    result.MatchWeight = weight;
                     break;
                 case emAttrType.自定义:
                     if (_condition.Operate == emOperateType.不等于)
                         result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
                     else
                         result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
+                    result.MatchWeight = 0;
                     break;
             }
 
@@ -200,9 +210,9 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchName(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchName(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
-            bool ismatch = OperateValue(_equip.EquipName, _condition.ConditionContent, _condition.Operate);
+            bool ismatch = OperateValue(_equip.EquipName, _condition.ConditionContent, _condition.Operate, out weight);
             return ismatch;
         }
 
@@ -212,7 +222,7 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchAffix(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchAffix(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             Regex regex = new Regex($@"\[(前缀|后缀)\] {_condition}\(\d+\)", RegexOptions.Multiline);
             var match = regex.Match(_equip.Content);
@@ -226,6 +236,7 @@ namespace AttributeMatch
                         break;
                 }
             }
+            weight = 0;
             return ismatch;
         }
 
@@ -235,10 +246,11 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchBaseAttr(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchBaseAttr(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             bool ismatch = false;
             string regexAttr = "";
+            weight = 0;
             switch (_condition.AttributeType)
             {
                 case emAttrType.力量:
@@ -323,7 +335,7 @@ namespace AttributeMatch
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
-                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
+                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
             }
 
             return ismatch;
@@ -335,10 +347,11 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchPoisonAttr(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchPoisonAttr(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             //_condition.ConditionContent = "240" --+40 毒素伤害，持续6次
             bool ismatch = false;
+            weight = 0;
             string regexAttr = $@"\+(?<v1>\d+) 毒素伤害，持续(?<v2>\d+)次";
             int attrValue = 0;
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
@@ -348,7 +361,7 @@ namespace AttributeMatch
                 int v1 = int.Parse(match.Groups["v1"].Value);
                 int v2 = int.Parse(match.Groups["v2"].Value);
                 attrValue = v1 * v2;
-                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate);
+                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
             }
 
             return ismatch;
@@ -360,13 +373,14 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchSlot(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchSlot(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             bool ismatch = false;
             string regexStr;
             Regex regex;
             Match match;
             int slotValue = 0;
+            weight = 0;
             emOperateType emOperateType = _condition.Operate;
             switch (_equip.emItemQuality)
             {
@@ -378,7 +392,7 @@ namespace AttributeMatch
                     {
                         slotValue = int.Parse(match.Groups["v"].Value);
                         emOperateType = emOperateType.大于等于;
-                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType);
+                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType, out _);
                     }
                     break;
                 case emItemQuality.破碎:
@@ -388,7 +402,7 @@ namespace AttributeMatch
                     if (match.Success)
                     {
                         slotValue = int.Parse(match.Groups["v"].Value);
-                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType);
+                        ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType, out _);
                     }
                     break;
             }
@@ -401,7 +415,7 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchResistance(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchResistance(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             bool ismatch;
             int resistanceMerge = 0;
@@ -429,7 +443,7 @@ namespace AttributeMatch
             {
                 resistanceMerge += int.Parse(match.Groups["v"].Value);
             }
-            ismatch = OperateValue(resistanceMerge, _condition.ConditionContent, _condition.Operate);
+            ismatch = OperateValue(resistanceMerge, _condition.ConditionContent, _condition.Operate, out weight);
             return ismatch;
         }
 
@@ -439,10 +453,10 @@ namespace AttributeMatch
         /// <param name="_equip">要匹配的装备对象</param>
         /// <param name="_condition">要匹配的属性条件</param>
         /// <returns></returns>
-        private static bool MatchSkill(EquipModel _equip, AttributeCondition _condition)
+        private static bool MatchSkill(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
             bool ismatch = false;
-
+            weight = 0;
             string regexAttr = "";
             string[] scondition = _condition.ConditionContent.Split(',');
             switch (_condition.AttributeType)
@@ -478,7 +492,7 @@ namespace AttributeMatch
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
-                ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate);
+                ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate, out weight);
             }
             return ismatch;
         }
@@ -490,9 +504,10 @@ namespace AttributeMatch
         /// <param name="_condition">要操作的条件值</param>
         /// <param name="_operate">操作类型</param>
         /// <returns></returns>
-        private static bool OperateValue(string _value, string _condition, emOperateType _operate)
+        private static bool OperateValue(string _value, string _condition, emOperateType _operate, out int weight)
         {
             bool ismatch = false;
+            weight = 0;
             switch (_operate)
             {
                 case emOperateType.等于:
@@ -515,23 +530,32 @@ namespace AttributeMatch
         /// <param name="_condition">要操作的条件值</param>
         /// <param name="_operate">操作类型</param>
         /// <returns></returns>
-        private static bool OperateValue(int _value, string _condition, emOperateType _operate)
+        private static bool OperateValue(int _value, string _condition, emOperateType _operate, out int weight)
         {
             bool ismatch = false;
+            weight = 0;
             int[] condition = Array.ConvertAll(_condition.Split('-'), int.Parse);
             switch (_operate)
             {
                 case emOperateType.大于:
                     ismatch = _value > condition[0];
+                    if (ismatch)
+                        weight = _value - condition[0];
                     break;
                 case emOperateType.大于等于:
                     ismatch = _value >= condition[0];
+                    if (ismatch)
+                        weight = _value - condition[0];
                     break;
                 case emOperateType.小于:
                     ismatch = _value < condition[0];
+                    if (ismatch)
+                        weight = -_value + condition[0];
                     break;
                 case emOperateType.小于等于:
                     ismatch = _value <= condition[0];
+                    if (ismatch)
+                        weight = -_value + condition[0];
                     break;
                 case emOperateType.等于:
                     ismatch = _value == condition[0];
@@ -736,11 +760,19 @@ namespace AttributeMatch
             }
         }
 
+        /// <summary>
+        /// 匹配程度，用于排序最适合条件的装备
+        /// </summary>
         public int MatchWeight
         {
             get
             {
-                return NomustMatchCount * 1000 + AnyoneMatchCount;
+                int mustWeight = MustResults.Sum(p => p.MatchWeight);
+                int nomustWeight = NomustResults.Sum(p => p.MatchWeight);
+                int anyWeight = AnyoneResults.Sum(p => p.MatchResults.Sum(q => q.MatchWeight));
+                int mutexWeight = AnyoneResults.Sum(p => p.MatchResults.Sum(q => q.MatchWeight));
+
+                return mustWeight * 1000000 + (anyWeight+mutexWeight) * 1000 + nomustWeight;
             }
         }
     }
@@ -752,6 +784,7 @@ namespace AttributeMatch
     {
         public bool IsMatch { get; internal set; }
         public AttributeCondition Condition;
+        public int MatchWeight;
     }
 
     /// <summary>

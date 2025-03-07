@@ -41,6 +41,7 @@ public enum emCategory
     拳套,
     手弩,
     死骑面罩,
+    道具,
 
     //混合类型
     武器,
