@@ -316,6 +316,12 @@ public class BroTabManager
         {
             Tab.TabPages.Remove(tabPage);
         }
+        var bro = BroDic[seed];
+        if (bro != null)
+        {
+            bro.Dispose();
+            bro = null;
+        }
         BroDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
         

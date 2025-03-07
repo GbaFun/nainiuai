@@ -175,6 +175,12 @@ public class TabManager
         {
             Tab.TabPages.Remove(tabPage);
         }
+        var bro = BroWindowDic[seed].GetBro();
+        if (bro != null)
+        {
+            bro.Dispose();
+            bro = null;
+        }
         BroWindowDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
         
