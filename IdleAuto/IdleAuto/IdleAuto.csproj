@@ -262,7 +262,9 @@
     <Content Include="BackUp\Cookies\萤石矿.txt" />
     <Content Include="BackUp\Cookies\钻石矿.txt" />
     <Content Include="BackUp\Cookies\铁矿石.txt" />
-    <Content Include="Document\职业基础属性表.txt" />
+    <Content Include="Document\职业基础属性表.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Document\装备底子分类表.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
