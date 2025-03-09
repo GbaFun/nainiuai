@@ -106,14 +106,14 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task MakeArtifactTest()
         {
-            for (int i = 6; i < AccountCfg.Instance.Accounts.Count; i++)
+            for (int i = 8; i < AccountCfg.Instance.Accounts.Count; i++)
             {
                 var account = AccountCfg.Instance.Accounts[i];
                 if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
                 var user = new UserModel(account);
 
-                //await RepairManager.Instance.ClearEquips(user);
-                //await RepairManager.Instance.UpdateEquips(user);
+                await RepairManager.Instance.ClearEquips(user);
+                await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
                 var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
