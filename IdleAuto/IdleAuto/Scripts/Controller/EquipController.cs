@@ -22,14 +22,14 @@ public class EquipController
     /// </summary>
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
-    public async Task EquipsToRepository(BroWindow win, UserModel account)
+    public async Task EquipsToRepository(BroWindow win, UserModel account, bool cleanWhenFull = false)
     {
         if (account == null || account.Roles.Count <= 0) { MessageBox.Show("账户数据错误，或者账户内没有角色，请检查！"); return; }
 
         P.Log("开始转移角色背包物品到仓库", emLogType.AutoEquip);
         foreach (var role in account.Roles)
         {
-            await EquipsToRepository(win, account.AccountName, role);
+            await EquipsToRepository(win, account, role, cleanWhenFull);
         }
     }
 
@@ -40,7 +40,7 @@ public class EquipController
     /// <param name="title">执行逻辑的浏览器页签标题</param>
     /// <param name="role">执行逻辑的角色</param>
     /// <returns></returns>
-    public async Task EquipsToRepository(BroWindow win, string title, RoleModel role)
+    public async Task EquipsToRepository(BroWindow win, UserModel account, RoleModel role, bool cleanWhenFull = false)
     {
         P.Log($"开始转移{role.RoleName}的背包物品到仓库", emLogType.AutoEquip);
         await Task.Delay(1000);
@@ -68,8 +68,15 @@ public class EquipController
                         if (bagCount + boxCount > 3000)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
-                            hasEquips = false;
-                            break;
+                            if (cleanWhenFull)
+                            {
+                                await ClearRepository(win, account);
+                            }
+                            else
+                            {
+                                hasEquips = false;
+                                break;
+                            }
                         }
 
                         await Task.Delay(1000);
@@ -440,6 +447,14 @@ public class EquipController
         }
     }
 
+    /// <summary>
+    /// 获取匹配的装备套装
+    /// </summary>
+    /// <param name="accountId"></param>
+    /// <param name="role"></param>
+    /// <param name="equipSuit"></param>
+    /// <param name="curEquips"></param>
+    /// <returns></returns>
     private EquipSuitMatchStruct MatchEquipSuit(int accountId, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips)
     {
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
@@ -716,7 +731,7 @@ public class EquipController
 
         P.Log($"比较完成，共找到{matchEquipMap.Count}个符合要求的装备", emLogType.AutoEquip);
         if (matchEquipMap.Count > 0)
-            matchEquips = matchEquipMap.Values.OrderBy(p => matchReports[p.EquipID].MatchWeight).ToList();
+            matchEquips = matchEquipMap.Values.OrderByDescending(p => matchReports[p.EquipID].MatchWeight).ToList();
         if (matchEquipMap.Count > 1)
         {
             P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);

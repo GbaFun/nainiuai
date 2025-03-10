@@ -197,7 +197,7 @@ namespace AttributeMatch
                         result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
                     else
                         result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
-                    result.MatchWeight = 0;
+                    result.MatchWeight = result.IsMatch ? 100 : 0;
                     break;
             }
 
@@ -236,7 +236,7 @@ namespace AttributeMatch
                         break;
                 }
             }
-            weight = 0;
+            weight = ismatch ? 100 : 0;
             return ismatch;
         }
 
@@ -406,6 +406,7 @@ namespace AttributeMatch
                     }
                     break;
             }
+            weight = ismatch ? 100 : 0;
             return ismatch;
         }
 
@@ -520,6 +521,7 @@ namespace AttributeMatch
                     ismatch = _value.Contains(_condition);
                     break;
             }
+            weight = ismatch ? 100 : 0;
             return ismatch;
         }
 
@@ -559,12 +561,18 @@ namespace AttributeMatch
                     break;
                 case emOperateType.等于:
                     ismatch = _value == condition[0];
+                    if (ismatch)
+                        weight = 100;
                     break;
                 case emOperateType.不等于:
                     ismatch = _value != condition[0];
+                    if (ismatch)
+                        weight = 100;
                     break;
                 case emOperateType.在范围内:
                     ismatch = _value >= condition[0] && _value <= condition[1];
+                    if (ismatch)
+                        weight = 100;
                     break;
             }
 
@@ -772,7 +780,7 @@ namespace AttributeMatch
                 int anyWeight = AnyoneResults.Sum(p => p.MatchResults.Sum(q => q.MatchWeight));
                 int mutexWeight = AnyoneResults.Sum(p => p.MatchResults.Sum(q => q.MatchWeight));
 
-                return mustWeight * 1000000 + (anyWeight+mutexWeight) * 1000 + nomustWeight;
+                return mustWeight * 1000000 + (anyWeight + mutexWeight) * 1000 + nomustWeight;
             }
         }
     }

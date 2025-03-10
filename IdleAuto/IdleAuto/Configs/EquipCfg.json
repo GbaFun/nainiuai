@@ -553,9 +553,21 @@
         },
         "衣服": {
           "category": "衣服",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
+            {
+              "matchType": "可选",
+              "operate": "等于",
+              "attributeType": "名称",
+              "conditionContent": "隐密"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "10"
+            },
             {
               "matchType": "可选",
               "operate": "大于等于",
@@ -647,9 +659,9 @@
             {
               "matchType": "必需",
 
-              "operate": "等于",
+              "operate": "不等于",
               "attributeType": "自定义",
-              "conditionContent": "单手伤害"
+              "conditionContent": "双手伤害"
             },
             {
               "matchType": "可选",
@@ -674,9 +686,9 @@
             {
               "matchType": "必需",
 
-              "operate": "等于",
+              "operate": "不等于",
               "attributeType": "自定义",
-              "conditionContent": "单手伤害"
+              "conditionContent": "双手伤害"
             },
             {
               "matchType": "可选",

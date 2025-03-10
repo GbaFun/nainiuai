@@ -70,8 +70,6 @@ namespace IdleAuto.Scripts.Controller
                 await window.CharController.StartSyncFilter(window.GetBro(), window.User);
                 window.Close();
             }
-
-
         }
 
         public static async Task StartEfficencyMonitor()
@@ -98,7 +96,7 @@ namespace IdleAuto.Scripts.Controller
             var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
             if (baseEq.Value != null)
             {
-             long equipId=   await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
+                long equipId = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
             }
 
 

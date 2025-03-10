@@ -22,16 +22,12 @@ namespace IdleAuto.Scripts.View
         #region UI方法
 
         private System.Threading.Timer refreshTimer;
+        private System.Threading.Timer autoTimer;
         public MenuWidget()
         {
             InitializeComponent();
             ShowAccountCombo();
-            //ShowRoleCombo();
-            //EventSystem.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadStart, OnBrowserFrameLoadStart);
-            //EventSystem.Instance.SubscribeEvent(emEventType.OnBrowserFrameLoadEnd, OnBrowserFrameLoadEnd);
-
-            // 初始化定时器，每隔3小时执行一次
-            refreshTimer = new System.Threading.Timer(OnRefreshTimerElapsed, null, TimeSpan.FromHours(3), TimeSpan.FromHours(3));
+            SetDailyTimer();
         }
 
         private void MenuWidget_Load(object sender, EventArgs e)
@@ -105,7 +101,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoOnline_Click(object sender, EventArgs e)
         {
-            RepairManager.Instance.ClearEquips(AccountController.Instance.User);
+            RepairManager.Instance.UpdateEquips(AccountController.Instance.User);
         }
 
         private void BtnAutoEquip_Click(object sender, EventArgs e)
@@ -149,18 +145,6 @@ namespace IdleAuto.Scripts.View
             FlowController.StartAddSkill();
         }
 
-        private void OnRefreshTimerElapsed(object state)
-        {
-            // 执行BtnRefresh的点击事件
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => BtnRefresh_Click(null, EventArgs.Empty)));
-            }
-            else
-            {
-                BtnRefresh_Click(null, EventArgs.Empty);
-            }
-        }
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
             TabManager.Instance.DisposePage();
@@ -229,6 +213,42 @@ namespace IdleAuto.Scripts.View
 
         #endregion
 
+        private void SetDailyTimer()
+        {
+            DateTime now = DateTime.Now;
+            // 每两小时自动运行效率监控
+            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(0), TimeSpan.FromHours(2));
+
+            // 每天凌晨6点自动运行全部账号清库盘库修车指令
+            DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
+            TimeSpan initialDelay2 = nextRun2 - now;
+            autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
+        }
+        private void AutoMonitorElapsed(object state)
+        {
+            // 执行BtnRefresh的点击事件
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => btnMonitor_Click(null, EventArgs.Empty)));
+            }
+            else
+            {
+                btnMonitor_Click(null, EventArgs.Empty);
+            }
+        }
+        private void AutoEquipElapsed(object state)
+        {
+            // 执行BtnRefresh的点击事件
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => { RepairManager.Instance.AutoRepair(); }));
+            }
+            else
+            {
+                RepairManager.Instance.AutoRepair();
+            }
+        }
+
         private async void btnHomePage_Click(object sender, EventArgs e)
         {
             Account item = this.AccountCombo.SelectedItem as Account;
@@ -250,7 +270,11 @@ namespace IdleAuto.Scripts.View
 
         private void BtnInventory_Click(object sender, EventArgs e)
         {
-            RepairManager.Instance.UpdateEquips(AccountController.Instance.User);
+        }
+
+        private void BtnTest_Click(object sender, EventArgs e)
+        {
+            RepairManager.Instance.AutoRepair();
         }
     }
 }

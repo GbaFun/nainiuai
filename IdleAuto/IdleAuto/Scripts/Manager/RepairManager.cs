@@ -18,13 +18,21 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 public class RepairManager : SingleManagerBase<RepairManager>
 {
     /// <summary>
-    /// 开始自动修车
+    /// 一键修车（单账号）
+    /// 盘库、技能加点、自动更换装备、剩余属性点分配
+    /// 修车过程不会将背包物品收拢，不会清仓
     /// </summary>
-    /// <returns></returns>
     public async Task AutoRepair(UserModel account)
     {
         try
         {
+            //大号跳过自动修车逻辑，需要手动修车
+            if (account.AccountName == "铁矿石")
+            {
+                MessageBox.Show($"大号跳过自动修车逻辑，请手动修！");
+                return;
+            }
+
             BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
             EquipController equipController = new EquipController();
             //window.GetBro().ShowDevTools();
@@ -32,7 +40,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
             //将挂机装备放入仓库
             //await EquipToRepository(window, equipController, account);
             //盘点仓库装备
-            //await InventoryEquips(window, equipController, account);
+            await InventoryEquips(window, equipController, account);
             //遍历账户下角色修车
             foreach (var role in account.Roles)
             {
@@ -43,7 +51,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 //角色剩余属性点分配
                 await AddAttrPoint(window, role);
             }
-
+            window.Close();
             MessageBox.Show($"自动修车完成");
         }
         catch (Exception ex)
@@ -52,79 +60,83 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
-    public async Task UpdateEquips(UserModel account)
-    {
-        BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-        EquipController equipController = new EquipController();
-        //window.GetBro().ShowDevTools();
-
-        //将挂机装备放入仓库
-        await EquipToRepository(window, equipController, account);
-        //盘点仓库装备
-        await InventoryEquips(window, equipController, account);
-    }
-
     /// <summary>
-    /// 清理仓库
+    /// 一键修车（全账号，凌晨自动任务用）
+    /// 收菜、盘库、技能加点、自动更换装备、剩余属性点分配
+    /// 修车过程不会清仓，如果收菜过程仓库满了，会跳过后续角色背包收菜
     /// </summary>
-    /// <param name="account"></param>
-    /// <returns></returns>
-    public async Task ClearEquips(UserModel account)
+    public async Task AutoRepair()
     {
         try
         {
-            EquipController equipController = new EquipController();
-            //跳转账户首页
-            BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-            //var bro = BroTabManager.Instance.GetBro(repairBroSeed);
-            //bro.ShowDevTools();
+            foreach (var user in AccountCfg.Instance.Accounts)
+            {
+                //大号跳过自动修车逻辑，需要手动修车
+                if (user.AccountName == "铁矿石")
+                {
+                    P.Log($"大号跳过自动修车逻辑，请手动修！", emLogType.Warning);
+                    continue;
+                }
+                UserModel account = new UserModel(user);
+                BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
+                EquipController equipController = new EquipController();
+                //window.GetBro().ShowDevTools();
 
-            await EquipToRepository(window, equipController, account);
-            await ClearRepository(window, equipController, account);
+                //将挂机装备放入仓库
+                await EquipToRepository(window, equipController, account, false);
+                //盘点仓库装备
+                await InventoryEquips(window, equipController, account);
+                //遍历账户下角色修车
+                foreach (var role in account.Roles)
+                {
+                    //技能加点
+                    await AddSkillPoint(window, role);
+                    //自动更换装备
+                    await AutoEquip(window, equipController, account, role);
+                    //角色剩余属性点分配
+                    await AddAttrPoint(window, role);
+                }
 
-            MessageBox.Show($"清理装备完成");
+                window.Close();
+            }
+            MessageBox.Show($"自动修车完成");
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"清理装备异常：{ex.Message}");
+            MessageBox.Show($"自动修车异常：{ex.Message}");
         }
     }
-    public async Task ClearRoleEquips()
-    {
-        //try
-        //{
-        //    RoleModel role = AccountController.Instance.CurRole;
-        //    UserModel account = AccountController.Instance.User;
-        //    if (account != null && role != null)
-        //    {
-        //        EquipController equipController = new EquipController();
-        //        //跳转账户首页
-        //        int repairBroSeed = BroTabManager.Instance.GetFocusID();
-        //        //var bro = BroTabManager.Instance.GetBro(repairBroSeed);
-        //        //bro.ShowDevTools();
 
-        //        await equipController.EquipsToRepository(repairBroSeed, account.AccountName, role);
-        //        await ClearRepository(repairBroSeed, equipController, account);
+    /// <summary>
+    /// 一键清仓
+    /// 收菜、清仓、盘库
+    /// </summary>
+    public async Task UpdateEquips(UserModel account)
+    {
+        try
+        {
+            BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
+            EquipController equipController = new EquipController();
+            //window.GetBro().ShowDevTools();
 
-        //        MessageBox.Show($"清理装备完成");
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show($"获取角色信息失败，无法清理！");
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    MessageBox.Show($"清理装备异常：{ex.Message}");
-        //}
+            //将挂机装备放入仓库
+            await EquipToRepository(window, equipController, account, true);
+            //盘点仓库装备
+            await InventoryEquips(window, equipController, account);
+
+            window.Close();
+            MessageBox.Show($"一键清仓完成");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"一键清仓异常：{ex.Message}");
+        }
     }
-    public async Task ClearRepository(BroWindow win, EquipController controller, UserModel account)
+
+
+    public async Task EquipToRepository(BroWindow win, EquipController controller, UserModel account, bool cleanWhenFull = false)
     {
-        await controller.ClearRepository(win, account);
-    }
-    public async Task EquipToRepository(BroWindow win, EquipController controller, UserModel account)
-    {
-        await controller.EquipsToRepository(win, account);
+        await controller.EquipsToRepository(win, account, cleanWhenFull);
     }
     public async Task InventoryEquips(BroWindow win, EquipController controller, UserModel account)
     {
