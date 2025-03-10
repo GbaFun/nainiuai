@@ -22,10 +22,7 @@ let _map = {};
         }
     }
 
-    init().then(async () => {
-        Bridge.invokeEvent('OnJsInited', 'map');
 
-    })
 
     let map;
     var step = [];
@@ -403,5 +400,10 @@ let _map = {};
     _map.autoDungeon = autoDungeon;
     _map.canAuto = canAuto;
     _map.canSwitch = canSwitch;
+
+    init().then(() => {
+        Bridge.invokeEvent('OnJsInited', 'map');
+
+    })
 
 })();

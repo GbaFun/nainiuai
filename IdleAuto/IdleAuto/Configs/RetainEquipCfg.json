@@ -67,7 +67,7 @@
   {
     "equip": {
       "category": "全部",
-      "quality": "魔法",
+      "quality": "魔法|稀有",
       "conditions": [
         {
           "matchType": "任一",

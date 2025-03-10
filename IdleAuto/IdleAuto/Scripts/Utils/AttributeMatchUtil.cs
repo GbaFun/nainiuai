@@ -185,6 +185,7 @@ namespace AttributeMatch
                 case emAttrType.职业全系技能:
                 case emAttrType.职业单系技能:
                 case emAttrType.召唤最大数量:
+                case emAttrType.指定职业单系技能:
                     result.IsMatch = MatchSkill(_equip, _condition, out weight);
                     result.MatchWeight = weight;
                     break;
@@ -460,6 +461,10 @@ namespace AttributeMatch
             weight = 0;
             string regexAttr = "";
             string[] scondition = _condition.ConditionContent.Split(',');
+            if (_equip.Category == emCategory.项链.ToString())
+            {
+                var test = _equip;
+            }
             switch (_condition.AttributeType)
             {
                 //_condition.ConditionContent = "火球,3"

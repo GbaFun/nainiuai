@@ -21,6 +21,8 @@ namespace IdleAuto
             //设置全局异常处理
             var settings = new CefSettings
             {
+                MultiThreadedMessageLoop = true,
+                ExternalMessagePump = false,
                 // 禁用 GPU 加速
                 CefCommandLineArgs = { ["disable-webgl"] = "1", ["mute-audio"] = "1" },
 

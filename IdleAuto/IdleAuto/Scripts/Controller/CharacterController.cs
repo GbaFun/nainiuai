@@ -168,19 +168,19 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            if(dungeonLv!=_curMapLv)await _win.SignalCallback("charReload", async () =>
+            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload", async () =>
+                {
+                    await SwitchTo(dungeonLv);
+                });
+
+            await _win.SignalCallback("charReload",  () =>
             {
-                await SwitchTo(dungeonLv);
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
             });
 
 
-            if (bro.Address.IndexOf("InDungeon") == -1)
-            {
-                await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}", "map");
 
-            }
-
-            if (role.Level>=30)
+            if (role.Level >= 30)
             {
                 await AutoDungeon();
                 return;
@@ -188,7 +188,8 @@ namespace IdleAuto.Scripts.Controller
 
             await _win.SignalCallback("DungeonEnd", async () =>
             {
-                await _browser.EvaluateScriptAsync($@"_map.startExplore();");
+                var a = await _browser.EvaluateScriptAsync("_map.startExplore();");
+                var r = a.Result;
             });
 
             await Task.Delay(2000);

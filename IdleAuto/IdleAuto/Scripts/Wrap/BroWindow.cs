@@ -92,7 +92,7 @@ namespace IdleAuto.Scripts.Wrap
             var jsTask = new TaskCompletionSource<bool>();
             onJsInitCallBack = (result) =>
             {
-                if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+                if ( jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
             };
 
             var res = await _bro.LoadUrlAsync(url);
@@ -102,7 +102,9 @@ namespace IdleAuto.Scripts.Wrap
 
                 return res;
             }
-            else { return res; }
+            else { 
+                return res;
+            }
         }
         public async Task<JavascriptResponse> CallJs(string jsFunc)
         {
