@@ -33,8 +33,8 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnTestArtifact = new System.Windows.Forms.Button();
             this.BtnTest = new System.Windows.Forms.Button();
-            this.BtnInventory = new System.Windows.Forms.Button();
             this.btnHomePage = new System.Windows.Forms.Button();
             this.BtnInit = new System.Windows.Forms.Button();
             this.BtnClean = new System.Windows.Forms.Button();
@@ -46,6 +46,7 @@ namespace IdleAuto.Scripts.View
             this.BtnTODO2 = new System.Windows.Forms.Button();
             this.btnMonitor = new System.Windows.Forms.Button();
             this.BtnClear = new System.Windows.Forms.Button();
+            this.BtnInventory = new System.Windows.Forms.Button();
             this.RuneGroup = new System.Windows.Forms.GroupBox();
             this.BtnAutoRune = new System.Windows.Forms.Button();
             this.AhGroup = new System.Windows.Forms.GroupBox();
@@ -54,9 +55,6 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnTestArtifact = new System.Windows.Forms.Button();
-            this.BtnInventory = new System.Windows.Forms.Button();
-            this.BtnTest = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.RuneGroup.SuspendLayout();
@@ -92,7 +90,6 @@ namespace IdleAuto.Scripts.View
             // 
             this.HomeGroup.Controls.Add(this.btnTestArtifact);
             this.HomeGroup.Controls.Add(this.BtnTest);
-            this.HomeGroup.Controls.Add(this.BtnTODO);
             this.HomeGroup.Controls.Add(this.btnHomePage);
             this.HomeGroup.Controls.Add(this.BtnInit);
             this.HomeGroup.Controls.Add(this.BtnClean);
@@ -105,13 +102,25 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.Controls.Add(this.btnMonitor);
             this.HomeGroup.Controls.Add(this.BtnClear);
             this.HomeGroup.Location = new System.Drawing.Point(0, 38);
-            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Size = new System.Drawing.Size(267, 591);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
+            // 
+            // btnTestArtifact
+            // 
+            this.btnTestArtifact.Location = new System.Drawing.Point(16, 139);
+            this.btnTestArtifact.Margin = new System.Windows.Forms.Padding(4);
+            this.btnTestArtifact.Name = "btnTestArtifact";
+            this.btnTestArtifact.Size = new System.Drawing.Size(100, 29);
+            this.btnTestArtifact.TabIndex = 12;
+            this.btnTestArtifact.Text = "神器测试";
+            this.btnTestArtifact.UseMnemonic = false;
+            this.btnTestArtifact.UseVisualStyleBackColor = true;
+            this.btnTestArtifact.Click += new System.EventHandler(this.btnTestArtifact_Click);
             // 
             // BtnTest
             // 
@@ -122,16 +131,6 @@ namespace IdleAuto.Scripts.View
             this.BtnTest.Text = "测试";
             this.BtnTest.UseVisualStyleBackColor = true;
             this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
-            // 
-            // BtnTODO
-            // 
-            this.BtnTODO.Location = new System.Drawing.Point(12, 386);
-            this.BtnTODO.Name = "BtnTODO";
-            this.BtnTODO.Size = new System.Drawing.Size(75, 23);
-            this.BtnTODO.TabIndex = 10;
-            this.BtnTODO.Text = "待用";
-            this.BtnTODO.UseVisualStyleBackColor = true;
-            this.BtnTODO.Click += new System.EventHandler(this.BtnInventory_Click);
             // 
             // btnHomePage
             // 
@@ -147,7 +146,7 @@ namespace IdleAuto.Scripts.View
             // BtnInit
             // 
             this.BtnInit.Location = new System.Drawing.Point(16, 64);
-            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Margin = new System.Windows.Forms.Padding(4);
             this.BtnInit.Name = "BtnInit";
             this.BtnInit.Size = new System.Drawing.Size(100, 29);
             this.BtnInit.TabIndex = 2;
@@ -157,9 +156,9 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnClean
             // 
-            this.BtnClean.Location = new System.Drawing.Point(102, 22);
+            this.BtnClean.Location = new System.Drawing.Point(123, 28);
             this.BtnClean.Name = "BtnClean";
-            this.BtnClean.Size = new System.Drawing.Size(75, 23);
+            this.BtnClean.Size = new System.Drawing.Size(100, 30);
             this.BtnClean.TabIndex = 0;
             this.BtnClean.Text = "一键清仓";
             this.BtnClean.UseVisualStyleBackColor = true;
@@ -167,7 +166,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnAutoEquip
             // 
-            this.BtnAutoEquip.Location = new System.Drawing.Point(102, 51);
+            this.BtnAutoEquip.Location = new System.Drawing.Point(123, 64);
             this.BtnAutoEquip.Name = "BtnAutoEquip";
             this.BtnAutoEquip.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoEquip.TabIndex = 1;
@@ -177,7 +176,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnSkillPoint
             // 
-            this.BtnSkillPoint.Location = new System.Drawing.Point(102, 82);
+            this.BtnSkillPoint.Location = new System.Drawing.Point(123, 100);
             this.BtnSkillPoint.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnSkillPoint.Name = "BtnSkillPoint";
             this.BtnSkillPoint.Size = new System.Drawing.Size(100, 29);
@@ -188,7 +187,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnMap
             // 
-            this.btnMap.Location = new System.Drawing.Point(102, 112);
+            this.btnMap.Location = new System.Drawing.Point(123, 136);
             this.btnMap.Margin = new System.Windows.Forms.Padding(2);
             this.btnMap.Name = "btnMap";
             this.btnMap.Size = new System.Drawing.Size(100, 30);
@@ -199,7 +198,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnSyncFilter
             // 
-            this.btnSyncFilter.Location = new System.Drawing.Point(102, 143);
+            this.btnSyncFilter.Location = new System.Drawing.Point(16, 177);
             this.btnSyncFilter.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.btnSyncFilter.Name = "btnSyncFilter";
             this.btnSyncFilter.Size = new System.Drawing.Size(100, 29);
@@ -211,7 +210,7 @@ namespace IdleAuto.Scripts.View
             // BtnAutoAh
             // 
             this.BtnAutoAh.Location = new System.Drawing.Point(16, 100);
-            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoAh.Name = "BtnAutoAh";
             this.BtnAutoAh.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoAh.TabIndex = 0;
@@ -244,13 +243,20 @@ namespace IdleAuto.Scripts.View
             // BtnClear
             // 
             this.BtnClear.Location = new System.Drawing.Point(136, 555);
-            this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(4);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(100, 29);
             this.BtnClear.TabIndex = 3;
             this.BtnClear.Text = "关闭当前页";
             this.BtnClear.UseVisualStyleBackColor = true;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
+            // BtnInventory
+            // 
+            this.BtnInventory.Location = new System.Drawing.Point(0, 0);
+            this.BtnInventory.Name = "BtnInventory";
+            this.BtnInventory.Size = new System.Drawing.Size(75, 23);
+            this.BtnInventory.TabIndex = 0;
             // 
             // RuneGroup
             // 
@@ -338,18 +344,6 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnTestArtifact
-            // 
-            this.btnTestArtifact.Location = new System.Drawing.Point(16, 139);
-            this.btnTestArtifact.Margin = new System.Windows.Forms.Padding(4);
-            this.btnTestArtifact.Name = "btnTestArtifact";
-            this.btnTestArtifact.Size = new System.Drawing.Size(100, 29);
-            this.btnTestArtifact.TabIndex = 12;
-            this.btnTestArtifact.Text = "神器测试";
-            this.btnTestArtifact.UseMnemonic = false;
-            this.btnTestArtifact.UseVisualStyleBackColor = true;
-            this.btnTestArtifact.Click += new System.EventHandler(this.btnTestArtifact_Click);
-            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -393,8 +387,9 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnMap;
         private System.Windows.Forms.Button BtnTODO2;
         private System.Windows.Forms.Button btnMonitor;
-        private System.Windows.Forms.Button BtnTODO;
+        
         private System.Windows.Forms.Button BtnTest;
         private System.Windows.Forms.Button btnTestArtifact;
+        private System.Windows.Forms.Button BtnInventory;
     }
 }

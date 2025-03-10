@@ -29,6 +29,8 @@ namespace IdleAuto.Scripts.Controller
         "打火石", "木屋", "TNT", "铁轨机", "刷线机", "地狱门", "刷怪笼", "附魔台", "末影珍珠", "熔岩桶", "烟花火箭", "火焰弹"
     };
 
+
+
         /// <summary>
         /// 是否在自动初始化状态
         /// </summary>
@@ -87,9 +89,11 @@ namespace IdleAuto.Scripts.Controller
             _isNeedDungeon = bool.Parse(isNeedDungeon.ToString());
         }
 
-        public CharacterController() : base()
+        public CharacterController(BroWindow win) : base(win)
         {
             _isNeedDungeon = false;
+            _eventMa = win.GetEventMa();
+            _eventMa.SubscribeEvent(emEventType.OnDungeonRequired, OnDungeonRequired);
         }
 
         /// <summary>
@@ -164,7 +168,7 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            await SignalCallback("charReload", async () =>
+            if(dungeonLv!=_curMapLv)await _win.SignalCallback("charReload", async () =>
             {
                 await SwitchTo(dungeonLv);
             });
@@ -172,32 +176,45 @@ namespace IdleAuto.Scripts.Controller
 
             if (bro.Address.IndexOf("InDungeon") == -1)
             {
-                await SignalCallback("charReload", () =>
-                {
-                    _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
-                });
+                await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}", "map");
 
             }
 
-            await SignalCallback("DungeonEnd", async () =>
+            if (role.Level>=30)
+            {
+                await AutoDungeon();
+                return;
+            }
+
+            await _win.SignalCallback("DungeonEnd", async () =>
             {
                 await _browser.EvaluateScriptAsync($@"_map.startExplore();");
             });
 
             await Task.Delay(2000);
             //再次尝试直接抵达
-            await SignalCallback("charReload", () =>
+            await _win.SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
             });
-
-            await SignalCallback("charReload", async () =>
+            await Task.Delay(2000);
+            await _win.SignalCallback("charReload", async () =>
             {
-                await SwitchTo(_curMapLv+10);
+                await SwitchTo(_curMapLv + 10);
             });
-           await SwitchMap(bro, role);
+            await Task.Delay(2000);
+            await SwitchMap(bro, role);
 
         }
+        private async Task AutoDungeon()
+        {
+            await _win.SignalCallback("startAuto", () =>
+            {
+                _win.CallJs("_map.autoDungeon();");
+            });
+            await Task.Delay(2000);
+        }
+
         /// <summary>
         /// 开始
         /// </summary>
@@ -668,7 +685,7 @@ namespace IdleAuto.Scripts.Controller
             _browser = bro;
             int roleid = role.RoleId;
             //不在详细页先去详细页读取属性
-            await SignalCallback("charReload", () =>
+            await _win.SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
             });
@@ -685,19 +702,19 @@ namespace IdleAuto.Scripts.Controller
 
 
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
-            if (isNeedRest) await SignalCallback("charReload", async () =>
+            if (isNeedRest) await _win.SignalCallback("charReload", async () =>
                {
                    await SkillRest();
                });
 
             //重置一定加点
-            if (isNeedAdd || isNeedRest) await SignalCallback("charReload", async () =>
+            if (isNeedAdd || isNeedRest) await _win.SignalCallback("charReload", async () =>
               {
                   await SkillSave(targetSkillPoint, skillConfig.JobName);
               });
 
             var groupid = GetSkillGroup(skillConfig);
-            if (isNeedSetGroup) await SignalCallback("charReload", async () =>
+            if (isNeedSetGroup) await _win.SignalCallback("charReload", async () =>
               {
                   await SkillGroupSave(groupid);
               });
@@ -706,7 +723,7 @@ namespace IdleAuto.Scripts.Controller
 
             if (bro.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
             {
-                await SignalCallback("charReload", () =>
+                await _win.SignalCallback("charReload", () =>
                 {
                     _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
 
@@ -716,7 +733,7 @@ namespace IdleAuto.Scripts.Controller
             var s = await _browser.EvaluateScriptAsync("_char.hasKey()");
             var hasKey = s.Result.ToObject<bool>();
 
-            if (!hasKey) await SignalCallback("charReload", async () =>
+            if (!hasKey) await _win.SignalCallback("charReload", async () =>
             {
                 await SkillKeySave(skillConfig.KeySkillId);
             });
@@ -927,7 +944,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartSwitchMap(ChromiumWebBrowser bro, UserModel user)
         {
             _browser = bro;
-            int unFinishIndex=0;
+            int unFinishIndex = 0;
             var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).ToList();
             var unfinishedTask = list.Count > 0 ? list[0] : null;
             if (unfinishedTask == null)
@@ -941,26 +958,26 @@ namespace IdleAuto.Scripts.Controller
                 unFinishIndex = index;
 
             }
-           
+
             //查询未完成的任务
             for (int i = unFinishIndex; i < user.Roles.Count; i++)
             {
                 RoleModel role = user.Roles[i];
-             
+
                 await Task.Delay(1000);
                 await SwitchMap(_browser, role);
                 await Task.Delay(1000);
                 if (unfinishedTask != null)
                 {
                     unfinishedTask.Roleid = role.RoleId;
-                   
+
                 }
                 if (i == user.Roles.Count - 1)
                 {
                     unfinishedTask.IsEnd = true;
 
                 }
-                 var one= FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).First();
+                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).First();
                 unfinishedTask.Id = one.Id;
                 FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(unfinishedTask).ExecuteAffrows();
             }
@@ -968,7 +985,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
         {
             int roleid = role.RoleId;
-            await SignalCallback("charReload", () =>
+            await _win.SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
             });
@@ -980,7 +997,10 @@ namespace IdleAuto.Scripts.Controller
 
             int targetLv = setting.MapLv; //setting.MapLv;
             _targetMapLv = targetLv;
-            await SignalRaceCallBack(new string[] { "charReload" }, async () =>
+            var r = await _win.CallJs("_map.canSwitch()");
+            var canSwitch = r.Result.ToObject<bool>();
+            if (!canSwitch) return;
+            await _win.SignalRaceCallBack(new string[] { "charReload" }, async () =>
            {
                await SwitchTo(targetLv);
 
@@ -1022,11 +1042,11 @@ namespace IdleAuto.Scripts.Controller
 
             await Task.Delay(1000);
             RoleModel role = user.Roles[0];
-            await SignalCallback("charReload", () =>
+            await _win.SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl("https://www.idleinfinity.cn/Config/Query?id=");
             });
-            await SignalCallback("charReload", async () =>
+            await _win.SignalCallback("charReload", async () =>
             {
                 await CopyConfig();
             });

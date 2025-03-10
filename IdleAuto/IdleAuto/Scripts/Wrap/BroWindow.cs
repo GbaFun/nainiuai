@@ -22,7 +22,6 @@ namespace IdleAuto.Scripts.Wrap
 
         public BaseController BaseController;
 
-        public CharacterController CharController;
 
         public UserModel User;
 
@@ -33,6 +32,13 @@ namespace IdleAuto.Scripts.Wrap
 
         private delegate void OnJsInitCallBack(string jsName);
         private OnJsInitCallBack onJsInitCallBack;
+
+        /// <summary>
+        /// 等待特定信号的委托
+        /// </summary>
+        /// <param name="signal"></param>
+        protected delegate void OnSignalCallBack(string signal);
+        protected OnSignalCallBack onSignalCallBack;
 
         private void SetSeed(int seed)
         {
@@ -45,10 +51,9 @@ namespace IdleAuto.Scripts.Wrap
             User = user;
             this.EventMa = new EventSystem();
             _bridge = new Bridge(seed, EventMa);
-            this.CharController = new CharacterController();
-            EventMa.SubscribeEvent(emEventType.OnSignal, CharController.OnSignalCallback);
+            EventMa.SubscribeEvent(emEventType.OnSignal, OnSignalCallback);
             EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
-            EventMa.SubscribeEvent(emEventType.OnDungeonRequired, CharController.OnDungeonRequired);
+
             EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
 
             this._bro = InitializeChromium(User.AccountName, url, proxy);
@@ -56,13 +61,18 @@ namespace IdleAuto.Scripts.Wrap
         public void Close()
         {
             EventMa.Dispose();
-            
+
             TabManager.Instance.DisposePage(_seed);
         }
 
         public ChromiumWebBrowser GetBro()
         {
             return _bro;
+        }
+
+        public EventSystem GetEventMa()
+        {
+            return EventMa;
         }
         public void SubscribeEvent(emEventType eventType, Action<object[]> callback)
         {
@@ -146,6 +156,67 @@ namespace IdleAuto.Scripts.Wrap
             onJsInitCallBack?.Invoke(jsName);
         }
 
+        public void OnSignalCallback(params object[] args)
+        {
+            string t = args[0] as string;
+            onSignalCallBack?.Invoke(t);
+        }
+
+        /// <summary>
+        /// 执行一个js或者跳转页面 等待js使用特定信号回调
+        /// </summary>
+        /// <param name="signal"></param>
+        /// <param name="js"></param>
+        /// <param name="urlToJump"></param>
+        /// <returns></returns>
+        public async Task SignalCallback(string signal, Action act)
+        {
+
+            var tcs2 = new TaskCompletionSource<bool>();
+            if (onSignalCallBack != null)
+            {
+                throw new Exception("重复添加信号事件方法");
+            }
+            onSignalCallBack = (result) =>
+            {
+                if (result == signal)
+                {
+                    tcs2.SetResult(true);
+                    onSignalCallBack = null;
+                }
+            };
+            act.Invoke();
+            await tcs2.Task;
+            await Task.Delay(1000);
+        }
+
+        /// <summary>
+        /// 一个方法多种结果 只需等待其中一种结果的情况用这个 比如切图可能会异常可能会直接切过去
+        /// </summary>
+        /// <param name="signals"></param>
+        /// <param name="act"></param>
+        /// <returns></returns>
+        public async Task SignalRaceCallBack(string[] signals, Action act)
+        {
+            var tcs2 = new TaskCompletionSource<bool>();
+            if (onSignalCallBack != null)
+            {
+                throw new Exception("重复添加信号事件方法");
+            }
+            onSignalCallBack = (result) =>
+            {
+                if (signals.Contains(result))
+                {
+                    tcs2.SetResult(true);
+                    onSignalCallBack = null;
+                }
+            };
+            act.Invoke();
+            await tcs2.Task;
+
+        }
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -228,7 +299,7 @@ namespace IdleAuto.Scripts.Wrap
 
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
-         
+
             P.Log($"On {name} FrameLoadStart");
             var bro = sender as ChromiumWebBrowser;
             P.Log($"On {name} FrameLoadStart");

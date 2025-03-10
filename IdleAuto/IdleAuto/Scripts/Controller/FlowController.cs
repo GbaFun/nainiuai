@@ -16,7 +16,8 @@ namespace IdleAuto.Scripts.Controller
         {
             var user = AccountController.Instance.User;
             var window = await TabManager.Instance.TriggerAddBroToTap(user);
-            await window.CharController.StartSwitchMap(window.GetBro(), window.User);
+            var controller = new CharacterController(window);
+            await controller.StartSwitchMap(window.GetBro(), window.User);
             window.Close();
         }
 
@@ -32,7 +33,8 @@ namespace IdleAuto.Scripts.Controller
                 if (account.AccountName == "铁矿石") continue;
                 var user = new UserModel(account);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                await window.CharController.StartAddSkill(window.GetBro(), window.User);
+                var controller = new CharacterController(window);
+                await controller.StartAddSkill(window.GetBro(), window.User);
                 window.Close();
             }
 
@@ -67,7 +69,8 @@ namespace IdleAuto.Scripts.Controller
                 if (account.AccountName == "铁矿石") continue;
                 var user = new UserModel(account);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                await window.CharController.StartSyncFilter(window.GetBro(), window.User);
+                var control = new CharacterController(window);
+                await control.StartSyncFilter(window.GetBro(), window.User);
                 window.Close();
             }
         }
@@ -110,7 +113,7 @@ namespace IdleAuto.Scripts.Controller
                 if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
                 var user = new UserModel(account);
 
-                await RepairManager.Instance.ClearEquips(user);
+                //await RepairManager.Instance.ClearEquips(user);
                 await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);

@@ -51,8 +51,8 @@ let _map = {};
 
 
     async function startExplore() {
-       
- 
+
+
         if (localStorage.getItem("startMap")) {
 
         }
@@ -63,9 +63,9 @@ let _map = {};
     }
     async function explore() {
         //debugger
-        if (!(location.href.indexOf("Map/Dungeon") >-1 ||location.href.indexOf("Map/DungeonForBmap") > -1)) return;
+        if (!(location.href.indexOf("Map/Dungeon") > -1 || location.href.indexOf("Map/DungeonForBmap") > -1)) return;
         //debugger
-        if ($("span.boss-left").text() != "1")  {
+        if ($("span.boss-left").text() != "1") {
             //打完了
             debugger
             localStorage.removeItem("startMap");
@@ -93,16 +93,47 @@ let _map = {};
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid
         };
-        
+
         POST_Message("DungeonExit", data, false).then((r) => {
             debugger;
             Bridge.invokeEvent('OnSignal', 'DungeonEnd');
-            
+
         }).catch((e) => {
             debugger;
             Bridge.invokeEvent('OnSignal', 'DungeonEnd');
-            
+
         })
+    }
+
+    //自动秘境没有重定向
+    async function autoDungeon() {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            cid: _char.cid,
+            reset: false,
+            boss: false,
+            max: 60
+
+        };
+
+        POST_Message("DungeonAuto", data, false).then((r) => {
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'startAuto');
+
+        }).catch((e) => {
+            debugger;
+            // Bridge.invokeEvent('OnSignal', 'DungeonEnd');
+
+        })
+    }
+
+     function canAuto() {
+        return $(".panel-heading").find("a:contains('自动秘境')") == 1
+    }
+
+    //自动秘境没打完 外面没有切换按钮
+    function canSwitch() {
+        return $(".panel-heading").find("a:contains('切换')").length == 1;
     }
 
     async function backToMap() {
@@ -113,7 +144,7 @@ let _map = {};
         if (win) {
             await sleep(10000)
             location.href = href;
-          
+
         }
         else {
             //记录失败次数 
@@ -148,43 +179,43 @@ let _map = {};
         for (let i = 0; i < step.length; i++) {
             var index = steps[i];
             var curPos = calPos(index);
-            var up = [curPos[0], curPos[1]-1]
-            var down = [curPos[0] , curPos[1]+1]
-            var left = [curPos[0]-1  , curPos[1]]
-            var right = [curPos[0]+1, curPos[1] ]
+            var up = [curPos[0], curPos[1] - 1]
+            var down = [curPos[0], curPos[1] + 1]
+            var left = [curPos[0] - 1, curPos[1]]
+            var right = [curPos[0] + 1, curPos[1]]
             var curBlock = $(`#${index}`);
             var hasMonster = curBlock.hasClass("monster") || curBlock.hasClass("boss");
-            if (isBlockIgnore(up, down, left, right,curBlock)) {
+            if (isBlockIgnore(up, down, left, right, curBlock)) {
                 visitedStep[index] = true;
             }
             else {
                 newStep.push(index);
             }
-            if (hasMonster ) {
+            if (hasMonster) {
                 monsterStep.push(index);
             }
         }
         //debugger
-        newStep= newStep.concat(monsterStep);
+        newStep = newStep.concat(monsterStep);
         return newStep;
     }
 
-    function isBlockIgnore(up, down, left, right,curBlock) {
+    function isBlockIgnore(up, down, left, right, curBlock) {
         var u = calBlockIndex(up);
         var d = calBlockIndex(down);
         var l = calBlockIndex(left);
         var r = calBlockIndex(right);
         var uBlock, dBlock, lBlock, rBlock;
-        if (up[1] >= 0 && up[1] <= 19) uBlock=$(`#${u}`);
-        if (down[1] >= 0 && down[1] <= 19) dBlock=$(`#${d}`);
-        if (left[0] >= 0 && left[0] <= 19) lBlock=$(`#${l}`);
+        if (up[1] >= 0 && up[1] <= 19) uBlock = $(`#${u}`);
+        if (down[1] >= 0 && down[1] <= 19) dBlock = $(`#${d}`);
+        if (left[0] >= 0 && left[0] <= 19) lBlock = $(`#${l}`);
         if (right[0] >= 0 && right[0] <= 19) rBlock = $(`#${r}`);
         if (uBlock) {
             //上面有mask且没有top围墙
             if (uBlock.hasClass("mask") && !curBlock.hasClass("top")) return false;
         }
         if (dBlock) {
-            
+
             if (dBlock.hasClass("mask") && !dBlock.hasClass("top")) return false;
         }
         if (lBlock) {
@@ -260,7 +291,7 @@ let _map = {};
     }
 
     function calBlockIndex(arr) {
-        return arr[0] + arr[1]*20 ;
+        return arr[0] + arr[1] * 20;
     }
 
 
@@ -369,5 +400,8 @@ let _map = {};
 
     _map.explore = explore;
     _map.startExplore = startExplore;
+    _map.autoDungeon = autoDungeon;
+    _map.canAuto = canAuto;
+    _map.canSwitch = canSwitch;
 
 })();

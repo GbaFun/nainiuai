@@ -144,7 +144,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
     }
     public async Task AddSkillPoint(BroWindow win, RoleModel role)
     {
-        await win.CharController.AddSkillPoints(win.GetBro(), role);
+        var charControl = new CharacterController(win);
+        await charControl.AddSkillPoints(win.GetBro(), role);
     }
     public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
     {
