@@ -101,5 +101,44 @@ namespace IdleAuto.Scripts.Controller
 
 
         }
+
+        public static async Task MakeArtifactTest()
+        {
+            for (int i = 8; i < AccountCfg.Instance.Accounts.Count; i++)
+            {
+                var account = AccountCfg.Instance.Accounts[i];
+                if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
+                var user = new UserModel(account);
+
+                await RepairManager.Instance.ClearEquips(user);
+                await RepairManager.Instance.UpdateEquips(user);
+                var window = await TabManager.Instance.TriggerAddBroToTap(user);
+                var control = new ArtifactController(window);
+                var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
+                var eqControll = new EquipController();
+                for (int j = 1; j < user.Roles.Count; j += 3)
+                {
+                    var role = user.Roles[j];
+                    var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
+                    if (baseEq.Value != null)
+                    {
+                        long equipId = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId);
+                        await Task.Delay(2000);
+                        await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });
+                        await Task.Delay(2000);
+                        var result3 = await window.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+                        await Task.Delay(2000);
+                        await window.CallJsWaitReload($@"equipOn({role.RoleId},{equipId})", "equip");
+                    }
+                }
+
+                window.Close();
+                //给每个死灵穿上隐密
+                //先清包
+                //盘库
+                //做神器
+                //穿上
+            }
+        }
     }
 }

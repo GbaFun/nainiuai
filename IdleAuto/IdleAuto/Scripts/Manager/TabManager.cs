@@ -175,6 +175,7 @@ public class TabManager
         {
             Tab.TabPages.Remove(tabPage);
         }
+        //提前dispose会导致程序闪退
         var bro = BroWindowDic[seed].GetBro();
         if (bro != null)
         {

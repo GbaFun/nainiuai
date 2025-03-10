@@ -45,6 +45,22 @@
     },
     "maxCount": 1200
   },
+  //死灵
+  {
+    "equip": {
+      "category": "手杖|死灵副手",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    },
+    "maxCount": 1200
+  },
 
 
   ///-------职业前缀-------///
@@ -88,22 +104,7 @@
   },
   {
     "equip": {
-      "category": "全部",
-      "quality": "全部",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "攻击速度",
-          "conditionContent": "10"
-        }
-      ]
-    },
-    "maxCount": 240
-  },
-  {
-    "equip": {
-      "category": "全部",
+      "category": "戒指",
       "quality": "全部",
       "conditions": [
         {
@@ -118,6 +119,43 @@
   },
   {
     "equip": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        }
+      ]
+    },
+    "maxCount": 240
+  },
+  {
+    "equip": {
+      "category": "项链",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "项链",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+      ]
+    },
+    "maxCount": 240
+  },
+  {
+    "equip": {
       "category": "全部",
       "quality": "全部",
       "conditions": [
@@ -125,7 +163,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "conditionContent": "10"
+          "conditionContent": "20"
         }
       ]
     },
@@ -140,7 +178,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "额外金币取得",
-          "conditionContent": "30"
+          "conditionContent": "300"
         }
       ]
     },
@@ -151,8 +189,8 @@
   //隐秘
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "衣服",
+      "category": "衣服",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -167,46 +205,31 @@
   //叶子
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "法杖",
+      "category": "法杖",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
           "operate": "等于",
           "attributeType": "凹槽",
-          "conditionContent": "2"
+          "conditionContent": "6"
         },
         {
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "烈焰风暴,3"
+          "conditionContent": "烈焰风暴,4"
         }
       ]
     },
     "maxCount": 12
   },
-  //精神
-  {
-    "equip": {
-      "category": "普通|破碎",
-      "quality": "水晶剑",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "凹槽",
-          "conditionContent": "4"
-        }
-      ]
-    },
-    "maxCount": 12
-  },
+
   //知识
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "头盔",
+      "category": "帽子|头饰",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -221,8 +244,8 @@
   //和平-疾速-刃-信念-天灾-戒律
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "衣服",
+      "category": "衣服",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -237,8 +260,8 @@
   //优雅旋律
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "游侠标枪",
+      "category": "游侠标枪",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -267,8 +290,8 @@
   //亡者遗产
   {
     "equip": {
-      "category": "普通|破碎",
-      "quality": "手杖",
+      "category": "手杖",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",

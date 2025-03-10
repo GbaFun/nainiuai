@@ -56,7 +56,7 @@ namespace IdleAuto.Scripts.Wrap
         public void Close()
         {
             EventMa.Dispose();
-            _bro = null;
+            
             TabManager.Instance.DisposePage(_seed);
         }
 

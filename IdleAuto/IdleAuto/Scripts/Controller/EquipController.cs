@@ -747,13 +747,20 @@ public class EquipController
         P.Log($"开始查询数据库装备", emLogType.AutoEquip);
         List<EquipModel> findEquips = new List<EquipModel>();
         var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid).ToList();
-        foreach (var item in __equips)
-        {
-            if (AttributeMatchUtil.MatchCategory(item, target.Category) && AttributeMatchUtil.MatchQuallity(item, target.Quality))
+        try {
+            foreach (var item in __equips)
             {
-                findEquips.Add(item);
+                if (AttributeMatchUtil.MatchCategory(item, target.Category) && AttributeMatchUtil.MatchQuallity(item, target.Quality))
+                {
+                    findEquips.Add(item);
+                }
             }
         }
+        catch(Exception e)
+        {
+            throw e;
+        }
+        
         P.Log($"查询数据库装备完成,共找到{findEquips.Count}个装备", emLogType.AutoEquip);
 
         P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");

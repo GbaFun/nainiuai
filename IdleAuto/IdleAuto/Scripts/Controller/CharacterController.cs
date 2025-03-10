@@ -960,6 +960,8 @@ namespace IdleAuto.Scripts.Controller
                     unfinishedTask.IsEnd = true;
 
                 }
+                 var one= FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).First();
+                unfinishedTask.Id = one.Id;
                 FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(unfinishedTask).ExecuteAffrows();
             }
         }
