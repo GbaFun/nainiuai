@@ -217,7 +217,7 @@ namespace IdleAuto.Scripts.View
         {
             DateTime now = DateTime.Now;
             // 每两小时自动运行效率监控
-           // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(0), TimeSpan.FromHours(6));
+          //  refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(1), TimeSpan.FromHours(6));
 
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
@@ -274,7 +274,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnTest_Click(object sender, EventArgs e)
         {
-            var a=EquipCfg.Instance.EquipList;
+            RepairManager.Instance.AutoRepair();
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)
