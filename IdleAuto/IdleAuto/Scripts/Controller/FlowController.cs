@@ -12,10 +12,53 @@ namespace IdleAuto.Scripts.Controller
     /// </summary>
     public class FlowController
     {
+
+        public static async Task GroupWork(int size, Func<BroWindow, Task> act)
+        {
+            if (size <= 0)
+                throw new ArgumentException("Group size must be greater than 0.", nameof(size));
+
+            if (act == null)
+                throw new ArgumentNullException(nameof(act));
+
+
+            // 获取账户列表
+            var accounts = AccountCfg.Instance.Accounts;
+
+            // 每次处理3个账户
+            int groupSize = size;
+
+            for (int i = 1; i < accounts.Count; i += groupSize)
+            {    // 创建一个任务列表，用于存储当前组的任务
+                var tasks = new List<Task>();
+                // 获取当前组的账户
+                var group = accounts.Skip(i).Take(groupSize).ToList();
+                foreach (var account in group)
+                {
+                    var user = new UserModel(account);
+                    var window = await TabManager.Instance.TriggerAddBroToTap(user);
+                    tasks.Add(act(window));
+                }
+                // 等待当前组的所有任务完成
+                await Task.WhenAll(tasks);
+            }
+
+
+        }
+
         public static async Task StartMapSwitch()
         {
+
             var user = AccountController.Instance.User;
             var window = await TabManager.Instance.TriggerAddBroToTap(user);
+            var controller = new CharacterController(window);
+            await controller.StartSwitchMap(window.GetBro(), window.User);
+            window.Close();
+
+        }
+
+        public static async Task StartMapSwitch(BroWindow window)
+        {
             var controller = new CharacterController(window);
             await controller.StartSwitchMap(window.GetBro(), window.User);
             window.Close();
@@ -27,7 +70,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task StartAddSkill()
         {
-            for (int i = 9; i < AccountCfg.Instance.Accounts.Count; i++)
+            for (int i = 1; i < AccountCfg.Instance.Accounts.Count; i++)
             {
                 var account = AccountCfg.Instance.Accounts[i];
                 if (account.AccountName == "铁矿石") continue;
@@ -107,14 +150,14 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task MakeArtifactTest()
         {
-            for (int i = 8; i < AccountCfg.Instance.Accounts.Count; i++)
+            for (int i = 11; i < AccountCfg.Instance.Accounts.Count; i++)
             {
                 var account = AccountCfg.Instance.Accounts[i];
                 if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
                 var user = new UserModel(account);
 
                 //await RepairManager.Instance.ClearEquips(user);
-                await RepairManager.Instance.UpdateEquips(user);
+               // await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
                 var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
@@ -143,5 +186,6 @@ namespace IdleAuto.Scripts.Controller
                 //穿上
             }
         }
+
     }
 }

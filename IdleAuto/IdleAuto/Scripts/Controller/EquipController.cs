@@ -65,7 +65,7 @@ public class EquipController
                     hasEquips = bagCount > 0;
                     while (hasEquips)
                     {
-                        if (bagCount + boxCount > 3000)
+                        if (bagCount + boxCount > 2500)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)

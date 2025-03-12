@@ -55,7 +55,7 @@ namespace IdleAuto.Scripts.Wrap
             EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
 
             EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
-
+            EventMa.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
             this._bro = InitializeChromium(User.AccountName, url, proxy);
         }
         public void Close()
@@ -120,7 +120,7 @@ namespace IdleAuto.Scripts.Wrap
             };
             var response = await _bro.EvaluateScriptAsync(jsFunc);
 
-            await Task.Delay(1000);
+            await Task.Delay(2000);
             P.Log("Start Reload With Js CallFunc Finished!");
             _bro.Reload();
 
@@ -307,6 +307,13 @@ namespace IdleAuto.Scripts.Wrap
             P.Log($"On {name} FrameLoadStart");
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
+
+        private void OnPostFailed(params object[] args)
+        {
+            string errorMsg = args[0].ToString();
+            P.Log(errorMsg, emLogType.Error);
+        }
+
 
         /// <summary>
         /// 

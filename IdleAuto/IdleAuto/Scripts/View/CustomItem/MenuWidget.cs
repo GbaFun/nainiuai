@@ -138,7 +138,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            FlowController.StartMapSwitch();
+            FlowController.GroupWork(3,FlowController.StartMapSwitch);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {

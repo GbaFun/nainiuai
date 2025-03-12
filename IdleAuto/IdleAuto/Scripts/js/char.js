@@ -240,9 +240,11 @@ class Character {
             sid: data.sid
         });
         POST_Message("SkillGroupSave", data, "post", 1500).then((r) => {
+            debugger
             //location.reload();
         }).catch((e) => {
             // location.reload();
+            debugger
         })
     }
     skillKeySave(sid) {

@@ -39,7 +39,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "腐蚀光环,3"
+          "conditionContent": "腐蚀光环,4"
         }
       ]
     },
@@ -66,7 +66,76 @@
   ///-------职业前缀-------///
   {
     "equip": {
-      "category": "全部",
+      "category": "斧|锤",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        },
+
+        {
+          "matchType": "可选",
+
+          "operate": "大于等于",
+          "attributeType": "毒素伤害",
+          "conditionContent": "20"
+        }
+      ]
+    },
+    "maxCount": 8
+  },
+  {
+    "equip": {
+      "category": "权杖|骑士盾牌|盾牌",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "冥想光环,1"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "审判光环,1"
+        },
+        {
+          "matchType": "可选",
+
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,1"
+        },
+        {
+          "matchType": "可选",
+
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "拯救光环,1"
+        }
+      ]
+    },
+    "maxCount": 8
+  },
+  {
+    "equip": {
+      "category": "头饰|项链|护符|衣服",
       "quality": "魔法|稀有",
       "conditions": [
         {
@@ -82,6 +151,13 @@
           "operate": "大于等于",
           "attributeType": "职业单系技能",
           "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "骷髅法师,1"
         }
       ]
     },

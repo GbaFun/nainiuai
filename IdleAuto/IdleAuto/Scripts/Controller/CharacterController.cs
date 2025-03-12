@@ -156,12 +156,6 @@ namespace IdleAuto.Scripts.Controller
             CharNameSeed += 1;
         }
 
-        private void OnPostFailed(params object[] args)
-        {
-            string errorMsg = args[0].ToString();
-            P.Log(errorMsg, emLogType.Error);
-        }
-
 
 
         private async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role)

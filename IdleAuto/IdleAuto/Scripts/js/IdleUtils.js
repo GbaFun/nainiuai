@@ -42,6 +42,7 @@ async function FetchPost(_url, _data, needReload = true) {
                 if (response.status === 500) {
                     try {
                         const str = await getResponseText(response.body);
+                        Bridge.invokeEvent("OnPostFailed", { url: _url, data: _data, response: str });
                         reject({ responseText: str });
                     } catch (error) {
                         reject(error);

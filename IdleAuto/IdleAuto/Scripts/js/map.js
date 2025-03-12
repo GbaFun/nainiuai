@@ -145,6 +145,8 @@ let _map = {};
         }
         else {
             //记录失败次数 
+            await sleep(10000)
+            location.href = href;
         }
     }
 
