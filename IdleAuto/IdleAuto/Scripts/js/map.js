@@ -139,7 +139,7 @@ let _map = {};
         const win = $('.turn').first().text().indexOf('战斗胜利') > 0;
         var href = $("a:contains('返回')").attr("href");
         if (win) {
-            await sleep(10000)
+            await sleep(4000)
             location.href = href;
 
         }

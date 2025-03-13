@@ -593,7 +593,13 @@ namespace AttributeMatch
         public string MatchGroupName;
         public emOperateType Operate;
         public emAttrType AttributeType;
+        public string ArtifactBase;
+        /// <summary>
+        /// 在任一或者可选条件下 给匹配条件排优先级
+        /// </summary>
+        public int Seq;
         public string ConditionContent;
+      
     }
 
     /// <summary>

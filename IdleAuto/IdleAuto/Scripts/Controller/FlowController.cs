@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IdleAuto.Scripts.Controller
@@ -13,35 +14,57 @@ namespace IdleAuto.Scripts.Controller
     public class FlowController
     {
 
-        public static async Task GroupWork(int size, Func<BroWindow, Task> act)
+        /// <summary>
+        /// 全账号并行任务
+        /// </summary>
+        /// <param name="size">并行数量</param>
+        /// <param name="skip">跳过几个</param>
+        /// <param name="act">将window作为入参</param>
+        /// <returns></returns>
+        public static async Task GroupWork(int size,int skip, Func<BroWindow, Task> act, string[] specifiedAccounts=null)
         {
-            if (size <= 0)
-                throw new ArgumentException("Group size must be greater than 0.", nameof(size));
+            var accounts = AccountCfg.Instance.Accounts.Skip(skip);
+            var semaphore = new SemaphoreSlim(size);
+            var tasks = new List<Task>();
 
-            if (act == null)
-                throw new ArgumentNullException(nameof(act));
-
-
-            // 获取账户列表
-            var accounts = AccountCfg.Instance.Accounts;
-
-            // 每次处理3个账户
-            int groupSize = size;
-
-            for (int i = 1; i < accounts.Count; i += groupSize)
-            {    // 创建一个任务列表，用于存储当前组的任务
-                var tasks = new List<Task>();
-                // 获取当前组的账户
-                var group = accounts.Skip(i).Take(groupSize).ToList();
-                foreach (var account in group)
+            foreach (var account in accounts)
+            {
+                if (specifiedAccounts != null)
                 {
-                    var user = new UserModel(account);
-                    var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                    tasks.Add(act(window));
+                    if (!specifiedAccounts.Contains(account.AccountName)) continue;
                 }
-                // 等待当前组的所有任务完成
-                await Task.WhenAll(tasks);
+                // 等待信号量
+                await semaphore.WaitAsync();
+                Console.WriteLine($"Semaphore acquired: {semaphore.CurrentCount}");
+                var user = new UserModel(account);
+                var window = await TabManager.Instance.TriggerAddBroToTap(user);
+                // 启动任务
+                var task = Task.Run(async () =>
+                {
+                    try
+                    {
+                 
+                        await act(window); // 可能抛出异常
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Task failed: {ex.Message}");
+                    }
+                    finally
+                    {
+                        // 确保信号量被释放
+                        semaphore.Release();
+                        window.Close();
+                        Console.WriteLine($"Semaphore released: {semaphore.CurrentCount}");
+                    }
+                });
+
+                tasks.Add(task);
             }
+
+            // 等待所有任务完成
+            await Task.WhenAll(tasks);
+            Console.WriteLine("All tasks completed.");
 
 
         }
@@ -157,7 +180,7 @@ namespace IdleAuto.Scripts.Controller
                 var user = new UserModel(account);
 
                 //await RepairManager.Instance.ClearEquips(user);
-               // await RepairManager.Instance.UpdateEquips(user);
+                // await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
                 var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);

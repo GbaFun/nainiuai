@@ -183,8 +183,9 @@ namespace IdleAuto.Scripts.Wrap
             {
                 if (result == signal)
                 {
-                    tcs2.SetResult(true);
                     onSignalCallBack = null;
+                    tcs2.SetResult(true);
+               
                 }
             };
             act.Invoke();
@@ -209,8 +210,9 @@ namespace IdleAuto.Scripts.Wrap
             {
                 if (signals.Contains(result))
                 {
-                    tcs2.SetResult(true);
                     onSignalCallBack = null;
+                    tcs2.SetResult(true);
+                 
                 }
             };
             act.Invoke();

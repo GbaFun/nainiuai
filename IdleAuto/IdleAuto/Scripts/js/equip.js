@@ -62,7 +62,7 @@ function getEquipInfo(eid, sortid, quality, content) {
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
     var baseName = name[1];
-    debugger;
+
     if (sc[1].includes("可以作为镶嵌物")) {
         baseName = "珠宝";
     }

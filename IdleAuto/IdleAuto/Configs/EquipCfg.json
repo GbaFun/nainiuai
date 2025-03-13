@@ -1163,28 +1163,22 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "任一",
+              "matchGroupName": "死灵衣服",
               "operate": "等于",
               "attributeType": "名称",
+              "artifactBase": "低力量隐密",
+              "seq": 1,
               "conditionContent": "隐密"
             },
+
             {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "施法速度",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "matchType": "任一",
+              "matchGroupName": "死灵衣服",
+              "operate": "等于",
+              "attributeType": "名称",
+              "seq": 0,
+              "conditionContent": "蛇魔法师之皮"
             }
           ]
         },

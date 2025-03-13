@@ -16,6 +16,13 @@
         "operate": "等于",
         "attributeType": "凹槽",
         "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
       }
     ]
   }

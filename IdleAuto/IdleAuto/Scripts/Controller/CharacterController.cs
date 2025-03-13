@@ -31,6 +31,8 @@ namespace IdleAuto.Scripts.Controller
 
 
 
+
+
         /// <summary>
         /// 是否在自动初始化状态
         /// </summary>
@@ -162,9 +164,9 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload", async () =>
+            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload",  () =>
                 {
-                    await SwitchTo(dungeonLv);
+                     SwitchTo(dungeonLv);
                 });
 
             await _win.SignalCallback("charReload",  () =>

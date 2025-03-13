@@ -1,4 +1,51 @@
 ﻿[
+  {
+    "equip": {
+      "category": "全部",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "乔丹"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "宝箱"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "凯松的征服"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "击头"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "药水"
+        }
+      ]
+    },
+    "maxCount": 120
+  },
   //白热或血红珠宝
   {
     "equip": {
@@ -66,7 +113,7 @@
   ///-------职业前缀-------///
   {
     "equip": {
-      "category": "斧|锤",
+      "category": "斧|锤|死骑面罩",
       "quality": "魔法|稀有|传奇",
       "necessary": 0,
       "conditions": [
@@ -210,15 +257,10 @@
   },
   {
     "equip": {
-      "category": "项链",
+      "category": "项链|腰带|衣服|头饰",
       "quality": "全部",
       "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "施法速度",
-          "conditionContent": "10"
-        },
+        
         {
           "matchType": "必需",
           "matchGroupName": "项链",

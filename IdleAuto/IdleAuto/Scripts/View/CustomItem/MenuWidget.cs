@@ -138,7 +138,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(3,FlowController.StartMapSwitch);
+            string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("MapSwitchAccount").Split(',');
+            FlowController.GroupWork(3,1,FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -222,7 +223,7 @@ namespace IdleAuto.Scripts.View
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
             TimeSpan initialDelay2 = nextRun2 - now;
-            autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
+           // autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
         }
         private void AutoMonitorElapsed(object state)
         {
