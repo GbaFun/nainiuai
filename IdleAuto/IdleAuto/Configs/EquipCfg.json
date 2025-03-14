@@ -1198,8 +1198,8 @@
             {
               "matchType": "可选",
               "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "施法速度",
+              "conditionContent": "30"
             }
           ]
         },
@@ -1229,7 +1229,7 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "必需",
+              "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死灵,召唤,1"

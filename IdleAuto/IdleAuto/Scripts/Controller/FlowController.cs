@@ -84,26 +84,16 @@ namespace IdleAuto.Scripts.Controller
         {
             var controller = new CharacterController(window);
             await controller.StartSwitchMap(window.GetBro(), window.User);
-            window.Close();
         }
 
         /// <summary>
         /// 加点
         /// </summary>
         /// <returns></returns>
-        public static async Task StartAddSkill()
+        public static async Task StartAddSkill(BroWindow win)
         {
-            for (int i = 1; i < AccountCfg.Instance.Accounts.Count; i++)
-            {
-                var account = AccountCfg.Instance.Accounts[i];
-                if (account.AccountName == "铁矿石") continue;
-                var user = new UserModel(account);
-                var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                var controller = new CharacterController(window);
-                await controller.StartAddSkill(window.GetBro(), window.User);
-                window.Close();
-            }
-
+            var controller = new CharacterController(win);
+            await controller.StartAddSkill(win.GetBro(), win.User);
 
         }
         /// <summary>
@@ -165,7 +155,7 @@ namespace IdleAuto.Scripts.Controller
             var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
             if (baseEq.Value != null)
             {
-                var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
+                var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId, condition);
             }
 
 
@@ -191,7 +181,7 @@ namespace IdleAuto.Scripts.Controller
                     var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
                     if (baseEq.Value != null)
                     {
-                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId);
+                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId,condition);
                         long equipId = equip.EquipID;
                         await Task.Delay(2000);
                         await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });

@@ -139,17 +139,20 @@ namespace IdleAuto.Scripts.View
         private void btnMap_Click(object sender, EventArgs e)
         {
             string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("MapSwitchAccount").Split(',');
-            FlowController.GroupWork(3, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
+            if (MapSwitchAccounts.Length == 1&&MapSwitchAccounts[0]=="")
+            {
+                MapSwitchAccounts = null;
+            }
+            FlowController.GroupWork(3,1,FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
-            FlowController.StartAddSkill();
+            FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
         }
 
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
-            TabManager.Instance.DisposePage();
-            FlowController.RefreshCookie();
+            FlowController.GroupWork(1, 1, FlowController.StartAddSkill,new[] { "RasdSky"});
         }
 
         #endregion

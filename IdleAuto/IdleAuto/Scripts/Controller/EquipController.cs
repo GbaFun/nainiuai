@@ -415,15 +415,9 @@ public class EquipController
                     var artifactControl = new ArtifactController(win);
                     foreach (var m in toMakeEquips)
                     {
-                        EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId);
-                        towearEquips.Add(m.Key, artifactEquip);
-                        //await Task.Delay(2000);
-                        //await AutoAttributeSave(win, role, new List<EquipModel> { m.Value });
-                        await Task.Delay(2000);
-                        var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                        //await Task.Delay(2000);
-                        //await win.CallJsWaitReload($@"equipOn({role.RoleId},{equipId})", "equip");
-                        //FreeDb.Sqlite.Delete<EquipModel>(new EquipModel { EquipID = equipId }).ExecuteAffrows();
+                        EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId,m.Value.Config);
+                        if(artifactEquip!=null)towearEquips.Add(m.Key, artifactEquip);
+                        await Task.Delay(1500);
                     }
                 }
 
@@ -569,7 +563,7 @@ public class EquipController
                     var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
                     //找底子
                     var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq });
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq,Config= condition });
                 }
             }
         }
@@ -892,6 +886,7 @@ public struct ArtifactMakeStruct
 {
     public emArtifactBase ArtifactType;
     public EquipModel EquipBase;
+    public Equipment Config;
 }
 public struct EquipSuitMatchStruct
 {

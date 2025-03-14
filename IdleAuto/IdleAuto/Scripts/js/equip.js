@@ -291,6 +291,10 @@ function equipClear(cid, eids) {
         });
 }
 
+//仓库翻到对应category
+function jumpToCategory(c) {
+    $($($(".panel-heading")[2]).find("ul")[1]).find("li:contains('" + c + "') a")[0].click();
+}
 async function reloadPage() {
     await sleep(1000);
     location.reload();

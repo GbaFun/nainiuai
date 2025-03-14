@@ -43,7 +43,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
-            if (role.Job != emJob.死灵) continue;
+            
             //技能加点
             await AddSkillPoint(window, role);
             //自动更换装备
