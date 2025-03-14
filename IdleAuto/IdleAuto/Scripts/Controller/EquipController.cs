@@ -360,7 +360,7 @@ public class EquipController
     {
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
-        Dictionary<emArtifactBase, EquipModel> toMakeEquips = new Dictionary<emArtifactBase, EquipModel>();
+        Dictionary<emEquipSort, ArtifactMakeStruct> toMakeEquips = new Dictionary<emEquipSort, ArtifactMakeStruct>();
 
         await Task.Delay(1500);
         //跳转装备详情页面
@@ -401,21 +401,22 @@ public class EquipController
                     var artifactControl = new ArtifactController(win);
                     foreach (var m in toMakeEquips)
                     {
-                        long equipId = await artifactControl.MakeArtifact(m.Key, m.Value, role.RoleId);
-                        await Task.Delay(2000);
-                        await AutoAttributeSave(win, role, new List<EquipModel> { m.Value });
+                        EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId);
+                        towearEquips.Add(m.Key, artifactEquip);
+                        //await Task.Delay(2000);
+                        //await AutoAttributeSave(win, role, new List<EquipModel> { m.Value });
                         await Task.Delay(2000);
                         var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                        await Task.Delay(2000);
-                        await win.CallJsWaitReload($@"equipOn({role.RoleId},{equipId})", "equip");
-                        FreeDb.Sqlite.Delete<EquipModel>(new EquipModel { EquipID = equipId }).ExecuteAffrows();
+                        //await Task.Delay(2000);
+                        //await win.CallJsWaitReload($@"equipOn({role.RoleId},{equipId})", "equip");
+                        //FreeDb.Sqlite.Delete<EquipModel>(new EquipModel { EquipID = equipId }).ExecuteAffrows();
                     }
-
                 }
 
                 if (towearEquips.Count > 0)
                 {
-                    bool canWear = await AutoAttributeSave(win, role, towearEquips.Values.ToList());
+                    List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
+                    bool canWear = await AutoAttributeSave(win, role, equipModels);
                     if (canWear)
                     {
                         await Task.Delay(1000);
@@ -478,7 +479,7 @@ public class EquipController
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
         result.MatchSuitName = equipSuit.SuitName;
         result.ToWearEquips = new Dictionary<emEquipSort, EquipModel>();
-        result.ToMakeEquips = new Dictionary<emArtifactBase, EquipModel>();
+        result.ToMakeEquips = new Dictionary<emEquipSort, ArtifactMakeStruct>();
         result.IsSuccess = true;
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
@@ -554,7 +555,7 @@ public class EquipController
                     var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
                     //找底子
                     var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add(artifactEnum, baseEq);
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq });
                 }
             }
         }
@@ -783,7 +784,7 @@ public class EquipController
         {
             matchEquips = matchEquipMap.Values.OrderByDescending(p => matchReports[p.EquipID].MatchWeight).ToList();
             //如果当前穿戴的装备的匹配权重和找到的最高权重相当，则不更换装备（将当前装备的放到匹配列表的最前面）
-            if (matchEquips[0].EquipID != curEquip.EquipID)
+            if (curEquip != null && matchEquips[0].EquipID != curEquip.EquipID)
             {
                 if (matchReports.TryGetValue(curEquip.EquipID, out var curEquipReport))
                 {
@@ -845,6 +846,24 @@ public class EquipController
         return EquipCfg.Instance.GetEquipmentByJobAndLevel(job, level);
     }
 
+    public List<EquipModel> MergeEquips(Dictionary<emEquipSort, EquipModel> toWear, Dictionary<emEquipSort, EquipModel> curWear)
+    {
+        List<EquipModel> equips = new List<EquipModel>();
+        for (int i = 0; i < 11; i++)
+        {
+            if (toWear.TryGetValue((emEquipSort)i, out EquipModel equipModel))
+            {
+                equips.Add(equipModel);
+            }
+            else if (curWear.TryGetValue((emEquipSort)i, out EquipModel curEquipModel))
+            {
+                equips.Add(curEquipModel);
+            }
+        }
+
+        return equips;
+    }
+
     public async Task Test(BroWindow win)
     {
     }
@@ -855,11 +874,16 @@ public struct ReplaceEquipStruct
     public bool IsSuccess;
     public EquipModel ReplacedEquip;
 }
+public struct ArtifactMakeStruct
+{
+    public emArtifactBase ArtifactType;
+    public EquipModel EquipBase;
+}
 public struct EquipSuitMatchStruct
 {
     public bool IsSuccess;
     public string MatchSuitName;
     public Dictionary<emEquipSort, EquipModel> ToWearEquips;
     //需要制作的神器
-    public Dictionary<emArtifactBase, EquipModel> ToMakeEquips;
+    public Dictionary<emEquipSort, ArtifactMakeStruct> ToMakeEquips;
 }

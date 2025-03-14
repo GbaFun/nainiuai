@@ -21,7 +21,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="skip">跳过几个</param>
         /// <param name="act">将window作为入参</param>
         /// <returns></returns>
-        public static async Task GroupWork(int size,int skip, Func<BroWindow, Task> act, string[] specifiedAccounts=null)
+        public static async Task GroupWork(int size, int skip, Func<BroWindow, Task> act, string[] specifiedAccounts = null)
         {
             var accounts = AccountCfg.Instance.Accounts.Skip(skip);
             var semaphore = new SemaphoreSlim(size);
@@ -43,7 +43,7 @@ namespace IdleAuto.Scripts.Controller
                 {
                     try
                     {
-                 
+
                         await act(window); // 可能抛出异常
                     }
                     catch (Exception ex)
@@ -165,7 +165,7 @@ namespace IdleAuto.Scripts.Controller
             var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
             if (baseEq.Value != null)
             {
-                long equipId = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
+                var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId);
             }
 
 
@@ -191,7 +191,8 @@ namespace IdleAuto.Scripts.Controller
                     var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
                     if (baseEq.Value != null)
                     {
-                        long equipId = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId);
+                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId);
+                        long equipId = equip.EquipID;
                         await Task.Delay(2000);
                         await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });
                         await Task.Delay(2000);

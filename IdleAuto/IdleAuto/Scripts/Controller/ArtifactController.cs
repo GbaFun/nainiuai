@@ -21,7 +21,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="baseEq">ArtifactBaseCfg.Instance.GetEquip(e);通过这个接口查询到可用的底子传进来开始制作</param>
         /// <param name="art">神器枚举</param>
         /// <returns></returns>
-        public async Task<long> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid)
+        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid)
         {
             //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);
@@ -36,7 +36,7 @@ namespace IdleAuto.Scripts.Controller
                 baseEq.Quality = "artifact";
                 baseEq.EquipName = art.GetEnumDescription();
                 var rows = FreeDb.Sqlite.Update<EquipModel>().SetSource(baseEq).ExecuteAffrows();
-                return baseEq.EquipID;
+                return baseEq;
             }
 
             var name = art.GetEnumDescription();//神器名字
@@ -47,14 +47,14 @@ namespace IdleAuto.Scripts.Controller
             var isEnough = makeResult.Result.ToObject<int>();
             if (isEnough == -1)
             {
-                return -1;
+                return null;
             }
 
             if (!isEnd)
             {
                 await MakeArtifact(art, baseEq, roleid);
             }
-            return baseEq.EquipID;
+            return baseEq;
         }
     }
 }

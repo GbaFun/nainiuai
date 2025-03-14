@@ -24,37 +24,37 @@ public class RepairManager : SingleManagerBase<RepairManager>
     /// </summary>
     public async Task AutoRepair(UserModel account)
     {
-        
-            //大号跳过自动修车逻辑，需要手动修车
-            if (account.AccountName == "铁矿石")
-            {
-                MessageBox.Show($"大号跳过自动修车逻辑，请手动修！");
-                return;
-            }
 
-            BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-            EquipController equipController = new EquipController();
-            //window.GetBro().ShowDevTools();
+        //大号跳过自动修车逻辑，需要手动修车
+        if (account.AccountName == "铁矿石")
+        {
+            MessageBox.Show($"大号跳过自动修车逻辑，请手动修！");
+            return;
+        }
 
-            //将挂机装备放入仓库
-         //   await EquipToRepository(window, equipController, account,true);
-            //盘点仓库装备
-          //  await InventoryEquips(window, equipController, account);
-            //遍历账户下角色修车
-            foreach (var role in account.Roles)
-            {
-                if (role.Job != emJob.死灵) continue;
-                //技能加点
-               // await AddSkillPoint(window, role);
-                //自动更换装备
-                await AutoEquip(window, equipController, account, role);
-                //角色剩余属性点分配
-                await AddAttrPoint(window, role);
-            }
-            window.Close();
-            MessageBox.Show($"自动修车完成");
-        
-       
+        BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
+        EquipController equipController = new EquipController();
+        //window.GetBro().ShowDevTools();
+
+        //将挂机装备放入仓库
+        await EquipToRepository(window, equipController, account, true);
+        //盘点仓库装备
+        await InventoryEquips(window, equipController, account);
+        //遍历账户下角色修车
+        foreach (var role in account.Roles)
+        {
+            if (role.Job != emJob.死灵) continue;
+            //技能加点
+            await AddSkillPoint(window, role);
+            //自动更换装备
+            await AutoEquip(window, equipController, account, role);
+            //角色剩余属性点分配
+            await AddAttrPoint(window, role);
+        }
+        window.Close();
+        MessageBox.Show($"自动修车完成");
+
+
     }
 
     /// <summary>
