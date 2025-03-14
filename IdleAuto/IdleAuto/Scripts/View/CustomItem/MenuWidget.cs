@@ -99,7 +99,7 @@ namespace IdleAuto.Scripts.View
             //BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
         }
 
-        private void BtnAutoOnline_Click(object sender, EventArgs e)
+        private void BtnClean_Click(object sender, EventArgs e)
         {
             RepairManager.Instance.UpdateEquips(AccountController.Instance.User);
         }
@@ -139,7 +139,7 @@ namespace IdleAuto.Scripts.View
         private void btnMap_Click(object sender, EventArgs e)
         {
             string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("MapSwitchAccount").Split(',');
-            FlowController.GroupWork(3,1,FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(3, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -218,12 +218,12 @@ namespace IdleAuto.Scripts.View
         {
             DateTime now = DateTime.Now;
             // 每两小时自动运行效率监控
-          //  refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(1), TimeSpan.FromHours(6));
+            //  refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(1), TimeSpan.FromHours(6));
 
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
             TimeSpan initialDelay2 = nextRun2 - now;
-           // autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
+            // autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -260,7 +260,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-           // FlowController.MakeArtifact();
+            // FlowController.MakeArtifact();
             FlowController.SyncFilter();
         }
 
@@ -281,6 +281,14 @@ namespace IdleAuto.Scripts.View
         private void btnTestArtifact_Click(object sender, EventArgs e)
         {
             FlowController.MakeArtifactTest();
+        }
+
+        private void Button_Inventory_Click(object sender, EventArgs e)
+        {
+            Account item = this.AccountCombo.SelectedItem as Account;
+            AccountController.Instance.User = new UserModel(item);
+            var user = AccountController.Instance.User;
+            RepairManager.Instance.ClearEquips(user);
         }
     }
 }

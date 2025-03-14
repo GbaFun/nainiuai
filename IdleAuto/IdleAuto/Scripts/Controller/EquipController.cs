@@ -57,6 +57,7 @@ public class EquipController
                 boxCount = (int)response1.Result;
                 P.Log($"{role.RoleName}的仓库物品总量为{boxCount}", emLogType.AutoEquip);
                 P.Log($"检查{role.RoleName}当前页背包物品总量", emLogType.AutoEquip);
+                int maxNum = int.Parse(ConfigUtil.GetAppSetting("BoxMaxNum"));
                 var result = await win.CallJs($@"packageHasEquips()");
                 if (result.Success)
                 {
@@ -65,7 +66,7 @@ public class EquipController
                     hasEquips = bagCount > 0;
                     while (hasEquips)
                     {
-                        if (bagCount + boxCount > 800)
+                        if (bagCount + boxCount > maxNum)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
@@ -104,6 +105,18 @@ public class EquipController
                         {
                             hasEquips = false;
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败", emLogType.AutoEquip);
+                        }
+                    }
+
+                    P.Log($"重新检查{role.RoleName}的仓库物品总量", emLogType.AutoEquip);
+                    var response2 = await win.CallJs($@"repositoryEquipsCount()");
+                    if (response2.Success)
+                    {
+                        boxCount = (int)response1.Result;
+                        int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
+                        if (boxCount >= retainNum)
+                        {
+                            await ClearRepository(win, account);
                         }
                     }
                 }
@@ -242,6 +255,7 @@ public class EquipController
             Dictionary<long, EquipModel> toClear = new Dictionary<long, EquipModel>();
 
             RoleModel role = account.FirstRole;
+            int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
             int page = 0;
             //先跳转到仓库最后一页，防止因为删除装备页面数据变化，导致装备重复检查
             await Task.Delay(1000);
@@ -257,7 +271,7 @@ public class EquipController
                 {
                     boxCount = (int)response2.Result;
                     P.Log($"{role.RoleName}的仓库物品总量为{boxCount}", emLogType.AutoEquip);
-                    if (boxCount > 0)
+                    if (boxCount > 0 && boxCount >= retainNum)
                     {
                         P.Log($"开始跳转仓库最后一页", emLogType.AutoEquip);
                         page = (int)Math.Floor((double)(boxCount - 1) / 60);
@@ -293,14 +307,14 @@ public class EquipController
 
                                         string eids = string.Join(",", toClear.Keys);
                                         await Task.Delay(1000);
-                                        if (toClear.Count != 0)
+                                        if (toClear.Count != 0 && boxCount >= retainNum)
                                         {
                                             P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
                                             await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
+                                            boxCount -= toClear.Count;
                                             P.Log($"清理仓库第{page}页装备完成,当前清理装备数量:{toClear.Count}", emLogType.AutoEquip);
                                             await Task.Delay(1000);
                                         }
-
 
                                         P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
                                         var response6 = await win.CallJsWithReload($@"repositoryPre()", "equip");
@@ -337,7 +351,7 @@ public class EquipController
                     }
                     else
                     {
-                        P.Log($"{role.RoleName}的仓库物品总量为0，无需盘点", emLogType.AutoEquip);
+                        P.Log($"{role.RoleName}的仓库物品总量低于设置的保留数量（{retainNum}），无需盘点", emLogType.AutoEquip);
                         return;
                     }
                 }

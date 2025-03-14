@@ -106,8 +106,30 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     /// <summary>
     /// 一键清仓
-    /// 收菜、清仓、盘库
+    /// 清仓
     /// </summary>
+    public async Task ClearEquips(UserModel account)
+    {
+        try
+        {
+            BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
+            EquipController equipController = new EquipController();
+            //window.GetBro().ShowDevTools();
+
+            //清理仓库
+            await equipController.ClearRepository(window, account);
+
+            window.Close();
+            MessageBox.Show($"一键清仓完成");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"一键清仓异常：{ex.Message}");
+        }
+    }/// <summary>
+     /// 一键收菜
+     /// 收菜、清仓、盘库
+     /// </summary>
     public async Task UpdateEquips(UserModel account)
     {
         try
@@ -122,13 +144,14 @@ public class RepairManager : SingleManagerBase<RepairManager>
             await InventoryEquips(window, equipController, account);
 
             window.Close();
-            MessageBox.Show($"一键清仓完成");
+            MessageBox.Show($"一键收菜完成");
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"一键清仓异常：{ex.Message}");
+            MessageBox.Show($"一键收菜异常：{ex.Message}");
         }
     }
+
 
 
     public async Task EquipToRepository(BroWindow win, EquipController controller, UserModel account, bool cleanWhenFull = false)
