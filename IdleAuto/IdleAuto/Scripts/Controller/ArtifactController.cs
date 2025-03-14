@@ -23,7 +23,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<long> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid)
         {
-            _win.GetBro().ShowDevTools();
+            //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);
             if (_win.GetBro().Address != IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID))
             {

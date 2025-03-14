@@ -8,7 +8,7 @@
         "matchGroupName": "隐密条件",
         "operate": "小于等于",
         "attributeType": "需要力量",
-        "conditionContent": 30
+        "conditionContent": 40
       },
       {
         "matchType": "必需",

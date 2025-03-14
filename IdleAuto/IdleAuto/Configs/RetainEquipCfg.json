@@ -41,6 +41,30 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "药水"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "法师"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "影之"
+        },
+
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "10"
         }
       ]
     },

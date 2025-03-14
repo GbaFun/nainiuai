@@ -65,7 +65,7 @@ public class EquipController
                     hasEquips = bagCount > 0;
                     while (hasEquips)
                     {
-                        if (bagCount + boxCount > 500)
+                        if (bagCount + boxCount > 800)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
@@ -285,7 +285,7 @@ public class EquipController
                                         foreach (var item in equips)
                                         {
                                             item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
-                                            if (item.Value.emItemQuality == emItemQuality.套装  || item.Value.emItemQuality == emItemQuality.神器)
+                                            if (item.Value.emItemQuality == emItemQuality.套装 || item.Value.emItemQuality == emItemQuality.神器)
                                                 continue;
                                             if (!RetainEquipCfg.Instance.IsRetain(item.Value))
                                                 toClear.Add(item.Key, item.Value);
@@ -293,32 +293,31 @@ public class EquipController
 
                                         string eids = string.Join(",", toClear.Keys);
                                         await Task.Delay(1000);
-                                        P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
-                                        var response5 = await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
-                                        if (response5.Success)
+                                        if (toClear.Count != 0)
                                         {
+                                            P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
+                                            await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                                             P.Log($"清理仓库第{page}页装备完成,当前清理装备数量:{toClear.Count}", emLogType.AutoEquip);
                                             await Task.Delay(1000);
-                                            P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
-                                            var response6 = await win.CallJsWithReload($@"repositoryPre()", "equip");
-                                            if (response6.Success && (bool)response6.Result)
-                                            {
+                                        }
 
-                                                P.Log("仓库切页完成");
-                                                page--;
-                                                jumpNextPage = true;
-                                            }
-                                            else
-                                            {
-                                                P.Log("仓库第一页了！", emLogType.AutoEquip);
-                                                jumpNextPage = false;
-                                            }
+
+                                        P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
+                                        var response6 = await win.CallJsWithReload($@"repositoryPre()", "equip");
+                                        if (response6.Success && (bool)response6.Result)
+                                        {
+
+                                            P.Log("仓库切页完成");
+                                            page--;
+                                            jumpNextPage = true;
                                         }
                                         else
                                         {
+                                            P.Log("仓库第一页了！", emLogType.AutoEquip);
                                             jumpNextPage = false;
-                                            P.Log($"清理仓库第{page}页装备失败", emLogType.AutoEquip);
                                         }
+
+
                                     }
                                     else
                                     {

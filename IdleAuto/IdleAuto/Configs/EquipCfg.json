@@ -1227,7 +1227,7 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死灵,召唤,1"
