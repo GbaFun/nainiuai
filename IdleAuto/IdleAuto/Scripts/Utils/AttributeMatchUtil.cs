@@ -135,19 +135,20 @@ namespace AttributeMatch
                 MatchWeight = 0
             };
             int weight = 0;
+            int seq = _condition.Seq <= 0 ? 1 : _condition.Seq;
             switch (_condition.AttributeType)
             {
                 case emAttrType.名称:
                     result.IsMatch = MatchName(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.词缀:
                     result.IsMatch = MatchAffix(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.凹槽:
                     result.IsMatch = MatchSlot(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.力量:
                 case emAttrType.敏捷:
@@ -175,11 +176,11 @@ namespace AttributeMatch
                 case emAttrType.需要力量:
                 case emAttrType.需要敏捷:
                     result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.单项元素抗性之和:
                     result.IsMatch = MatchResistance(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.技能等级:
                 case emAttrType.职业全系技能:
@@ -187,18 +188,19 @@ namespace AttributeMatch
                 case emAttrType.召唤最大数量:
                 case emAttrType.指定职业单系技能:
                     result.IsMatch = MatchSkill(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.毒素伤害:
                     result.IsMatch = MatchPoisonAttr(_equip, _condition, out weight);
-                    result.MatchWeight = weight;
+                    result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.自定义:
                     if (_condition.Operate == emOperateType.不等于)
                         result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
                     else
                         result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
-                    result.MatchWeight = result.IsMatch ? 100 : 0;
+                    weight = result.IsMatch ? 1 : 0;
+                    result.MatchWeight = weight * seq;
                     break;
             }
 
@@ -237,7 +239,7 @@ namespace AttributeMatch
                         break;
                 }
             }
-            weight = ismatch ? 100 : 0;
+            weight = ismatch ? 1 : 0;
             return ismatch;
         }
 
@@ -407,7 +409,7 @@ namespace AttributeMatch
                     }
                     break;
             }
-            weight = ismatch ? 100 : 0;
+            weight = ismatch ? 1 : 0;
             return ismatch;
         }
 
@@ -526,7 +528,7 @@ namespace AttributeMatch
                     ismatch = _value.Contains(_condition);
                     break;
             }
-            weight = ismatch ? 100 : 0;
+            weight = ismatch ? 1 : 0;
             return ismatch;
         }
 
@@ -567,17 +569,17 @@ namespace AttributeMatch
                 case emOperateType.等于:
                     ismatch = _value == condition[0];
                     if (ismatch)
-                        weight = 100;
+                        weight = 1;
                     break;
                 case emOperateType.不等于:
                     ismatch = _value != condition[0];
                     if (ismatch)
-                        weight = 100;
+                        weight = 1;
                     break;
                 case emOperateType.在范围内:
                     ismatch = _value >= condition[0] && _value <= condition[1];
                     if (ismatch)
-                        weight = 100;
+                        weight = 1;
                     break;
             }
 
@@ -595,11 +597,11 @@ namespace AttributeMatch
         public emAttrType AttributeType;
         public string ArtifactBase;
         /// <summary>
-        /// 在任一或者可选条件下 给匹配条件排优先级
+        /// 条件匹配权重
         /// </summary>
         public int Seq;
         public string ConditionContent;
-      
+
     }
 
     /// <summary>
