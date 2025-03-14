@@ -771,7 +771,6 @@ public class EquipController
         P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
         foreach (var item in findEquips)
         {
-
             if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
             {
                 matchReports.Add(item.EquipID, report);
@@ -781,7 +780,21 @@ public class EquipController
 
         P.Log($"比较完成，共找到{matchEquipMap.Count}个符合要求的装备", emLogType.AutoEquip);
         if (matchEquipMap.Count > 0)
+        {
             matchEquips = matchEquipMap.Values.OrderByDescending(p => matchReports[p.EquipID].MatchWeight).ToList();
+            //如果当前穿戴的装备的匹配权重和找到的最高权重相当，则不更换装备（将当前装备的放到匹配列表的最前面）
+            if (matchEquips[0].EquipID != curEquip.EquipID)
+            {
+                if (matchReports.TryGetValue(curEquip.EquipID, out var curEquipReport))
+                {
+                    if (matchReports[matchEquips[0].EquipID].MatchWeight <= curEquipReport.MatchWeight)
+                    {
+                        matchEquips.Remove(curEquip);
+                        matchEquips.Insert(0, curEquip);
+                    }
+                }
+            }
+        }
         if (matchEquipMap.Count > 1)
         {
             P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);
