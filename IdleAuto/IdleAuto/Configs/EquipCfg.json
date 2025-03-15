@@ -60,6 +60,15 @@
             {
               "matchType": "可选",
               "matchGroupName": "骑士头盔",
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "知识",
+              "seq": 1,
+              "conditionContent": "知识"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
               "conditionContent": "1"
@@ -365,6 +374,15 @@
           "quality": "全部",
           "necessary": 0,
           "conditions": [
+            {
+              "matchType": "可选",
+              "matchGroupName": "骑士头盔",
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "知识",
+              "seq": 1,
+              "conditionContent": "知识"
+            },
             {
               "matchType": "可选",
               "matchGroupName": "骑士头盔",
@@ -680,6 +698,15 @@
           "quality": "全部",
           "necessary": 0,
           "conditions": [
+            {
+              "matchType": "可选",
+              "matchGroupName": "骑士头盔",
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "知识",
+              "seq": 1,
+              "conditionContent": "知识"
+            },
             {
               "matchType": "可选",
               "matchGroupName": "骑士头盔",

@@ -37,7 +37,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //window.GetBro().ShowDevTools();
 
         //将挂机装备放入仓库
-        await EquipToRepository(window, equipController, account, true);
+       // await EquipToRepository(window, equipController, account, true);
         //盘点仓库装备
         await InventoryEquips(window, equipController, account);
         //遍历账户下角色修车
@@ -45,7 +45,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         {
             
             //技能加点
-            await AddSkillPoint(window, role);
+          //  await AddSkillPoint(window, role);
             //自动更换装备
             await AutoEquip(window, equipController, account, role);
             //角色剩余属性点分配
