@@ -25,6 +25,12 @@ function getCurEquips() {
         var content = equipContent.text();
         var e = getEquipInfo(id, sortid, quality, content);
         eMap[e.esort] = e;
+        console.log(e);
+        if (e.eid === null) {
+            debugger;
+            console.log(e);
+           
+        }
     });
 
     return eMap;

@@ -149,7 +149,7 @@
           "conditionContent": "双手伤害"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死骑,冰霜,1"
@@ -157,10 +157,10 @@
 
         {
           "matchType": "可选",
-
+          "matchGroupName": "职业系列技能",
           "operate": "大于等于",
-          "attributeType": "毒素伤害",
-          "conditionContent": "20"
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
         }
       ]
     },

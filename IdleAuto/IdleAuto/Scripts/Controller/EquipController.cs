@@ -66,7 +66,7 @@ public class EquipController
                     hasEquips = bagCount > 0;
                     while (hasEquips)
                     {
-                        if (bagCount + boxCount > maxNum)
+                        if (bagCount + boxCount >= 3000)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
@@ -114,7 +114,7 @@ public class EquipController
                     {
                         boxCount = (int)response1.Result;
                         int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
-                        if (boxCount >= retainNum)
+                        if (boxCount >= 3000)
                         {
                             await ClearRepository(win, account);
                         }
@@ -383,6 +383,7 @@ public class EquipController
         {
             P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
             Dictionary<emEquipSort, EquipModel> curEquips = null;
+            win.GetBro().ShowDevTools();
             var response = await win.CallJs($@"getCurEquips()");
             if (response.Success)
             {

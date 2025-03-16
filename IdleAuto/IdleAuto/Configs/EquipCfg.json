@@ -1332,30 +1332,38 @@
           ]
         },
         "头盔": {
-          "category": "头饰|帽子",
+          "category": "死骑面罩",
           "quality": "魔法|稀有|传奇",
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死骑头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
               "conditionContent": "1"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死骑头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
               "conditionContent": "死骑,1"
             },
             {
-              "matchType": "任一",
+              "matchType": "可选",
               "matchGroupName": "死骑头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
+            },
+
+            {
+              "matchType": "可选",
+              "matchGroupName": "死骑头盔",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "凋零光环,3"
             }
           ]
         },

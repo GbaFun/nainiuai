@@ -152,7 +152,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
-dd
+
 
     public async Task EquipToRepository(BroWindow win, EquipController controller, UserModel account, bool cleanWhenFull = false)
     {
