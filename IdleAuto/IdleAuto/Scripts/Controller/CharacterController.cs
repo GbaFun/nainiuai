@@ -668,7 +668,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartAddSkill(ChromiumWebBrowser bro, UserModel user)
         {
             _browser = bro;
-            for (int i = 7; i < user.Roles.Count; i++)
+            for (int i = 0; i < user.Roles.Count; i++)
             {
                 var role = user.Roles[i];
                 await AddSkillPoints(_browser, role);

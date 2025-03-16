@@ -39,7 +39,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //将挂机装备放入仓库
        // await EquipToRepository(window, equipController, account, true);
         //盘点仓库装备
-        await InventoryEquips(window, equipController, account);
+       // await InventoryEquips(window, equipController, account);
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
@@ -152,7 +152,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
-
+dd
 
     public async Task EquipToRepository(BroWindow win, EquipController controller, UserModel account, bool cleanWhenFull = false)
     {

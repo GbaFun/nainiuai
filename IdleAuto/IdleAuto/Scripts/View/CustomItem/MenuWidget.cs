@@ -139,20 +139,30 @@ namespace IdleAuto.Scripts.View
         private void btnMap_Click(object sender, EventArgs e)
         {
             string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("MapSwitchAccount").Split(',');
-            if (MapSwitchAccounts.Length == 1&&MapSwitchAccounts[0]=="")
+            if (MapSwitchAccounts.Length == 1 && MapSwitchAccounts[0] == "")
             {
                 MapSwitchAccounts = null;
             }
-            FlowController.GroupWork(3,1,FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(3, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
+            if (AccountController.Instance.User != null)
+            {
+                Task.Run(async () =>
+                {
+                    var window = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+                    await FlowController.StartAddSkill(window);
+
+                });
+            }
+
+            else FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
         }
 
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.StartAddSkill,new[] { "RasdSky"});
+            FlowController.GroupWork(1, 1, FlowController.StartAddSkill, new[] { "RasdSky" });
         }
 
         #endregion

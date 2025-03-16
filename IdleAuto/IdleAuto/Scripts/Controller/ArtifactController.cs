@@ -70,6 +70,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task<EquipModel> CheckBagArtifact(string eqName, Equipment config, int roleid)
         {
             var eqControll = new EquipController();
+            return null;
             //跳转神器页
             var result = await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Query?id={roleid}&pt2=5", "equip");
             await Task.Delay(1500);

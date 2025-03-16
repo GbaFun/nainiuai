@@ -699,7 +699,7 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士头盔",
               "operate": "等于",
               "attributeType": "名称",
@@ -708,21 +708,21 @@
               "conditionContent": "知识"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
               "conditionContent": "1"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
               "conditionContent": "骑士,1"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
