@@ -549,22 +549,22 @@ namespace AttributeMatch
                 case emOperateType.大于:
                     ismatch = _value > condition[0];
                     if (ismatch)
-                        weight = _value - condition[0];
+                        weight = _value - condition[0] + 1;
                     break;
                 case emOperateType.大于等于:
                     ismatch = _value >= condition[0];
                     if (ismatch)
-                        weight = _value - condition[0];
+                        weight = _value - condition[0] + 1;
                     break;
                 case emOperateType.小于:
                     ismatch = _value < condition[0];
                     if (ismatch)
-                        weight = -_value + condition[0];
+                        weight = -_value + condition[0] + 1;
                     break;
                 case emOperateType.小于等于:
                     ismatch = _value <= condition[0];
                     if (ismatch)
-                        weight = -_value + condition[0];
+                        weight = -_value + condition[0] + 1;
                     break;
                 case emOperateType.等于:
                     ismatch = _value == condition[0];
