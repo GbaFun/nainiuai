@@ -115,9 +115,16 @@ namespace AttributeMatch
         /// <returns>是否满足最低匹配需求</returns>
         public static bool Match(EquipModel _equip, Equipment target, out AttributeMatchReport _report)
         {
-            AttributeMatch match = new AttributeMatch(target.Conditions);
-            match.Match(_equip, out _report);
-            return match.IsMatch;
+            try
+            {
+                AttributeMatch match = new AttributeMatch(target.Conditions);
+                match.Match(_equip, out _report);
+                return match.IsMatch;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         /// <summary>

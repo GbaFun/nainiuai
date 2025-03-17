@@ -160,26 +160,14 @@
         },
         "靴子": {
           "category": "靴子",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -468,26 +456,15 @@
         },
         "靴子": {
           "category": "靴子",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
+        
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -782,26 +759,14 @@
         },
         "靴子": {
           "category": "靴子",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -1145,14 +1110,14 @@
         },
         "靴子": {
           "category": "靴子",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -1346,6 +1311,7 @@
           "conditions": [
             {
               "matchType": "任一",
+              "matchGroupName": "死骑项链",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
@@ -1401,6 +1367,19 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
+            }
+          ]
+        },
+        "靴子": {
+          "category": "靴子",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -1550,6 +1529,7 @@
           "conditions": [
             {
               "matchType": "任一",
+              "matchGroupName": "死骑项链",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
@@ -1608,12 +1588,30 @@
             }
           ]
         },
+        "靴子": {
+          "category": "靴子",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
+            }
+          ]
+        },
         "衣服": {
           "category": "衣服",
           "quality": "魔法|稀有|传奇",
           "necessary": 0,
           "conditions": [
-
+            {
+              "matchType": "必需",
+              "operate": "不等于",
+              "attributeType": "自定义",
+              "conditionContent": "攻击速度"
+            },
             {
               "matchType": "可选",
               "operate": "大于等于",
