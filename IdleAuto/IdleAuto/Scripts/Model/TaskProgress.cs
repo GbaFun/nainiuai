@@ -12,7 +12,9 @@ namespace IdleAuto.Scripts.Model
     public enum emTaskType
     {
         [Description("切图")]
-        MapSwitch
+        MapSwitch,
+        [Description("修车")]
+        AutoEquip
     }
 
     /// <summary>
@@ -53,6 +55,6 @@ namespace IdleAuto.Scripts.Model
         /// </summary>
         public bool IsEnd { get; set; }
 
-   
+
     }
 }

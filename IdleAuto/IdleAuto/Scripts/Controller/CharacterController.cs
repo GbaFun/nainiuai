@@ -164,12 +164,12 @@ namespace IdleAuto.Scripts.Controller
         {
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload",  () =>
+            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload", () =>
                 {
-                     SwitchTo(dungeonLv);
+                    SwitchTo(dungeonLv);
                 });
 
-            await _win.SignalCallback("charReload",  () =>
+            await _win.SignalCallback("charReload", () =>
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
             });
@@ -711,7 +711,7 @@ namespace IdleAuto.Scripts.Controller
               });
 
             var groupid = GetSkillGroup(skillConfig);
-            if (isNeedSetGroup|| isNeedRest) await _win.SignalCallback("charReload", async () =>
+            if (isNeedSetGroup || isNeedRest) await _win.SignalCallback("charReload", async () =>
               {
                   await SkillGroupSave(groupid);
               });
