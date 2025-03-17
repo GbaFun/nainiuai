@@ -175,6 +175,7 @@ namespace AttributeMatch
                 case emAttrType.伤害转换:
                 case emAttrType.需要力量:
                 case emAttrType.需要敏捷:
+                case emAttrType.掉落等级:
                     result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
                     result.MatchWeight = weight * seq;
                     break;
@@ -192,6 +193,10 @@ namespace AttributeMatch
                     break;
                 case emAttrType.毒素伤害:
                     result.IsMatch = MatchPoisonAttr(_equip, _condition, out weight);
+                    result.MatchWeight = weight * seq;
+                    break;
+                case emAttrType.物品等级:
+                    result.IsMatch = MatchLevel(_equip, _condition, out weight);
                     result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.自定义:
@@ -331,6 +336,9 @@ namespace AttributeMatch
                 case emAttrType.需要敏捷:
                     regexAttr = $@"需要敏捷：\n(?<v>\d+)";
                     break;
+                case emAttrType.掉落等级:
+                    regexAttr = $@"掉落等级：(?<v>\d+)";
+                    break;
             }
             int attrValue = 0;
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
@@ -344,6 +352,27 @@ namespace AttributeMatch
             return ismatch;
         }
 
+        /// <summary>
+        /// 匹配装备等级
+        /// </summary>
+        /// <param name="_equip">要匹配的装备对象</param>
+        /// <param name="_condition">要匹配的属性条件</param>
+        /// <returns></returns>
+        private static bool MatchLevel(EquipModel _equip, AttributeCondition _condition, out int weight)
+        {
+            bool ismatch = false;
+            weight = 0;
+            string regexAttr = $@"{_equip.EquipName}\((?<v1>\d+)\)";
+            Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
+            var match = regex.Match(_equip.Content);
+            if (match.Success)
+            {
+                int lv = int.Parse(match.Groups["v1"].Value);
+                ismatch = OperateValue(lv, _condition.ConditionContent, _condition.Operate, out weight);
+            }
+
+            return ismatch;
+        }
         /// <summary>
         /// 匹配装备毒素属性
         /// </summary>

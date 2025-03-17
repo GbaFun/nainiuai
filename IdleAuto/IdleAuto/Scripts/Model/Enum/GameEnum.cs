@@ -86,6 +86,8 @@ public enum emAttrType
     召唤最大数量,
     需要力量,
     需要敏捷,
+    掉落等级,
+    物品等级,
     自定义,
 }
 public enum emOperateType
