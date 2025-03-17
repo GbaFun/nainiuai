@@ -51,5 +51,35 @@
         "conditionContent": "无形"
       }
     ]
+  },
+  "单手眼光": {
+    "category": "斧",
+    "quality": "破碎",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "双手伤害"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "自定义",
+        "conditionContent": "斧速度：10"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "4"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
   }
 }

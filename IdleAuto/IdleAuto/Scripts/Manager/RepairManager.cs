@@ -85,6 +85,22 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
     }
 
+    public async Task AutoRepair(BroWindow win)
+    {
+        EquipController equipController = new EquipController();
+        var account = win.User;
+        foreach (var role in account.Roles)
+        {
+
+            //技能加点
+            await AddSkillPoint(win, role);
+            //自动更换装备
+            await AutoEquip(win, equipController, account, role);
+            //角色剩余属性点分配
+            await AddAttrPoint(win, role);
+        }
+    }
+
     /// <summary>
     /// 一键修车（全账号，凌晨自动任务用）
     /// 收菜、盘库、技能加点、自动更换装备、剩余属性点分配
@@ -168,7 +184,6 @@ public class RepairManager : SingleManagerBase<RepairManager>
             //window.GetBro().ShowDevTools();
             //清理仓库
             await equipController.ClearRepository(win);
-            MessageBox.Show($"一键清仓完成");
         }
         catch (Exception ex)
         {
@@ -192,7 +207,6 @@ public class RepairManager : SingleManagerBase<RepairManager>
             await InventoryEquips(window, equipController, account);
 
             window.Close();
-            MessageBox.Show($"一键收菜完成");
         }
         catch (Exception ex)
         {

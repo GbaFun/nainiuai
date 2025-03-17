@@ -11,7 +11,7 @@
           "attributeType": "名称",
           "conditionContent": "乔丹"
         },
-        
+
 
         {
           "matchType": "任一",
@@ -26,7 +26,7 @@
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "凯松的征服"
+          "conditionContent": "时光扭曲行者"
         },
         {
           "matchType": "任一",
@@ -137,14 +137,14 @@
           "conditionContent": "死灵,召唤,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "支配骷髅,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
@@ -159,7 +159,7 @@
         }
       ]
     },
-    "maxCount": 400
+    "maxCount": 30
   },
 
 
@@ -259,7 +259,7 @@
           "attributeType": "指定职业单系技能",
           "conditionContent": "骑士,光环,1"
         },
-       
+
         {
           "matchType": "任一",
           "matchGroupName": "职业系列技能",
@@ -301,13 +301,13 @@
     },
     "maxCount": 10
   },
-  
+
   {
     "equip": {
       "category": "项链|腰带|衣服|头饰",
       "quality": "全部",
       "conditions": [
-        
+
         {
           "matchType": "必需",
           "matchGroupName": "项链",
@@ -418,6 +418,35 @@
     },
     "maxCount": 12
   },
+  {
+    "equip": {
+      "category": "斧",
+      "quality": "普通|破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "4"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        }
+      ]
+    },
+    "maxCount": 12
+  },
   //和平-疾速-刃-信念-天灾-戒律
   {
     "equip": {
@@ -488,14 +517,14 @@
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,1"
+          "conditionContent": "支配骷髅,3"
         },
         {
           "matchType": "任一",
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "生生不息,1"
+          "conditionContent": "生生不息,3"
         }
       ]
     },

@@ -103,11 +103,11 @@ let _map = {};
     }
 
     //自动秘境没有重定向
-    async function autoDungeon() {
+    async function autoDungeon(d) {
         var data = {
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid,
-            reset: false,
+            reset: d.isReset,
             boss: false,
             max: 60
 

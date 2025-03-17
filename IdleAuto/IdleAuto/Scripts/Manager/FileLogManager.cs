@@ -51,12 +51,20 @@ public static class P
         string logFileName = $"{DateTime.Now:yyyyMMdd}_{GetCurrentProcessId()}_{logType}.log";
         string logFilePath = Path.Combine(logDirectory, logFileName);
 
-        using (StreamWriter writer = new StreamWriter(logFilePath, true))
+        try
         {
-            writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
-            writer.Dispose();
-            writer.Close();
+            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - {message}");
+                writer.Dispose();
+                writer.Close();
+            }
         }
+        catch (Exception e)
+        {
+
+        }
+
     }
 
     public static int GetCurrentProcessId()

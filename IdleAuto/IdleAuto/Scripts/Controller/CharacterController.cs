@@ -160,25 +160,40 @@ namespace IdleAuto.Scripts.Controller
 
 
 
-        private async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role)
+        /// <summary>
+        /// 开始秘境
+        /// </summary>
+        /// <param name="bro"></param>
+        /// <param name="role"></param>
+        /// <param name="isReset">是否自动重置，每日安排秘境</param>
+        /// <returns></returns>
+        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role,bool isReset=false,int targetDungeonLv=0)
         {
+            _browser = bro;
+            if (bro.Address.IndexOf("Map/Detail")==-1)  await _win.SignalCallback("charReload", () =>
+            {
+                bro.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+            });
+            var curMapLv = await GetCurMapLv();
+            _curMapLv = curMapLv;
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
-            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload", () =>
+            if (targetDungeonLv != 0) dungeonLv = targetDungeonLv;
+            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload",  () =>
                 {
                     SwitchTo(dungeonLv);
                 });
 
             await _win.SignalCallback("charReload", () =>
             {
-                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
+                bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
             });
 
 
 
             if (role.Level >= 30)
             {
-                await AutoDungeon();
+                await AutoDungeon(isReset);
                 return;
             }
 
@@ -203,11 +218,14 @@ namespace IdleAuto.Scripts.Controller
             await SwitchMap(bro, role);
 
         }
-        private async Task AutoDungeon()
+
+        private async Task AutoDungeon(bool isReset)
         {
+            var data = new Dictionary<string, object>();
+            data.Add("isReset", isReset);
             await _win.SignalCallback("startAuto", () =>
             {
-                _win.CallJs("_map.autoDungeon();");
+                _win.CallJs($"_map.autoDungeon({data.ToLowerCamelCase()});");
             });
             await Task.Delay(2000);
         }
@@ -943,7 +961,7 @@ namespace IdleAuto.Scripts.Controller
         {
             _browser = bro;
             int unFinishIndex = 0;
-            var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).ToList();
+            var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false&&p.Type==emTaskType.MapSwitch).ToList();
             var unfinishedTask = list.Count > 0 ? list[0] : null;
             if (unfinishedTask == null)
             {
@@ -975,7 +993,7 @@ namespace IdleAuto.Scripts.Controller
                     unfinishedTask.IsEnd = true;
 
                 }
-                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false).First();
+                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false && p.Type == emTaskType.MapSwitch).First();
                 unfinishedTask.Id = one.Id;
                 FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(unfinishedTask).ExecuteAffrows();
             }

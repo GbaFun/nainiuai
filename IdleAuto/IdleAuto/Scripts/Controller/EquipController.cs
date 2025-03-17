@@ -384,7 +384,6 @@ public class EquipController
         {
             P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
             Dictionary<emEquipSort, EquipModel> curEquips = null;
-            win.GetBro().ShowDevTools();
             var response = await win.CallJs($@"getCurEquips()");
             if (response.Success)
             {

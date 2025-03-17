@@ -80,6 +80,13 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        public static async Task StartDailyDungeon(BroWindow win)
+        {
+            var controller = new CharacterController(win);
+            var targetLv = int.Parse(ConfigUtil.GetAppSetting("DungeonLv"));
+            await controller.StartDungeon(win.GetBro(), win.User.Roles[0], true, targetLv);
+        }
+
         public static async Task StartMapSwitch(BroWindow window)
         {
             var controller = new CharacterController(window);
@@ -181,7 +188,7 @@ namespace IdleAuto.Scripts.Controller
                     var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
                     if (baseEq.Value != null)
                     {
-                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId,condition);
+                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId, condition);
                         long equipId = equip.EquipID;
                         await Task.Delay(2000);
                         await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });

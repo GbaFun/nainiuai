@@ -160,10 +160,15 @@ namespace IdleAuto.Scripts.View
             else FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
         }
 
-        private async void BtnRefresh_Click(object sender, EventArgs e)
+        private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
-            await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
+            Task.Run(async () =>
+            {
+                await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
+                 await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
+                await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
+            });
+
         }
 
         #endregion
@@ -303,6 +308,11 @@ namespace IdleAuto.Scripts.View
             AccountController.Instance.User = new UserModel(item);
             var user = AccountController.Instance.User;
             RepairManager.Instance.ClearEquips(user);
+        }
+
+        private void btnDungeon_Click(object sender, EventArgs e)
+        {
+            FlowController.GroupWork(1, 1, FlowController.StartDailyDungeon);
         }
     }
 }

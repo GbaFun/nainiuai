@@ -71,6 +71,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
+              "seq": 2,
               "conditionContent": "1"
             },
             {
@@ -78,6 +79,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
+              "seq": 2,
               "conditionContent": "骑士,1"
             },
             {
@@ -85,19 +87,8 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
+              "seq": 2,
               "conditionContent": "骑士,光环,1"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -388,6 +379,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
+              "seq": 2,
               "conditionContent": "1"
             },
             {
@@ -395,6 +387,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
+              "seq": 2,
               "conditionContent": "骑士,1"
             },
             {
@@ -402,19 +395,8 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
+              "seq": 2,
               "conditionContent": "骑士,光环,1"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -712,6 +694,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "所有技能",
+              "seq": 2,
               "conditionContent": "1"
             },
             {
@@ -719,6 +702,7 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业全系技能",
+              "seq": 2,
               "conditionContent": "骑士,1"
             },
             {
@@ -726,19 +710,8 @@
               "matchGroupName": "骑士头盔",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
+              "seq": 2,
               "conditionContent": "骑士,光环,1"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -1121,10 +1094,11 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "必需",
+              "matchType": "任一",
+              "matchGroupName": "死灵戒指",
               "operate": "大于等于",
-              "attributeType": "施法速度",
-              "conditionContent": "10"
+              "attributeType": "所有技能",
+              "conditionContent": "1"
             },
             {
               "matchType": "可选",
@@ -1283,7 +1257,7 @@
     "jobName": "死骑",
     "lv": {
       "min": 1,
-      "max": 50
+      "max": 29
     },
     "equipSuit": [
       {
@@ -1371,7 +1345,7 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "必需",
+              "matchType": "任一",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
@@ -1380,15 +1354,8 @@
               "matchType": "任一",
               "matchGroupName": "死骑项链",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "任一",
-              "matchGroupName": "死骑项链",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "所有技能",
+              "conditionContent": "1"
             }
           ]
         },
@@ -1403,13 +1370,6 @@
               "matchGroupName": "死骑戒指",
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
-            },
-            {
-              "matchType": "任一",
-              "matchGroupName": "死骑戒指",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
               "conditionContent": "10"
             }
           ]
@@ -1426,13 +1386,6 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
-            },
-            {
-              "matchType": "任一",
-              "matchGroupName": "死骑戒指",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -1448,13 +1401,6 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
-            },
-            {
-              "matchType": "任一",
-              "matchGroupName": "死骑手套",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -1467,8 +1413,8 @@
             {
               "matchType": "可选",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
+              "attributeType": "职业全系技能",
+              "conditionContent": "1"
             },
             {
               "matchType": "可选",
@@ -1495,29 +1441,209 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
-            },
+            }
+          ]
+        },
+        "腰带": {
+          "category": "腰带",
+          "quality": "魔法|稀有|传奇|套装",
+          "necessary": 0,
+          "conditions": [
             {
               "matchType": "可选",
               "operate": "大于等于",
-              "attributeType": "毒素伤害",
+              "attributeType": "更佳魔法装备",
               "conditionContent": "10"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "jobName": "死骑",
+    "lv": {
+      "min": 30,
+      "max": 100
+    },
+    "equipSuit": [
+      {
+        "suitName": "死骑套装",
+        "主手": {
+          "category": "斧|剑|锤|匕首|标枪|投掷武器",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "matchGroupName": "死骑主手",
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "单手眼光",
+              "seq": 1,
+              "conditionContent": "眼光"
+            }
+
+
+          ]
+        },
+        "副手": {
+          "category": "斧|剑|锤|匕首|标枪|投掷武器",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+
+              "operate": "不等于",
+              "attributeType": "自定义",
+              "conditionContent": "双手伤害"
             },
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "operate": "大于等于",
-              "attributeType": "最大伤害",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死骑,冰霜,1"
+            }
+          ]
+        },
+        "头盔": {
+          "category": "死骑面罩",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "可选",
+              "matchGroupName": "死骑头盔",
+              "operate": "大于等于",
+              "attributeType": "所有技能",
               "conditionContent": "1"
             },
             {
               "matchType": "可选",
+              "matchGroupName": "死骑头盔",
               "operate": "大于等于",
-              "attributeType": "最小伤害",
+              "attributeType": "指定职业全系技能",
+              "conditionContent": "死骑,1"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死骑头盔",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死骑,冰霜,1"
+            },
+
+            {
+              "matchType": "可选",
+              "matchGroupName": "死骑头盔",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "凋零光环,3"
+            }
+          ]
+        },
+        "项链": {
+          "category": "项链",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死骑,冰霜,1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死骑项链",
+              "operate": "大于等于",
+              "attributeType": "所有技能",
+              "conditionContent": "1"
+            }
+          ]
+        },
+        "戒指1": {
+          "category": "戒指",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "死骑戒指",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "戒指2": {
+          "category": "戒指",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "死骑戒指",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "手套": {
+          "category": "手套",
+          "quality": "魔法|稀有|传奇|套装",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "死骑手套",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "衣服": {
+          "category": "衣服",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "职业全系技能",
               "conditionContent": "1"
             },
             {
               "matchType": "可选",
               "operate": "大于等于",
               "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "护符": {
+          "category": "护符",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "matchGroupName": "死骑护符",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死骑,冰霜,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
               "conditionContent": "10"
             }
           ]
@@ -1532,18 +1658,13 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         }
       }
     ]
   }
+
 
 
 ]

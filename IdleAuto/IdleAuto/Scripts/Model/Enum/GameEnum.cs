@@ -215,7 +215,8 @@ public enum emArtifactBase
 {
     [Description("隐密")]
     低力量隐密,
-
     [Description("知识")]
     知识,
+    [Description("眼光")]
+    单手眼光
 }

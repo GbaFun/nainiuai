@@ -56,6 +56,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnDungeon = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.RuneGroup.SuspendLayout();
@@ -89,6 +90,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnDungeon);
             this.HomeGroup.Controls.Add(this.Button_Inventory);
             this.HomeGroup.Controls.Add(this.btnTestArtifact);
             this.HomeGroup.Controls.Add(this.BtnTest);
@@ -242,7 +244,7 @@ namespace IdleAuto.Scripts.View
             this.BtnTODO2.Name = "BtnTODO2";
             this.BtnTODO2.Size = new System.Drawing.Size(100, 29);
             this.BtnTODO2.TabIndex = 5;
-            this.BtnTODO2.Text = "并行清+盘";
+            this.BtnTODO2.Text = "并行清盘修";
             this.BtnTODO2.UseVisualStyleBackColor = true;
             this.BtnTODO2.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
@@ -361,6 +363,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnDungeon
+            // 
+            this.btnDungeon.Location = new System.Drawing.Point(123, 227);
+            this.btnDungeon.Name = "btnDungeon";
+            this.btnDungeon.Size = new System.Drawing.Size(100, 29);
+            this.btnDungeon.TabIndex = 14;
+            this.btnDungeon.Text = "每日秘境";
+            this.btnDungeon.UseVisualStyleBackColor = true;
+            this.btnDungeon.Click += new System.EventHandler(this.btnDungeon_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -409,5 +421,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnTestArtifact;
         private System.Windows.Forms.Button BtnInventory;
         private System.Windows.Forms.Button Button_Inventory;
+        private System.Windows.Forms.Button btnDungeon;
     }
 }
