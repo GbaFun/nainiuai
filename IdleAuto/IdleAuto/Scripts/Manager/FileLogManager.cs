@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,7 @@ public static class P
             Directory.CreateDirectory(logDirectory);
         }
 
-        string logFileName = $"{DateTime.Now:yyyyMMdd}_{logType}.log";
+        string logFileName = $"{DateTime.Now:yyyyMMdd}_{GetCurrentProcessId()}_{logType}.log";
         string logFilePath = Path.Combine(logDirectory, logFileName);
 
         using (StreamWriter writer = new StreamWriter(logFilePath, true))
@@ -56,5 +57,10 @@ public static class P
             writer.Dispose();
             writer.Close();
         }
+    }
+
+    public static int GetCurrentProcessId()
+    {
+        return Process.GetCurrentProcess().Id;
     }
 }
