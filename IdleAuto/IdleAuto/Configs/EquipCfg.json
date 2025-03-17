@@ -1258,8 +1258,25 @@
             {
               "matchType": "可选",
               "operate": "大于等于",
+              "seq": 1,
               "attributeType": "指定职业单系技能",
               "conditionContent": "死灵,召唤,1"
+            },
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "seq": 2,
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,2"
+            },
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "seq": 3,
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,3"
             }
           ]
         }
@@ -1292,15 +1309,8 @@
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
-            },
-
-            {
-              "matchType": "可选",
-
-              "operate": "大于等于",
-              "attributeType": "毒素伤害",
-              "conditionContent": "20"
             }
+
           ]
         },
         "副手": {
@@ -1320,20 +1330,12 @@
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死骑,冰霜,1"
-            },
-
-            {
-              "matchType": "可选",
-
-              "operate": "大于等于",
-              "attributeType": "毒素伤害",
-              "conditionContent": "20"
             }
           ]
         },
         "头盔": {
           "category": "死骑面罩",
-          "quality": "魔法|稀有|传奇",
+          "quality": "全部",
           "necessary": 0,
           "conditions": [
             {

@@ -55,7 +55,7 @@
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "影之"
+          "conditionContent": "塔因"
         },
 
 
@@ -64,7 +64,7 @@
           "matchGroupName": "传奇装备",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "conditionContent": "10"
+          "conditionContent": "30"
         }
       ]
     },
@@ -130,7 +130,7 @@
         }
       ]
     },
-    "maxCount": 1200
+    "maxCount": 40
   },
 
 
@@ -138,7 +138,7 @@
   {
     "equip": {
       "category": "斧|锤|死骑面罩",
-      "quality": "魔法|稀有|传奇",
+      "quality": "全部",
       "necessary": 0,
       "conditions": [
         {
@@ -164,7 +164,7 @@
         }
       ]
     },
-    "maxCount": 8
+    "maxCount": 30
   },
   {
     "equip": {
@@ -173,7 +173,7 @@
       "necessary": 0,
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
 
           "operate": "大于等于",
           "attributeType": "技能等级",
@@ -184,7 +184,7 @@
 
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "审判光环,1"
+          "conditionContent": "审判光环,3"
         },
         {
           "matchType": "可选",
@@ -202,27 +202,35 @@
         }
       ]
     },
-    "maxCount": 8
+    "maxCount": 30
   },
   {
     "equip": {
-      "category": "头饰|项链|护符|衣服",
-      "quality": "魔法|稀有",
+      "category": "头饰|项链|护符|衣服|帽子|死骑面罩",
+      "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
         {
           "matchType": "任一",
           "matchGroupName": "职业系列技能",
           "operate": "大于等于",
-          "attributeType": "职业全系技能",
-          "conditionContent": "1"
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
         },
         {
           "matchType": "任一",
-          "matchGroupName": "职业系列技能",
           "operate": "大于等于",
-          "attributeType": "职业单系技能",
-          "conditionContent": "1"
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
         },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,1"
+        },
+       
         {
           "matchType": "任一",
           "matchGroupName": "职业系列技能",
@@ -232,12 +240,12 @@
         }
       ]
     },
-    "maxCount": 1200
+    "maxCount": 100
   },
   {
     "equip": {
       "category": "全部",
-      "quality": "全部",
+      "quality": "传奇|套装",
       "conditions": [
         {
           "matchType": "必需",
@@ -247,7 +255,7 @@
         }
       ]
     },
-    "maxCount": 1200
+    "maxCount": 500
   },
   {
     "equip": {
@@ -262,23 +270,9 @@
         }
       ]
     },
-    "maxCount": 240
+    "maxCount": 10
   },
-  {
-    "equip": {
-      "category": "戒指",
-      "quality": "全部",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "施法速度",
-          "conditionContent": "10"
-        }
-      ]
-    },
-    "maxCount": 240
-  },
+  
   {
     "equip": {
       "category": "项链|腰带|衣服|头饰",
@@ -294,7 +288,7 @@
         }
       ]
     },
-    "maxCount": 240
+    "maxCount": 40
   },
   {
     "equip": {
@@ -305,11 +299,11 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "conditionContent": "20"
+          "conditionContent": "30"
         }
       ]
     },
-    "maxCount": 240
+    "maxCount": 20
   },
   {
     "equip": {
@@ -360,7 +354,19 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "烈焰风暴,4"
+          "conditionContent": "陨石,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "雷云风暴,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配火焰,3"
         }
       ]
     },
@@ -409,7 +415,7 @@
           "matchType": "必需",
           "operate": "等于",
           "attributeType": "凹槽",
-          "conditionContent": "3"
+          "conditionContent": "10"
         },
         {
           "matchType": "任一",

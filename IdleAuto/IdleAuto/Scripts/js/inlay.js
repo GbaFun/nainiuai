@@ -30,7 +30,11 @@
         }
         var nextRune = getCurRune(name);
         if (!checkRuneEnough(name, nextRune)) {
+            setTimeout(() => {
+                Bridge.invokeEvent("OnJsInited", 'inlay');
+            }, 2000);
             return -1;
+            
         }
         insertRune(nextRune);
         return 1;

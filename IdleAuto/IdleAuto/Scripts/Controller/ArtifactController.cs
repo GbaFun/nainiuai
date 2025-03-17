@@ -70,37 +70,43 @@ namespace IdleAuto.Scripts.Controller
         public async Task<EquipModel> CheckBagArtifact(string eqName, Equipment config, int roleid)
         {
             var eqControll = new EquipController();
-            return null;
             //跳转神器页
             var result = await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Query?id={roleid}&pt2=5", "equip");
             await Task.Delay(1500);
-            await _win.CallJsWaitReload($"jumpToCategory({config.Category})", "equip");
-            bool hasNextPage = true;
-            await Task.Delay(1500);
-            while (hasNextPage)
+            var categoryArr = config.Category.Split('|');
+            for(int i = 0; i < categoryArr.Length; i++)
             {
-                var r = await _win.CallJs("getRepositoryEquips");
-                var eqMap = r.Result.ToObject<Dictionary<long, EquipModel>>();
-                foreach (var item in eqMap.Values)
+                var category = categoryArr[i];
+               var aa= await _win.CallJsWaitReload($"jumpToCategory('{category}')", "equip");
+                bool hasNextPage = true;
+                await Task.Delay(1500);
+                while (hasNextPage)
                 {
-                    if (AttributeMatchUtil.Match(item, config, out _)&& eqName ==item.EquipName)
+                    var r = await _win.CallJs("getRepositoryEquips()");
+                    var eqMap = r.Result.ToObject<Dictionary<long, EquipModel>>();
+                    if (eqMap == null) break;
+                    foreach (var item in eqMap.Values)
                     {
-                        return item;
+                        if (AttributeMatchUtil.Match(item, config, out _) && eqName == item.EquipName)
+                        {
+                            return item;
+                        }
+                    }
+                    //有下一页继续
+                    var response2 = await _win.CallJsWithReload($@"repositoryNext()", "equip");
+                    if (response2.Success && (bool)response2.Result)
+                    {
+                        P.Log("");
+
+                    }
+                    else
+                    {
+                        P.Log("仓库最后一页了！", emLogType.AutoEquip);
+                        hasNextPage = false;
                     }
                 }
-                //有下一页继续
-                var response2 = await _win.CallJsWithReload($@"repositoryNext()", "equip");
-                if (response2.Success && (bool)response2.Result)
-                {
-                    P.Log("");
-
-                }
-                else
-                {
-                    P.Log("仓库最后一页了！", emLogType.AutoEquip);
-                    hasNextPage = false;
-                }
             }
+           
 
             return null;
 

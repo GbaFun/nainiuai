@@ -26,13 +26,19 @@ function getCurEquips() {
         var e = getEquipInfo(id, sortid, quality, content);
         eMap[e.esort] = e;
         console.log(e);
-        if (e.eid === null) {
-            debugger;
-            console.log(e);
-           
-        }
-    });
 
+    });
+    var isBug = false
+    for (var key in eMap) {
+        if (eMap[key].eid == null) {
+            isBug = true;
+        }
+    }
+    if (isBug) {
+        debugger;
+        console.log(eMap);
+
+    }
     return eMap;
 }
 

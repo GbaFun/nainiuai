@@ -711,7 +711,7 @@ namespace IdleAuto.Scripts.Controller
               });
 
             var groupid = GetSkillGroup(skillConfig);
-            if (isNeedSetGroup) await _win.SignalCallback("charReload", async () =>
+            if (isNeedSetGroup|| isNeedRest) await _win.SignalCallback("charReload", async () =>
               {
                   await SkillGroupSave(groupid);
               });
