@@ -11,6 +11,7 @@
           "attributeType": "名称",
           "conditionContent": "乔丹"
         },
+        
 
         {
           "matchType": "任一",
@@ -127,10 +128,38 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
         }
       ]
     },
-    "maxCount": 40
+    "maxCount": 400
   },
 
 

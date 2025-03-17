@@ -13,7 +13,7 @@ init().then((r) => {
     Bridge.invokeEvent('OnJsInited', 'equip');
 })
 
-function getCurEquips() {
+async function getCurEquips() {
     console.log('start getCurEquips');
     var eMap = {};
     $('.sr-only.label.label-danger.equip-off').each(function () {
@@ -37,6 +37,9 @@ function getCurEquips() {
     if (isBug) {
         debugger;
         console.log(eMap);
+        //dom没渲染？
+        await sleep(1000);
+        eMap = getCurEquips();
 
     }
     return eMap;

@@ -22,9 +22,10 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="baseEq">ArtifactBaseCfg.Instance.GetEquip(e);通过这个接口查询到可用的底子传进来开始制作</param>
         /// <param name="art">神器枚举</param>
         /// <returns></returns>
-        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid,Equipment config)
+        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid, Equipment config, bool isSecondCheck = false)
         {
-           var existedEq= await CheckBagArtifact(art.GetEnumDescription(), config, roleid);
+            if (baseEq == null) return null;
+            var existedEq = !isSecondCheck ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
             if (existedEq != null) return existedEq;
             //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);
@@ -55,7 +56,7 @@ namespace IdleAuto.Scripts.Controller
 
             if (!isEnd)
             {
-                await MakeArtifact(art, baseEq, roleid,config);
+                await MakeArtifact(art, baseEq, roleid, config, true);
             }
             return baseEq;
         }
@@ -74,10 +75,10 @@ namespace IdleAuto.Scripts.Controller
             var result = await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Query?id={roleid}&pt2=5", "equip");
             await Task.Delay(1500);
             var categoryArr = config.Category.Split('|');
-            for(int i = 0; i < categoryArr.Length; i++)
+            for (int i = 0; i < categoryArr.Length; i++)
             {
                 var category = categoryArr[i];
-               var aa= await _win.CallJsWaitReload($"jumpToCategory('{category}')", "equip");
+                var aa = await _win.CallJsWaitReload($"jumpToCategory('{category}')", "equip");
                 bool hasNextPage = true;
                 await Task.Delay(1500);
                 while (hasNextPage)
@@ -106,7 +107,7 @@ namespace IdleAuto.Scripts.Controller
                     }
                 }
             }
-           
+
 
             return null;
 
