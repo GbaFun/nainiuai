@@ -162,7 +162,8 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.StartAddSkill, new[] { "RasdSky" });
+            await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
+            await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
         }
 
         #endregion

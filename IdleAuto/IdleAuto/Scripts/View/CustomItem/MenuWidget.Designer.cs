@@ -104,9 +104,9 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.Controls.Add(this.btnMonitor);
             this.HomeGroup.Controls.Add(this.BtnClear);
             this.HomeGroup.Location = new System.Drawing.Point(0, 38);
-            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Margin = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Name = "HomeGroup";
-            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HomeGroup.Padding = new System.Windows.Forms.Padding(4);
             this.HomeGroup.Size = new System.Drawing.Size(267, 591);
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
@@ -126,7 +126,7 @@ namespace IdleAuto.Scripts.View
             // btnTestArtifact
             // 
             this.btnTestArtifact.Location = new System.Drawing.Point(16, 139);
-            this.btnTestArtifact.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnTestArtifact.Margin = new System.Windows.Forms.Padding(4);
             this.btnTestArtifact.Name = "btnTestArtifact";
             this.btnTestArtifact.Size = new System.Drawing.Size(100, 29);
             this.btnTestArtifact.TabIndex = 12;
@@ -160,7 +160,7 @@ namespace IdleAuto.Scripts.View
             // BtnInit
             // 
             this.BtnInit.Location = new System.Drawing.Point(16, 64);
-            this.BtnInit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnInit.Margin = new System.Windows.Forms.Padding(4);
             this.BtnInit.Name = "BtnInit";
             this.BtnInit.Size = new System.Drawing.Size(100, 29);
             this.BtnInit.TabIndex = 2;
@@ -226,7 +226,7 @@ namespace IdleAuto.Scripts.View
             // BtnAutoAh
             // 
             this.BtnAutoAh.Location = new System.Drawing.Point(16, 100);
-            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnAutoAh.Margin = new System.Windows.Forms.Padding(4);
             this.BtnAutoAh.Name = "BtnAutoAh";
             this.BtnAutoAh.Size = new System.Drawing.Size(100, 29);
             this.BtnAutoAh.TabIndex = 0;
@@ -237,12 +237,12 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnTODO2
             // 
-            this.BtnTODO2.Location = new System.Drawing.Point(16, 365);
+            this.BtnTODO2.Location = new System.Drawing.Point(16, 227);
             this.BtnTODO2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnTODO2.Name = "BtnTODO2";
             this.BtnTODO2.Size = new System.Drawing.Size(100, 29);
             this.BtnTODO2.TabIndex = 5;
-            this.BtnTODO2.Text = "待用";
+            this.BtnTODO2.Text = "并行清+盘";
             this.BtnTODO2.UseVisualStyleBackColor = true;
             this.BtnTODO2.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
@@ -260,7 +260,7 @@ namespace IdleAuto.Scripts.View
             // BtnClear
             // 
             this.BtnClear.Location = new System.Drawing.Point(136, 555);
-            this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(4);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(100, 29);
             this.BtnClear.TabIndex = 3;
