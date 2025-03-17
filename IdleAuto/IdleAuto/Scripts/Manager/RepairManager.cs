@@ -37,15 +37,15 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //window.GetBro().ShowDevTools();
 
         //将挂机装备放入仓库
-       // await EquipToRepository(window, equipController, account, true);
+        // await EquipToRepository(window, equipController, account, true);
         //盘点仓库装备
-       // await InventoryEquips(window, equipController, account);
+        // await InventoryEquips(window, equipController, account);
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
-            
+
             //技能加点
-          //  await AddSkillPoint(window, role);
+            //  await AddSkillPoint(window, role);
             //自动更换装备
             await AutoEquip(window, equipController, account, role);
             //角色剩余属性点分配
@@ -117,9 +117,29 @@ public class RepairManager : SingleManagerBase<RepairManager>
             //window.GetBro().ShowDevTools();
 
             //清理仓库
-            await equipController.ClearRepository(window, account);
+            await equipController.ClearRepository(window);
 
             window.Close();
+            MessageBox.Show($"一键清仓完成");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"一键清仓异常：{ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 一键清仓
+    /// 清仓
+    /// </summary>
+    public async Task ClearEquips(BroWindow win)
+    {
+        try
+        {
+            EquipController equipController = new EquipController();
+            //window.GetBro().ShowDevTools();
+            //清理仓库
+            await equipController.ClearRepository(win);
             MessageBox.Show($"一键清仓完成");
         }
         catch (Exception ex)
@@ -150,6 +170,16 @@ public class RepairManager : SingleManagerBase<RepairManager>
         {
             MessageBox.Show($"一键收菜异常：{ex.Message}");
         }
+    }
+
+    public async Task UpdateEquips(BroWindow win)
+    {
+        var equipController = new EquipController();
+        var account = win.User;
+        //将挂机装备放入仓库
+        await EquipToRepository(win, equipController, account, true);
+        //盘点仓库装备
+        await InventoryEquips(win, equipController, account);
     }
 
 

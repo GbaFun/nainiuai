@@ -71,7 +71,7 @@ public class EquipController
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
                             {
-                                await ClearRepository(win, account);
+                               // await ClearRepository(win, account);
                             }
                             else
                             {
@@ -116,7 +116,7 @@ public class EquipController
                         int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
                         if (boxCount >= 3000)
                         {
-                            await ClearRepository(win, account);
+                            //await ClearRepository(win, account);
                         }
                     }
                 }
@@ -242,8 +242,9 @@ public class EquipController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task ClearRepository(BroWindow win, UserModel account)
+    public async Task ClearRepository(BroWindow win)
     {
+        var account = win.User;
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
         RetainEquipCfg.Instance.ResetCount();
 
