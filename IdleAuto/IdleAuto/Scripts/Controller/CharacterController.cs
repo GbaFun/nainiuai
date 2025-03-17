@@ -681,6 +681,7 @@ namespace IdleAuto.Scripts.Controller
         {
             _browser = bro;
             int roleid = role.RoleId;
+            await Task.Delay(1000);
             //不在详细页先去详细页读取属性
             await _win.SignalCallback("charReload", () =>
             {
