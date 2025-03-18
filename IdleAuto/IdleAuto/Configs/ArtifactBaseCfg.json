@@ -52,6 +52,32 @@
       }
     ]
   },
+  "死骑知识": {
+    "category": "死骑面罩",
+    "quality": "破碎",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "matchGroupName": "知识条件",
+        "operate": "等于",
+        "attributeType": "技能等级",
+        "conditionContent": "凋零光环,3"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "知识条件",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
+  },
   "单手眼光": {
     "category": "斧",
     "quality": "破碎",

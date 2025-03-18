@@ -1181,6 +1181,12 @@
               "operate": "大于等于",
               "attributeType": "召唤最大数量",
               "conditionContent": "骷髅法师,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
             }
           ]
         },
@@ -1521,10 +1527,28 @@
           "conditions": [
 
             {
-              "matchType": "可选",
+              "matchType": "任一",
+              "matchGroupName": "死灵护符",
               "operate": "大于等于",
               "attributeType": "召唤最大数量",
+              "seq": 4,
               "conditionContent": "骷髅法师,1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵护符",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "seq": 2,
+              "conditionContent": "死灵,召唤,2"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵护符",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "seq": 1,
+              "conditionContent": "死灵,召唤,1"
             }
           ]
         },
@@ -1622,35 +1646,15 @@
           "quality": "全部",
           "necessary": 0,
           "conditions": [
+            
             {
-              "matchType": "可选",
-              "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "所有技能",
-              "conditionContent": "1"
-            },
-            {
-              "matchType": "可选",
-              "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业全系技能",
-              "conditionContent": "死骑,1"
-            },
-            {
-              "matchType": "可选",
-              "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业单系技能",
-              "conditionContent": "死骑,冰霜,1"
-            },
-
-            {
-              "matchType": "可选",
+              "matchType": "必需",
               "matchGroupName": "死骑头盔",
               "operate": "大于等于",
               "attributeType": "技能等级",
               "conditionContent": "凋零光环,3"
             }
+         
           ]
         },
         "项链": {
@@ -1849,29 +1853,16 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "可选",
+              "matchType": "必需",
               "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "所有技能",
-              "conditionContent": "1"
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "死骑知识",
+              "seq": 1,
+              "conditionContent": "知识"
             },
             {
-              "matchType": "可选",
-              "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业全系技能",
-              "conditionContent": "死骑,1"
-            },
-            {
-              "matchType": "可选",
-              "matchGroupName": "死骑头盔",
-              "operate": "大于等于",
-              "attributeType": "指定职业单系技能",
-              "conditionContent": "死骑,冰霜,1"
-            },
-
-            {
-              "matchType": "可选",
+              "matchType": "必需",
               "matchGroupName": "死骑头盔",
               "operate": "大于等于",
               "attributeType": "技能等级",
@@ -1974,12 +1965,6 @@
               "operate": "大于等于",
               "attributeType": "职业全系技能",
               "conditionContent": "1"
-            },
-            {
-              "matchType": "可选",
-              "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
             }
           ]
         },
@@ -1989,7 +1974,7 @@
           "necessary": 0,
           "conditions": [
             {
-              "matchType": "必需",
+              "matchType": "可选",
               "matchGroupName": "死骑护符",
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",

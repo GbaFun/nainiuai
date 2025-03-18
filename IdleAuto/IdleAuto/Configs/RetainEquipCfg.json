@@ -416,7 +416,7 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 6
   },
   {
     "equip": {
@@ -445,7 +445,7 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 6
   },
   //和平-疾速-刃-信念-天灾-戒律
   {
@@ -529,6 +529,26 @@
       ]
     },
     "maxCount": 12
-  }
+  },
   /////-------神器底子------------/////
+
+  //抗性防具
+  {
+    "equip": {
+      "category": "手套|靴子",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "conditionContent": "50"
+        }
+      ]
+
+    },
+    "maxCount": 20
+  }
+
 ]
