@@ -226,10 +226,11 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
+              "matchGroupName": "骑士手套",
               "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -459,7 +460,7 @@
           "quality": "全部",
           "necessary": 0,
           "conditions": [
-        
+
             {
               "matchType": "必需",
               "operate": "大于等于",
@@ -523,10 +524,11 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
+              "matchGroupName": "骑士手套",
               "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -825,10 +827,11 @@
               "conditionContent": "10"
             },
             {
-              "matchType": "可选",
+              "matchType": "任一",
+              "matchGroupName": "骑士手套",
               "operate": "大于等于",
-              "attributeType": "额外金币取得",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -900,7 +903,7 @@
     "jobName": "死灵",
     "lv": {
       "min": 1,
-      "max": 50
+      "max": 29
     },
     "equipSuit": [
       {
@@ -957,21 +960,21 @@
             },
             {
               "matchType": "可选",
-              
+
               "operate": "大于等于",
               "attributeType": "指定职业单系技能",
               "conditionContent": "死灵,召唤,1"
             },
             {
               "matchType": "可选",
-              
+
               "operate": "大于等于",
               "attributeType": "技能等级",
               "conditionContent": "支配骷髅,3"
             },
             {
               "matchType": "可选",
-              
+
               "operate": "大于等于",
               "attributeType": "技能等级",
               "conditionContent": "生生不息,3"
@@ -1151,6 +1154,41 @@
           "quality": "魔法|稀有|传奇",
           "necessary": 0,
           "conditions": [
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "手套",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "30"
+            }
+          ]
+        },
+        "护符": {
+          "category": "护符",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "召唤最大数量",
+              "conditionContent": "骷髅法师,1"
+            }
+          ]
+        },
+        "腰带": {
+          "category": "腰带",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
             {
               "matchType": "可选",
               "operate": "大于等于",
@@ -1160,8 +1198,319 @@
             {
               "matchType": "可选",
               "operate": "大于等于",
+              "seq": 1,
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "seq": 2,
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,2"
+            },
+
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "seq": 3,
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,3"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "jobName": "死灵",
+    "lv": {
+      "min": 30,
+      "max": 45
+    },
+    "equipSuit": [
+      {
+        "suitName": "死灵套装",
+        "主手": {
+          "category": "手杖",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵手杖",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "seq": 1,
+              "conditionContent": "骷髅法师,3"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵手杖",
+              "operate": "等于",
+              "attributeType": "名称",
+              "seq": 20,
+              "conditionContent": "凯恩碎片"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "支配骷髅,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "生生不息,1"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵手杖",
+              "operate": "大于等于",
               "attributeType": "施法速度",
-              "conditionContent": "30"
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "副手": {
+          "category": "死灵副手",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵副手",
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "seq": 1,
+              "conditionContent": "骷髅法师,3"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵副手",
+              "operate": "等于",
+              "attributeType": "名称",
+              "seq": 20,
+              "conditionContent": "法老王的意志"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵副手",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+            {
+              "matchType": "可选",
+
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "支配骷髅,3"
+            },
+            {
+              "matchType": "可选",
+
+              "operate": "大于等于",
+              "attributeType": "技能等级",
+              "conditionContent": "生生不息,3"
+            },
+            {
+              "matchType": "可选",
+
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "头盔": {
+          "category": "头饰|帽子",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "所有技能",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "指定职业全系技能",
+              "conditionContent": "死灵,1"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵头盔",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+            {
+              "matchType": "可选",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "项链": {
+          "category": "项链",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "大于等于",
+              "attributeType": "指定职业单系技能",
+              "conditionContent": "死灵,召唤,1"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵项链",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵项链",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵项链",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "戒指1": {
+          "category": "戒指",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵戒指",
+              "operate": "大于等于",
+              "attributeType": "所有技能",
+              "conditionContent": "1"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵戒指",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵戒指",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "戒指2": {
+          "category": "戒指",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵戒指",
+              "operate": "大于等于",
+              "attributeType": "更佳魔法装备",
+              "conditionContent": "10"
+            },
+            {
+              "matchType": "可选",
+              "matchGroupName": "死灵戒指",
+              "operate": "大于等于",
+              "attributeType": "额外金币取得",
+              "conditionContent": "10"
+            }
+          ]
+        },
+        "靴子": {
+          "category": "靴子",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "必需",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
+            }
+          ]
+        },
+        "衣服": {
+          "category": "衣服",
+          "quality": "全部",
+          "necessary": 0,
+          "conditions": [
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵衣服",
+              "operate": "等于",
+              "attributeType": "名称",
+              "artifactBase": "低力量隐密",
+              "seq": 1,
+              "conditionContent": "隐密"
+            },
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "死灵衣服",
+              "operate": "等于",
+              "attributeType": "名称",
+              "seq": 0,
+              "conditionContent": "蛇魔法师之皮"
+            }
+          ]
+        },
+        "手套": {
+          "category": "手套",
+          "quality": "魔法|稀有|传奇",
+          "necessary": 0,
+          "conditions": [
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "手套",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
+            },
+            {
+              "matchType": "任一",
+              "matchGroupName": "手套",
+              "operate": "大于等于",
+              "attributeType": "施法速度",
+              "conditionContent": "20"
             }
           ]
         },
@@ -1367,6 +1716,14 @@
               "operate": "大于等于",
               "attributeType": "更佳魔法装备",
               "conditionContent": "10"
+            },
+
+            {
+              "matchType": "任一",
+              "matchGroupName": "手套",
+              "operate": "大于等于",
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },
@@ -1583,8 +1940,8 @@
               "matchType": "任一",
               "matchGroupName": "死骑手套",
               "operate": "大于等于",
-              "attributeType": "更佳魔法装备",
-              "conditionContent": "10"
+              "attributeType": "抗寒",
+              "conditionContent": "20"
             }
           ]
         },

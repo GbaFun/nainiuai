@@ -179,12 +179,20 @@ public class TabManager
         var bro = BroWindowDic[seed].GetBro();
         if (bro != null)
         {
-            bro.Dispose();
+            if (bro.InvokeRequired)
+            {
+                bro.Invoke(new Action(() =>
+                {
+                    bro.Dispose();
+                }));
+            }
+
+            else bro.Dispose();
             bro = null;
         }
         BroWindowDic.TryRemove(seed, out _);
         TabPageDic.TryRemove(seed, out _);
-        
+
     }
     public void DisposePage()
     {

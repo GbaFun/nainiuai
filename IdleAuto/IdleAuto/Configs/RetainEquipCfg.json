@@ -63,9 +63,9 @@
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "conditionContent": "30"
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形潜行之刃"
         }
       ]
     },

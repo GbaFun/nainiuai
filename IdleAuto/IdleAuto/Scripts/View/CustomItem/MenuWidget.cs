@@ -164,9 +164,16 @@ namespace IdleAuto.Scripts.View
         {
             Task.Run(async () =>
             {
-               // await FlowController.GroupWork(6, 1, RepairManager.Instance.ClearEquips);
-                 //await FlowController.GroupWork(6, 1, RepairManager.Instance.UpdateEquips);
-                await FlowController.GroupWork(6, 1, RepairManager.Instance.AutoRepair);
+                try
+                {
+                    ///await FlowController.GroupWork(6, 1, RepairManager.Instance.ClearEquips);
+                    await FlowController.GroupWork(6, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(6, 1, RepairManager.Instance.AutoRepair);
+                }
+                catch(Exception ex)
+                {
+                    throw ex;
+                }
             });
 
         }
