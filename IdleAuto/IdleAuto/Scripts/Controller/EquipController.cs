@@ -71,7 +71,7 @@ public class EquipController
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
                             {
-                               // await ClearRepository(win, account);
+                                // await ClearRepository(win, account);
                             }
                             else
                             {
@@ -416,8 +416,8 @@ public class EquipController
                     var artifactControl = new ArtifactController(win);
                     foreach (var m in toMakeEquips)
                     {
-                        EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId,m.Value.Config);
-                        if(artifactEquip!=null)towearEquips.Add(m.Key, artifactEquip);
+                        EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId, m.Value.Config);
+                        if (artifactEquip != null) towearEquips.Add(m.Key, artifactEquip);
                         await Task.Delay(1500);
                     }
                 }
@@ -497,7 +497,7 @@ public class EquipController
             EquipModel curEquip = null;
             if (curEquips != null)
                 curEquips.TryGetValue((emEquipSort)j, out curEquip);
-            Equipment equipment = equipSuit.GetEquipBySort((emEquipSort)j);
+            SuitInfo equipment = equipSuit.GetEquipBySort((emEquipSort)j);
             if (equipment == null)
             {
                 P.Log($"{role.RoleName}{(emEquipSort)j}位置的装备没有找到配置，无需更换!");
@@ -537,14 +537,14 @@ public class EquipController
                         }
                     }
 
-                    if (!result.ToWearEquips.ContainsKey((emEquipSort)j) && equipment.Necessary)
+                    if (!result.ToWearEquips.ContainsKey((emEquipSort)j) && equipment.IsNecessery)
                     {
                         result.IsSuccess = false;
                         break;
                     }
                 }
             }
-            else if (equipment.Necessary)
+            else if (equipment.IsNecessery)
             {
 
 
@@ -555,7 +555,7 @@ public class EquipController
             if (matchEquips.Count == 0)
             {
                 //没有直接匹配的装备的话寻找是否有可以制作神器的配置
-                var artifactConfig = equipment.Conditions.Where(p => p.ArtifactBase != null);
+                var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
                 if (artifactConfig.Count() > 0)
                 {
                     var config = artifactConfig.First();
@@ -564,11 +564,10 @@ public class EquipController
                     var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
                     //找底子
                     var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq,Config= condition });
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition });
                 }
             }
         }
-
 
         return result;
     }
@@ -746,7 +745,7 @@ public class EquipController
     /// <param name="curEquip"></param>
     /// <param name="targetConfig"></param>
     /// <returns></returns>
-    private List<EquipModel> GetMatchEquipBySort(int accountId, RoleModel role, emEquipSort sort, EquipModel curEquip, Equipment targetConfig)
+    private List<EquipModel> GetMatchEquipBySort(int accountId, RoleModel role, emEquipSort sort, EquipModel curEquip, SuitInfo targetConfig)
     {
         List<EquipModel> matchEquips = new List<EquipModel>();
         Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
@@ -757,7 +756,7 @@ public class EquipController
         var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId).ToList();
         foreach (var item in __equips)
         {
-            if (AttributeMatchUtil.MatchCategory(item, targetConfig.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Quality))
+            if (AttributeMatchUtil.MatchCategory(item, targetConfig.Equipment.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Equipment.Quality))
             {
                 findEquips.Add(item);
             }
@@ -781,7 +780,7 @@ public class EquipController
         P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
         foreach (var item in findEquips)
         {
-            if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
+            if (AttributeMatchUtil.Match(item, targetConfig.Equipment, out AttributeMatchReport report))
             {
                 matchReports.Add(item.EquipID, report);
                 matchEquipMap.Add(item.EquipID, item);
@@ -850,9 +849,9 @@ public class EquipController
         return matchEquipMap;
     }
 
-    private Equipments GetEquipConfig(emJob job, int level)
+    private EquipSuits GetEquipConfig(emJob job, int level)
     {
-        return EquipCfg.Instance.GetEquipmentByJobAndLevel(job, level);
+        return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level);
     }
 
     public List<EquipModel> MergeEquips(Dictionary<emEquipSort, EquipModel> toWear, Dictionary<emEquipSort, EquipModel> curWear)

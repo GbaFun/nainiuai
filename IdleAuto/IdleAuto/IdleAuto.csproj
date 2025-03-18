@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\ArtifactBaseCfg.cs" />
-    <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
+    <Compile Include="Configs\CfgExtension\SuitCfg.cs" />
     <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />
     <Compile Include="Configs\CfgExtension\RetainEquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\RuneCompandCfg.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Scripts\Model\Efficency.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
     <Compile Include="Scripts\Utils\DbUtil.cs" />
+    <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
@@ -88,6 +89,9 @@
     <None Include="BackUp\Cookies\钻石矿.json" />
     <None Include="BackUp\Cookies\铁矿石.json" />
     <None Include="Configs\ArtifactBaseCfg.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configs\EquipCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\IdleSkillJson.json">
@@ -189,7 +193,7 @@
     <None Include="Configs\AccountCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configs\EquipCfg.json">
+    <None Include="Configs\SuitCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\MapSetting.json">
