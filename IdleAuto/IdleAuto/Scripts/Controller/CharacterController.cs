@@ -452,7 +452,7 @@ namespace IdleAuto.Scripts.Controller
             data["cname"] = _win.User.Roles[nextIndex].RoleName;
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                await _win.CallJsWaitReload($@"_init.addGroupMember({ data.ToLowerCamelCase()})", "init");
+                await _win.CallJsWaitReload($@"_init.addGroupMember({data.ToLowerCamelCase()})", "init");
 
             }
 

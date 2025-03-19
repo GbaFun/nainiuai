@@ -94,13 +94,14 @@ public class EquipSuit
 }
 public class SuitInfo
 {
+    [JsonProperty("name")]
     public string EquipName { get; set; }
     public bool IsNecessery { get; set; }
     public Equipment Equipment
     {
         get
         {
-            return EquipCfg.Get(EquipName);
+            return EquipCfg.Instance.Get(EquipName);
         }
     }
 }

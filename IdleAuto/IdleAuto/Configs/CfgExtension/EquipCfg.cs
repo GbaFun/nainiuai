@@ -25,21 +25,29 @@ public class EquipCfg
         }
 
         var json = File.ReadAllText(ConfigFilePath);
-        var equipMap = JsonConvert.DeserializeObject<Dictionary<string, Equipment>>(json);
+        var equipList = json.ToUpperCamelCase<List<EquipInfo>>();
 
-        if (equipMap != null)
+        _equipMap = new Dictionary<string, Equipment>();
+        foreach (var equip in equipList)
         {
-            _equipMap = equipMap;
+            _equipMap.Add(equip.Name, equip.Equipment);
         }
     }
 
-    public static Equipment Get(string name)
+    public Equipment Get(string name)
     {
         if (Instance._equipMap != null)
         {
-            if (Instance._equipMap.TryGetValue(name, out Equipment equip)) return equip;
+            if (_equipMap.TryGetValue(name, out Equipment equip)) return equip;
         }
 
         return null;
     }
+}
+
+public class EquipInfo
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public Equipment Equipment { get; set; }
 }

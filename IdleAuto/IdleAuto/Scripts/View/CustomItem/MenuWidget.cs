@@ -293,7 +293,8 @@ namespace IdleAuto.Scripts.View
 
         private void BtnTest_Click(object sender, EventArgs e)
         {
-            RepairManager.Instance.AutoRepair();
+            EquipCfg.Instance.Get("死骑知识");
+            //RepairManager.Instance.AutoRepair();
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)
