@@ -30,15 +30,18 @@ let _init = {};
             race: data.race
         };
         //debugger;
-        POST_Message("Create", data, "post", 1500).then((r) => {
-            location.href = "Home/Index";
-        }).catch((e) => {
-            if (e.responseText.indexOf("角色名称已经存在") > -1) {
+        POST_Message("Create", data, false).then((r) => {
+            var txt = r.html;
+            debugger
+            if (txt&&txt.indexOf('角色名称已经存在') > -1) {
                 Bridge.invokeEvent('OnCharNameConflict');
             }
-            if (e.status == 200) {
-                location.href = "../Home/Index";
-            }
+            Bridge.invokeEvent("OnSignal","roleSuccess");
+            
+        }).catch((e) => {
+            debugger
+         
+          
         })
     }
     async function getRoleInfo() {
@@ -75,9 +78,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
-            location.reload();
+            
         }).catch((e) => {
-            location.reload();
+            
         })
     }
     async function createGroup(data) {
@@ -90,9 +93,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
-            location.reload();
+            
         }).catch((e) => {
-            location.reload();
+            
         })
     }
 
@@ -105,9 +108,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupAddChar", data, "post", 1500).then((r) => {
-            location.reload();
+            
         }).catch((e) => {
-            location.reload();
+            
         })
     }
 
@@ -121,10 +124,10 @@ let _init = {};
       
         POST_Message("GroupAddChar", data, "post", 1500).then((r) => {
            
-            location.reload();
+            
         }).catch((e) => {
             
-            location.reload();
+            
         })
     }
 

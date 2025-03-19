@@ -34,6 +34,7 @@ async function FetchPost(_url, _data, needReload = true) {
             body: formData,
         })
             .then(async response => { // 将回调声明为async函数
+                debugger
                 if (response.type === "opaqueredirect") {
                     needReload && location.reload();
                     resolve(response)
@@ -48,6 +49,8 @@ async function FetchPost(_url, _data, needReload = true) {
                         reject(error);
                     }
                 } else {
+                    const str = await getResponseText(response.body);
+                    response.html = str;
                     resolve(response);
                 }
             })
@@ -92,7 +95,7 @@ async function getResponseText(stream) {
     }
 
     await readStream();
-    debugger
+    
     return accumulatedString;
     
 }

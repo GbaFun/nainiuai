@@ -47,9 +47,7 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         public int CharNameSeed { get; set; }
 
-        public RoleModel CurRole { get; set; }
 
-        public int CurRoleIndex { get; set; }
 
         /// <summary>
         /// 修车角色当前地图等级
@@ -96,6 +94,7 @@ namespace IdleAuto.Scripts.Controller
             _isNeedDungeon = false;
             _eventMa = win.GetEventMa();
             _eventMa.SubscribeEvent(emEventType.OnDungeonRequired, OnDungeonRequired);
+            _eventMa.SubscribeEvent(emEventType.OnCharNameConflict, OnCharNameConflict);
         }
 
         /// <summary>
@@ -106,7 +105,7 @@ namespace IdleAuto.Scripts.Controller
         private async Task<string> CreateName()
         {
             await Task.Delay(50);
-            var curName = AccountController.Instance.User.Username;
+            var curName = _win.User.Username;
             var index = AccountCfg.Instance.Accounts.FindIndex(p => p.Username == curName);
             if (!String.IsNullOrWhiteSpace(PrefixName))
             {
@@ -167,22 +166,29 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="role"></param>
         /// <param name="isReset">是否自动重置，每日安排秘境</param>
         /// <returns></returns>
-        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role,bool isReset=false,int targetDungeonLv=0)
+        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0)
         {
             _browser = bro;
-            if (bro.Address.IndexOf("Map/Detail")==-1)  await _win.SignalCallback("charReload", () =>
+            var isDungeonBack = bool.Parse(ConfigUtil.GetAppSetting("IsDungeonBack"));
+            //秘境归来
+            if (isDungeonBack)
             {
-                bro.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
-            });
+                await SwitchMap(bro, role);
+                return;
+            }
+            if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
+             {
+                 bro.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+             });
             var curMapLv = await GetCurMapLv();
             _curMapLv = curMapLv;
             //开始秘境
             int dungeonLv = GetDungeonLv(_curMapLv);
             if (targetDungeonLv != 0) dungeonLv = targetDungeonLv;
-            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload",  () =>
-                {
-                    SwitchTo(dungeonLv);
-                });
+            if (dungeonLv != _curMapLv) await _win.SignalCallback("charReload", () =>
+               {
+                   SwitchTo(dungeonLv);
+               });
 
             await _win.SignalCallback("charReload", () =>
             {
@@ -233,10 +239,11 @@ namespace IdleAuto.Scripts.Controller
         /// <summary>
         /// 开始
         /// </summary>
-        public async void StartInit()
+        public async Task StartInit()
         {
             IsAutoInit = true;
-            _browser = await GetBrowserAsync();
+            _browser = _win.GetBro();
+            await Task.Delay(1000);
             await StartAutoJob();
         }
 
@@ -268,8 +275,8 @@ namespace IdleAuto.Scripts.Controller
         {
             if (_browser.Address.IndexOf("Character/Group") == -1)
             {
-                _browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={AccountController.Instance.User.Roles[0].RoleId}");
-                await JsInit();
+                await _win.LoadUrlWaitJsInit($@"https://www.idleinfinity.cn/Character/Group?id={_win.User.Roles[0].RoleId}", "char");
+                await Task.Delay(1500);
             }
 
         }
@@ -280,11 +287,10 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task ContinueMakeGroup()
         {
-            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 3;
+            int nextIndex = _win.User.Roles.FindIndex(p => p.RoleId == _win.CurRole.RoleId) + 3;
             if (nextIndex > 11) return;
-            int roleId = AccountController.Instance.User.Roles[nextIndex].RoleId;
-            _browser.Load($@"https://www.idleinfinity.cn/Character/Group?id={roleId}");
-            await JsInit();
+            int roleId = _win.User.Roles[nextIndex].RoleId;
+            await _win.LoadUrlWaitJsInit($@"https://www.idleinfinity.cn/Character/Group?id={roleId}", "init");
 
         }
 
@@ -296,12 +302,12 @@ namespace IdleAuto.Scripts.Controller
         private async Task MakeGroup()
         {
             var existMembers = await GetExistGroupMember();
-            if (existMembers.Length == 3 && AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) < 9)
+            if (existMembers.Length == 3 && _win.User.Roles.FindIndex(p => p.RoleId == _win.CurRole.RoleId) < 9)
             {
                 await ContinueMakeGroup();
                 existMembers = await GetExistGroupMember();
             }
-            if (existMembers.Length == 3 && AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) == 9)
+            if (existMembers.Length == 3 && _win.User.Roles.FindIndex(p => p.RoleId == _win.CurRole.RoleId) == 9)
             {
                 return;
             }
@@ -335,14 +341,15 @@ namespace IdleAuto.Scripts.Controller
             }
 
             var existMember = await GetExistUnionMember();
-            if (AccountController.Instance.User.Roles == null || existMember == null)
+            if (_win.User.Roles == null || existMember == null)
             {
                 Console.WriteLine("roles空");
             }
-            var notInUnionMember = AccountController.Instance.User.Roles.Where(p => !existMember.Contains(p.RoleName)).FirstOrDefault();
+            var notInUnionMember = _win.User.Roles.Where(p => !existMember.Contains(p.RoleName)).FirstOrDefault();
             if (notInUnionMember != null)
             {
                 await AddUnionMember(notInUnionMember);
+                await Task.Delay(1000);
                 await MakeUnion();
             }
 
@@ -384,13 +391,13 @@ namespace IdleAuto.Scripts.Controller
         private async Task CreateUnion()
         {
             var data = new Dictionary<string, object>();
-            data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
-            data["cname"] = AccountController.Instance.User.Roles[1].RoleName;
-            data["gname"] = AccountController.Instance.User.Roles[0].RoleName + "★";
+            data["firstRoleId"] = _win.User.Roles[0].RoleId;
+            data["cname"] = _win.User.Roles[1].RoleName;
+            data["gname"] = _win.User.Roles[0].RoleName + "★";
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await _browser.EvaluateScriptAsync($@"_init.createUnion({data.ToLowerCamelCase()});");
-                await JsInit();
+                await _win.CallJsWaitReload($@"_init.createUnion({data.ToLowerCamelCase()});", "init");
+                await Task.Delay(1500);
             }
 
         }
@@ -403,14 +410,14 @@ namespace IdleAuto.Scripts.Controller
         {
 
             var data = new Dictionary<string, object>();
-            data["roleid"] = AccountController.Instance.CurRole.RoleId;
-            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 1;
-            data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
-            data["gname"] = AccountController.Instance.CurRole.RoleName + "★";
+            data["roleid"] = _win.CurRole.RoleId;
+            int nextIndex = _win.User.Roles.FindIndex(p => p.RoleId == _win.CurRole.RoleId) + 1;
+            data["cname"] = _win.User.Roles[nextIndex].RoleName;
+            data["gname"] = _win.CurRole.RoleName + "★";
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await _browser.EvaluateScriptAsync($@"_init.createGroup({data.ToLowerCamelCase()});");
-                await JsInit();
+                _win.CallJsWaitReload($@"_init.createGroup({data.ToLowerCamelCase()});", "init");
+                await Task.Delay(1500);
             }
 
         }
@@ -423,12 +430,11 @@ namespace IdleAuto.Scripts.Controller
         {
 
             var data = new Dictionary<string, object>();
-            data["firstRoleId"] = AccountController.Instance.User.Roles[0].RoleId;
+            data["firstRoleId"] = _win.User.Roles[0].RoleId;
             data["cname"] = r.RoleName;
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await _browser.EvaluateScriptAsync($@"_init.addUnionMember({data.ToLowerCamelCase()});");
-                await JsInit();
+                await _win.CallJsWaitReload($@"_init.addUnionMember({data.ToLowerCamelCase()});", "init");
             }
 
         }
@@ -441,13 +447,13 @@ namespace IdleAuto.Scripts.Controller
             var existMembers = await GetExistGroupMember();
             if (existMembers.Length == 3) return;
             var data = new Dictionary<string, object>();
-            data["roleid"] = AccountController.Instance.CurRole.RoleId;
-            int nextIndex = AccountController.Instance.User.Roles.FindIndex(p => p.RoleId == AccountController.Instance.CurRole.RoleId) + 2;
-            data["cname"] = AccountController.Instance.User.Roles[nextIndex].RoleName;
+            data["roleid"] = _win.CurRole.RoleId;
+            int nextIndex = _win.User.Roles.FindIndex(p => p.RoleId == _win.CurRole.RoleId) + 2;
+            data["cname"] = _win.User.Roles[nextIndex].RoleName;
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                var d = await _browser.EvaluateScriptAsync($@"_init.addGroupMember({data.ToLowerCamelCase()});");
-                await JsInit();
+                await _win.CallJsWaitReload($@"_init.addGroupMember({ data.ToLowerCamelCase()})", "init");
+
             }
 
         }
@@ -569,6 +575,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task CreateRole()
         {
+            //_browser.ShowDevTools();
             if (_browser.Address.IndexOf(PageLoadHandler.HomePage) > -1)
             {
                 var roles = await GetRoles();
@@ -576,8 +583,9 @@ namespace IdleAuto.Scripts.Controller
                 if (CharCount < 12)
                 {
                     //不满12个号去建号
-                    _browser.LoadUrl("https://www.idleinfinity.cn/Character/Create");
-                    await JsInit();
+                    await Task.Delay(2000);
+                    await _win.LoadUrlWaitJsInit("https://www.idleinfinity.cn/Character/Create", "init");
+                    await Task.Delay(1500);
                     var data = new Dictionary<string, object>();
                     data["name"] = await CreateName();
                     var info = CreateRaceAndType(roles);
@@ -585,8 +593,12 @@ namespace IdleAuto.Scripts.Controller
                     data["type"] = info.Item1;
                     if (_browser.CanExecuteJavascriptInMainFrame)
                     {
-                        var d = await _browser.EvaluateScriptAsync($@"_init.createRole({data.ToLowerCamelCase()});");
-                        await JsInit();
+                        await _win.SignalCallback("roleSuccess", async () =>
+                        {
+                            var aa = await _win.CallJs($@"_init.createRole({data.ToLowerCamelCase()});");
+                        });
+                        await Task.Delay(2000);
+                        await _win.LoadUrlWaitJsInit("https://www.idleinfinity.cn/Home/Index", "init");
                     }
                     await CreateRole();
                 }
@@ -614,7 +626,7 @@ namespace IdleAuto.Scripts.Controller
         protected async Task<ChromiumWebBrowser> GetBrowserAsync()
         {
 
-            var accName = AccountController.Instance.User.AccountName;
+            var accName = _win.User.AccountName;
             var seed = await BroTabManager.Instance.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Home/Index");
             _broSeed = seed;
             return BroTabManager.Instance.GetBro(seed);
@@ -961,7 +973,7 @@ namespace IdleAuto.Scripts.Controller
         {
             _browser = bro;
             int unFinishIndex = 0;
-            var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false&&p.Type==emTaskType.MapSwitch).ToList();
+            var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false && p.Type == emTaskType.MapSwitch).ToList();
             var unfinishedTask = list.Count > 0 ? list[0] : null;
             if (unfinishedTask == null)
             {
@@ -1082,7 +1094,7 @@ namespace IdleAuto.Scripts.Controller
 
 
 /* 加点调用测试
-//var info = await CharacterController.Instance.GetAttributeSimpleInfo(BroTabManager.Instance.GetBro(BroTabManager.Instance.GetFocusID()), AccountController.Instance.User.Roles[1]);
+//var info = await CharacterController.Instance.GetAttributeSimpleInfo(BroTabManager.Instance.GetBro(BroTabManager.Instance.GetFocusID()), _win.User.Roles[1]);
 //P.Log($"point:{info.Point}--csa:{info.StrAdd}");
 //if (info != null && info.Point > 0)
 //{

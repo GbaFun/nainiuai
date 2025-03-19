@@ -34,6 +34,15 @@ public class Bridge
         //else _eventMa.InvokeEvent((emEventType)Enum.Parse(typeof(emEventType), eventName), args);
     }
 
+    /// <summary>
+    /// 读取账号配置 在js端调用
+    /// </summary>
+    /// <returns></returns>
+    public object GetSelectedAccount()
+    {
+        return AccountController.Instance.User;
+    }
+
 
 }
 

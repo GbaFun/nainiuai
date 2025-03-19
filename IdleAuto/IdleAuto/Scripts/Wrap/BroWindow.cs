@@ -1,6 +1,8 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
 using IdleAuto.Scripts.Controller;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -25,6 +27,10 @@ namespace IdleAuto.Scripts.Wrap
 
         public UserModel User;
 
+        public RoleModel CurRole;
+
+        public int CurRoleIndex;
+
         private string _proxy;
 
         private int _seed;
@@ -45,7 +51,7 @@ namespace IdleAuto.Scripts.Wrap
             this._seed = seed;
         }
 
-        public BroWindow(int seed, UserModel user, string url, string proxy = "")
+        public BroWindow(int seed, UserModel user, string url, bool isProxy = false)
         {
             SetSeed(seed);
             User = user;
@@ -53,10 +59,44 @@ namespace IdleAuto.Scripts.Wrap
             _bridge = new Bridge(seed, EventMa);
             EventMa.SubscribeEvent(emEventType.OnSignal, OnSignalCallback);
             EventMa.SubscribeEvent(emEventType.OnLoginSuccess, SetInstanceUser);
-
+            EventMa.SubscribeEvent(emEventType.OnCharLoaded, OnCharLoaded);
             EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
             EventMa.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
-            this._bro = InitializeChromium(User.AccountName, url, proxy);
+            if (isProxy)
+            {
+                SetProxy();
+            }
+            this._bro = InitializeChromium(User.AccountName, url);
+        }
+        private void OnCharLoaded(params object[] args)
+        {
+
+            var cid = int.Parse(args[0].ToString());
+            this.CurRoleIndex = User.Roles.FindIndex(p => p.RoleId == cid);
+            this.CurRole = User.Roles[CurRoleIndex];
+
+
+        }
+
+        private void SetProxy()
+        {
+
+            string proxyUrl = "https://dps.kdlapi.com/api/getdps/?secret_id=o9f4g89vo5ys4mb1kad9&signature=cpq7jedsa5f9ioof4j70nyp55auq3dpp&num=1&pt=1&format=json&sep=1";
+            string s = HttpUtil.Get(proxyUrl);
+            var o = JsonConvert.DeserializeObject<JObject>(s);
+            var code = o.Value<int>("code");
+            if (code != 0)
+            {
+                throw new Exception("快代理提取失败");
+            }
+            var data = o.Value<JToken>("data");
+            var proxyList = data.Value<JArray>("proxy_list");
+            var proxyServer = proxyList[0].ToString();
+            string[] arr = proxyServer.Split(':');
+            proxyServer = $"http://{proxyServer}";
+            string ip = arr[0];
+            int port = int.Parse(arr[1]);
+            _proxy = proxyServer;
         }
         public void Close()
         {
@@ -92,7 +132,7 @@ namespace IdleAuto.Scripts.Wrap
             var jsTask = new TaskCompletionSource<bool>();
             onJsInitCallBack = (result) =>
             {
-                if ( jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+                if (jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
             };
 
             var res = await _bro.LoadUrlAsync(url);
@@ -102,7 +142,8 @@ namespace IdleAuto.Scripts.Wrap
 
                 return res;
             }
-            else { 
+            else
+            {
                 return res;
             }
         }
@@ -185,7 +226,7 @@ namespace IdleAuto.Scripts.Wrap
                 {
                     onSignalCallBack = null;
                     tcs2.SetResult(true);
-               
+
                 }
             };
             act.Invoke();
@@ -212,7 +253,7 @@ namespace IdleAuto.Scripts.Wrap
                 {
                     onSignalCallBack = null;
                     tcs2.SetResult(true);
-                 
+
                 }
             };
             act.Invoke();
@@ -226,7 +267,7 @@ namespace IdleAuto.Scripts.Wrap
         /// </summary>
         /// <param name="index">浏览器的流水号</param>
         /// <returns></returns>
-        private ChromiumWebBrowser InitializeChromium(string name, string url, string proxy = "")
+        private ChromiumWebBrowser InitializeChromium(string name, string url)
         {
             // 创建 CefRequestContextSettings 并指定缓存路径
             var requestContextSettings = new RequestContextSettings
@@ -283,7 +324,7 @@ namespace IdleAuto.Scripts.Wrap
             {
                 browser.GetBrowser().GetHost().RequestContext.SetPreference("proxy", proxySettings, out string s);
                 // 重新设置RequestHandler以更新代理账号密码
-                browser.RequestHandler = new MyRequestHandler("d2011731996", "v84dygqx");
+                browser.RequestHandler = new MyRequestHandler("d4064113710", "ih16bhar");
 
             });
 
@@ -299,6 +340,7 @@ namespace IdleAuto.Scripts.Wrap
                 };
                 browser.GetBrowser().GetHost().RequestContext.SetPreference("proxy", proxyOptions, out string error);
             });
+            _proxy = "";
         }
 
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
@@ -338,7 +380,7 @@ namespace IdleAuto.Scripts.Wrap
             {
                 P.Log($"Start Save {name} CookieAndCache");
                 PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie
-                // RemoveProxy(bro);
+                if (!string.IsNullOrWhiteSpace(_proxy)) RemoveProxy(bro);
             }
 
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadEnd, bro.Address);
@@ -364,6 +406,8 @@ namespace IdleAuto.Scripts.Wrap
             }
             return base.GetAuthCredentials(chromiumWebBrowser, browser, originUrl, isProxy, host, port, realm, scheme, callback);
         }
+
+
     }
 
 }

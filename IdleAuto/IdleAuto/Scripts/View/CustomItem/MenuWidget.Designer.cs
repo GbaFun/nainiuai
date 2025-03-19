@@ -33,6 +33,7 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnDungeon = new System.Windows.Forms.Button();
             this.Button_Inventory = new System.Windows.Forms.Button();
             this.btnTestArtifact = new System.Windows.Forms.Button();
             this.BtnTest = new System.Windows.Forms.Button();
@@ -56,7 +57,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnDungeon = new System.Windows.Forms.Button();
+            this.btnProxy = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.RuneGroup.SuspendLayout();
@@ -90,6 +91,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnProxy);
             this.HomeGroup.Controls.Add(this.btnDungeon);
             this.HomeGroup.Controls.Add(this.Button_Inventory);
             this.HomeGroup.Controls.Add(this.btnTestArtifact);
@@ -113,6 +115,16 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabIndex = 4;
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
+            // 
+            // btnDungeon
+            // 
+            this.btnDungeon.Location = new System.Drawing.Point(123, 227);
+            this.btnDungeon.Name = "btnDungeon";
+            this.btnDungeon.Size = new System.Drawing.Size(100, 29);
+            this.btnDungeon.TabIndex = 14;
+            this.btnDungeon.Text = "每日秘境";
+            this.btnDungeon.UseVisualStyleBackColor = true;
+            this.btnDungeon.Click += new System.EventHandler(this.btnDungeon_Click);
             // 
             // Button_Inventory
             // 
@@ -363,15 +375,15 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnDungeon
+            // btnProxy
             // 
-            this.btnDungeon.Location = new System.Drawing.Point(123, 227);
-            this.btnDungeon.Name = "btnDungeon";
-            this.btnDungeon.Size = new System.Drawing.Size(100, 29);
-            this.btnDungeon.TabIndex = 14;
-            this.btnDungeon.Text = "每日秘境";
-            this.btnDungeon.UseVisualStyleBackColor = true;
-            this.btnDungeon.Click += new System.EventHandler(this.btnDungeon_Click);
+            this.btnProxy.Location = new System.Drawing.Point(136, 519);
+            this.btnProxy.Name = "btnProxy";
+            this.btnProxy.Size = new System.Drawing.Size(100, 29);
+            this.btnProxy.TabIndex = 1;
+            this.btnProxy.Text = "代理登录";
+            this.btnProxy.UseVisualStyleBackColor = true;
+            this.btnProxy.Click += new System.EventHandler(this.btnProxy_Click);
             // 
             // MenuWidget
             // 
@@ -422,5 +434,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button BtnInventory;
         private System.Windows.Forms.Button Button_Inventory;
         private System.Windows.Forms.Button btnDungeon;
+        private System.Windows.Forms.Button btnProxy;
     }
 }

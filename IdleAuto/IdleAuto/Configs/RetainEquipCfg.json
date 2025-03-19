@@ -46,9 +46,9 @@
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
-          "conditionContent": "法师"
+          "conditionContent": "法师之拳"
         },
 
         {
@@ -66,6 +66,45 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "无形潜行之刃"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "精神脊柱"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蛇魔法师"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "地狱猎手"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "海鸥"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蚀肉骑士"
         }
       ]
     },

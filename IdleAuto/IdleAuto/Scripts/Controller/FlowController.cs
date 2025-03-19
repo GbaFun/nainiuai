@@ -151,6 +151,14 @@ namespace IdleAuto.Scripts.Controller
             }
         }
 
+        public static async Task StartInit()
+        {
+            var user = AccountController.Instance.User;
+            var win = await TabManager.Instance.TriggerAddBroToTap(user);
+            var charControl = new CharacterController(win);
+            await charControl.StartInit();
+        }
+
         public static async Task MakeArtifact()
         {
             var account = AccountCfg.Instance.Accounts[19];

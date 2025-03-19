@@ -161,14 +161,137 @@
     "accountId": 13851726,
     "prefix": "MC",
     "chromeVersion": "157.45.629.128"
+  },
+  {
+    "username": "南方腿骑1",
+    "password": "596931907",
+    "account": "南方腿骑1",
+    "accountId": 13826420,
+    "phone": 15512541584,
+    "prefix": "MC",
+    "chromeVersion": "138.51.32.81"
+  },
+  {
+    "username": "南方腿骑2",
+    "password": "596931907",
+    "account": "南方腿骑2",
+    "accountId": 13826420,
+    "phone": 17154181478,
+    "prefix": "MC",
+    "chromeVersion": "122.51.32.81"
+  },
+  {
+    "username": "南方腿骑3",
+    "password": "596931907",
+    "account": "南方腿骑3",
+    "accountId": 13826420,
+    "phone": 15230983252,
+    "prefix": "MC",
+    "chromeVersion": "138.51.32.1"
+  },
+  {
+    "username": "南方腿骑4",
+    "password": "596931907",
+    "account": "南方腿骑4",
+    "accountId": 13826420,
+    "phone": 19803255074,
+    "prefix": "MC",
+    "chromeVersion": "138.22.32.81"
+  },
+  {
+    "username": "南方腿骑5",
+    "password": "596931907",
+    "account": "南方腿骑5",
+    "accountId": 13826420,
+    "phone": 16550862962,
+    "prefix": "MC",
+    "chromeVersion": "88.51.32.81"
+  },
+  {
+    "username": "南方腿骑6",
+    "password": "596931907",
+    "account": "南方腿骑6",
+    "accountId": 13826420,
+    "phone": 18949435712,
+    "prefix": "MC",
+    "chromeVersion": "13.51.32.81"
+  },
+  {
+    "username": "南方腿骑7",
+    "password": "596931907",
+    "account": "南方腿骑7",
+    "accountId": 13826420,
+    "phone": 18632546195,
+    "prefix": "MC",
+    "chromeVersion": "138.51.3.1"
+  },
+  {
+    "username": "南方工具人1",
+    "password": "596931907",
+    "account": "南方工具人1",
+    "accountId": 13826420,
+    "phone": 15633423017,
+    "prefix": "MC",
+    "chromeVersion": "138.51.112.81"
+  },
+
+  {
+    "username": "南方工具人2",
+    "password": "596931907",
+    "account": "南方工具人2",
+    "accountId": 13826420,
+    "phone": 15081959379,
+    "prefix": "MC",
+    "chromeVersion": "138.51.212.81"
+  },
+
+  {
+    "username": "南方工具人3",
+    "password": "596931907",
+    "account": "南方工具人3",
+    "accountId": 13826420,
+    "phone": 17149480490,
+    "prefix": "MC",
+    "chromeVersion": "38.151.212.81"
+  },
+
+  {
+    "username": "南方工具人4",
+    "password": "596931907",
+    "account": "南方工具人4",
+    "accountId": 13826420,
+    "phone": 16521225198,
+    "prefix": "MC",
+    "chromeVersion": "13.51.212.81"
+  },
+
+  {
+    "username": "南方工具人5",
+    "password": "596931907",
+    "account": "南方工具人5",
+    "accountId": 13826420,
+    "phone": 15633153285,
+    "prefix": "MC",
+    "chromeVersion": "138.51.22.81"
+  },
+
+  {
+    "username": "南方工具人6",
+    "password": "596931907",
+    "account": "南方工具人6",
+    "accountId": 13826420,
+    "phone": 16550836018,
+    "prefix": "MC",
+    "chromeVersion": "138.51.12.21"
+  },
+
+  {
+    "username": "南方工具人7",
+    "password": "596931907",
+    "account": "南方工具人7",
+    "accountId": 13826420,
+    "phone": 15614515057,
+    "prefix": "MC",
+    "chromeVersion": "138.1.2.81"
   }
-  //,
-  //{
-  //  "username": "库里",
-  //  "password": "@xly1358",
-  //  "account": "库里",
-  //  "accountId": 13826420,
-  //  "prefix": "MC",
-  //  "chromeVersion": "138.5.32.81"
-  //}
 ]

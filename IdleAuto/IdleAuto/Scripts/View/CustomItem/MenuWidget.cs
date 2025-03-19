@@ -88,15 +88,7 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnInit_Click(object sender, EventArgs e)
         {
-            //if (!CharacterController.Instance.IsAutoInit)
-            //{
-            //    CharacterController.Instance.StartInit();
-            //}
-            //else
-            //{
-            //    CharacterController.Instance.Stop();
-            //}
-            //BtnInit.Text = CharacterController.Instance.IsAutoInit ? "停止初始化" : "开始初始化";
+            FlowController.StartInit();
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
@@ -143,7 +135,7 @@ namespace IdleAuto.Scripts.View
             {
                 MapSwitchAccounts = null;
             }
-            FlowController.GroupWork(3, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -166,11 +158,11 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
+                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw ex;
                 }
@@ -319,7 +311,13 @@ namespace IdleAuto.Scripts.View
 
         private void btnDungeon_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.StartDailyDungeon);
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon);
+        }
+
+        private void btnProxy_Click(object sender, EventArgs e)
+        {
+            var user = AccountController.Instance.User;
+            TabManager.Instance.TriggerAddBroToTap(user, true);
         }
     }
 }

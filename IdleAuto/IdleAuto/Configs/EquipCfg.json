@@ -31,7 +31,7 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 1,
@@ -42,7 +42,7 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 2,
-          "conditionContent": "审判光环,1"
+          "conditionContent": "审判光环,3"
         },
         {
           "matchType": "可选",
@@ -93,32 +93,39 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 1,
           "conditionContent": "冥想光环,1"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 2,
-          "conditionContent": "审判光环,1"
+          "conditionContent": "审判光环,3"
         },
         {
-          "matchType": "可选",
-          "operate": "大于等于",
+          "matchType": "任一",
+          "operate": "等于",
           "attributeType": "指定职业单系技能",
-          "seq": 2,
+          "seq": 1,
           "conditionContent": "骑士,光环,1"
         },
         {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "指定职业全系技能",
-          "seq": 1,
-          "conditionContent": "骑士,1"
+          "matchType": "任一",
+          "operate": "等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,2"
+        },
+        {
+          "matchType": "任一",
+          "operate": "等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 3,
+          "conditionContent": "骑士,光环,3"
         }
       ]
     }
@@ -172,7 +179,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 4,
+          "seq": 40,
           "conditionContent": "10"
         },
         {
@@ -468,13 +475,14 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
+          "seq": 50,
           "conditionContent": "死灵,召唤,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 4,
@@ -561,7 +569,7 @@
           "conditionContent": "1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 4,
@@ -599,10 +607,9 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 25,
           "conditionContent": "1"
         },
         {
@@ -743,7 +750,7 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "职业全系技能",
+          "attributeType": "所有技能",
           "seq": 104,
           "conditionContent": "1"
         },
@@ -793,7 +800,7 @@
           "matchGroupName": "施法衣服",
           "operate": "等于",
           "attributeType": "名称",
-          "seq": 1,
+          "seq": 10,
           "conditionContent": "蛇魔法师之皮"
         }
       ]
@@ -1005,7 +1012,7 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
@@ -1013,32 +1020,32 @@
           "conditionContent": "骷髅法师,1"
         },
         {
-          "matchType": "任一",
+          "matchType": "可选",
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 1,
+          "seq": 10,
           "conditionContent": "死灵,召唤,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
           "seq": 2,
           "conditionContent": "10"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
+          "attributeType": "额外金币取得",
           "seq": 1,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 3,
           "conditionContent": "5"
         }
       ]
@@ -1168,14 +1175,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
+          "seq": 2,
           "conditionContent": "支配骷髅,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
+          "seq": 6,
           "conditionContent": "生生不息,1"
         },
         {
@@ -1183,7 +1190,7 @@
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 1,
+          "seq": 7,
           "conditionContent": "10"
         }
       ]
@@ -1221,14 +1228,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
+          "seq": 1,
           "conditionContent": "支配骷髅,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
+          "seq": 6,
           "conditionContent": "生生不息,1"
         },
         {
@@ -1236,7 +1243,7 @@
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 1,
+          "seq": 10,
           "conditionContent": "10"
         }
       ]
@@ -1250,46 +1257,49 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "死灵副手",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 1,
           "conditionContent": "骷髅法师,3"
         },
         {
+          "matchType": "任一",
+          "matchGroupName": "死灵副手",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 20,
+          "conditionContent": "法老王的意志"
+        },
+        {
           "matchType": "可选",
+          "matchGroupName": "死灵副手",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 11,
+          "seq": 10,
           "conditionContent": "死灵,召唤,1"
         },
         {
           "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "指定职业全系技能",
-          "seq": 11,
-          "conditionContent": "死灵,1"
-        },
-        {
-          "matchType": "可选",
+
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
-          "conditionContent": "支配骷髅,1"
+          "conditionContent": "支配骷髅,3"
         },
         {
           "matchType": "可选",
+
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 10,
-          "conditionContent": "生生不息,1"
+          "conditionContent": "生生不息,3"
         },
         {
           "matchType": "可选",
-          "matchGroupName": "死灵手杖",
+
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 1,
+          "seq": 10,
           "conditionContent": "10"
         }
       ]
