@@ -162,7 +162,45 @@
     }
   },
   {
-    "name": "光环头盔",
+    "name": "施法任意头盔",
+    "description": "前期没有技能头，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "1级光环头盔",
     "description": "骑士光环技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
       "category": "帽子|头饰",
@@ -208,6 +246,30 @@
     }
   },
   {
+    "name": "3级光环头盔",
+    "description": "骑士光环技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,3"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意项链",
     "description": "前期没有技能项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -225,6 +287,198 @@
           "operate": "小于",
           "attributeType": "施法速度",
           "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "施法任意项链",
+    "description": "前期没有技能项链，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "项链",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "零速光环项链",
+    "description": "骑士光环项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "项链",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "零速冰霜项链",
+    "description": "死骑冰霜项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "项链",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "施法召唤项链",
+    "description": "死灵召唤技能项链，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "项链",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
         },
         {
           "matchType": "可选",
@@ -294,12 +548,100 @@
     }
   },
   {
+    "name": "施法任意戒指",
+    "description": "前期没有技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "技能等级戒指",
+    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 25,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
     "name": "抗寒靴子",
-    "description": "抗寒靴子，有其他属性更好",
+    "description": "抗寒靴子，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
     "equipment": {
       "category": "靴子",
       "quality": "全部",
-      "necessary": 0,
       "conditions": [
         {
           "matchType": "可选",
@@ -334,10 +676,10 @@
   },
   {
     "name": "零速MF衣服",
+    "description": "优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
       "category": "衣服",
       "quality": "魔法|稀有|传奇",
-      "necessary": 0,
       "conditions": [
         {
           "matchType": "必需",
@@ -378,11 +720,11 @@
     }
   },
   {
-    "name": "零速抗寒手",
+    "name": "零速技能衣服",
+    "description": "所有技能+1衣服，其他属性优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
-      "category": "手套",
+      "category": "衣服",
       "quality": "魔法|稀有|传奇",
-      "necessary": 0,
       "conditions": [
         {
           "matchType": "必需",
@@ -390,6 +732,139 @@
           "attributeType": "攻击速度",
           "seq": 1,
           "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "职业全系技能",
+          "seq": 104,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "施法衣服",
+    "description": "优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "施法衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "低力量隐密",
+          "seq": 2,
+          "conditionContent": "隐密"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "施法衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 1,
+          "conditionContent": "蛇魔法师之皮"
+        }
+      ]
+    }
+  },
+  {
+    "name": "零速抗寒手",
+    "description": "抗寒手套，有其他属性更好，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "手套",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "手套",
+          "operate": "大于等于",
+          "attributeType": "抗寒",
+          "seq": 4,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "施法抗寒手",
+    "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "手套",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗寒",
+          "seq": 4,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 5,
+          "conditionContent": "10"
         },
         {
           "matchType": "可选",
@@ -417,10 +892,10 @@
   },
   {
     "name": "MF护符",
+    "description": "前期没有技能护符，优先考虑MF->金币掉落->元素抗性",
     "equipment": {
       "category": "护符",
       "quality": "魔法|稀有|传奇",
-      "necessary": 0,
       "conditions": [
         {
           "matchType": "可选",
@@ -447,11 +922,134 @@
     }
   },
   {
+    "name": "光环护符",
+    "description": "光环护符，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "冰霜护符",
+    "description": "冰霜护符，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "骷髅法师护符",
+    "description": "骷髅法师+1护符，有其他属性更好，优先考虑死灵召唤->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "骷髅法师护符",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "seq": 5,
+          "conditionContent": "骷髅法师,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骷髅法师护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 1,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意腰带",
+    "description": "前期没有技能腰带，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
       "category": "腰带",
       "quality": "魔法|稀有|传奇",
-      "necessary": 0,
       "conditions": [
         {
           "matchType": "必需",
@@ -480,6 +1078,418 @@
           "attributeType": "单项元素抗性之和",
           "seq": 1,
           "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "召唤腰带",
+    "description": "召唤等级腰带",
+    "equipment": {
+      "category": "腰带",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "seq": 15,
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 4,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "骷髅法师或凯恩手杖",
+    "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "手杖",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵手杖",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 20,
+          "conditionContent": "凯恩碎片"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 11,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 11,
+          "conditionContent": "死灵,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "骷髅法师副手",
+    "description": "死灵副手，必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 11,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 11,
+          "conditionContent": "死灵,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "骷髅法师或法老王副手",
+    "description": "死灵副手，若有法老王，优先法老王，否则必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 11,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 11,
+          "conditionContent": "死灵,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "1级召唤头盔",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "知识",
+          "seq": 1,
+          "conditionContent": "知识"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 2,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 3,
+          "conditionContent": "死灵,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 4,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "3级召唤头盔",
+    "description": "死灵3召唤技能头盔",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 11,
+          "conditionContent": "死灵,召唤,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "单手MF武器",
+    "description": "单手MF武器,",
+    "equipment": {
+      "category": "斧|剑|锤|匕首|标枪|投掷武器",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 15,
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "凋零死骑面罩",
+    "description": "死骑头盔",
+    "equipment": {
+      "category": "死骑面罩",
+      "quality": "全部",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死骑头盔",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "死骑知识",
+    "description": "死骑知识头盔",
+    "equipment": {
+      "category": "死骑面罩",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死骑头盔",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "死骑知识",
+          "seq": 1,
+          "conditionContent": "知识"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死骑头盔",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "死骑眼光",
+    "description": "死骑眼光,",
+    "equipment": {
+      "category": "斧|剑|锤|匕首|标枪|投掷武器",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "单手眼光",
+          "seq": 1,
+          "conditionContent": "眼光"
         }
       ]
     }
