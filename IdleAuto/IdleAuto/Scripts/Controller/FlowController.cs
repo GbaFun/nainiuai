@@ -124,18 +124,12 @@ namespace IdleAuto.Scripts.Controller
         /// 同步过滤
         /// </summary>
         /// <returns></returns>
-        public static async Task SyncFilter()
+        public static async Task SyncFilter(BroWindow win)
         {
-            for (int i = 2; i < AccountCfg.Instance.Accounts.Count; i++)
-            {
-                var account = AccountCfg.Instance.Accounts[i];
-                if (account.AccountName == "铁矿石") continue;
-                var user = new UserModel(account);
-                var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                var control = new CharacterController(window);
-                await control.StartSyncFilter(window.GetBro(), window.User);
-                window.Close();
-            }
+            var control = new CharacterController(win);
+            await control.StartSyncFilter(win.GetBro(), win.User);
+
+
         }
 
         public static async Task StartEfficencyMonitor()

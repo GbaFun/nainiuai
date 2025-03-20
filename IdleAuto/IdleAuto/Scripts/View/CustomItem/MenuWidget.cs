@@ -158,9 +158,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
+                  //  await FlowController.GroupWork(5, 1, RepairManager.Instance.ClearEquips);
+                    await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(5, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -279,7 +279,8 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             // FlowController.MakeArtifact();
-            FlowController.SyncFilter();
+            var nanfangAccount = ConfigUtil.GetAppSetting("南方账号").Split(',');
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, nanfangAccount);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)

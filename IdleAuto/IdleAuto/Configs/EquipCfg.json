@@ -38,10 +38,10 @@
           "conditionContent": "冥想光环,1"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 2,
+          "seq": 10,
           "conditionContent": "审判光环,3"
         },
         {
@@ -1390,11 +1390,10 @@
           "conditionContent": "双手伤害"
         },
         {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "seq": 15,
-          "conditionContent": "死骑,冰霜,1"
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "速度：10"
         },
         {
           "matchType": "可选",
@@ -1500,6 +1499,42 @@
           "artifactBase": "单手眼光",
           "seq": 1,
           "conditionContent": "眼光"
+        }
+      ]
+    }
+  },
+  {
+    "name": "死骑冰霜武器",
+    "description": "死骑眼光,",
+    "equipment": {
+      "category": "斧|剑|锤|匕首|标枪|投掷武器",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "速度：10"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "攻击速度提升"
         }
       ]
     }

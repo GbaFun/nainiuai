@@ -248,7 +248,7 @@ public class EquipController
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
         RetainEquipCfg.Instance.ResetCount();
 
-        await Task.Delay(1000);
+        await Task.Delay(1500);
         P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
         var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(account.FirstRole.RoleId), "equip");
         if (response.Success)
@@ -259,7 +259,7 @@ public class EquipController
             int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
             int page = 0;
             //先跳转到仓库最后一页，防止因为删除装备页面数据变化，导致装备重复检查
-            await Task.Delay(1000);
+            await Task.Delay(1500);
             P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
             var response1 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
             if (response1.Success)
@@ -276,7 +276,7 @@ public class EquipController
                     {
                         P.Log($"开始跳转仓库最后一页", emLogType.AutoEquip);
                         page = (int)Math.Floor((double)(boxCount - 1) / 60);
-                        await Task.Delay(1000);
+                        await Task.Delay(1500);
                         P.Log($"跳转仓库最后一页-第{page}页", emLogType.AutoEquip);
                         var response3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId, 0, page), "equip");
                         if (response3.Success)
@@ -307,7 +307,7 @@ public class EquipController
                                         }
 
                                         string eids = string.Join(",", toClear.Keys);
-                                        await Task.Delay(1000);
+                                        await Task.Delay(1500);
                                         if (toClear.Count != 0 && boxCount >= retainNum)
                                         {
                                             P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);

@@ -73,6 +73,7 @@ namespace IdleAuto.Scripts.Wrap
 
             var cid = int.Parse(args[0].ToString());
             this.CurRoleIndex = User.Roles.FindIndex(p => p.RoleId == cid);
+            if (CurRoleIndex == -1) return;
             this.CurRole = User.Roles[CurRoleIndex];
 
 
