@@ -1475,6 +1475,12 @@
         },
         {
           "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "攻击速度提升"
+        },
+        {
+          "matchType": "必需",
           "operate": "等于",
           "attributeType": "自定义",
           "conditionContent": "速度：10"
