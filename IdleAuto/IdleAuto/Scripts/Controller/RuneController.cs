@@ -10,21 +10,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FreeSql;
 using FreeSql.Sqlite;
+using IdleAuto.Scripts.Wrap;
+using IdleAuto.Db;
 
 public class RuneController
 {
     private EventSystem EventSystem;
-    private static RuneController instance;
-    public static RuneController Instance
+    public RuneController()
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new RuneController();
-            }
-            return instance;
-        }
+        EventSystem = new EventSystem();
     }
 
     private delegate void OnUpgradeRuneBack(bool result);
@@ -32,19 +26,19 @@ public class RuneController
     private delegate void OnJsInitCallBack(bool result);
     private OnJsInitCallBack onJsInitCallBack;
 
-    public async void AutoUpgradeRune()
+    public async Task AutoUpgradeRune(BroWindow win, UserModel account)
     {
-        //Console.WriteLine($"{DateTime.Now}---开始一键升级符文");
         long start = DateTime.Now.Ticks;
         P.Log("开始一键升级符文", emLogType.RuneUpgrate);
+
+        await Task.Delay(1000);
+        await win.LoadUrlWaitJsInit(IdleUrlHelper.MaterialUrl(account.FirstRole.RoleId), "rune");
+
         EventSystem.SubscribeEvent(emEventType.OnUpgradeRuneBack, OnEventUpgradeRuneBack);
         EventSystem.SubscribeEvent(emEventType.OnJsInited, OnRuneJsInited);
-        //MainForm.Instance.browser.FrameLoadEnd += OnMainFormBrowseFrameLoad;
-        List<RuneCompandData> cfg = RuneCompandCfg.Instance.RuneCompandData;
-
-        int broIndex = BroTabManager.Instance.GetFocusID();
-
-        foreach (var item in cfg)
+        var runeDb = FreeDb.Sqlite.Select<RuneCompandData>().ToList();
+        runeDb.Sort((a, b) => a.ID.CompareTo(b.ID));
+        foreach (var item in runeDb)
         {
             P.Log($"开始检查{item.ID}#符文", emLogType.RuneUpgrate);
             long duration = (DateTime.Now.Ticks - start) / 10000;
@@ -52,11 +46,9 @@ public class RuneController
             if (item.CompandNum == -1)
             {
                 P.Log($"{item.ID}#符文配置保留数量为无限，无需升级", emLogType.RuneUpgrate);
-                await Task.Delay(500);
                 continue;
             }
-            var response = await BroTabManager.Instance.TriggerCallJs(broIndex, $@"getRuneNum({item.ID})");
-            //GetRuneNum(item.ID);
+            var response = await win.CallJs($@"getRuneNum({item.ID})");
             if (response.Success)
             {
                 int curNum = (int)response.Result;
@@ -67,19 +59,11 @@ public class RuneController
                     if (count < 2)
                     {
                         P.Log($"{item.ID}#符文空余数量不足2，无需升级", emLogType.RuneUpgrate);
-                        await Task.Delay(500);
                         continue;
                     }
+                    await Task.Delay(1000);
                     P.Log($"开始升级{item.ID}#符文，升级数量{count}", emLogType.RuneUpgrate);
-                    var response2 = await BroTabManager.Instance.TriggerCallJs(broIndex, $@"upgradeRune({item.ID},{count})");
-                    //UpgradeRune(item.ID, count);
-                    //var tcs = new TaskCompletionSource<bool>();
-                    //onUpgradeRuneCallBack = (result) => tcs.SetResult(result);
-                    //await tcs.Task;
-                    //var tcs2 = new TaskCompletionSource<bool>();
-                    //onJsInitCallBack = (result) => tcs2.SetResult(result);
-                    //await tcs2.Task;
-
+                    var response2 = await win.CallJsWaitReload($@"upgradeRune({item.ID},{count})", "rune");
                     if (response2.Success == false)
                     {
                         MessageBox.Show($"自动升级符文失败，详情请查看log文件({Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", emLogType.RuneUpgrate.ToString())})");

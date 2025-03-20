@@ -1,4 +1,6 @@
-﻿using IdleAuto.Db;
+﻿using CefSharp.DevTools.FedCm;
+using IdleAuto.Db;
+using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,10 +62,25 @@ namespace IdleAuto.Scripts.View
 
         private void BtnConfirm_Click(object sender, EventArgs e)
         {
+            StartUpgradeRune();
+        }
+
+        private async Task StartUpgradeRune()
+        {
             var runs = FreeDb.Sqlite.Update<RuneCompandData>().SetSource(Runes).ExecuteAffrows();
-            RuneController.Instance.AutoUpgradeRune();
             ClearItems();
+            await Task.Delay(500);
             this.Close();
+
+            RuneController controller = new RuneController();
+            BroWindow window = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+            await controller.AutoUpgradeRune(window, AccountController.Instance.User);
+
+            var result = MessageBox.Show("合符文成功，是否需要关闭当前页面", "提示", MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+                window.Close();
+            }
         }
 
         private void ClearItems()

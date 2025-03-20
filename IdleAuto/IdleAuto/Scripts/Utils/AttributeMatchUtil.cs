@@ -184,6 +184,10 @@ namespace AttributeMatch
                 case emAttrType.需要敏捷:
                 case emAttrType.掉落等级:
                     result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
+                    if (_condition.AttributeType == emAttrType.更佳魔法装备 || _condition.AttributeType == emAttrType.额外金币取得)
+                    {
+                        weight = (int)Math.Floor(weight / 10.0f);
+                    }
                     result.MatchWeight = weight * seq;
                     break;
                 case emAttrType.单项元素抗性之和:

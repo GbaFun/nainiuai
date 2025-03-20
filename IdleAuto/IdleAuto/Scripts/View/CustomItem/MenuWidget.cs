@@ -167,7 +167,6 @@ namespace IdleAuto.Scripts.View
                     throw ex;
                 }
             });
-
         }
 
         #endregion
@@ -320,6 +319,12 @@ namespace IdleAuto.Scripts.View
         {
             var user = AccountController.Instance.User;
             TabManager.Instance.TriggerAddBroToTap(user, true);
+        }
+
+        private void BtnAutoRune_Click(object sender, EventArgs e)
+        {
+            RuneConfigForm runeForm = new RuneConfigForm();
+            runeForm.ShowDialog();
         }
     }
 }
