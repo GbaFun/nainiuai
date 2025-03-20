@@ -91,9 +91,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //window.GetBro().ShowDevTools();
         var account = window.User;
         //将挂机装备放入仓库
-        // await EquipToRepository(window, equipController, account, true);
+        //await EquipToRepository(window, equipController, account, true);
         //盘点仓库装备
-        // await InventoryEquips(window, equipController, account);
+        //await InventoryEquips(window, equipController, account);
         List<string> InterruptNames = new List<string>();
         //遍历账户下角色修车
         foreach (var role in account.Roles)

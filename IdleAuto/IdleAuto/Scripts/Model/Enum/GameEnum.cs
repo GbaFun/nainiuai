@@ -88,6 +88,7 @@ public enum emAttrType
     需要敏捷,
     掉落等级,
     物品等级,
+    武器速度,
     自定义,
 }
 public enum emOperateType
