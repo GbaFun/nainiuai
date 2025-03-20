@@ -477,6 +477,13 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 50,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 50,
           "conditionContent": "死灵,召唤,1"
@@ -485,7 +492,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 4,
+          "seq": 1,
           "conditionContent": "10"
         },
         {
@@ -493,13 +500,6 @@
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "seq": 3,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
           "conditionContent": "10"
         },
         {
@@ -654,28 +654,22 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "seq": 4,
+          "seq": 40,
           "conditionContent": "20"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "seq": 3,
+          "seq": 1,
           "conditionContent": "10"
         },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
-          "conditionContent": "10"
-        },
+        
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "seq": 1,
+          "seq": 20,
           "conditionContent": "5"
         }
       ]
@@ -779,6 +773,68 @@
     }
   },
   {
+
+    "name": "死骑技能衣服",
+    "description": "所有技能+1衣服，其他属性优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑技能衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 10,
+          "conditionContent": "天灾领主的铠甲"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑技能衣服",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 104,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
     "name": "施法衣服",
     "description": "优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
@@ -825,7 +881,7 @@
           "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "seq": 4,
+          "seq": 40,
           "conditionContent": "20"
         },
         {
@@ -863,14 +919,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "seq": 4,
+          "seq": 20,
           "conditionContent": "20"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 5,
+          "seq": 50,
           "conditionContent": "10"
         },
         {
@@ -880,13 +936,7 @@
           "seq": 3,
           "conditionContent": "10"
         },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
-          "conditionContent": "10"
-        },
+        
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -1097,7 +1147,7 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "seq": 15,
           "attributeType": "指定职业单系技能",
@@ -1317,28 +1367,28 @@
           "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "知识",
-          "seq": 1,
+          "seq": 40,
           "conditionContent": "知识"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 2,
+          "seq": 40,
           "conditionContent": "1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业全系技能",
-          "seq": 3,
+          "seq": 40,
           "conditionContent": "死灵,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 4,
+          "seq": 40,
           "conditionContent": "死灵,召唤,1"
         },
         {
