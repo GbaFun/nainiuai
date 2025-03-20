@@ -780,6 +780,10 @@ public class EquipController
         P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
         foreach (var item in findEquips)
         {
+            if (item.EquipName == "知识")
+            {
+                Console.WriteLine();
+            }
             if (AttributeMatchUtil.Match(item, targetConfig.Equipment, out AttributeMatchReport report))
             {
                 matchReports.Add(item.EquipID, report);

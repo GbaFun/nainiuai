@@ -77,11 +77,10 @@ public class RepairManager : SingleManagerBase<RepairManager>
         if (InterruptNames.Count <= 0)
         {
             FreeDb.Sqlite.Delete<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName).ExecuteAffrows();
-            MessageBox.Show($"自动修车完成");
         }
         else
         {
-            MessageBox.Show($"自动修车完成,但部分角色修车进程意外中断，中断角色列表：{string.Join("-", InterruptNames.ToArray())}");
+            //MessageBox.Show($"自动修车完成,但部分角色修车进程意外中断，中断角色列表：{string.Join("-", InterruptNames.ToArray())}");
         }
     }
 

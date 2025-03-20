@@ -447,24 +447,26 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "死灵项链",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 50,
+          "seq": 20,
           "conditionContent": "1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "死灵项链",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 50,
+          "seq": 60,
           "conditionContent": "死灵,召唤,1"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 1,
+          "seq": 30,
           "conditionContent": "10"
         },
         {
@@ -572,20 +574,31 @@
     }
   },
   {
-    "name": "技能等级戒指",
+    "name": "死灵低级戒指",
     "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "戒指",
-      "quality": "魔法|稀有|传奇",
+      "quality": "魔法|稀有|传奇|套装",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "死灵戒指",
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "1"
         },
+
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "死灵戒指",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵戒指",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 4,
@@ -604,13 +617,6 @@
           "attributeType": "额外金币取得",
           "seq": 2,
           "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
         }
       ]
     }
@@ -628,6 +634,89 @@
           "attributeType": "抗寒",
           "seq": 40,
           "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 20,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+
+  {
+    "name": "抗寒戒指",
+    "description": "抗寒戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "抗寒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 20,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗寒施法戒指",
+    "description": "抗寒施法戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗寒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
         },
         {
           "matchType": "可选",
@@ -1034,7 +1123,7 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
@@ -1046,7 +1135,7 @@
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 10,
+          "seq": 1,
           "conditionContent": "死灵,召唤,1"
         },
         {

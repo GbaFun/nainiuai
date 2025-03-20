@@ -355,6 +355,10 @@ namespace AttributeMatch
                 attrValue = int.Parse(match.Groups["v"].Value);
                 ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
             }
+            else
+            {
+                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
+            }
 
             return ismatch;
         }

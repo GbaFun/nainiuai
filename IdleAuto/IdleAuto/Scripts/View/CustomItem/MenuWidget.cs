@@ -160,7 +160,7 @@ namespace IdleAuto.Scripts.View
                 {
                   //  await FlowController.GroupWork(5, 1, RepairManager.Instance.ClearEquips);
                    // await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(1, 1, RepairManager.Instance.AutoRepair);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
