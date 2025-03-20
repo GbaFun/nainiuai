@@ -93,39 +93,11 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
-          "attributeType": "技能等级",
-          "seq": 1,
-          "conditionContent": "冥想光环,1"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "seq": 2,
-          "conditionContent": "审判光环,3"
-        },
-        {
-          "matchType": "任一",
-          "operate": "等于",
           "attributeType": "指定职业单系技能",
           "seq": 1,
           "conditionContent": "骑士,光环,1"
-        },
-        {
-          "matchType": "任一",
-          "operate": "等于",
-          "attributeType": "指定职业单系技能",
-          "seq": 2,
-          "conditionContent": "骑士,光环,2"
-        },
-        {
-          "matchType": "任一",
-          "operate": "等于",
-          "attributeType": "指定职业单系技能",
-          "seq": 3,
-          "conditionContent": "骑士,光环,3"
         }
       ]
     }
@@ -664,7 +636,7 @@
           "seq": 1,
           "conditionContent": "10"
         },
-        
+
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -936,7 +908,7 @@
           "seq": 3,
           "conditionContent": "10"
         },
-        
+
         {
           "matchType": "可选",
           "operate": "大于等于",
