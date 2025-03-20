@@ -812,17 +812,18 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
+          "attributeType": "抗寒",
+          "seq": 8,
+          "conditionContent": "1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
           "conditionContent": "10"
         },
+        
         {
           "matchType": "可选",
           "operate": "大于等于",

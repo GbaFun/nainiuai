@@ -574,7 +574,7 @@
   //抗性防具
   {
     "equip": {
-      "category": "手套|靴子",
+      "category": "全部",
       "quality": "全部",
       "conditions": [
         {
@@ -583,6 +583,44 @@
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
           "conditionContent": "50"
+        }
+      ]
+
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      "category": "全部",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "抗寒",
+          "conditionContent": "35"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "conditionContent": "35"
+        }
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "抗电",
+          "conditionContent": "35"
+        }
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "conditionContent": "35"
         }
       ]
 
