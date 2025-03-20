@@ -584,12 +584,13 @@
           "matchType": "任一",
           "matchGroupName": "死灵戒指",
           "operate": "大于等于",
+          "seq": 50,
           "attributeType": "所有技能",
           "conditionContent": "1"
         },
 
         {
-          "matchType": "任一",
+          "matchType": "可选",
           "operate": "大于等于",
           "matchGroupName": "死灵戒指",
           "attributeType": "单项元素抗性之和",
@@ -601,23 +602,10 @@
           "matchGroupName": "死灵戒指",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 4,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
+          "seq": 1,
           "conditionContent": "10"
         }
+       
       ]
     }
   },
