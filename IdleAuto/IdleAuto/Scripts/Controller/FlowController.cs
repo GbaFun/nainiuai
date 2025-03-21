@@ -135,7 +135,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task StartEfficencyMonitor(BroWindow window)
         {
                 var control = new EfficiencyController(window);
-                await control.StartMonitor(window.User);
+                await control.StartMonitor(window);
             
         }
 

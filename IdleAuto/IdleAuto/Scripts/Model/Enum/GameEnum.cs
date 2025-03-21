@@ -221,5 +221,7 @@ public enum emArtifactBase
     [Description("知识")]
     死骑知识,
     [Description("眼光")]
-    单手眼光
+    单手眼光,
+    [Description("复苏之风")]
+    单手复苏,
 }

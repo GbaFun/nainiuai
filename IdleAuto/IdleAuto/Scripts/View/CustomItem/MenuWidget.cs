@@ -154,13 +154,14 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
+            var accounts = RepairManager.NainiuAccounts;
             Task.Run(async () =>
             {
                 try
                 {
-                 //   await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(4, 17, RepairManager.Instance.AutoRepair);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
                 {
@@ -278,13 +279,13 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             // FlowController.MakeArtifact();
-            var nanfangAccount = ConfigUtil.GetAppSetting("南方账号").Split(',');
+            var nanfangAccount = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, nanfangAccount);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor);
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor, RepairManager.NainiuAccounts);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
@@ -312,7 +313,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnDungeon_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon);
+            var accounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, accounts);
         }
 
         private void btnProxy_Click(object sender, EventArgs e)

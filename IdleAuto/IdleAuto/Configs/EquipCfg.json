@@ -610,8 +610,8 @@
     }
   },
   {
-    "name": "抗寒靴子",
-    "description": "抗寒靴子，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
+    "name": "抗寒电靴子",
+    "description": "过40本挂48用",
     "equipment": {
       "category": "靴子",
       "quality": "全部",
@@ -626,17 +626,16 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 1,
-          "conditionContent": "10"
+          "attributeType": "抗电",
+          "seq": 40,
+          "conditionContent": "20"
         },
-
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 20,
-          "conditionContent": "5"
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
         }
       ]
     }
@@ -687,7 +686,7 @@
     }
   },
   {
-    "name": "抗寒施法戒指",
+    "name": "抗寒电施法戒指",
     "description": "抗寒施法戒指",
     "equipment": {
       "category": "戒指",
@@ -701,25 +700,17 @@
           "conditionContent": "20"
         },
         {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗电",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
           "matchType": "必需",
           "operate": "大于",
           "attributeType": "施法速度",
           "conditionContent": "1"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 1,
-          "conditionContent": "10"
-        },
-
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 20,
-          "conditionContent": "5"
         }
       ]
     }
@@ -970,20 +961,20 @@
           "operate": "大于等于",
           "attributeType": "抗寒",
           "seq": 20,
-          "conditionContent": "30"
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗电",
+          "seq": 20,
+          "conditionContent": "20"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 500,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
           "conditionContent": "10"
         },
 
@@ -1378,7 +1369,7 @@
       "category": "帽子|头饰",
       "quality": "全部",
       "conditions": [
-    
+
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -1629,6 +1620,51 @@
         {
           "matchType": "任一",
           "matchGroupName": "死骑30主手",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "武器速度",
+          "conditionContent": "0-30"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "攻击速度提升"
+        }
+      ]
+    }
+  },
+  {
+    "name": "死骑40副手",
+    "description": "复苏之风",
+    "equipment": {
+      "category": "斧|剑|锤|匕首|标枪|投掷武器",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑40副手",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "单手复苏",
+          "seq": 500,
+          "conditionContent": "复苏之风"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑40副手",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死骑,冰霜,1"

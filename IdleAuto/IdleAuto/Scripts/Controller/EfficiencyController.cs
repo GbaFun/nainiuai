@@ -19,9 +19,11 @@ namespace IdleAuto.Scripts.Controller
         /// 监控效率 存表
         /// </summary>
         /// <returns></returns>
-        public async Task StartMonitor(UserModel user)
+        public async Task StartMonitor(BroWindow win)
         {
-            await Task.Delay(3000);
+            var user = win.User;
+            var isReadRoleInfo = bool.Parse(ConfigUtil.GetAppSetting("isReadRoleInfo"));
+            await Task.Delay(2000);
             await _win.LoadUrlWaitJsInit("https://www.idleinfinity.cn/Battle/Guaji", "guaji");
             var data = await _win.CallJs($"_guaji.getData()");
             var arr = data.Result.ToObject<List<Efficency>>();
@@ -30,7 +32,18 @@ namespace IdleAuto.Scripts.Controller
                 p.UserName = user.AccountName;
             });
             var r = FreeDb.Sqlite.InsertOrUpdate<Efficency>().SetSource(arr).ExecuteAffrows();
-            Console.WriteLine(arr);
+            if (isReadRoleInfo)
+            {
+                var charControl = new CharacterController(win);
+                foreach(var item in user.Roles)
+                {
+                    await Task.Delay(2000);
+                    var a = await charControl.GetCharAtt(item);
+                    a.AccountName = user.AccountName;
+                    var aa=FreeDb.Sqlite.InsertOrUpdate<CharAttributeModel>().SetSource(a).ExecuteAffrows();
+                    Console.WriteLine("保存行数:" + aa);
+                }
+            }
         }
     }
 }

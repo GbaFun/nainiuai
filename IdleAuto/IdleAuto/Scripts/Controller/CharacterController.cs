@@ -496,14 +496,14 @@ namespace IdleAuto.Scripts.Controller
         /// 获取人物属性
         /// </summary>
         /// <returns></returns>
-        public async Task<CharAttributeModel> GetCharAtt()
+        public async Task<CharAttributeModel> GetCharAtt(RoleModel role)
         {
-            if (_browser.CanExecuteJavascriptInMainFrame)
-            {
-                var d = await _browser.EvaluateScriptAsync($@"_char.getAttribute();");
-                return d.Result?.ToObject<CharAttributeModel>();
-            }
-            else return null;
+
+            await _win.LoadUrlWaitJsInit($"{IdleUrlHelper.Idle}/{IdleUrlHelper.Role}?id={role.RoleId}", "char");
+
+            var d = await _win.CallJs($@"_char.getAttribute();");
+            return d.Result?.ToObject<CharAttributeModel>();
+
 
         }
 

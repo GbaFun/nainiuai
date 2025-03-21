@@ -34,6 +34,9 @@ class Character {
 
     getAttribute() {
         if (location.href.indexOf("Character/Detail") == -1) return;
+        var lvName = $($(".media-body")[0]).find("div")[0].innerText;
+        var lv = lvName.match(/\d+/)[0] * 1;
+        var job = lvName[lvName.length - 2] + lvName[lvName.length - 1];
         var str = $("#char-str").text();
         var dex = $("#char-dex").text();
         var vit = $("#char-vit").text();
@@ -52,6 +55,9 @@ class Character {
         var isIgnoreDef = $(attPanel).find("p span:contains('无视目标防御')").next().text();
         var obj = {
             roleId: this.cid,
+            roleName: $($(".panel-heading")[0]).find(".name").text(),
+            lv: lv,
+            jobName: job,
             str: str,
             dex: dex,
             vit: vit,

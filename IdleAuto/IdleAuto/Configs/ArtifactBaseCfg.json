@@ -90,15 +90,45 @@
       },
       {
         "matchType": "必需",
-        "operate": "等于",
-        "attributeType": "自定义",
-        "conditionContent": "斧速度：10"
+        "operate": "在范围内",
+        "attributeType": "武器速度",
+        "conditionContent": "0-20"
       },
       {
         "matchType": "必需",
         "operate": "等于",
         "attributeType": "凹槽",
         "conditionContent": "4"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
+  },
+  "单手复苏": {
+    "category": "斧|锤",
+    "quality": "破碎",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "双手伤害"
+      },
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "武器速度",
+        "conditionContent": "0-30"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "3"
       },
       {
         "matchType": "必需",

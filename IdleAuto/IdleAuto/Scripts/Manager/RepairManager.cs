@@ -18,6 +18,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 public class RepairManager : SingleManagerBase<RepairManager>
 {
     public static object _lock = new object();
+
+    public static string[] NanfangAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
+    public static string[] NainiuAccounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
     /// <summary>
     /// 一键修车（单账号）
     /// 盘库、技能加点、自动更换装备、剩余属性点分配

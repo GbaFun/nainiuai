@@ -30,11 +30,18 @@ namespace IdleAuto.Scripts.Model
     }
     public class CharAttributeModel
     {
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
+      
 
+        public string AccountName { get; set; }
+        [Column( IsPrimary = true)]
         [Navigate(nameof(RoleModel.RoleId))]
         public int RoleId { get; set; }
+
+        public string RoleName { get; set; }
+
+        public int Lv { get; set; }
+
+        public string JobName { get; set; }
 
         [Description("力量")]
         public int Str { get; set; }
