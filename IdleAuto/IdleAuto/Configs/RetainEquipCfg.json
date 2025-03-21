@@ -142,6 +142,13 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "浩劫"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "圣衣"
         }
       ]

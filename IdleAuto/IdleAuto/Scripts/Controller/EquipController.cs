@@ -300,7 +300,7 @@ public class EquipController
                                         foreach (var item in equips)
                                         {
                                             item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
-                                            if (item.Value.emItemQuality == emItemQuality.套装 || item.Value.emItemQuality == emItemQuality.神器)
+                                            if ( item.Value.emItemQuality == emItemQuality.神器)
                                                 continue;
                                             if (!RetainEquipCfg.Instance.IsRetain(item.Value))
                                                 toClear.Add(item.Key, item.Value);

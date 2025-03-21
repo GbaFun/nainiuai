@@ -130,12 +130,12 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("MapSwitchAccount").Split(',');
+            string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
             if (MapSwitchAccounts.Length == 1 && MapSwitchAccounts[0] == "")
             {
                 MapSwitchAccounts = null;
             }
-            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(4, 0, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -159,8 +159,8 @@ namespace IdleAuto.Scripts.View
                 try
                 {
                  //   await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
+                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(4, 17, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {

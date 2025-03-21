@@ -17,6 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 public class RepairManager : SingleManagerBase<RepairManager>
 {
+    public static object _lock = new object();
     /// <summary>
     /// 一键修车（单账号）
     /// 盘库、技能加点、自动更换装备、剩余属性点分配
@@ -45,10 +46,14 @@ public class RepairManager : SingleManagerBase<RepairManager>
         {
             try
             {
+                lock (_lock)
+                {
+                    var roleProgress = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).ToList();
+                    if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
+                        continue;
+                }
                 //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
-                var roleProgress = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).ToList();
-                if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
-                    continue;
+                
                 //技能加点
                 await AddSkillPoint(window, role);
                 //自动更换装备
@@ -62,9 +67,13 @@ public class RepairManager : SingleManagerBase<RepairManager>
                     Type = emTaskType.AutoEquip,
                     IsEnd = true
                 };
-                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).First();
-                if (one != null)
-                    progress.Id = one.Id;
+                lock (_lock)
+                {
+                    var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).First();
+                    if (one != null)
+                        progress.Id = one.Id;
+                }
+            
                 FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(progress).ExecuteAffrows();
             }
             catch (Exception ex)
