@@ -2,6 +2,155 @@
   {
     "equip": {
       "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "达内塔"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "萤火虫"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天灾"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "亚拉岗"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "孤儿"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形布尔凯索的"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "毁灭之王"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "日出"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "日落"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "夫罗卡德"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "麦克奥雷的饰环"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "手掌的安置"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "部落"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "卡格斯"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "光之烙印"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "不朽"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "风之语"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "圣衣"
+        }
+      ]
+    },
+    "maxCount": 120
+  },
+  {
+    "equip": {
+      "category": "全部",
       "quality": "传奇",
       "conditions": [
         {
@@ -169,25 +318,25 @@
           "conditionContent": "骷髅法师,3"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,1"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,1"
+          "conditionContent": "支配骷髅,3"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "生生不息,1"
+          "conditionContent": "生生不息,3"
         },
         {
           "matchType": "可选",
@@ -459,14 +608,14 @@
   },
   {
     "equip": {
-      "category": "斧",
+      "category": "斧|锤",
       "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "等于",
+          "operate": "在范围内",
           "attributeType": "凹槽",
-          "conditionContent": "4"
+          "conditionContent": "3-4"
         },
         {
           "matchType": "必需",
@@ -484,7 +633,7 @@
         }
       ]
     },
-    "maxCount": 6
+    "maxCount": 12
   },
   //和平-疾速-刃-信念-天灾-戒律
   {
@@ -607,14 +756,14 @@
           "operate": "大于等于",
           "attributeType": "抗火",
           "conditionContent": "35"
-        }
+        },
         {
           "matchType": "任一",
           "matchGroupName": "抗性防具",
           "operate": "大于等于",
           "attributeType": "抗电",
           "conditionContent": "35"
-        }
+        },
         {
           "matchType": "任一",
           "matchGroupName": "抗性防具",

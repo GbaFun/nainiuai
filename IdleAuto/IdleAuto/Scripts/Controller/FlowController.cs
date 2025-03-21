@@ -132,17 +132,11 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        public static async Task StartEfficencyMonitor()
+        public static async Task StartEfficencyMonitor(BroWindow window)
         {
-            for (int i = 0; i < AccountCfg.Instance.Accounts.Count; i++)
-            {
-                var account = AccountCfg.Instance.Accounts[i];
-                var user = new UserModel(account);
-                var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new EfficiencyController(window);
-                await control.StartMonitor(user);
-                window.Close();
-            }
+                await control.StartMonitor(window.User);
+            
         }
 
         public static async Task StartInit()

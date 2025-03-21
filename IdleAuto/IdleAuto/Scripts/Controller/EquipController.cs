@@ -417,7 +417,16 @@ public class EquipController
                     foreach (var m in toMakeEquips)
                     {
                         EquipModel artifactEquip = await artifactControl.MakeArtifact(m.Value.ArtifactType, m.Value.EquipBase, role.RoleId, m.Value.Config);
-                        if (artifactEquip != null) towearEquips.Add(m.Key, artifactEquip);
+                        if (artifactEquip != null)
+                        {
+                            if (towearEquips.ContainsKey(m.Key))
+                            {
+                                //比较下制作装备和仓库最佳装备的权重
+                                towearEquips[m.Key] = artifactEquip;
+
+                            }
+                            else towearEquips.Add(m.Key, artifactEquip);
+                        }
                         await Task.Delay(1500);
                     }
                 }
@@ -552,21 +561,27 @@ public class EquipController
                 result.IsSuccess = false;
                 break;
             }
-            if (matchEquips.Count == 0)
+
+            //寻找是否有可以制作神器的配置
+            var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
+            if (artifactConfig.Count() > 0)
             {
-                //没有直接匹配的装备的话寻找是否有可以制作神器的配置
-                var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
-                if (artifactConfig.Count() > 0)
+                var maxSeq = equipment.Equipment.Conditions.Max(m => m.Seq);
+                var config = artifactConfig.OrderByDescending(o => o.Seq).First();//最大seq的神器配置
+                if ((maxSeq == config.Seq||matchEquips.Count==0))
                 {
-                    var config = artifactConfig.First();
+                    //最大配置是神器配置 或者压根没有匹配装备,如果匹配到了 但seq小于神器也要去检查能不能做神器
                     var artifactName = config.ArtifactBase;
                     var artifactEnum = (emArtifactBase)Enum.Parse(typeof(emArtifactBase), artifactName);
+                    //底子的配置不是装备配置
                     var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
                     //找底子
                     var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition });
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition, Seq = config.Seq });
                 }
+
             }
+
         }
 
         return result;
@@ -891,6 +906,10 @@ public struct ArtifactMakeStruct
     public emArtifactBase ArtifactType;
     public EquipModel EquipBase;
     public Equipment Config;
+    /// <summary>
+    /// 制作装备的seq
+    /// </summary>
+    public int Seq;
 }
 public struct EquipSuitMatchStruct
 {

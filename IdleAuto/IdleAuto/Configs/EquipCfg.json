@@ -605,7 +605,7 @@
           "seq": 1,
           "conditionContent": "10"
         }
-       
+
       ]
     }
   },
@@ -811,7 +811,7 @@
           "seq": 3,
           "conditionContent": "10"
         },
-        
+
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -849,7 +849,7 @@
           "matchGroupName": "死骑技能衣服",
           "operate": "等于",
           "attributeType": "名称",
-          "seq": 10,
+          "seq": 104,
           "conditionContent": "天灾领主的铠甲"
         },
         {
@@ -857,7 +857,7 @@
           "matchGroupName": "死骑技能衣服",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 104,
+          "seq": 10,
           "conditionContent": "1"
         },
         {
@@ -970,13 +970,13 @@
           "operate": "大于等于",
           "attributeType": "抗寒",
           "seq": 20,
-          "conditionContent": "20"
+          "conditionContent": "30"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 50,
+          "seq": 500,
           "conditionContent": "10"
         },
         {
@@ -1088,7 +1088,7 @@
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
-          "seq": 5,
+          "seq": 104,
           "conditionContent": "骷髅法师,1"
         },
         {
@@ -1096,28 +1096,22 @@
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 1,
+          "seq": 50,
           "conditionContent": "死灵,召唤,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
-          "seq": 2,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
           "seq": 1,
           "conditionContent": "10"
         },
+
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "seq": 3,
+          "seq": 1,
           "conditionContent": "5"
         }
       ]
@@ -1384,6 +1378,45 @@
       "category": "帽子|头饰",
       "quality": "全部",
       "conditions": [
+    
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 40,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 40,
+          "conditionContent": "死灵,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 40,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "1级召唤头盔或知识",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
         {
           "matchType": "可选",
           "operate": "等于",
@@ -1537,14 +1570,14 @@
     }
   },
   {
-    "name": "死骑知识",
+    "name": "死骑知识或五凋零",
     "description": "死骑知识头盔",
     "equipment": {
       "category": "死骑面罩",
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "死骑头盔",
           "operate": "等于",
           "attributeType": "名称",
@@ -1558,25 +1591,59 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "凋零光环,3"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "死骑头盔",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 10,
+          "conditionContent": "死骑,冰霜,1"
         }
       ]
     }
   },
   {
-    "name": "死骑眼光",
-    "description": "死骑眼光,",
+    "name": "死骑30主手",
+    "description": "死骑眼光或者冰霜优先眼光",
     "equipment": {
       "category": "斧|剑|锤|匕首|标枪|投掷武器",
       "quality": "魔法|稀有|传奇",
       "necessary": 0,
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "死骑30主手",
           "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "单手眼光",
-          "seq": 1,
+          "seq": 500,
           "conditionContent": "眼光"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑30主手",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "武器速度",
+          "conditionContent": "0-30"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "攻击速度提升"
         }
       ]
     }
@@ -1604,9 +1671,9 @@
         },
         {
           "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "自定义",
-          "conditionContent": "速度：10"
+          "operate": "在范围内",
+          "attributeType": "武器速度",
+          "conditionContent": "0-20"
         },
         {
           "matchType": "必需",

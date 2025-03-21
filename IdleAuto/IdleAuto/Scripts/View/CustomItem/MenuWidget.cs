@@ -158,9 +158,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(10, 1, RepairManager.Instance.ClearEquips);
-                    //await FlowController.GroupWork(10, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(10, 1, RepairManager.Instance.AutoRepair);
+                 //   await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -284,7 +284,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.StartEfficencyMonitor();
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
