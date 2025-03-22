@@ -154,7 +154,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            var accounts = RepairManager.NainiuAccounts;
+            var accounts = RepairManager.NanfangAccounts;
             Task.Run(async () =>
             {
                 try
@@ -292,10 +292,14 @@ namespace IdleAuto.Scripts.View
         {
         }
 
-        private void BtnTest_Click(object sender, EventArgs e)
+        private async void BtnTest_Click(object sender, EventArgs e)
         {
-            EquipCfg.Instance.Get("死骑知识");
-            //RepairManager.Instance.AutoRepair();
+            //Account item = this.AccountCombo.SelectedItem as Account;
+            //AccountController.Instance.User = new UserModel(item);
+            //var user = AccountController.Instance.User;
+            //var window = await TabManager.Instance.TriggerAddBroToTap(user);
+            //RuneController controller = new RuneController();
+            //controller.UpgradeRune(window, user, new Dictionary<int, int> { { 4, 10 }, { 3, 5 } });
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)

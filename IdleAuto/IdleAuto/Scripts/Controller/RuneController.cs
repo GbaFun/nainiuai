@@ -81,7 +81,7 @@ public class RuneController
         P.Log("开始跳转材料页面", emLogType.RuneUpgrate);
         await win.LoadUrlWaitJsInit(IdleUrlHelper.MaterialUrl(account.FirstRole.RoleId), "rune");
 
-        P.Log("开始整理所需符文", emLogType.RuneUpgrate);
+        P.Log("开始整理升级所需符文", emLogType.RuneUpgrate);
         List<int> runeIds = runeMap.Keys.ToList();
         runeIds.Sort((a, b) =>
         {
@@ -111,54 +111,33 @@ public class RuneController
         }
 
         P.Log("开始升级符文", emLogType.RuneUpgrate);
-        //await Task.Delay(1000);
-        //await win.CallJsWaitReload($@"upgradeRune({runeId},{runeNum})", "rune");
+        List<int> toUpIds = toUpgrade.Keys.ToList();
+        toUpIds.Sort((a, b) =>
+        {
+            return a.CompareTo(b);
+        });
+        for (int i = 0; i < toUpIds.Count; i++)
+        {
+            var response = await win.CallJs($@"getRuneNum({toUpIds[i]})");
+            if (response.Success)
+            {
+                int curNum = (int)response.Result;
+                if (curNum >= toUpgrade[toUpIds[i]])
+                {
+                    await Task.Delay(1000);
+                    var response2 = await win.CallJsWaitReload($@"upgradeRune({toUpIds[i]},{toUpgrade[toUpIds[i]]})", "rune");
+                    if (response2.Success == true)
+                    {
+                        P.Log($"升级符文{toUpIds[i]}（{toUpgrade[toUpIds[i]]}个）成功", emLogType.RuneUpgrate);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"符文{toUpIds[i]}数量不足，无法升级");
+                    break;
+                }
+            }
+        }
     }
-
-    //Account item = this.AccountCombo.SelectedItem as Account;
-    //AccountController.Instance.User = new UserModel(item);
-    //var user = AccountController.Instance.User;
-    //var window = await TabManager.Instance.TriggerAddBroToTap(user);
-    //RuneController controller = new RuneController();
-    //await controller.UpgradeRune(window, user, new Dictionary<int, int>()
-    //{
-    //    { 10, 10 },
-    //    { 11, 10 },
-    //    { 12, 10 },
-    //});
-
-    //public async Task<bool> CheckRuneNum(BroWindow win, int runeId, int needNum, out Dictionary<int, int> toUpgrade)
-    //{
-    //    toUpgrade = new Dictionary<int, int>();
-    //    var response = await win.CallJs($@"getRuneNum({runeId})");
-    //    if (response.Success)
-    //    {
-    //        int curNum = (int)response.Result;
-    //        if (curNum >= needNum)
-    //        {
-    //            P.Log($"符文{runeId}数量足够，需要{needNum}个，当前{curNum}个", emLogType.RuneUpgrate);
-    //            toUpgrade.Add(runeId, needNum - curNum);
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            int needUpNum = (needNum - curNum) * 2;
-    //            if (runeId - 1 >= 1)
-    //            {
-    //                var response2 = await win.CallJs($@"getRuneNum({runeId - 1})");
-    //                if (response2.Success)
-    //                {
-    //                    int curNum2 = (int)response2.Result;
-    //                    if (curNum2 >= needUpNum)
-    //                    {
-    //                        P.Log($"符文{runeId}数量不足，需要{needNum}个，当前{curNum}个", emLogType.RuneUpgrate);
-    //                        toUpgrade.Add(runeId - 1, needNum - curNum2);
-    //                        return true;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 }
 
