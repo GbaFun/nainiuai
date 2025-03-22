@@ -48,7 +48,7 @@
             var rune = targetRuneArr[i];
             userRuneMap[rune * 1]--;
             if (userRuneMap[rune * 1] < 0) {
-                isEnough = false
+                isEnough = false;
             }
         }
         return isEnough;

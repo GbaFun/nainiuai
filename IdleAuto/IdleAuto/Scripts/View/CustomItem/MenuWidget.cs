@@ -285,7 +285,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
