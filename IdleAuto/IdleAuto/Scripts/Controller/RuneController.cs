@@ -83,18 +83,18 @@ public class RuneController
 
         P.Log("开始整理升级所需符文", emLogType.RuneUpgrate);
         List<int> runeIds = runeMap.Keys.ToList();
-        runeIds.Sort((a, b) =>
-        {
-            return b.CompareTo(a);
-        });
-
+        int maxRune = runeIds.Max();
+        bool runeEnough = true;
         Dictionary<int, int> toUpgrade = new Dictionary<int, int>();
-        for (int i = 0; i < runeIds.Count; i++)
+        for (int i = maxRune; i > 0; i--)
         {
-            int runeId = runeIds[i];
-            int needNum = runeMap[runeId];
-            if (toUpgrade.TryGetValue(runeId, out int num))
-                needNum += num;
+            int runeId = i;
+            int needNum = 0;
+            if (runeMap.TryGetValue(runeId, out int num1))
+                needNum += num1;
+            if (toUpgrade.TryGetValue(runeId, out int num2))
+                needNum += num2;
+            if (needNum <= 0) continue;
             var response = await win.CallJs($@"getRuneNum({runeId})");
             if (response.Success)
             {
@@ -106,35 +106,44 @@ public class RuneController
                         int needUpNum = (needNum - curNum) * 2;
                         toUpgrade.Add(runeId - 1, needUpNum);
                     }
+                    else
+                    {
+                        P.Log($"符文数量不足，无法升级", emLogType.RuneUpgrate);
+                        runeEnough = false;
+                        break;
+                    }
                 }
             }
         }
 
         P.Log("开始升级符文", emLogType.RuneUpgrate);
-        List<int> toUpIds = toUpgrade.Keys.ToList();
-        toUpIds.Sort((a, b) =>
+        if (runeEnough)
         {
-            return a.CompareTo(b);
-        });
-        for (int i = 0; i < toUpIds.Count; i++)
-        {
-            var response = await win.CallJs($@"getRuneNum({toUpIds[i]})");
-            if (response.Success)
+            List<int> toUpIds = toUpgrade.Keys.ToList();
+            toUpIds.Sort((a, b) =>
             {
-                int curNum = (int)response.Result;
-                if (curNum >= toUpgrade[toUpIds[i]])
+                return a.CompareTo(b);
+            });
+            for (int i = 0; i < toUpIds.Count; i++)
+            {
+                var response = await win.CallJs($@"getRuneNum({toUpIds[i]})");
+                if (response.Success)
                 {
-                    await Task.Delay(1000);
-                    var response2 = await win.CallJsWaitReload($@"upgradeRune({toUpIds[i]},{toUpgrade[toUpIds[i]]})", "rune");
-                    if (response2.Success == true)
+                    int curNum = (int)response.Result;
+                    if (curNum >= toUpgrade[toUpIds[i]])
                     {
-                        P.Log($"升级符文{toUpIds[i]}（{toUpgrade[toUpIds[i]]}个）成功", emLogType.RuneUpgrate);
+                        await Task.Delay(1000);
+                        var response2 = await win.CallJsWaitReload($@"upgradeRune({toUpIds[i]},{toUpgrade[toUpIds[i]]})", "rune");
+                        if (response2.Success == true)
+                        {
+                            P.Log($"升级符文{toUpIds[i]}（{toUpgrade[toUpIds[i]]}个）成功", emLogType.RuneUpgrate);
+                        }
                     }
-                }
-                else
-                {
-                    MessageBox.Show($"符文{toUpIds[i]}数量不足，无法升级");
-                    break;
+                    else
+                    {
+                        MessageBox.Show($"符文{toUpIds[i]}数量不足，无法升级");
+                        break;
+                    }
                 }
             }
         }
