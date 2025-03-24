@@ -279,13 +279,13 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             // FlowController.MakeArtifact();
-            var nanfangAccount = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter, nanfangAccount);
+            var nainiuAccount = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, nainiuAccount);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor, RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).ToArray());
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
@@ -294,12 +294,12 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            //Account item = this.AccountCombo.SelectedItem as Account;
-            //AccountController.Instance.User = new UserModel(item);
-            //var user = AccountController.Instance.User;
-            //var window = await TabManager.Instance.TriggerAddBroToTap(user);
-            //RuneController controller = new RuneController();
-            //controller.UpgradeRune(window, user, new Dictionary<int, int> { { 4, 10 }, { 3, 5 } });
+            Account item = this.AccountCombo.SelectedItem as Account;
+            AccountController.Instance.User = new UserModel(item);
+            var user = AccountController.Instance.User;
+            var window = await TabManager.Instance.TriggerAddBroToTap(user);
+            RuneController controller = new RuneController();
+            controller.UpgradeRune(window, user, new Dictionary<int, int> { { 19, 200 } });
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)
