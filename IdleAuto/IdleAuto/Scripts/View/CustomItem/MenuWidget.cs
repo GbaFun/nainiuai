@@ -159,9 +159,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                   await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
-                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
+                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
                 {
@@ -279,7 +279,7 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             // FlowController.MakeArtifact();
-            
+
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NainiuAccounts);
         }
 
@@ -317,7 +317,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnDungeon_Click(object sender, EventArgs e)
         {
-            
+
             FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
         }
 

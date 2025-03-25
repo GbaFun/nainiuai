@@ -76,7 +76,7 @@ public class RuneController
 
     public async Task<bool> UpgradeRune(BroWindow win, UserModel account, Dictionary<int, int> runeMap)
     {
-        bool isSuccess=true;
+        bool isSuccess = true;
         P.Log("开始升级符文", emLogType.RuneUpgrate);
         await Task.Delay(1000);
         P.Log("开始跳转材料页面", emLogType.RuneUpgrate);
@@ -142,6 +142,7 @@ public class RuneController
                     }
                     else
                     {
+                        isSuccess = false;
                         MessageBox.Show($"符文{toUpIds[i]}数量不足，无法升级");
                         break;
                     }

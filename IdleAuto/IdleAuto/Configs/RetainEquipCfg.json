@@ -261,7 +261,15 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "蚀肉骑士"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "李奥瑞克王的武器"
         }
+      
       ]
     },
     "maxCount": 1200
