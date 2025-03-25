@@ -27,6 +27,14 @@ namespace IdleAuto.Scripts.Controller
             if (baseEq == null) return null;
             var existedEq = !isSecondCheck ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
             if (existedEq != null) return existedEq;
+            if (baseEq.emItemQuality == emItemQuality.普通)
+            {//需要打孔
+                var reformControl = new ReformController(_win);
+                var targetSlotCount = int.Parse(config.Conditions.Where(p => p.AttributeType == emAttrType.凹槽).FirstOrDefault().ConditionContent);
+
+                var isSuccess = await reformControl.SlotReform(baseEq.EquipID, roleid, targetSlotCount);
+                if (!isSuccess) return null;
+            }
 
             //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);
@@ -45,16 +53,19 @@ namespace IdleAuto.Scripts.Controller
             }
 
             var name = art.GetEnumDescription();//神器名字
-            var updateRuneMap = !isSecondCheck ? await GetUpdateRuneMap(name) : null;
-            
-            if (updateRuneMap != null)
+            var isRuneEnough = !isSecondCheck ? await IsRuneEnouth(name) : true;
+
+            if (!isRuneEnough)
             {
+                //不准自动合符文
+                if (!config.isUpdateRune) return null;
+                var updateRuneMap = await GetUpdateRuneMap(name);
                 var isSuccess = await UpdateRune(updateRuneMap);
                 //没合成成功 则结束神器制作
                 if (!isSuccess) return null;
                 if (_win.GetBro().Address != IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID))
                 {
-                   await Task.Delay(1500);
+                    await Task.Delay(1500);
                     await _win.LoadUrlWaitJsInit(IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID), "inlay");
                     await Task.Delay(1500);
                 }
@@ -140,9 +151,18 @@ namespace IdleAuto.Scripts.Controller
         {
             var data = new Dictionary<string, object>();
             data.Add("name", name);
-            var r = await _win.CallJs($"_inlay.getRuneUpdateMap({data.ToLowerCamelCase()})");
+            var r = await _win.CallJs($"_inlay.getRuneMap({data.ToLowerCamelCase()})");
             var map = r.Result.ToObject<Dictionary<int, int>>();
             return map;
+        }
+
+        public async Task<bool> IsRuneEnouth(string name)
+        {
+            var data = new Dictionary<string, object>();
+            data.Add("name", name);
+            var r = await _win.CallJs($"_inlay.isRuneEnough({data.ToLowerCamelCase()})");
+            var rr = r.Result.ToObject<bool>();
+            return rr;
         }
 
         /// <summary>

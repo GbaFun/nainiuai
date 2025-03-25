@@ -571,7 +571,7 @@
     "jobName": "死骑",
     "lv": {
       "min": 40,
-      "max": 70
+      "max": 40
     },
     "equipSuit": [
       {
@@ -610,6 +610,62 @@
         },
         "衣服": {
           "name": "死骑技能衣服",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "冰霜护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    "jobName": "死骑",
+    "lv": {
+      "min": 41,
+      "max": 90
+    },
+    "equipSuit": [
+      {
+        "suitName": "死骑套装",
+        "主手": {
+          "name": "死骑30主手",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "死骑40副手",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "死骑知识或五凋零",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速冰霜项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "抗寒戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "任一技能戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "零速抗寒手",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗寒电靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "死骑天灾",
           "isNecessery": 0
         },
         "护符": {

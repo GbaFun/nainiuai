@@ -277,7 +277,7 @@
           "seq": 2,
           "conditionContent": "1"
         },
-        
+
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -623,6 +623,50 @@
     }
   },
   {
+    "name": "任一技能戒指",
+    "description": "",
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇|套装",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "matchGroupName": "任一技能戒指",
+          "operate": "大于等于",
+          "seq": 200,
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "matchGroupName": "死灵戒指",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "任一技能戒指",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "任一技能戒指",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+
+      ]
+    }
+  },
+  {
     "name": "死灵低级戒指",
     "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
@@ -883,6 +927,77 @@
           "attributeType": "施法速度",
           "seq": 1,
           "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑技能衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 104,
+          "conditionContent": "天灾领主的铠甲"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑技能衣服",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 10,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+
+    "name": "死骑天灾",
+    "description": "",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑技能衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 120,
+          "artifactBase": "天灾",
+          "conditionContent": "天灾"
         },
         {
           "matchType": "任一",
@@ -1349,7 +1464,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "seq": 6,
+          "seq": 2,
           "conditionContent": "生生不息,1"
         },
         {

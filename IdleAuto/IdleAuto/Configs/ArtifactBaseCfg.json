@@ -162,14 +162,40 @@
       }
     ]
   },
-  "亡者遗产": {
-    "category": "手杖",
-    "quality": "普通|破碎",
-    "slotRule": "333:direct,33:direct,312:direct,321:direct,322:direct,else:random",
+  "天灾": {
+    "category": "衣服",
+    "quality": "破碎",
+    "isUpdateRune": true,
     "conditions": [
       {
         "matchType": "必需",
-        "operate": "大于等于",
+        "operate": "等于",
+        "attributeType": "自定义",
+        "conditionContent": "重型"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "3"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
+  },
+  "亡者遗产": {
+    "category": "手杖",
+    "quality": "普通|破碎",
+    "slotRule": "333:direct,33:direct,331:direct,else:random",
+    "remakeRule": "333:true",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
         "attributeType": "凹槽",
         "conditionContent": "2"
       },

@@ -214,6 +214,7 @@ public enum emMaskType
 
 public enum emArtifactBase
 {
+    未知=0,
     [Description("隐密")]
     低力量隐密,
     [Description("知识")]
@@ -226,6 +227,8 @@ public enum emArtifactBase
     单手复苏,
     [Description("解毒")]
     解毒,
+    [Description("天灾")]
+    天灾,
     [Description("亡者遗产")]
     亡者遗产
 }

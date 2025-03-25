@@ -30,19 +30,20 @@
         } debugger
         var nextRune = getCurRune(name);
         if (!checkRuneEnough(name, nextRune)) {
-            
+
             setTimeout(() => {
                 Bridge.invokeEvent("OnJsInited", 'inlay');
             }, 2000);
             return -1;
-            
+
         }
         insertRune(nextRune);
         return 1;
     }
     //整体检查符文是否够用
-    function getRuneUpdateMap(data) {
+    function isRuneEnough(data) {
         debugger
+        var isEnough = true;
         var s = JSON.stringify(userRuneMap);
         var runeMapCopy = JSON.parse(s);
         var result = {};
@@ -51,10 +52,22 @@
             var rune = targetRuneArr[i];
             runeMapCopy[rune * 1]--;
             if (runeMapCopy[rune * 1] < 0) {
-                result[rune * 1] = result[rune * 1] ? (++result[rune * 1] ): 1;
+                isEnough = false;
+                break;
             }
         }
-        return result;
+        return isEnough;
+    }
+
+    function getRuneMap(data) {
+        var name = data.name;
+        var targetRuneArr = map[name];
+        var r = {};
+        for (let i = 0; i < targetRuneArr.length; i++) {
+            var num = targetRuneArr[i] * 1;
+            r[num] = r[num] ? ++r[num] : 1;
+        }
+        return r;
     }
 
     function checkRuneEnough(name, nextRune) {
@@ -77,7 +90,7 @@
         //已插符文最后一个
         var LastRune = $(runeElements[runeElements.length - 1]).next().find('.artifact.equip-title').text().match(/\d+/)[0];
         var lastIndex = map[name].indexOf(LastRune)
-        return map[name][lastIndex+1];
+        return map[name][lastIndex + 1];
 
     }
 
@@ -95,14 +108,14 @@
         }
     }
 
-     async function insertRune(rune) {
+    async function insertRune(rune) {
         var data = {
             eid2: rune
         };
         await POST_Message("RuneInlay", MERGE_Form(data)).then((r) => {
-         
+
         }).catch((r, status, xhr) => {
-            
+
         });
     }
 
@@ -110,7 +123,7 @@
 
 
     function readData() {
-        $('.table-condensed tr').each(function (index,item) {
+        $('.table-condensed tr').each(function (index, item) {
             var currentRow = $(item);
             var secondTextCenter = currentRow.find('.text-center:eq(1)');
             var artifactElements = secondTextCenter.find('.artifact');
@@ -135,7 +148,7 @@
 
     let userRuneMap = {};//存用户符文数量
     function getRuneCount() {
-        $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function (index,item) {
+        $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function (index, item) {
 
             var $pElement = $(this).find('p:first'); // 获取当前容器下的第一个 <p> 元素
 
@@ -147,8 +160,8 @@
             }
         });
     }
-
-    _inlay.getRuneUpdateMap = getRuneUpdateMap;
+    _inlay.getRuneMap = getRuneMap;
+    _inlay.isRuneEnough = isRuneEnough;
     _inlay.makeArtifact = makeArtifact;
     _inlay.isEnd = isEnd;
     _inlay.map = map;

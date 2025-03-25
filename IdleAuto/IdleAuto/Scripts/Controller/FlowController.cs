@@ -134,9 +134,9 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task StartEfficencyMonitor(BroWindow window)
         {
-                var control = new EfficiencyController(window);
-                await control.StartMonitor(window);
-            
+            var control = new EfficiencyController(window);
+            await control.StartMonitor(window);
+
         }
 
         public static async Task StartInit()
@@ -169,22 +169,22 @@ namespace IdleAuto.Scripts.Controller
             for (int i = 1; i < AccountCfg.Instance.Accounts.Count; i++)
             {
                 var account = AccountCfg.Instance.Accounts[i];
-                if (account.AccountName == "铁矿石" || account.AccountName == "阿绿5") continue;
+                if (account.AccountName == "铁矿石") continue;
                 var user = new UserModel(account);
 
                 //await RepairManager.Instance.ClearEquips(user);
                 // await RepairManager.Instance.UpdateEquips(user);
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
-                var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
+                var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.天灾);
                 var eqControll = new EquipController();
-                for (int j = 0; j < user.Roles.Count; j += 3)
+                for (int j = 2; j < user.Roles.Count; j += 3)
                 {
                     var role = user.Roles[j];
                     var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
                     if (baseEq.Value != null)
                     {
-                        var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, role.RoleId, condition);
+                        var equip = await control.MakeArtifact(emArtifactBase.天灾, baseEq.Value, role.RoleId, condition);
                         long equipId = equip.EquipID;
                         await Task.Delay(2000);
                         await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });

@@ -130,7 +130,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = RepairManager.NanfangAccounts;
+            string[] MapSwitchAccounts = RepairManager.NainiuAccounts;
             if (MapSwitchAccounts.Length == 1 && MapSwitchAccounts[0] == "")
             {
                 MapSwitchAccounts = null;
@@ -154,13 +154,13 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            var accounts = RepairManager.NainiuAccounts;
+            var accounts = RepairManager.NanfangAccounts;
             Task.Run(async () =>
             {
                 try
                 {
-                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
+                     await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                     await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
                     await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
@@ -285,7 +285,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor);
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor,RepairManager.NainiuAccounts);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)

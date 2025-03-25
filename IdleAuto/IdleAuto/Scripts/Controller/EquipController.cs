@@ -514,24 +514,25 @@ public class EquipController
             }
             List<EquipModel> matchEquips = GetMatchEquipBySort(accountId, role, (emEquipSort)j, curEquip, equipment);
             //寻找是否有可以制作神器的配置
-            var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
+            var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != emArtifactBase.未知);
             if (artifactConfig.Count() > 0)
             {
                 var maxSeq = equipment.Equipment.Conditions.Max(m => m.Seq);
                 var config = artifactConfig.OrderByDescending(o => o.Seq).First();//最大seq的神器配置
                 //神器不是最大seq 则优先穿matchEquip 没有match做神器
                 //神器是最大 则检查当前穿戴是配置神器么
-                
-                if ((maxSeq == config.Seq||matchEquips.Count==0) &&(curEquip==null|| curEquip.EquipName!=config.ConditionContent))
+                var matchArtifactConfig = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase).DeepCopy();
+                matchArtifactConfig.Conditions.RemoveAll(p => p.AttributeType == emAttrType.凹槽);
+                if ((maxSeq == config.Seq||matchEquips.Count==0) &&(curEquip==null|| !AttributeMatchUtil.Match(curEquip, matchArtifactConfig, out _)||curEquip.EquipName!=config.ConditionContent))
                 {
                     //最大配置是神器配置 或者压根没有匹配装备
                     var artifactName = config.ArtifactBase;
-                    var artifactEnum = (emArtifactBase)Enum.Parse(typeof(emArtifactBase), artifactName);
+                   // var artifactEnum = (emArtifactBase)Enum.Parse(typeof(emArtifactBase), artifactName);
                     //底子的配置不是装备配置
-                    var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
+                    var condition = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase);
                     //找底子
                     var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition, Seq = config.Seq });
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = config.ArtifactBase, EquipBase = baseEq, Config = condition, Seq = config.Seq });
                 }
 
             }

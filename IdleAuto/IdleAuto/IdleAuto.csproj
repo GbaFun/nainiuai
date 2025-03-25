@@ -74,6 +74,7 @@
     <Compile Include="Scripts\Controller\ArtifactController.cs" />
     <Compile Include="Scripts\Controller\EfficiencyController.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
+    <Compile Include="Scripts\Controller\ReformController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
     <Compile Include="Scripts\Model\Efficency.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />

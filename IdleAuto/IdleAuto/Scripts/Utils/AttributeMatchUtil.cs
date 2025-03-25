@@ -675,7 +675,11 @@ namespace AttributeMatch
         public string MatchGroupName;
         public emOperateType Operate;
         public emAttrType AttributeType;
-        public string ArtifactBase;
+        public emArtifactBase ArtifactBase;
+        /// <summary>
+        /// 是否自动合符文
+        /// </summary>
+        public bool isRuneUpdate { get; set; }
         /// <summary>
         /// 条件匹配权重
         /// </summary>

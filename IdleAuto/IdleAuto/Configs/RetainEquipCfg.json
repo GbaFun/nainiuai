@@ -4,13 +4,7 @@
       "category": "全部",
       "quality": "套装",
       "conditions": [
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "大于等于",
-          "attributeType": "所有技能",
-          "conditionContent": "1"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -224,13 +218,6 @@
           "conditionContent": "无形潜行之刃"
         },
 
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "精神脊柱"
-        },
 
         {
           "matchType": "任一",
@@ -269,7 +256,26 @@
           "attributeType": "名称",
           "conditionContent": "李奥瑞克王的武器"
         }
-      
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "category": "全部",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "魔法装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "铁匠之术士"
+        }
+
+
+
       ]
     },
     "maxCount": 1200
@@ -476,7 +482,7 @@
   },
   {
     "equip": {
-      "category": "全部",
+      "category": "头饰|帽子|项链|戒指|靴子|腰带|手套|护符",
       "quality": "传奇|套装",
       "conditions": [
         {
@@ -648,9 +654,9 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 8
   },
-  //和平-疾速-刃-信念-天灾-戒律
+  //天灾
   {
     "equip": {
       "category": "衣服",
@@ -661,10 +667,16 @@
           "operate": "等于",
           "attributeType": "凹槽",
           "conditionContent": "3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "重型"
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 4
   },
   //优雅旋律
   {
@@ -676,15 +688,9 @@
           "matchType": "必需",
           "operate": "等于",
           "attributeType": "凹槽",
-          "conditionContent": "10"
+          "conditionContent": "3"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "优雅旋律",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "conditionContent": "游侠,远程,3"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "优雅旋律",
@@ -694,17 +700,53 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 1
   },
   //亡者遗产
   {
     "equip": {
       "category": "手杖",
-      "quality": "普通|破碎",
+      "quality": "普通",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "生生不息,1"
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "手杖",
+      "quality": "破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
           "attributeType": "凹槽",
           "conditionContent": "2"
         },
