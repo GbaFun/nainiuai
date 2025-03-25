@@ -264,7 +264,7 @@
         }
       ]
     },
-    "maxCount": 120
+    "maxCount": 1200
   },
   //白热或血红珠宝
   {
@@ -695,8 +695,8 @@
       "quality": "普通|破碎",
       "conditions": [
         {
-          "matchType": "必需",
-          "operate": "等于",
+          "matchType": "可选",
+          "operate": "大于等于",
           "attributeType": "凹槽",
           "conditionContent": "2"
         },
@@ -708,18 +708,18 @@
           "conditionContent": "骷髅法师,3"
         },
         {
-          "matchType": "任一",
+          "matchType": "可选",
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,3"
+          "conditionContent": "支配骷髅,1"
         },
         {
-          "matchType": "任一",
+          "matchType": "可选",
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "生生不息,3"
+          "conditionContent": "生生不息,1"
         }
       ]
     },

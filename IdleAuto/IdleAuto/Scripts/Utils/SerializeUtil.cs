@@ -102,4 +102,10 @@ public static class SerializeUtil
             NamingStrategy = new LowerCamelCaseNamingStrategy();
         }
     }
+
+    public static T DeepCopy<T>(this T original)
+    {
+        
+        return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(original));
+    }
 }

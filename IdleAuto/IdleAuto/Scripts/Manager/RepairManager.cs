@@ -136,7 +136,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
             }
             catch (Exception ex)
             {
-                P.Log($"自动修车中断，中断角色{role.RoleName},中断原因：{ex}", emLogType.Error);
+                P.Log($"自动修车中断，中断角色{role.RoleName},中断原因：{ex.StackTrace}", emLogType.Error);
                 InterruptNames.Add(role.RoleName);
             }
         }

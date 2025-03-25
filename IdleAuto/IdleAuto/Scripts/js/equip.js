@@ -170,7 +170,9 @@ function getPackageEquips() {
 function packageNext() {
     var i = $('.panel-body.equip-bag:first').next().find('a:contains("下页")');
     if (i.length == 0) {
-        //location.reload();
+        setTimeout(() => {
+            Bridge.invokeEvent('OnJsInited', 'equip');
+        }, 1500)
         return false;
     }
     else {
@@ -221,6 +223,9 @@ function repositoryNext() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("下页")');
     if (i.length == 0) {
         //location.reload();
+        setTimeout(() => {
+            Bridge.invokeEvent('OnJsInited', 'equip');
+        }, 1500)
         return false;
     }
     else {
@@ -228,10 +233,14 @@ function repositoryNext() {
         return true;
     }
 }
+
+
 function repositoryPre() {
     var i = $('.panel-body.equip-box:first').next().find('a:contains("上页")');
     if (i.length == 0) {
-        //location.reload();
+        setTimeout(() => {
+            Bridge.invokeEvent('OnJsInited', 'equip');
+        }, 1500)
         return false;
     }
     else {

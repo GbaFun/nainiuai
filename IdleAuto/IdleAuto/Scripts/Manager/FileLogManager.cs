@@ -38,10 +38,10 @@ public static class P
         //Console.ForegroundColor = color;
         Console.WriteLine($"{lable}:{message}");
 
-        if (logType == emLogType.Debug || logType == emLogType.Warning || logType == emLogType.Error)
-        {
-            return;
-        }
+        //if (logType == emLogType.Debug || logType == emLogType.Warning || logType == emLogType.Error)
+        //{
+        //    return;
+        //}
         string logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", logType.ToString());
         if (!Directory.Exists(logDirectory))
         {

@@ -27,6 +27,7 @@ namespace IdleAuto.Scripts.Controller
             if (baseEq == null) return null;
             var existedEq = !isSecondCheck ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
             if (existedEq != null) return existedEq;
+
             //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);
             if (_win.GetBro().Address != IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID))
@@ -44,6 +45,20 @@ namespace IdleAuto.Scripts.Controller
             }
 
             var name = art.GetEnumDescription();//神器名字
+            var updateRuneMap = !isSecondCheck ? await GetUpdateRuneMap(name) : null;
+            
+            if (updateRuneMap != null)
+            {
+                var isSuccess = await UpdateRune(updateRuneMap);
+                //没合成成功 则结束神器制作
+                if (!isSuccess) return null;
+                if (_win.GetBro().Address != IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID))
+                {
+                   await Task.Delay(1500);
+                    await _win.LoadUrlWaitJsInit(IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID), "inlay");
+                    await Task.Delay(1500);
+                }
+            }
             var data = new Dictionary<string, object>();
             data.Add("name", name);
             var makeResult = await _win.CallJsWaitReload($"_inlay.makeArtifact({data.ToLowerCamelCase()})", "inlay");
@@ -71,10 +86,13 @@ namespace IdleAuto.Scripts.Controller
         public async Task<EquipModel> CheckBagArtifact(string eqName, Equipment config, int roleid)
         {
             var eqControll = new EquipController();
+            //做成神器凹槽匹配不到了
+            var copyConfig = config.DeepCopy<Equipment>();
+            copyConfig.Conditions.RemoveAll(p => p.AttributeType == emAttrType.凹槽);
             //跳转神器页
             var result = await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Query?id={roleid}&pt2=5", "equip");
             await Task.Delay(1500);
-            var categoryArr = config.Category.Split('|');
+            var categoryArr = copyConfig.Category.Split('|');
             for (int i = 0; i < categoryArr.Length; i++)
             {
                 var category = categoryArr[i];
@@ -88,13 +106,13 @@ namespace IdleAuto.Scripts.Controller
                     if (eqMap == null) break;
                     foreach (var item in eqMap.Values)
                     {
-                        if (AttributeMatchUtil.Match(item, config, out _) && eqName == item.EquipName)
+                        if (AttributeMatchUtil.Match(item, copyConfig, out _) && eqName == item.EquipName)
                         {
                             return item;
                         }
                     }
                     //有下一页继续
-                    var response2 = await _win.CallJsWithReload($@"repositoryNext()", "equip");
+                    var response2 = await _win.CallJsWaitReload($@"repositoryNext()", "equip");
                     if (response2.Success && (bool)response2.Result)
                     {
                         P.Log("");
@@ -111,6 +129,33 @@ namespace IdleAuto.Scripts.Controller
 
             return null;
 
+        }
+
+        /// <summary>
+        /// 获取符文是否够用 不够将进行升级
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<Dictionary<int, int>> GetUpdateRuneMap(string name)
+        {
+            var data = new Dictionary<string, object>();
+            data.Add("name", name);
+            var r = await _win.CallJs($"_inlay.getRuneUpdateMap({data.ToLowerCamelCase()})");
+            var map = r.Result.ToObject<Dictionary<int, int>>();
+            return map;
+        }
+
+        /// <summary>
+        /// 升级符文
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateRune(Dictionary<int, int> map)
+        {
+            var runeConrol = new RuneController();
+            await Task.Delay(1000);
+            var isSuccess = await runeConrol.UpgradeRune(_win, _win.User, map);
+            return isSuccess;
         }
     }
 }

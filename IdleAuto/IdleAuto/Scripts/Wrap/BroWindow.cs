@@ -377,7 +377,7 @@ namespace IdleAuto.Scripts.Wrap
                 await PageLoadHandler.LoadJsByUrl(bro);
             });
 
-            if (PageLoadHandler.ContainsUrl(url, PageLoadHandler.HomePage))
+            if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
             {
                 P.Log($"Start Save {name} CookieAndCache");
                 PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie

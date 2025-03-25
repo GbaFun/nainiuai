@@ -118,7 +118,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 30,
-      "max": 99
+      "max": 39
     },
     "equipSuit": [
       {
@@ -133,6 +133,63 @@
         },
         "头盔": {
           "name": "1级光环头盔",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速光环项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "抗寒戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗寒戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗寒电靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "零速MF衣服",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "零速抗寒手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "光环护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    //30级后有全部等级+1装备，部分部位以职业技能等级优先
+    "jobName": "骑士",
+    "lv": {
+      "min": 40,
+      "max": 50
+    },
+    "equipSuit": [
+      {
+        "suitName": "骑士40-50套装",
+        "主手": {
+          "name": "冥审光环权杖",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "冥审光环盾牌",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "骑士40解毒头",
           "isNecessery": 0
         },
         "项链": {
@@ -315,7 +372,7 @@
           "isNecessery": 0
         },
         "戒指2": {
-          "name": "抗寒施法戒指",
+          "name": "抗寒电施法戒指",
           "isNecessery": 0
         },
         "靴子": {

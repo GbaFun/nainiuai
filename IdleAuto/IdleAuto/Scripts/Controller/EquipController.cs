@@ -66,12 +66,12 @@ public class EquipController
                     hasEquips = bagCount > 0;
                     while (hasEquips)
                     {
-                        if (bagCount + boxCount >= 3000)
+                        if (bagCount + boxCount >= 2800)
                         {
                             P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
                             if (cleanWhenFull)
                             {
-                                // await ClearRepository(win, account);
+                                 await ClearRepository(win);
                             }
                             else
                             {
@@ -194,7 +194,7 @@ public class EquipController
                         P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                         P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
                         await Task.Delay(1000);
-                        var response2 = await win.CallJsWithReload($@"repositoryNext()", "equip");
+                        var response2 = await win.CallJsWaitReload($@"repositoryNext()", "equip");
                         if (response2.Success && (bool)response2.Result)
                         {
                             P.Log("仓库切页完成");
@@ -318,7 +318,7 @@ public class EquipController
                                         }
 
                                         P.Log("开始跳转仓库上一页", emLogType.AutoEquip);
-                                        var response6 = await win.CallJsWithReload($@"repositoryPre()", "equip");
+                                        var response6 = await win.CallJsWaitReload($@"repositoryPre()", "equip");
                                         if (response6.Success && (bool)response6.Result)
                                         {
 
@@ -513,7 +513,28 @@ public class EquipController
                 continue;
             }
             List<EquipModel> matchEquips = GetMatchEquipBySort(accountId, role, (emEquipSort)j, curEquip, equipment);
+            //寻找是否有可以制作神器的配置
+            var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
+            if (artifactConfig.Count() > 0)
+            {
+                var maxSeq = equipment.Equipment.Conditions.Max(m => m.Seq);
+                var config = artifactConfig.OrderByDescending(o => o.Seq).First();//最大seq的神器配置
+                //神器不是最大seq 则优先穿matchEquip 没有match做神器
+                //神器是最大 则检查当前穿戴是配置神器么
+                
+                if ((maxSeq == config.Seq||matchEquips.Count==0) &&(curEquip==null|| curEquip.EquipName!=config.ConditionContent))
+                {
+                    //最大配置是神器配置 或者压根没有匹配装备
+                    var artifactName = config.ArtifactBase;
+                    var artifactEnum = (emArtifactBase)Enum.Parse(typeof(emArtifactBase), artifactName);
+                    //底子的配置不是装备配置
+                    var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
+                    //找底子
+                    var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
+                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition, Seq = config.Seq });
+                }
 
+            }
             for (int i = 0; i < matchEquips.Count;)
             {
                 if (matchEquips[0].CanWear(role))
@@ -562,29 +583,16 @@ public class EquipController
                 break;
             }
 
-            //寻找是否有可以制作神器的配置
-            var artifactConfig = equipment.Equipment.Conditions.Where(p => p.ArtifactBase != null);
-            if (artifactConfig.Count() > 0)
-            {
-                var maxSeq = equipment.Equipment.Conditions.Max(m => m.Seq);
-                var config = artifactConfig.OrderByDescending(o => o.Seq).First();//最大seq的神器配置
-                if ((maxSeq == config.Seq||matchEquips.Count==0))
-                {
-                    //最大配置是神器配置 或者压根没有匹配装备,如果匹配到了 但seq小于神器也要去检查能不能做神器
-                    var artifactName = config.ArtifactBase;
-                    var artifactEnum = (emArtifactBase)Enum.Parse(typeof(emArtifactBase), artifactName);
-                    //底子的配置不是装备配置
-                    var condition = ArtifactBaseCfg.Instance.GetEquipCondition(artifactEnum);
-                    //找底子
-                    var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-                    result.ToMakeEquips.Add((emEquipSort)j, new ArtifactMakeStruct() { ArtifactType = artifactEnum, EquipBase = baseEq, Config = condition, Seq = config.Seq });
-                }
-
-            }
+          
 
         }
 
         return result;
+    }
+
+    public void CheckToMakeEquip(Equipment config)
+    {
+
     }
 
     /// <summary>

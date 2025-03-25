@@ -249,6 +249,46 @@
     }
   },
   {
+    "name": "骑士40解毒头",
+    "description": "骑士40带解毒",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "解毒",
+          "seq": 100,
+          "conditionContent": "解毒"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 2,
+          "conditionContent": "1"
+        },
+        
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,1"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意项链",
     "description": "前期没有技能项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -343,11 +383,20 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "骑士光环",
           "attributeType": "指定职业单系技能",
           "seq": 2,
           "conditionContent": "骑士,光环,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骑士光环",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 1,
+          "conditionContent": "1"
         },
         {
           "matchType": "必需",
@@ -687,7 +736,7 @@
   },
   {
     "name": "抗寒电施法戒指",
-    "description": "抗寒施法戒指",
+    "description": "抗寒电施法戒指",
     "equipment": {
       "category": "戒指",
       "quality": "全部",
@@ -1413,28 +1462,28 @@
           "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "知识",
-          "seq": 40,
+          "seq": 1,
           "conditionContent": "知识"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 40,
+          "seq": 50,
           "conditionContent": "1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业全系技能",
-          "seq": 40,
+          "seq": 50,
           "conditionContent": "死灵,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 40,
+          "seq": 50,
           "conditionContent": "死灵,召唤,1"
         },
         {

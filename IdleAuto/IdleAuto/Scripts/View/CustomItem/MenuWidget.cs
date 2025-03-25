@@ -130,12 +130,12 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
+            string[] MapSwitchAccounts = RepairManager.NanfangAccounts;
             if (MapSwitchAccounts.Length == 1 && MapSwitchAccounts[0] == "")
             {
                 MapSwitchAccounts = null;
             }
-            FlowController.GroupWork(4, 0, FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -154,14 +154,14 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            var accounts = RepairManager.NanfangAccounts;
+            var accounts = RepairManager.NainiuAccounts;
             Task.Run(async () =>
             {
                 try
                 {
-                    await FlowController.GroupWork(5, 1, RepairManager.Instance.ClearEquips, accounts);
-                    await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips, accounts);
-                    await FlowController.GroupWork(5, 1, RepairManager.Instance.AutoRepair, accounts);
+                  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                   await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
+                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
                 {
@@ -279,8 +279,8 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             // FlowController.MakeArtifact();
-            var nanfangAccount = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter, nanfangAccount);
+            
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NainiuAccounts);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -317,8 +317,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnDungeon_Click(object sender, EventArgs e)
         {
-            var accounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, accounts);
+            
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
         }
 
         private void btnProxy_Click(object sender, EventArgs e)
@@ -331,6 +331,11 @@ namespace IdleAuto.Scripts.View
         {
             RuneConfigForm runeForm = new RuneConfigForm();
             runeForm.ShowDialog();
+        }
+
+        private void HomeGroup_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

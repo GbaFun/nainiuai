@@ -224,4 +224,8 @@ public enum emArtifactBase
     单手眼光,
     [Description("复苏之风")]
     单手复苏,
+    [Description("解毒")]
+    解毒,
+    [Description("亡者遗产")]
+    亡者遗产
 }

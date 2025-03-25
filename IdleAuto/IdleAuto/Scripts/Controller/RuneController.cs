@@ -74,8 +74,9 @@ public class RuneController
         P.Log($"全部符文升级完成\n\t\n\t\n\t\n\t\n\t", emLogType.RuneUpgrate);
     }
 
-    public async Task UpgradeRune(BroWindow win, UserModel account, Dictionary<int, int> runeMap)
+    public async Task<bool> UpgradeRune(BroWindow win, UserModel account, Dictionary<int, int> runeMap)
     {
+        bool isSuccess=true;
         P.Log("开始升级符文", emLogType.RuneUpgrate);
         await Task.Delay(1000);
         P.Log("开始跳转材料页面", emLogType.RuneUpgrate);
@@ -147,6 +148,7 @@ public class RuneController
                 }
             }
         }
+        return isSuccess;
     }
 }
 

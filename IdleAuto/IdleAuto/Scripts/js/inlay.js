@@ -27,9 +27,10 @@
         var target = map[name];
         if (target == undefined) {
             alert("底子没有这个神器");
-        }
+        } debugger
         var nextRune = getCurRune(name);
         if (!checkRuneEnough(name, nextRune)) {
+            
             setTimeout(() => {
                 Bridge.invokeEvent("OnJsInited", 'inlay');
             }, 2000);
@@ -38,6 +39,22 @@
         }
         insertRune(nextRune);
         return 1;
+    }
+    //整体检查符文是否够用
+    function getRuneUpdateMap(data) {
+        debugger
+        var s = JSON.stringify(userRuneMap);
+        var runeMapCopy = JSON.parse(s);
+        var result = {};
+        var targetRuneArr = map[data.name];
+        for (var i = 0; i < targetRuneArr.length; i++) {
+            var rune = targetRuneArr[i];
+            runeMapCopy[rune * 1]--;
+            if (runeMapCopy[rune * 1] < 0) {
+                result[rune * 1] = result[rune * 1] ? (++result[rune * 1] ): 1;
+            }
+        }
+        return result;
     }
 
     function checkRuneEnough(name, nextRune) {
@@ -130,8 +147,8 @@
             }
         });
     }
-    
 
+    _inlay.getRuneUpdateMap = getRuneUpdateMap;
     _inlay.makeArtifact = makeArtifact;
     _inlay.isEnd = isEnd;
     _inlay.map = map;
