@@ -154,7 +154,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            var accounts = RepairManager.NanfangAccounts;
+            var accounts = RepairManager.NainiuAccounts;
             Task.Run(async () =>
             {
                 try

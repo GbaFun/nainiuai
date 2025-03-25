@@ -24,10 +24,7 @@ public class Equipment
     public string Category { get; set; }
     public string Quality { get; set; }
 
-    /// <summary>
-    /// 是否自动合符文
-    /// </summary>
-    public bool isUpdateRune { get; set; } = false;
+  
     public List<AttributeCondition> Conditions { get; set; }
 
     public bool AdaptAttr(EquipModel equip, out AttributeMatchReport report)
@@ -43,6 +40,8 @@ public class Equipment
         }
     }
 }
+
+
 
 public class EquipSuits
 {

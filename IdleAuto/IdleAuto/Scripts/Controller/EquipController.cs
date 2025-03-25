@@ -914,7 +914,7 @@ public struct ArtifactMakeStruct
 {
     public emArtifactBase ArtifactType;
     public EquipModel EquipBase;
-    public Equipment Config;
+    public ArtifactBase Config;
     /// <summary>
     /// 制作装备的seq
     /// </summary>

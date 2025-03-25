@@ -10,7 +10,7 @@ public class ArtifactBaseCfg
 {
     private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "ArtifactBaseCfg.json");
     public static ArtifactBaseCfg Instance { get; } = new ArtifactBaseCfg();
-    public Dictionary<emArtifactBase, Equipment> Data;
+    public Dictionary<emArtifactBase, ArtifactBase> Data;
 
     public ArtifactBaseCfg()
     {
@@ -27,7 +27,7 @@ public class ArtifactBaseCfg
         var json = File.ReadAllText(ConfigFilePath);
         try
         {
-            Data = json.ToUpperCamelCase<Dictionary<emArtifactBase, Equipment>>();
+            Data = json.ToUpperCamelCase<Dictionary<emArtifactBase, ArtifactBase>>();
         }
         catch (Exception e)
         {
@@ -35,7 +35,7 @@ public class ArtifactBaseCfg
         }
     }
 
-    public Equipment GetEquipCondition(emArtifactBase e)
+    public ArtifactBase GetEquipCondition(emArtifactBase e)
     {
         var des=e.GetEnumDescription();
         return Data[e];

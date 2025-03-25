@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
+    <Compile Include="Configs\CfgExtension\ArtifactBase.cs" />
     <Compile Include="Configs\CfgExtension\ArtifactBaseCfg.cs" />
     <Compile Include="Configs\CfgExtension\SuitCfg.cs" />
     <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />

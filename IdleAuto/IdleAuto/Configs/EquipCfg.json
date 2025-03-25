@@ -48,7 +48,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 2,
+          "seq": 3,
           "conditionContent": "骑士,光环,1"
         },
         {
