@@ -22,7 +22,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="baseEq">ArtifactBaseCfg.Instance.GetEquip(e);通过这个接口查询到可用的底子传进来开始制作</param>
         /// <param name="art">神器枚举</param>
         /// <returns></returns>
-        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid, ArtifactBase config, bool isSecondCheck = false)
+        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid, ArtifactBaseConfig config, bool isSecondCheck = false)
         {
             if (baseEq == null) return null;
             var existedEq = !isSecondCheck ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
@@ -32,7 +32,7 @@ namespace IdleAuto.Scripts.Controller
                 var reformControl = new ReformController(_win);
                 var targetSlotCount = int.Parse(config.Conditions.Where(p => p.AttributeType == emAttrType.凹槽).FirstOrDefault().ConditionContent);
 
-                var isSuccess = await reformControl.SlotReform(baseEq.EquipID, roleid, config);
+                var isSuccess = await reformControl.SlotReform(baseEq, roleid, config,art);
                 if (!isSuccess) return null;
             }
 

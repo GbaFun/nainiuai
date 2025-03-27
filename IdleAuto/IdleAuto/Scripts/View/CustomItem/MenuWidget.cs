@@ -154,13 +154,13 @@ namespace IdleAuto.Scripts.View
 
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
-            var accounts = RepairManager.NainiuAccounts;
+            string[] accounts =  RepairManager.NainiuAccounts;
             Task.Run(async () =>
             {
                 try
                 {
-                     await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                     await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
                     await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
@@ -285,7 +285,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor,RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 0, FlowController.StartEfficencyMonitor, RepairManager.NanfangAccounts);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)

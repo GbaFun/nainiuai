@@ -248,13 +248,39 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "蚀肉骑士"
-        },
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "全部",
+      "quality": "传奇",
+      "conditions": [
         {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
+          "matchType": "必需",
+          "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "李奥瑞克王的武器"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死灵,2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "骷髅法师,2"
         }
 
       ]
@@ -263,7 +289,57 @@
   },
   {
     "equip": {
+      "description": "完美传奇",
       "category": "全部",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "法老王的意志"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "全部",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "凯恩碎片"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "category": "头饰|帽子",
       "quality": "魔法",
       "conditions": [
         {
@@ -497,7 +573,7 @@
   },
   {
     "equip": {
-      "category": "戒指",
+      "category": "戒指|手套",
       "quality": "全部",
       "conditions": [
         {
@@ -508,7 +584,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 20
   },
 
   {

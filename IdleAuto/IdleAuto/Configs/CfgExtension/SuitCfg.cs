@@ -24,7 +24,7 @@ public class Equipment
     public string Category { get; set; }
     public string Quality { get; set; }
 
-  
+
     public List<AttributeCondition> Conditions { get; set; }
 
     public bool AdaptAttr(EquipModel equip, out AttributeMatchReport report)
@@ -53,6 +53,8 @@ public class EquipSuits
 public class EquipSuit
 {
     public string SuitName { get; set; }
+
+
     public SuitInfo 主手 { get; set; }
     public SuitInfo 副手 { get; set; }
     public SuitInfo 头盔 { get; set; }
@@ -101,12 +103,20 @@ public class SuitInfo
     [JsonProperty("name")]
     public string EquipName { get; set; }
     public bool IsNecessery { get; set; }
-    public Equipment Equipment
+
+    public List<string> EquipNameArr
     {
         get
         {
-            return EquipCfg.Instance.Get(EquipName);
+            if (string.IsNullOrEmpty(EquipName)) return new List<string>() { };
+            else return EquipName.Split(',').ToList();
         }
+    }
+    public Equipment GetEquipment(string name)
+    {
+
+        return EquipCfg.Instance.Get(name);
+
     }
 }
 

@@ -150,7 +150,12 @@ namespace IdleAuto.Scripts.Wrap
         }
         public async Task<JavascriptResponse> CallJs(string jsFunc)
         {
-            return await _bro.EvaluateScriptAsync(jsFunc);
+            var aa= await _bro.EvaluateScriptAsync(jsFunc);
+            if (!aa.Success)
+            {
+                throw new Exception("CallJs执行失败" + aa.Result);
+            }
+            return aa;
         }
 
         public async Task<JavascriptResponse> CallJsWithReload(string jsFunc, string jsName)
@@ -177,7 +182,10 @@ namespace IdleAuto.Scripts.Wrap
                 if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
             };
             var response = await _bro.EvaluateScriptAsync(jsFunc);
-
+            if (!response.Success)
+            {
+                throw new Exception("CallJsWaitReload执行失败" + response.Result);
+            }
             await jsTask.Task;
             return response;
         }

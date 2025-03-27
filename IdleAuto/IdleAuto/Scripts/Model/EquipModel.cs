@@ -57,6 +57,11 @@ public class EquipModel
     public string EquipName { get; set; }
 
     /// <summary>
+    /// 底子
+    /// </summary>
+    public emArtifactBase ArtifactBase { get; set; }
+
+    /// <summary>
     /// 物品类型
     /// </summary>
     public string Category { get; set; }

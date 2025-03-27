@@ -30,7 +30,15 @@ public class EquipCfg
         _equipMap = new Dictionary<string, Equipment>();
         foreach (var equip in equipList)
         {
-            _equipMap.Add(equip.Name, equip.Equipment);
+            try
+            {
+                _equipMap.Add(equip.Name, equip.Equipment);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+            
         }
     }
 

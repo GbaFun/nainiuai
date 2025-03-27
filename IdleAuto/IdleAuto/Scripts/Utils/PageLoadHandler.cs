@@ -27,6 +27,7 @@ public class PageLoadHandler
     public const string MapDungeon = "Map/Dungeon";
     public const string GuaJi = "Battle/Guaji";
     public const string Inlay = "Equipment/Inlay";
+    public const string Reform = "Equipment/Reform";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -93,6 +94,11 @@ public class PageLoadHandler
         else if (ContainsUrl(url, Inlay))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "inlay.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
+        else if (ContainsUrl(url, Reform))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "reform.js");
             await LoadGlobalJs(jsPath, browser);
         }
 

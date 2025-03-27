@@ -20,17 +20,26 @@ namespace IdleAuto.Scripts.Controller
         //按改造条件选择改造 https://www.idleinfinity.cn/Equipment/EquipReform
         //https://www.idleinfinity.cn/Equipment/Inlay?id=392&eid=8833783 去看一下几孔 失败返回false
 
-        public async Task<bool> SlotReform(long eid, int roleId, Equipment eq)
+        public async Task<bool> SlotReform(EquipModel equip, int roleId, ArtifactBaseConfig eq,emArtifactBase emBase)
         {
-            
-            await Task.Delay(1500);
-            await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={eid}", "reform");
 
-            if (2 == 2)
+            await Task.Delay(1500);
+            await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}", "reform");
+            await Task.Delay(1500);
+            var d = new Dictionary<string, object>();
+            var type=ArtifactBaseCfg.Instance.MatchSlotType(equip, emBase);
+            d.Add("type", (int)type);
+            //改造完会跳转到装备栏界面
+          var a=  await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
+            await Task.Delay(1500);
+            await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Inlay?id={roleId}&eid={equip.EquipID} ", "inlay");
+            var dd = await _win.CallJs("getEquip");
+            var count = dd.Result.ToObject<int>();
+            if (count == eq.TargetSlotCount)
             {
-                return false;
+                return true;
             }
-            else return true;
+            else return false;
         }
 
     }

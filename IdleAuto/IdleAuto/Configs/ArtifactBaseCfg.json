@@ -78,7 +78,9 @@
   },
   "死骑知识": {
     "category": "死骑面罩",
-    "quality": "破碎",
+    "quality": "破碎|普通",
+    "isUpdateRune": true,
+    "slotRule": "3:DkHeadRandom,else:DkHeadRandom",
     "conditions": [
       {
         "matchType": "必需",
@@ -166,6 +168,7 @@
     "category": "衣服",
     "quality": "破碎",
     "isUpdateRune": true,
+
     "conditions": [
       {
         "matchType": "必需",
@@ -187,9 +190,46 @@
       }
     ]
   },
+  "死灵灿烂": {
+    "category": "死灵副手",
+    "quality": "普通|破碎",
+    "targetSlotCount": 2,
+    "slotRule": "333:direct,331:direct,else:random",
+    "remakeRule": "333:true",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
+      },
+      {
+        "matchType": "可选",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "支配骷髅,1"
+      },
+      {
+        "matchType": "可选",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "生生不息,1"
+      }
+    ]
+  },
   "亡者遗产": {
     "category": "手杖",
     "quality": "普通|破碎",
+    "targetSlotCount": 2,
     "slotRule": "333:direct,33:direct,331:direct,else:random",
     "remakeRule": "333:true",
     "conditions": [

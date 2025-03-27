@@ -214,7 +214,7 @@ public enum emMaskType
 
 public enum emArtifactBase
 {
-    未知=0,
+    未知 = 0,
     [Description("隐密")]
     低力量隐密,
     [Description("知识")]
@@ -229,6 +229,18 @@ public enum emArtifactBase
     解毒,
     [Description("天灾")]
     天灾,
+    [Description("灿烂")]
+    死灵灿烂,
     [Description("亡者遗产")]
     亡者遗产
+}
+
+/// <summary>
+/// 打孔规则 EquipReform接口type参数值
+/// </summary>
+public enum emSlotType
+{
+    Direct = 50,
+    DkHeadRandom=52,
+    Random = 54,
 }
