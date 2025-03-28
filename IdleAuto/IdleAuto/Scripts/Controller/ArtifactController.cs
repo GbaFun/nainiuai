@@ -35,6 +35,7 @@ namespace IdleAuto.Scripts.Controller
                 var isSuccess = await reformControl.SlotReform(baseEq, roleid, config,art);
                 if (!isSuccess) return null;
             }
+          
 
             //_win.GetBro().ShowDevTools();
             await Task.Delay(1000);

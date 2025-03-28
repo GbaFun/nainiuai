@@ -102,14 +102,11 @@ public class ArtifactBaseCfg
             if (match.Success)
             {
                 int slotValue = int.Parse(match.Groups["v"].Value);
-                if (slotValue > targetSlotCount && eq.Category == emCategory.死骑面罩.ToString())
-                {
-                    return emSlotType.DkHeadRandom;
-                }
-                if (slotValue > targetSlotCount)
+                if (slotValue > targetSlotCount )
                 {
                     return emSlotType.Random;
                 }
+              
             }
             var isMatch = AttributeMatchUtil.Match(eq, item.Config, out _);
             if (isMatch)

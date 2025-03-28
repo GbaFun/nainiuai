@@ -28,15 +28,20 @@ namespace IdleAuto.Scripts.Controller
             await Task.Delay(1500);
             var d = new Dictionary<string, object>();
             var type = ArtifactBaseCfg.Instance.MatchSlotType(equip, emBase);
-            d.Add("type", (int)type);
+            d.Add("type", type);
             //改造完会跳转到装备栏界面
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
             await Task.Delay(1500);
             await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Inlay?id={roleId}&eid={equip.EquipID} ", "inlay");
-            equip.Quality = emItemQuality.破碎.ToString();
-            FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
+       
             var dd = await _win.CallJs("_inlay.getSlotCount();");
+            //更新下content
             var count = dd.Result.ToObject<int>();
+            var e = await _win.CallJs("_inlay.getEquipContent()");
+            var content = e.Result.ToObject<string>();
+            equip.Quality = emItemQuality.破碎.ToString();
+            equip.Content = content;
+            FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
             if (count == eq.TargetSlotCount)
             {
                 return true;

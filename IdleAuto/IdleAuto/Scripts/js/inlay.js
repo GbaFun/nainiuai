@@ -165,6 +165,10 @@
         var match = $(".panel-body:contains('当前装备')").text().match(/凹槽\(0\/(?<v>\d+)/);
         return match[1];
     }
+
+    function getEquipContent() {
+        return $(".panel-body .panel.panel-inverse").text()
+    }
     _inlay.getRuneMap = getRuneMap;
     _inlay.isRuneEnough = isRuneEnough;
     _inlay.makeArtifact = makeArtifact;
@@ -173,6 +177,7 @@
     _inlay.userRuneMap = userRuneMap;
     _inlay.insertRune = insertRune;
     _inlay.getSlotCount = getSlotCount;
+    _inlay.getEquipContent = getEquipContent;
     
 
 })();

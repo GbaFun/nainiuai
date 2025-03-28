@@ -81,7 +81,7 @@
     "quality": "破碎|普通",
     "isUpdateRune": true,
     "targetSlotCount": 2,
-    "slotRule": "3:DkHeadRandom,else:DkHeadRandom",
+    "slotRule": "3:random,else:random",
     "conditions": [
       {
         "matchType": "必需",

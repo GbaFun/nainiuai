@@ -828,11 +828,26 @@ public class EquipController
             }
 
             var condition = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase);
+
+
             //找底子
-            var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-            //神器单独配置一个config 并且只有一个条件
-            result.ToMakeEquips[sort].Add(new ArtifactMakeStruct() { ArtifactBase = config.ArtifactBase, Config = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase), EquipBase = baseEq, Seq = config.Seq });
-            //return new EquipModel() { Quality = emItemQuality.神器.ToString(), ArtifactBase = config.ArtifactBase };
+            var baseEqList = GetMatchEquips(accountId, condition, out _).ToList();
+            if (baseEqList.Count != 0)
+            {    //为了满足孔位大于目标可以运用随机打孔公式 所以可能会匹配出来孔位大于目标孔位的装备需要额外筛选下
+                var slotList = baseEqList.Where(p => p.Value.emItemQuality == emItemQuality.破碎).ToList();
+                var baseList = baseEqList.Where(p => p.Value.emItemQuality == emItemQuality.普通).ToList();
+                var slotConfig = condition.DeepCopy();
+                slotConfig.Conditions.Where(p => p.AttributeType == emAttrType.凹槽).First().Operate = emOperateType.等于;
+                var slotMatchList = slotList.Where(p => AttributeMatchUtil.Match(p.Value, slotConfig, out _));
+                var concatList = slotMatchList.Concat(baseList);
+                if (concatList.Count() != 0)
+                {
+                    var baseEq = concatList.FirstOrDefault().Value;
+                    result.ToMakeEquips[sort].Add(new ArtifactMakeStruct() { ArtifactBase = config.ArtifactBase, Config = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase), EquipBase = baseEq, Seq = config.Seq });
+                }
+
+            }
+
 
         }
         return bestEq;
