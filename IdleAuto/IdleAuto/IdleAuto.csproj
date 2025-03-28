@@ -268,6 +268,10 @@
     <Content Include="BackUp\Cookies\萤石矿.txt" />
     <Content Include="BackUp\Cookies\钻石矿.txt" />
     <Content Include="BackUp\Cookies\铁矿石.txt" />
+    <Content Include="Document\1级过滤.txt" />
+    <Content Include="Document\30过滤.txt" />
+    <Content Include="Document\挂56过滤.txt" />
+    <Content Include="Document\死灵110方案.jpg" />
     <Content Include="Document\职业基础属性表.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

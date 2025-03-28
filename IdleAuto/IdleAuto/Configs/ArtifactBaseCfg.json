@@ -29,6 +29,7 @@
   "知识": {
     "category": "头饰|帽子",
     "quality": "破碎",
+    "isUpdateRune": true,
     "conditions": [
       {
         "matchType": "必需",
