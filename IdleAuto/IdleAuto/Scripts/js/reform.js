@@ -15,12 +15,17 @@
 
     })
 
+    async function isMeterialEnough() {
+        var canDirect = $("td:contains('最大数量凹槽')").parent().find('.label ').text() == "执行";
+        var canRandom = $("td:contains('随机数量凹槽')").parent().find('.label ').text() == "执行";
+        return { canDirect: canDirect, canRandom: canRandom }
+    }
 
     async function reform(d) {
-        
+
         var type = d.type;
         var data = {
-            type: type == "random" ? $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type")*1 :50
+            type: type == "random" ? $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type") * 1 : 50
         };
         debugger
         await POST_Message("EquipReform", MERGE_Form(data)).then((r) => {
@@ -33,4 +38,5 @@
     }
 
     _reform.reform = reform;
+    _reform.isMeterialEnough = isMeterialEnough;
 })();

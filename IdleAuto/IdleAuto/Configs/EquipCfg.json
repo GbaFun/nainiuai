@@ -38,7 +38,7 @@
           "conditionContent": "冥想光环,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 10,
@@ -48,14 +48,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 6,
+          "seq": 60,
           "conditionContent": "骑士,光环,1"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业全系技能",
-          "seq": 6,
+          "seq": 40,
           "conditionContent": "骑士,1"
         }
       ]
@@ -171,22 +171,25 @@
         },
 
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "1级头",
           "attributeType": "所有技能",
           "seq": 2,
           "conditionContent": "1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "1级头",
           "attributeType": "指定职业全系技能",
           "seq": 3,
           "conditionContent": "骑士,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "1级头",
           "attributeType": "指定职业单系技能",
           "seq": 4,
           "conditionContent": "骑士,光环,1"
@@ -682,6 +685,37 @@
       ]
     }
   },
+  {
+    "name": "抗火毒靴子",
+    "description": "56本用",
+    "equipment": {
+      "category": "靴子",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
 
   {
     "name": "抗寒戒指",
@@ -723,6 +757,204 @@
           "attributeType": "单项元素抗性之和",
           "seq": 20,
           "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗电戒指",
+    "description": "抗电戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "抗电",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 20,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗火戒指",
+    "description": "抗火戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 20,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗毒戒指",
+    "description": "抗毒戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 20,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗火毒戒指",
+    "description": "抗火毒戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "施法速度"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "攻击速度"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗火毒施法戒指",
+    "description": "抗火毒施法戒指",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
         }
       ]
     }
@@ -1041,6 +1273,45 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗电",
+          "seq": 20,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 500,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "施法抗火毒手",
+    "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "手套",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 20,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
           "seq": 20,
           "conditionContent": "20"
         },
@@ -1626,22 +1897,25 @@
       "conditions": [
 
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
           "attributeType": "所有技能",
           "seq": 50,
           "conditionContent": "1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
           "attributeType": "指定职业全系技能",
           "seq": 50,
           "conditionContent": "死灵,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
           "attributeType": "指定职业单系技能",
           "seq": 50,
           "conditionContent": "死灵,召唤,1"

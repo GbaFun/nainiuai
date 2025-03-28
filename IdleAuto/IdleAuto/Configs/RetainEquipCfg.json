@@ -147,7 +147,7 @@
         }
       ]
     },
-    "maxCount": 120
+    "maxCount": 1200
   },
   {
     "equip": {
@@ -161,7 +161,13 @@
           "attributeType": "名称",
           "conditionContent": "乔丹"
         },
-
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "刻面"
+        },
 
         {
           "matchType": "任一",
@@ -249,6 +255,18 @@
           "attributeType": "名称",
           "conditionContent": "蚀肉骑士"
         }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "传奇护符",
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
 
 
       ]
@@ -534,6 +552,7 @@
 
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
+          "seq": 6,
           "conditionContent": "骑士,光环,1"
         },
         {
@@ -700,7 +719,7 @@
           "conditionContent": "陨石,3"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "雷云风暴,3"
@@ -880,6 +899,27 @@
     },
     "maxCount": 12
   },
+  {
+    "equip": {
+      "category": "剑",
+      "quality": "破碎|普通",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "5"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "幻化之刃"
+        }
+      ]
+    },
+    "maxCount": 12
+  },
   /////-------神器底子------------/////
 
   //抗性防具
@@ -891,6 +931,23 @@
         {
           "matchType": "任一",
           "matchGroupName": "抗性防具",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "conditionContent": "50"
+        }
+      ]
+
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
           "conditionContent": "50"
@@ -938,5 +995,6 @@
     },
     "maxCount": 20
   }
+
 
 ]

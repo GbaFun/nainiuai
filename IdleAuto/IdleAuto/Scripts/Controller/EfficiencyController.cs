@@ -44,6 +44,7 @@ namespace IdleAuto.Scripts.Controller
                     Console.WriteLine("保存行数:" + aa);
                 }
             }
+            await Task.Delay(2000);
         }
     }
 }

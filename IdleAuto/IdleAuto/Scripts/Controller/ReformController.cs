@@ -30,6 +30,19 @@ namespace IdleAuto.Scripts.Controller
             var type = ArtifactBaseCfg.Instance.MatchSlotType(equip, emBase);
             d.Add("type", type);
             //改造完会跳转到装备栏界面
+            var materialResult = await _win.CallJs("_reform.isMeterialEnough()");
+            if (materialResult.Success)
+            {
+                var r = materialResult.Result.ToObject<Dictionary<string, bool>>();
+                if (type == emSlotType.Random)
+                {
+                    if (!r["canRandom"]) return false;
+                }
+                else if (type == emSlotType.Direct)
+                {
+                    if (!r["canDirect"]) return false;
+                }
+            }
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
             await Task.Delay(1500);
             await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Inlay?id={roleId}&eid={equip.EquipID} ", "inlay");

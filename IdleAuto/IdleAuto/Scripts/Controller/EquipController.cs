@@ -421,7 +421,7 @@ public class EquipController
                         foreach (var toMake in m.Value)
                         {
                             if (isSuccessMake) break;
-                            if (curEquips[m.Key].EquipName == toMake.ArtifactBase.GetEnumDescription())
+                            if (curEquips.ContainsKey(m.Key)&& curEquips[m.Key].EquipName == toMake.ArtifactBase.GetEnumDescription())
                             {
                                 //当前穿戴装备就是最佳装备 跳过制作这个部位 此时towear应该是curEquip
                                 break;
