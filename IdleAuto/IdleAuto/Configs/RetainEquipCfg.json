@@ -451,7 +451,7 @@
   ///-------职业前缀-------///
   {
     "equip": {
-      "category": "斧|锤|死骑面罩",
+      "category": "斧|锤",
       "quality": "全部",
       "necessary": 0,
       "conditions": [
@@ -463,22 +463,51 @@
           "conditionContent": "双手伤害"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死骑,冰霜,1"
         },
 
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "职业系列技能",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "凋零光环,3"
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
       ]
     },
     "maxCount": 30
+  },
+  {
+    "equip": {
+      "category": "死骑面罩",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        }
+      ]
+    },
+    "maxCount": 10
   },
   {
     "equip": {

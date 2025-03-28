@@ -754,22 +754,7 @@ public class EquipController
     /// <returns></returns>
     private EquipModel GetMatchEquipBySort(int accountId, RoleModel role, emEquipSort sort, EquipModel curEquip, Equipment targetConfig, EquipSuitMatchStruct result)
     {
-        var config = targetConfig.Conditions[0];
-        if (config.ArtifactBase != emArtifactBase.未知)
-        {
-            if (!result.ToMakeEquips.ContainsKey(sort))
-            {
-                result.ToMakeEquips.Add(sort, new List<ArtifactMakeStruct>());
-            }
 
-            var condition = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase);
-            //找底子
-            var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
-            //神器单独配置一个config 并且只有一个条件
-            result.ToMakeEquips[sort].Add(new ArtifactMakeStruct() { ArtifactBase = config.ArtifactBase, Config = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase), EquipBase = baseEq, Seq = config.Seq });
-            //return new EquipModel() { Quality = emItemQuality.神器.ToString(), ArtifactBase = config.ArtifactBase };
-
-        }
         List<EquipModel> matchEquips = new List<EquipModel>();
         Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
         Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();
@@ -803,10 +788,7 @@ public class EquipController
         P.Log($"开始依照配置顺序比较装备，并将匹配的装备按比较权重排序！");
         foreach (var item in findEquips)
         {
-            if (item.EquipName == "知识")
-            {
-                Console.WriteLine();
-            }
+
             if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
             {
                 matchReports.Add(item.EquipID, report);
@@ -835,8 +817,26 @@ public class EquipController
         {
             P.Log($"已找到符合要求的装备，不再匹配后续要求，直接返回查询列表", emLogType.AutoEquip);
         }
+        var bestEq = matchEquips.FirstOrDefault(p => p.CanWear(role));
+        var config = targetConfig.Conditions[0];
+        if (config.ArtifactBase != emArtifactBase.未知 && bestEq == null)
+        {
 
-        return matchEquips.FirstOrDefault(p => p.CanWear(role));
+            if (!result.ToMakeEquips.ContainsKey(sort))
+            {
+                result.ToMakeEquips.Add(sort, new List<ArtifactMakeStruct>());
+            }
+
+            var condition = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase);
+            //找底子
+            var baseEq = GetMatchEquips(accountId, condition, out _).ToList().FirstOrDefault().Value;
+            //神器单独配置一个config 并且只有一个条件
+            result.ToMakeEquips[sort].Add(new ArtifactMakeStruct() { ArtifactBase = config.ArtifactBase, Config = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase), EquipBase = baseEq, Seq = config.Seq });
+            //return new EquipModel() { Quality = emItemQuality.神器.ToString(), ArtifactBase = config.ArtifactBase };
+
+        }
+        return bestEq;
+
     }
     public Dictionary<long, EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
     {

@@ -5,6 +5,7 @@ using IdleAuto.Configs.CfgExtension;
 using Newtonsoft.Json;
 using System.Linq;
 using AttributeMatch;
+using System.Text.RegularExpressions;
 
 public class ArtifactBaseCfg
 {
@@ -33,10 +34,6 @@ public class ArtifactBaseCfg
         try
         {
             Data = json.ToUpperCamelCase<Dictionary<emArtifactBase, ArtifactBaseConfig>>();
-            foreach(var item in Data)
-            {
-                item.Value.ReadSlotRule();
-            }
         }
         catch (Exception e)
         {
@@ -98,6 +95,22 @@ public class ArtifactBaseCfg
         var configs = this.SlotConfig[artifactBase];
         foreach (var item in configs)
         {
+            var targetSlotCount = item.Config.TargetSlotCount;
+            var regexStr = @"最大凹槽：(?<v>\d+)";
+            var regex = new Regex(regexStr, RegexOptions.Multiline);
+            var match = regex.Match(eq.Content);
+            if (match.Success)
+            {
+                int slotValue = int.Parse(match.Groups["v"].Value);
+                if (slotValue > targetSlotCount && eq.Category == emCategory.死骑面罩.ToString())
+                {
+                    return emSlotType.DkHeadRandom;
+                }
+                if (slotValue > targetSlotCount)
+                {
+                    return emSlotType.Random;
+                }
+            }
             var isMatch = AttributeMatchUtil.Match(eq, item.Config, out _);
             if (isMatch)
             {

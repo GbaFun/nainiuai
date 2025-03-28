@@ -80,6 +80,7 @@
     "category": "死骑面罩",
     "quality": "破碎|普通",
     "isUpdateRune": true,
+    "targetSlotCount": 2,
     "slotRule": "3:DkHeadRandom,else:DkHeadRandom",
     "conditions": [
       {
@@ -92,7 +93,7 @@
       {
         "matchType": "必需",
         "matchGroupName": "知识条件",
-        "operate": "等于",
+        "operate": "大于等于",
         "attributeType": "凹槽",
         "conditionContent": "2"
       },

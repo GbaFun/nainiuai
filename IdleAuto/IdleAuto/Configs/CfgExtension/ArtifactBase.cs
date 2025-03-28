@@ -16,7 +16,20 @@ public class ArtifactBaseConfig : Equipment
     /// </summary>
     public bool isUpdateRune { get; set; } = false;
 
-    public string SlotRule { get; set; }
+    public string SlotRule
+    {
+        get
+        {
+            return _slotRule;
+        }
+        set
+        {
+            _slotRule = value;
+            ReadSlotRule();
+        }
+    }
+
+    private string _slotRule;
 
     /// <summary>
     /// 目标孔数
@@ -40,6 +53,10 @@ public class ArtifactBaseConfig : Equipment
             var slotTypeStr = rule[1];
             emSlotType slotType;
             Enum.TryParse<emSlotType>(slotTypeStr, out slotType);
+            if (SlotMap.ContainsKey(skill))
+            {
+                continue;
+            }
             SlotMap.Add(skill, slotType);
         }
 

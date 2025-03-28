@@ -1512,7 +1512,7 @@
     }
   },
   {
-    "name": "31死灵副手",
+    "name": "31副手",
     "description": "",
     "equipment": {
       "category": "死灵副手",
@@ -1664,7 +1664,7 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "知识",
@@ -1795,7 +1795,7 @@
       "quality": "神器",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "死骑头盔",
           "operate": "等于",
           "attributeType": "名称",
