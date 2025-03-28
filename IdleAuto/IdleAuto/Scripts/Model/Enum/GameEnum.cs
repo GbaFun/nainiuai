@@ -240,7 +240,6 @@ public enum emArtifactBase
 /// </summary>
 public enum emSlotType
 {
-    Direct = 50,
-    DkHeadRandom=52,
-    Random = 54,
+    Direct ,
+    Random 
 }

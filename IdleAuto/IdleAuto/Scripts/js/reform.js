@@ -17,9 +17,10 @@
 
 
     async function reform(d) {
+        
         var type = d.type;
         var data = {
-            type: type
+            type: type == "random" ? $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type")*1 :50
         };
         debugger
         await POST_Message("EquipReform", MERGE_Form(data)).then((r) => {
