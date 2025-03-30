@@ -267,6 +267,13 @@
       "category": "护符",
       "quality": "传奇",
       "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "护符"
+        }
 
 
       ]
@@ -275,12 +282,18 @@
   },
   {
     "equip": {
-      "description": "传奇护符",
+      "description": "传奇珠宝",
       "category": "珠宝",
       "quality": "传奇",
       "conditions": [
 
-
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "珠宝"
+        }
       ]
     },
     "maxCount": 1200
