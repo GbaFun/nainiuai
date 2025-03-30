@@ -275,6 +275,18 @@
   },
   {
     "equip": {
+      "description": "传奇护符",
+      "category": "珠宝",
+      "quality": "传奇",
+      "conditions": [
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
       "description": "完美传奇",
       "category": "全部",
       "quality": "传奇",
@@ -545,7 +557,7 @@
 
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "审判光环,3"
+          "conditionContent": "审判光环,2"
         },
         {
           "matchType": "可选",
@@ -643,7 +655,7 @@
 
         {
           "matchType": "必需",
-          "matchGroupName": "项链",
+        
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,1"
@@ -652,36 +664,8 @@
     },
     "maxCount": 40
   },
-  {
-    "equip": {
-      "category": "全部",
-      "quality": "全部",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "conditionContent": "30"
-        }
-      ]
-    },
-    "maxCount": 20
-  },
-  {
-    "equip": {
-      "category": "全部",
-      "quality": "全部",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "conditionContent": "300"
-        }
-      ]
-    },
-    "maxCount": 240
-  },
+ 
+  
 
   //-------神器底子-------//
   //隐秘
@@ -698,7 +682,7 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 4
   },
   //叶子
   {
@@ -923,23 +907,7 @@
   /////-------神器底子------------/////
 
   //抗性防具
-  {
-    "equip": {
-      "category": "全部",
-      "quality": "全部",
-      "conditions": [
-        {
-          "matchType": "任一",
-          "matchGroupName": "抗性防具",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "conditionContent": "50"
-        }
-      ]
-
-    },
-    "maxCount": 20
-  },
+ 
   {
     "equip": {
       "category": "戒指",
@@ -959,8 +927,8 @@
   },
   {
     "equip": {
-      "category": "全部",
-      "quality": "全部",
+      "category": "防具",
+      "quality": "稀有",
       "conditions": [
         {
           "matchType": "任一",

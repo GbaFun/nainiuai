@@ -1,5 +1,5 @@
 ﻿
-let userKey;
+let userKey="1.1.1.1";
 //初始化Bridge
 async function init() {
     try {
@@ -26,7 +26,7 @@ async function setUsernamePwd() {
 
 function getAccountName() {
     $('a[href="/Home/Index"]').each(function () {
-        if ($(this).text() != "idle infinity") {
+        if ($(this).text() !== "idle infinity") {
             return $(this).text();
         }
     });
@@ -51,19 +51,22 @@ init().then((r) => {
     //登录页逻辑
     if (location.href.indexOf("Login") > -1) {
         setUsernamePwd();
-        checkIP();
+        // checkIP();
     }
 
-    //首页保存cookie或者替换cookie
-    if (location.href.indexOf("Home/Index") > -1) {
-        Bridge.invokeEvent("OnLoginSuccess", true, getAccountName(), getRoleInfo());
-    }
 
-    Bridge.invokeEvent("OnJsInited", "login");
-})
+    setTimeout(() => {
+        if (location.href.indexOf("Home/Index") > -1) {
+            Bridge.invokeEvent("OnLoginSuccess", true, getAccountName(), getRoleInfo());
+        }
+
+        Bridge.invokeEvent("OnJsInited", "login");
+    }, 1000);//首页保存cookie或者替换cookie
+  
+});
 function generatePrint() {
     const regex = /encrypt\(\`([a-zA-Z0-9]+)\$\{CryptoJS\.SHA256\(rawString\)\.toString\(\)\}\`\);/;
-    var code = document.head.innerHTML.match(regex)[1]
+    var code = document.head.innerHTML.match(regex)[1];
 
     const components = {};
     components.userAgent = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${userKey} Safari/537.36`;
@@ -105,6 +108,6 @@ function generatePrint() {
 
 function checkIP() {
     var errTxt = $(".validation-summary-errors").text();
-    if (errTxt.indexOf("相同IP") == -1) return;
+    if (errTxt.indexOf("相同IP") === -1) return;
     Bridge.invokeEvent('OnIpBan', '');
 }
