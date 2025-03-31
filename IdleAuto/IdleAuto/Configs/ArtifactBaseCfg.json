@@ -137,7 +137,7 @@
     ]
   },
   "单手复苏": {
-    "category": "斧|锤",
+    "category": "锤",
     "quality": "破碎",
     "conditions": [
       {
@@ -225,6 +225,12 @@
         "operate": "大于等于",
         "attributeType": "技能等级",
         "conditionContent": "生生不息,1"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
       }
     ]
   },
@@ -261,6 +267,12 @@
         "operate": "大于等于",
         "attributeType": "技能等级",
         "conditionContent": "生生不息,1"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
       }
     ]
   }

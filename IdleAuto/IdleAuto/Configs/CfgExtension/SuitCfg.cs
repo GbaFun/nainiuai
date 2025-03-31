@@ -145,22 +145,30 @@ public class SuitCfg
 
     public EquipSuits GetEquipmentByJobAndLevel(emJob job, int level)
     {
-        if (_equipMap == null)
+        try
         {
-            _equipMap = new Dictionary<emJob, List<EquipSuits>>();
-            foreach (var equipment in SuitList)
+            if (_equipMap == null)
             {
-                if (!_equipMap.ContainsKey(equipment.Job))
+                _equipMap = new Dictionary<emJob, List<EquipSuits>>();
+                foreach (var equipment in SuitList)
                 {
-                    _equipMap.Add(equipment.Job, new List<EquipSuits>());
+                    if (!_equipMap.ContainsKey(equipment.Job))
+                    {
+                        _equipMap.Add(equipment.Job, new List<EquipSuits>());
+                    }
+                    _equipMap[equipment.Job].Add(equipment);
                 }
-                _equipMap[equipment.Job].Add(equipment);
+            }
+            if (_equipMap.TryGetValue(job, out var equipmentList))
+            {
+                return equipmentList.Find(e => e.Lv.AdaptLevel(level));
             }
         }
-        if (_equipMap.TryGetValue(job, out var equipmentList))
+        catch (Exception e)
         {
-            return equipmentList.Find(e => e.Lv.AdaptLevel(level));
+            throw e;
         }
+       
 
         return null;
     }

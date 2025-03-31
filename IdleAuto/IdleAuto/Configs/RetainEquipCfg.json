@@ -168,6 +168,20 @@
           "attributeType": "名称",
           "conditionContent": "刻面"
         },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "刻面"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "冰晶"
+        },
 
         {
           "matchType": "任一",
@@ -239,7 +253,13 @@
           "attributeType": "名称",
           "conditionContent": "地狱猎手"
         },
-
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "食魂"
+        },
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
@@ -282,17 +302,24 @@
   },
   {
     "equip": {
-      "description": "传奇珠宝",
+      "description": "珠宝",
       "category": "珠宝",
-      "quality": "传奇",
+      "quality": "全部",
       "conditions": [
 
         {
-          "matchType": "必需",
+          "matchType": "任一",
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "珠宝"
+          "conditionContent": "传奇"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "璀璨"
         }
       ]
     },
@@ -374,6 +401,38 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "全部",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "炽天使"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "骑士,光环,2"
         }
 
       ]
@@ -668,7 +727,7 @@
 
         {
           "matchType": "必需",
-        
+
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,1"
@@ -677,8 +736,85 @@
     },
     "maxCount": 40
   },
- 
-  
+
+  {
+    "equip": {
+      "category": "头饰|护符",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "牧师,暗影,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "游侠,辅助,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,鲜血,3"
+        }
+      ]
+    },
+    "maxCount": 500
+  },
+  {
+    "equip": {
+      "category": "头饰|项链",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "头",
+          "operate": "大于等于",
+          "attributeType": "职业单系技能",
+          "conditionContent": "3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        }
+      ]
+    },
+    "maxCount": 500
+  },
+
+
 
   //-------神器底子-------//
   //隐秘
@@ -920,7 +1056,7 @@
   /////-------神器底子------------/////
 
   //抗性防具
- 
+
   {
     "equip": {
       "category": "戒指",
