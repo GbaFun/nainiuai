@@ -130,8 +130,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts =null;
-        
+            string[] MapSwitchAccounts = null;
+
             FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
@@ -157,9 +157,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                //  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                  await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, RepairManager.NanfangAccounts);
-                  await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
+                    //  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, RepairManager.NanfangAccounts);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
                 {
@@ -276,8 +276,6 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            // FlowController.MakeArtifact();
-
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NanfangAccounts);
         }
 
@@ -295,9 +293,9 @@ namespace IdleAuto.Scripts.View
             //Account item = this.AccountCombo.SelectedItem as Account;
             //AccountController.Instance.User = new UserModel(item);
             //var user = AccountController.Instance.User;
-            //var window = await TabManager.Instance.TriggerAddBroToTap(user);
-            //RuneController controller = new RuneController();
-            //controller.UpgradeRune(window, user, new Dictionary<int, int> { { 4, 10 }, { 3, 5 } });
+            //var window = TabManager.Instance.GetWindow();
+            //TradeController controller = new TradeController();
+            //await controller.AcceptAll(window, user);
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)
@@ -316,8 +314,8 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon,RepairManager.NanfangAccounts);
-    
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NanfangAccounts);
+
         }
 
         private void btnProxy_Click(object sender, EventArgs e)

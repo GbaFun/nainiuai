@@ -71,7 +71,7 @@ public class TabManager
     /// <param name="url">跳转url</param>
     /// <param name="jsName">必须等待某个js载入完成才能保证逻辑正确执行</param>
     /// <returns></returns>
-    public async Task<BroWindow> AddBroToTap(UserModel user, string url,bool isProxy=false)
+    public async Task<BroWindow> AddBroToTap(UserModel user, string url, bool isProxy = false)
     {
         var seed = AddTabPage(user.AccountName);
         var tabPage = TabPageDic[seed];
@@ -82,7 +82,7 @@ public class TabManager
         {
             if ("login" == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
-        var window = new BroWindow(seed, user, url,isProxy);
+        var window = new BroWindow(seed, user, url, isProxy);
         window.SubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
         tabPage.Controls.Add(window.GetBro());
         await jsTask.Task;
@@ -90,7 +90,7 @@ public class TabManager
         BroWindowDic.TryAdd(seed, window);
         return window;
     }
-    public async Task<BroWindow> TriggerAddBroToTap(UserModel user,bool isProxy=false)
+    public async Task<BroWindow> TriggerAddBroToTap(UserModel user, bool isProxy = false)
     {
         // 触发事件
         //AddTabPageEvent?.Invoke(title, url);
@@ -103,7 +103,7 @@ public class TabManager
             {
                 try
                 {
-                    var result = await AddBroToTap(user, IdleUrlHelper.HomeUrl(),isProxy);
+                    var result = await AddBroToTap(user, IdleUrlHelper.HomeUrl(), isProxy);
                     tcs.SetResult(result);
                 }
                 catch (Exception ex)
@@ -115,7 +115,7 @@ public class TabManager
         }
         else
         {
-            return await AddBroToTap(user, IdleUrlHelper.HomeUrl(),isProxy);
+            return await AddBroToTap(user, IdleUrlHelper.HomeUrl(), isProxy);
         }
     }
 

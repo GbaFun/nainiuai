@@ -321,5 +321,22 @@ function jumpToCategory(c) {
 }
 async function reloadPage() {
     //await sleep(1000);
-   // location.reload();
+    // location.reload();
+}
+
+function equipTrade(cid, eid, name) {
+    console.log('start equipTrade');
+    var data = MERGE_Form({
+        cid: cid,
+        eid: eid,
+        cname: name
+    });
+    console.log(data);
+    POST_Message("EquipTrade", data, "post", 1000)
+        .then(r => {
+            console.log("EquipTrade success");
+        })
+        .catch(r => {
+            console.log(r);
+        });
 }

@@ -1,7 +1,7 @@
 ///--json配置文件地址 
 //const json_url = "https://raw.githubusercontent.com/GbaFun/IdleinfinityTools/refs/heads/main/data.json";
 
-$(".bg-canvas").remove()
+//$(".bg-canvas").remove()
 function Post(_url, _data, _dataType) {
     return new Promise((resolve, reject) => {
         $.ajax({

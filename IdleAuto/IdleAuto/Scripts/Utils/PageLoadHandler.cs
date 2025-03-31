@@ -28,6 +28,7 @@ public class PageLoadHandler
     public const string GuaJi = "Battle/Guaji";
     public const string Inlay = "Equipment/Inlay";
     public const string Reform = "Equipment/Reform";
+    public const string Notice = "Notice/Query";
 
     #region 载入js
     public static async Task LoadJsByUrl(ChromiumWebBrowser browser)
@@ -68,8 +69,8 @@ public class PageLoadHandler
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
             await LoadGlobalJs(jsPath, browser);
-            //var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equipattr.js");
-            //await LoadJs(jsPath2, browser);
+            //var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "trade.js");
+            //await LoadGlobalJs(jsPath2, browser);
         }
         else if (ContainsUrl(url, CharCreate))
         {
@@ -99,6 +100,11 @@ public class PageLoadHandler
         else if (ContainsUrl(url, Reform))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "reform.js");
+            await LoadGlobalJs(jsPath, browser);
+        }
+        else if (ContainsUrl(url, Notice))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "trade.js");
             await LoadGlobalJs(jsPath, browser);
         }
 
