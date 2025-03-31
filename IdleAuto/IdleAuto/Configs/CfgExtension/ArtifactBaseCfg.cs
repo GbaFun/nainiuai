@@ -66,7 +66,7 @@ public class ArtifactBaseCfg
                     var matchSkill = skillArr[i].DeepCopy();
                     matchSkill.Operate = emOperateType.大于等于;
                     matchSkill.MatchType = emMatchType.必需;
-                    matchSkill.ConditionContent = skillLvArr[i].ToString();
+                    matchSkill.ConditionContent = skillArr[i].ConditionContent.Split(',')[0]+","+ skillLvArr[i].ToString();
                     newConfig.Conditions.Add(matchSkill);
                 }
                 var ss = new SlotConfigStruct();
@@ -74,6 +74,8 @@ public class ArtifactBaseCfg
                 ss.SlotType = s.Value;
                 list.Add(ss);
             }
+            
+            
             SlotConfig.Add(item.Key, list);
         }
     }

@@ -629,11 +629,20 @@
           "matchType": "任一",
           "matchGroupName": "死灵戒指",
           "operate": "大于等于",
-          "seq": 50,
+          "seq": 30,
           "attributeType": "所有技能",
           "conditionContent": "1"
         },
 
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵戒指",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -641,14 +650,6 @@
           "attributeType": "单项元素抗性之和",
           "seq": 1,
           "conditionContent": "5"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "死灵戒指",
-          "operate": "大于等于",
-          "attributeType": "施法速度",
-          "seq": 1,
-          "conditionContent": "10"
         }
 
       ]
@@ -1280,7 +1281,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 500,
+          "seq": 5000,
           "conditionContent": "10"
         }
       ]
@@ -1311,7 +1312,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "seq": 500,
+          "seq": 5000,
           "conditionContent": "10"
         }
       ]

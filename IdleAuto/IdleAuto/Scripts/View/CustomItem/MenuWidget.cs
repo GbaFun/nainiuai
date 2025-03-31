@@ -152,13 +152,14 @@ namespace IdleAuto.Scripts.View
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
             string[] accounts = null;
+            //accounts = new string[] {"南方工具人7" };
             Task.Run(async () =>
             {
                 try
                 {
-                   await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                   await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, accounts);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
+                //  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
+                  await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, RepairManager.NanfangAccounts);
+                  await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
                 }
                 catch (Exception ex)
                 {

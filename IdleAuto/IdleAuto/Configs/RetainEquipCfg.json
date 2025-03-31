@@ -1940,7 +1940,7 @@
   {
     "equip": {
       "category": "手杖|死灵副手",
-      "quality": "全部",
+      "quality": "魔法|稀有",
       "conditions": [
         {
           "matchType": "必需",
@@ -2145,11 +2145,11 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "施法速度",
-          "conditionContent": "10"
+          "conditionContent": "1"
         }
       ]
     },
-    "maxCount": 20
+    "maxCount": 200
   },
 
   {

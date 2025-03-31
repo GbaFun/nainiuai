@@ -145,6 +145,22 @@ public class EquipModel
             needLv = int.Parse(match.Groups["lv"].Value);
         return role.Level >= needLv;
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        var t = obj as EquipModel;
+        if (t == null) return false;
+        return t.EquipID == this.EquipID;
+    }
+
+    public override int GetHashCode()
+    {
+        return EquipID.GetHashCode();
+    }
 }
 
 public struct AttrV4
