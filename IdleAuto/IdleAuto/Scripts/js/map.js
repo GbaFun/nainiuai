@@ -119,7 +119,7 @@ let _map = {};
 
         }).catch((e) => {
             debugger;
-            // Bridge.invokeEvent('OnSignal', 'DungeonEnd');
+            Bridge.invokeEvent('OnSignal', 'startAuto');
 
         })
     }

@@ -1056,7 +1056,7 @@
           "conditionContent": "1"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
           "seq": 104,
@@ -1266,14 +1266,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "seq": 20,
+          "seq": 1,
           "conditionContent": "20"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗电",
-          "seq": 20,
+          "seq": 1,
           "conditionContent": "20"
         },
         {
@@ -1282,14 +1282,6 @@
           "attributeType": "施法速度",
           "seq": 500,
           "conditionContent": "10"
-        },
-
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
         }
       ]
     }
@@ -1305,14 +1297,14 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗火",
-          "seq": 20,
+          "seq": 1,
           "conditionContent": "20"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗毒",
-          "seq": 20,
+          "seq": 1,
           "conditionContent": "20"
         },
         {
@@ -1321,14 +1313,6 @@
           "attributeType": "施法速度",
           "seq": 500,
           "conditionContent": "10"
-        },
-
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
         }
       ]
     }

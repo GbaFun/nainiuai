@@ -277,7 +277,7 @@ namespace IdleAuto.Scripts.View
         {
             // FlowController.MakeArtifact();
 
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NanfangAccounts);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -315,7 +315,8 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon,RepairManager.NanfangAccounts);
+    
         }
 
         private void btnProxy_Click(object sender, EventArgs e)

@@ -2,6 +2,23 @@
   {
     "equip": {
       "category": "全部",
+      "quality": "传奇|套装|神器",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
+        }
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "category": "全部",
       "quality": "套装",
       "conditions": [
 
@@ -166,7 +183,7 @@
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "刻面"
+          "conditionContent": "神目"
         },
         {
           "matchType": "任一",
@@ -175,6 +192,7 @@
           "attributeType": "名称",
           "conditionContent": "刻面"
         },
+
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
@@ -246,36 +264,15 @@
           "attributeType": "名称",
           "conditionContent": "蛇魔法师"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "地狱猎手"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "食魂"
-        },
+
+
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "海鸥"
-        },
-
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "蚀肉骑士"
         }
-
 
       ]
     },
@@ -325,10 +322,1171 @@
     },
     "maxCount": 1200
   },
+
+
   {
     "equip": {
       "description": "完美传奇",
-      "category": "全部",
+      "category": "帽子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "谐角之冠"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "帽子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "勇气之盔"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "炫影之风"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "地狱刑长之壳"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "厌恶"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "盾",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "元素阵列"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "盾",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "白龙"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "猩红之爪"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "法师,元素,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "血肉切割者"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "时光扭曲行者"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "战争旅者"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蔑视之靴"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "猎手,2"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蚀肉骑士"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天启降临之靴"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死骑,2"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "虚幻长靴"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "牧师,暗影,2"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "阴影追猎者"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "沙暴之旅"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "骨髓行走"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "冰原行者"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "影舞者"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "刺客,格斗,3"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蜘蛛之网"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "拉斯玛之网"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "吸血圣王之圈"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "饮血者"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天使发带"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "牧师,3"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "吉利安火盆"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "布尔凯索之力"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "头饰",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "冰晶"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "头饰",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "鬼魂释放者"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "牧师,暗影,3"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "头饰",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "格利风之眼"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "所有技能",
+          "conditionContent": "3"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "头饰",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "格利风之眼"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "所有技能",
+          "conditionContent": "3"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "乔丹之石"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "布尔凯索之戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "神目指环"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天空之戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "全能法戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "灵魂之戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "陨星"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "大君之怒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "炽天使"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "马拉的万花筒"
+        }
+
+      ]
+    },
+    "maxCount": 3
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "野火"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "英雄颂歌"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "金属网格"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "人品的展现"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "3"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "所罗门的箴言"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "斧",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形混乱之刺"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "剑",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形磨骨者"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "剑",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "华莱士之泪"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "剑",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形重残"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "匕首",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "食魂"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "爪",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形艾席拉的复仇"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "战士头盔",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "伊安森的狂怒"
+        }
+      ]
+    },
+    "maxCount": 1
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "战士头盔",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "恶魔号角的边缘"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "战士头盔",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "狼嚎"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "祭祀刀",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "临终之息"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "祭祀刀",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "加耶之手"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "牧师副手",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "伪经"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手杖",
       "quality": "传奇",
       "conditions": [
         {
@@ -360,7 +1518,7 @@
   {
     "equip": {
       "description": "完美传奇",
-      "category": "全部",
+      "category": "死灵副手",
       "quality": "传奇",
       "conditions": [
         {
@@ -385,7 +1543,7 @@
   {
     "equip": {
       "description": "完美传奇",
-      "category": "全部",
+      "category": "手杖",
       "quality": "传奇",
       "conditions": [
         {
@@ -407,10 +1565,11 @@
     },
     "maxCount": 1200
   },
+
   {
     "equip": {
       "description": "完美传奇",
-      "category": "全部",
+      "category": "手杖",
       "quality": "传奇",
       "conditions": [
         {
@@ -418,22 +1577,295 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "炽天使"
+          "conditionContent": "冥神之力"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "死灵副手",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "怨灵尖啸"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死灵,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "骑士盾牌",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "耀骑士"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "贤者头盔",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "巨熊之颅"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "拳套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无限手套"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "拳套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形流云桥"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "拳套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形伤痕使者"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手弩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "地狱猎手"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "猎手,3"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手弩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "恶魔之灾"
+        },
+        {
+          "matchType": "必需",
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "骑士,光环,2"
+          "conditionContent": "猎手,生存,3"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手弩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "要塞"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "传奇",
           "operate": "大于等于",
-          "attributeType": "所有技能",
-          "conditionContent": "骑士,光环,2"
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "猎手,陷阱,3"
         }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "死骑面罩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无眠守望之盔"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死骑,3"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "死骑面罩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "遗忘者面甲"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,3"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "死骑面罩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "蛛魔领主之冠"
+        }
+
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "死骑面罩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "巫妖王之怒"
+        }
+
 
       ]
     },
@@ -690,7 +2122,8 @@
   },
   {
     "equip": {
-      "category": "头饰|帽子|项链|戒指|靴子|腰带|手套|护符",
+      "description": "技能衣服",
+      "category": "衣服",
       "quality": "传奇|套装",
       "conditions": [
         {
@@ -705,7 +2138,7 @@
   },
   {
     "equip": {
-      "category": "戒指|手套",
+      "category": "戒指",
       "quality": "全部",
       "conditions": [
         {

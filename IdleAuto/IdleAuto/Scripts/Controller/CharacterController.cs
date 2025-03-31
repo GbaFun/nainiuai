@@ -73,7 +73,7 @@ namespace IdleAuto.Scripts.Controller
         /// 同步来源
         /// </summary>
         private static string FilterSource = ConfigUtil.GetAppSetting("FilterSource");
-
+        private static string FilterSource1 = ConfigUtil.GetAppSetting("FilterSource1");
 
 
 
@@ -200,6 +200,11 @@ namespace IdleAuto.Scripts.Controller
             if (role.Level >= 30)
             {
                 await AutoDungeon(isReset);
+                return;
+            }
+            if (targetDungeonLv > 0 && role.Level < 30)
+            {
+                //不到30级不参与每日秘境
                 return;
             }
 
@@ -1076,14 +1081,23 @@ namespace IdleAuto.Scripts.Controller
             });
             await _win.SignalCallback("charReload", async () =>
             {
-                await CopyConfig();
+                await CopyConfig(user);
             });
 
         }
-        private async Task CopyConfig()
+        private async Task CopyConfig(UserModel user)
         {
+
             var data = new Dictionary<string, object>();
-            data.Add("name", FilterSource);
+            if (RepairManager.NainiuAccounts.Contains(user.AccountName))
+            {
+                data.Add("name", FilterSource);
+            }
+            else if (RepairManager.NanfangAccounts.Contains(user.AccountName))
+            {
+                data.Add("name", FilterSource1);
+            }
+
             var d = await _browser.EvaluateScriptAsync($@"_char.copyConfig({data.ToLowerCamelCase()});");
             Console.WriteLine(d.Message);
         }

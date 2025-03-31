@@ -84,6 +84,10 @@ namespace IdleAuto.Scripts.Controller
         {
             var controller = new CharacterController(win);
             var targetLv = int.Parse(ConfigUtil.GetAppSetting("DungeonLv"));
+            if (RepairManager.NanfangAccounts.Contains(win.User.AccountName))
+            {
+                targetLv = int.Parse(ConfigUtil.GetAppSetting("DungeonNanfangLv"));
+            }
             await controller.StartDungeon(win.GetBro(), win.User.Roles[0], true, targetLv);
         }
 
