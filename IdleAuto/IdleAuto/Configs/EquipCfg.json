@@ -1261,7 +1261,7 @@
     "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "手套",
-      "quality": "魔法|稀有|传奇",
+      "quality": "魔法|稀有|传奇|套装",
       "conditions": [
         {
           "matchType": "可选",
@@ -1292,7 +1292,7 @@
     "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "手套",
-      "quality": "魔法|稀有|传奇",
+      "quality": "魔法|稀有|传奇|套装",
       "conditions": [
         {
           "matchType": "可选",
