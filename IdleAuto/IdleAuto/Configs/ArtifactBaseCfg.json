@@ -237,6 +237,7 @@
   "亡者遗产": {
     "category": "手杖",
     "quality": "普通|破碎",
+    "isUpdateRune": true,
     "targetSlotCount": 2,
     "slotRule": "333:direct,33:direct,331:direct,else:random",
     "remakeRule": "333:true",

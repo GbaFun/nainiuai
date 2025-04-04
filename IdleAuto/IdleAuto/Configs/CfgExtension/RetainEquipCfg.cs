@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
 public class RetainEquipCfg
 {
     private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "RetainEquipCfg.json");
@@ -38,7 +40,9 @@ public class RetainEquipCfg
 
     public bool IsRetain(EquipModel equip)
     {
-        foreach (var item in Equips)
+        var configs = Equips.Where(p=>(p.Equip.Category.Split('|').Contains(equip.Category)||p.Equip.Category=="全部")&&(p.Equip.Quality.Split('|').Contains(equip.emItemQuality.ToString()) || p.Equip.Quality == "全部")).ToList();
+    
+        foreach (var item in configs)
         {
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {

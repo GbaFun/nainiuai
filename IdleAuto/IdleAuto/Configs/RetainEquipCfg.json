@@ -22,13 +22,13 @@
       "quality": "套装",
       "conditions": [
 
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "达内塔"
-        },
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "套装",
+        //  "operate": "在范围内",
+        //  "attributeType": "名称",
+        //  "conditionContent": "达内塔"
+        //},
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -154,6 +154,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "浩劫"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "艾尔多的成长"
         },
         {
           "matchType": "任一",
@@ -287,9 +294,9 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "护符"
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "幸运小符"
         }
 
 
@@ -368,6 +375,24 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "骑士,光环,2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "排齿"
         }
 
       ]
@@ -2045,42 +2070,56 @@
   },
   {
     "equip": {
-      "category": "权杖|骑士盾牌|盾牌",
-      "quality": "魔法|稀有|传奇",
+      "category": "权杖",
+      "quality": "全部",
       "necessary": 0,
       "conditions": [
-        {
-          "matchType": "可选",
 
+        {
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "冥想光环,1"
+          "seq": 6,
+          "conditionContent": "审判光环,3"
         },
         {
           "matchType": "必需",
-
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "审判光环,2"
-        },
-        {
-          "matchType": "可选",
-
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 6,
           "conditionContent": "骑士,光环,1"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "category": "骑士盾牌",
+      "quality": "魔法|稀有|传奇|套装|神器",
+      "necessary": 0,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 6,
+          "conditionContent": "骑士,光环,2"
         },
         {
-          "matchType": "可选",
 
+          "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "拯救光环,1"
+          "attributeType": "元素抗性",
+          "seq": 6,
+          "conditionContent": "10"
+
         }
       ]
     },
-    "maxCount": 30
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2149,7 +2188,7 @@
         }
       ]
     },
-    "maxCount": 200
+    "maxCount": 10
   },
 
   {
@@ -2229,14 +2268,14 @@
       "conditions": [
 
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "头",
           "operate": "大于等于",
           "attributeType": "职业单系技能",
           "conditionContent": "3"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "施法速度",
@@ -2285,13 +2324,15 @@
           "conditionContent": "陨石,3"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "法杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "雷云风暴,3"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "法杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "支配火焰,3"
@@ -2315,7 +2356,7 @@
         }
       ]
     },
-    "maxCount": 6
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2392,11 +2433,38 @@
     },
     "maxCount": 1
   },
+  //执法者
+  {
+    "equip": {
+      "category": "权杖",
+      "quality": "普通|破碎",
+      "necessary": 0,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "审判光环,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "冥想光环,2"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
   //亡者遗产
   {
     "equip": {
-      "category": "手杖",
-      "quality": "普通",
+      "category": "手杖|死灵副手",
+      "quality": "普通|破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -2427,44 +2495,9 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 50
   },
-  {
-    "equip": {
-      "category": "手杖",
-      "quality": "破碎",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "凹槽",
-          "conditionContent": "2"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "骷髅法师,3"
-        },
-        {
-          "matchType": "可选",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,1"
-        },
-        {
-          "matchType": "可选",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "生生不息,1"
-        }
-      ]
-    },
-    "maxCount": 12
-  },
+
   {
     "equip": {
       "category": "剑",
@@ -2509,7 +2542,7 @@
   },
   {
     "equip": {
-      "category": "防具",
+      "category": "腰带|手套|靴子",
       "quality": "稀有",
       "conditions": [
         {

@@ -1264,7 +1264,8 @@
       "quality": "魔法|稀有|传奇|套装",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "抗寒",
           "seq": 1,
@@ -1278,7 +1279,8 @@
           "conditionContent": "20"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 5000,
@@ -1295,21 +1297,24 @@
       "quality": "魔法|稀有|传奇|套装",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "抗火",
           "seq": 1,
-          "conditionContent": "20"
+          "conditionContent": "30"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "抗毒",
           "seq": 1,
-          "conditionContent": "20"
+          "conditionContent": "30"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "施法速度",
           "seq": 5000,
@@ -1862,9 +1867,8 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "任一",
-          "matchGroupName": "死灵副手",
-          "operate": "大于等于",
+          "matchType": "必需",
+          "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "死灵灿烂",
           "seq": 10,

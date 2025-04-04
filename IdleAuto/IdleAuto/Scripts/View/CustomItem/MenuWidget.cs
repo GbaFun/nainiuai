@@ -132,7 +132,7 @@ namespace IdleAuto.Scripts.View
         {
             string[] MapSwitchAccounts = null;
 
-            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
+            FlowController.GroupWork(2, 1, FlowController.StartMapSwitch);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -157,9 +157,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //  await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips, accounts);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips, RepairManager.NanfangAccounts);
-                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair, accounts);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -314,7 +314,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NanfangAccounts);
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon);
 
         }
 

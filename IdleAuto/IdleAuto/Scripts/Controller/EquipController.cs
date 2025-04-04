@@ -315,6 +315,7 @@ public class EquipController
                                         if (toClear.Count != 0 && boxCount >= retainNum)
                                         {
                                             P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
+                                           // P.Log(ConsoleEquips(toClear.Values.ToList()), emLogType.Debug);
                                             await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                                             boxCount -= toClear.Count;
                                             P.Log($"清理仓库第{page}页装备完成,当前清理装备数量:{toClear.Count}", emLogType.AutoEquip);
@@ -367,6 +368,19 @@ public class EquipController
                 }
             }
         }
+    }
+
+    private string ConsoleEquips(List<EquipModel> list)
+    {
+        StringBuilder sb = new StringBuilder();
+        list.ForEach(p =>
+        {
+            sb.Append(p.Content);
+            sb.Append("*****************************************************");
+            sb.Append("\r\n");
+        
+        });
+        return sb.ToString();
     }
 
     /// <summary>
@@ -861,7 +875,7 @@ public class EquipController
                 }
 
             }
-            
+
 
         }
         return bestEq;
