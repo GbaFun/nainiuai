@@ -45,24 +45,25 @@ async function getCurEquips() {
     return eMap;
 }
 
-function getPackageEquips() {
-    console.log('start getPackageEquips');
-    var eMap = {};
-    var box = $('.panel-body.equip-bag')[0];
-    $(box).children().each(function () {
-        var equipItem = $(this).find('span:first');
-        var id = equipItem.data('id');
-        //var quality = equipItem.data('type');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
-        var classname = equipContent.find('p.equip-title:first').attr('class');
-        console.log(classname);
-        var quality = classname.split(' ')[0];
-        var content = equipContent.text();
-        var e = getEquipInfo(id, 999, quality, content);
-        eMap[e.eid] = e;
-    });
-    return eMap;
-}
+//function getPackageEquips() {
+//    console.log('start getPackageEquips');
+//    var eMap = {};
+//    var box = $('.panel-body.equip-bag')[0];
+//    $(box).children().each(function () {
+//        var equipItem = $(this).find('span:first');
+//        var id = equipItem.data('id');
+//        //var quality = equipItem.data('type');
+//        debugger
+//        var equipContent = $(`.${window.classMappings[id]}`);
+//        var classname = equipContent.find('p.equip-title:first').attr('class');
+//        console.log(classname);
+//        var quality = classname.split(' ')[0];
+//        var content = equipContent.text();
+//        var e = getEquipInfo(id, 999, quality, content);
+//        eMap[e.eid] = e;
+//    });
+//    return eMap;
+//}
 
 function getEquipInfo(eid, sortid, quality, content) {
     console.log("getEquipInfo");
@@ -141,7 +142,7 @@ function getRepositoryEquips() {
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var equipContent = $(`.${window.classMappings[id]}`);
         var classname = equipContent.find('p.equip-title:first').attr('class');
         var quality = classname.split(' ')[0];
         var content = equipContent.text();
@@ -157,7 +158,7 @@ function getPackageEquips() {
     $(box).children().each(function () {
         var equipItem = $(this).find('span:first');
         var id = equipItem.data('id');
-        var equipContent = $(`.equip-content-container`).find(`[data-id="${id}"]`);
+        var equipContent = $(`.${window.classMappings[id]}`);
         var classname = equipContent.find('p.equip-title:first').attr('class');
         var quality = classname.split(' ')[0];
         var content = equipContent.text();
