@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using CefSharp.Handler;
 using CefSharp.WinForms;
 using IdleAuto.Scripts.Controller;
 using Newtonsoft.Json;
@@ -289,7 +290,7 @@ namespace IdleAuto.Scripts.Wrap
 
             // 创建 ChromiumWebBrowser 实例，并指定 RequestContext
             var browser = new ChromiumWebBrowser(url, requestContext) { Dock = DockStyle.Fill };
-
+            browser.RequestHandler = new MyRequestHandler();
             if (!string.IsNullOrWhiteSpace(_proxy))
             {
                 browser.IsBrowserInitializedChanged += OnIsBrowserInitializedChanged;
@@ -354,9 +355,10 @@ namespace IdleAuto.Scripts.Wrap
 
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
-
-            P.Log($"On {name} FrameLoadStart");
             var bro = sender as ChromiumWebBrowser;
+           
+            P.Log($"On {name} FrameLoadStart");
+         
             P.Log($"On {name} FrameLoadStart");
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
@@ -406,6 +408,11 @@ namespace IdleAuto.Scripts.Wrap
             _proxyUserPwd = proxyPwd;
         }
 
+        public MyRequestHandler()
+        {
+           
+        }
+
         protected override bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
         {
             if (isProxy)
@@ -415,8 +422,89 @@ namespace IdleAuto.Scripts.Wrap
             }
             return base.GetAuthCredentials(chromiumWebBrowser, browser, originUrl, isProxy, host, port, realm, scheme, callback);
         }
+        protected override IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling)
+        {
+            return new CustomResourceRequestHandler();
+        }
 
 
+    }
+
+    public class CustomResourceRequestHandler : ResourceRequestHandler
+    {
+        protected override IResponseFilter GetResourceResponseFilter(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IResponse response)
+        {
+            if (request.Url.Contains("Popup.js?"))
+            {
+                return new CustomResponseFilter();
+            }
+            return null;
+        }
+    }
+    public class CustomResponseFilter : IResponseFilter
+    {
+        private MemoryStream memoryStream;
+        private bool isDisposed;
+
+        // 必须实现 InitFilter 方法（不是 Initialize）
+        public bool InitFilter()
+        {
+            memoryStream = new MemoryStream();
+            return true; // 返回 true 表示初始化成功
+        }
+
+        public FilterStatus Filter(Stream dataIn, out long dataInRead, Stream dataOut, out long dataOutWritten)
+        {
+            if (isDisposed)
+            {
+                throw new ObjectDisposedException("CustomResponseFilter");
+            }
+
+            dataInRead = 0;
+            dataOutWritten = 0;
+
+            if (dataIn == null)
+            {
+                return FilterStatus.Done;
+            }
+
+            // 读取输入数据
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = dataIn.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                memoryStream.Write(buffer, 0, bytesRead);
+                dataInRead += bytesRead;
+            }
+
+            // 如果这是最后一块数据
+         
+                // 处理完整内容
+                string originalContent = Encoding.UTF8.GetString(memoryStream.ToArray());
+                string modifiedContent = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "popup.js")); ;
+                byte[] modifiedData = Encoding.UTF8.GetBytes(modifiedContent);
+
+                // 写入输出
+                dataOut.Write(modifiedData, 0, modifiedData.Length);
+                dataOutWritten = modifiedData.Length;
+
+                return FilterStatus.Done;
+            
+
+            return FilterStatus.NeedMoreData;
+        }
+
+        // 必须实现 Dispose 方法
+        public void Dispose()
+        {
+            if (!isDisposed)
+            {
+                memoryStream?.Dispose();
+                isDisposed = true;
+            }
+        }
+
+      
     }
 
 }

@@ -37,6 +37,7 @@ public class PageLoadHandler
         //全局js
         await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleUtils.js"), browser);
         await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "IdleTools.js"), browser);
+      //  await LoadJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "popup.js"), browser);
         if (!ContainsUrl(url, LoginPage))
         {
             await LoadGlobalJs(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "char.js"), browser);

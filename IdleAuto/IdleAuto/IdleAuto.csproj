@@ -313,6 +313,9 @@
     <Content Include="Scripts\js\map.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\js\popup.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\js\reform.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
