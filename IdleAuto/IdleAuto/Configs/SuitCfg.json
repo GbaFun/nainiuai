@@ -289,7 +289,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 47,
-      "max": 55
+      "max": 60
     },
     "equipSuit": [
       {
@@ -341,6 +341,7 @@
       }
     ]
   },
+
   {
     //20级前没有职业技能装备，以穿戴全部装备为主，主要堆骷髅法师等级和施法速度
     "jobName": "死灵",
@@ -970,7 +971,7 @@
     "jobName": "死骑",
     "lv": {
       "min": 47,
-      "max": 55
+      "max": 49
     },
     "equipSuit": [
       {
@@ -981,6 +982,118 @@
         },
         "副手": {
           "name": "死骑复苏,死骑冰霜武器",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "四以上凋零,死骑知识,凋零死骑面罩",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速冰霜项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "抗火毒戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗火毒戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "零速抗寒手",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗火毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "天灾,死骑技能衣服",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "冰霜护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    "jobName": "死骑",
+    "lv": {
+      "min": 50,
+      "max": 54
+    },
+    "equipSuit": [
+      {
+        "suitName": "死骑套装",
+        "主手": {
+          "name": "死骑冰霜武器",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "死骑冰霜武器",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "四以上凋零,死骑知识,凋零死骑面罩",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速冰霜项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "抗火毒戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗火毒戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "零速抗寒手",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗火毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "天灾,死骑技能衣服",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "冰霜护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    "jobName": "死骑",
+    "lv": {
+      "min": 55,
+      "max": 60
+    },
+    "equipSuit": [
+      {
+        "suitName": "死骑套装",
+        "主手": {
+          "name": "执法者,死骑冰霜武器",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "死骑冰霜武器",
           "isNecessery": 0
         },
         "头盔": {

@@ -253,7 +253,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 30,
-      "max": 50
+      "max": 49
     },
     "remainSkill": {
       "祈祷光环": 1,
@@ -273,7 +273,7 @@
   {
     "jobName": "骑士",
     "lv": {
-      "min": 51,
+      "min": 50,
       "max": 100
     },
     "remainSkill": {

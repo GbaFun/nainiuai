@@ -241,6 +241,24 @@
     }
   },
   {
+    "name": "执法者",
+    "description": "",
+    "equipment": {
+      "category": "锤",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "执法者",
+          "seq": 50,
+          "conditionContent": "执法者"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意项链",
     "description": "前期没有技能项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -1410,15 +1428,15 @@
       "quality": "魔法|稀有|传奇",
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
-          "seq": 104,
+          "seq": 200,
           "conditionContent": "骷髅法师,1"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",

@@ -173,6 +173,20 @@ namespace IdleAuto.Scripts.Controller
             //秘境归来
             if (isDungeonBack)
             {
+                if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
+                {
+                    _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+                });
+                var r = await _win.CallJs("_map.canSwitch()");
+                var canSwitch = r.Result.ToObject<bool>();
+                if (!canSwitch)
+                {
+                    await _win.SignalCallback("charReload", () =>
+                    {
+                        bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
+                    });
+                    await AutoDungeonCancel();
+                }
                 await SwitchMap(bro, role);
                 return;
             }
@@ -237,6 +251,16 @@ namespace IdleAuto.Scripts.Controller
             await _win.SignalCallback("startAuto", () =>
             {
                 _win.CallJs($"_map.autoDungeon({data.ToLowerCamelCase()});");
+            });
+            await Task.Delay(2000);
+        }
+
+        private async Task AutoDungeonCancel()
+        {
+            var data = new Dictionary<string, object>();
+            await _win.SignalCallback("cancelAuto", () =>
+            {
+                _win.CallJs($"_map.autoDungeonCancel();");
             });
             await Task.Delay(2000);
         }
@@ -1018,10 +1042,10 @@ namespace IdleAuto.Scripts.Controller
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)
         {
             int roleid = role.RoleId;
-            await _win.SignalCallback("charReload", () =>
-            {
-                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
-            });
+            if (bro.Address.IndexOf("https://www.idleinfinity.cn/Map/Detail?id={roleid}") == -1) await _win.SignalCallback("charReload", () =>
+               {
+                   _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
+               });
             var curMapLv = await GetCurMapLv();
             _curMapLv = curMapLv;
             //检查是否层数合适

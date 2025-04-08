@@ -132,7 +132,7 @@ namespace IdleAuto.Scripts.View
         {
             string[] MapSwitchAccounts = null;
 
-            FlowController.GroupWork(2, 1, FlowController.StartMapSwitch);
+            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -276,7 +276,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NanfangAccounts);
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NainiuAccounts);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -333,6 +333,11 @@ namespace IdleAuto.Scripts.View
         private void HomeGroup_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSendRune_Click(object sender, EventArgs e)
+        {
+            FlowController.SendRune();
         }
     }
 }

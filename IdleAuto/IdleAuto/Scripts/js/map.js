@@ -124,6 +124,25 @@ let _map = {};
         })
     }
 
+    async function autoDungeonCancel() {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            cid: _char.cid,
+         
+
+        };
+
+        POST_Message("DungeonAutoCancel", data, false).then((r) => {
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'cancelAuto');
+
+        }).catch((e) => {
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'cancelAuto');
+
+        })
+    }
+
      function canAuto() {
         return $(".panel-heading").find("a:contains('自动秘境')") == 1
     }
@@ -400,6 +419,7 @@ let _map = {};
     _map.explore = explore;
     _map.startExplore = startExplore;
     _map.autoDungeon = autoDungeon;
+    _map.autoDungeonCancel = autoDungeonCancel;
     _map.canAuto = canAuto;
     _map.canSwitch = canSwitch;
 

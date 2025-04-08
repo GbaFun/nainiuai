@@ -121,4 +121,24 @@ function upgradeRune(rune, count) {
         });
 }
 
+//发送符文
+function tradeRune(d) {
+    var rune = d.rune;
+    var roleName = d.roleName;
+    var count = d.count;
+    var data = MERGE_Form({
+        cid: _char.cid,
+        rune: rune,
+        count: count,
+        cname: roleName
+    });
+    POST_Message("RuneTrade", data)
+        .then(r => {
+            
+        })
+        .catch(r => {
+            console.log("发送失败")
+        });
+}
+
 //})();

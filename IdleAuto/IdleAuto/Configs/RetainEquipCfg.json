@@ -39,7 +39,7 @@
         {
           "matchType": "任一",
           "matchGroupName": "套装",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "萤火虫"
         },
@@ -53,6 +53,13 @@
         {
           "matchType": "任一",
           "matchGroupName": "套装",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "风之语"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "亚拉岗"
@@ -61,7 +68,7 @@
           "matchType": "任一",
           "matchGroupName": "套装",
           "operate": "在范围内",
-          "attributeType": "名称",
+          "attributeType": "自定义",
           "conditionContent": "孤儿"
         },
         {
@@ -75,7 +82,7 @@
           "matchType": "任一",
           "matchGroupName": "套装",
           "operate": "在范围内",
-          "attributeType": "名称",
+          "attributeType": "自定义",
           "conditionContent": "毁灭之王"
         },
         {
@@ -131,7 +138,7 @@
           "matchType": "任一",
           "matchGroupName": "套装",
           "operate": "在范围内",
-          "attributeType": "名称",
+          "attributeType": "自定义",
           "conditionContent": "光之烙印"
         },
         {
@@ -145,7 +152,7 @@
           "matchType": "任一",
           "matchGroupName": "套装",
           "operate": "在范围内",
-          "attributeType": "名称",
+          "attributeType": "自定义",
           "conditionContent": "风之语"
         },
         {
@@ -161,6 +168,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "艾尔多的成长"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "克己"
         },
         {
           "matchType": "任一",

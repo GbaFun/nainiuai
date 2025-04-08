@@ -1,4 +1,7 @@
-﻿using IdleAuto.Scripts.Wrap;
+﻿using IdleAuto.Db;
+using IdleAuto.Scripts.Model;
+using IdleAuto.Scripts.Utils;
+using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,13 +85,14 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task StartDailyDungeon(BroWindow win)
         {
+            var roleIndex = int.Parse(ConfigUtil.GetAppSetting("DungeonRoleIndex"));
             var controller = new CharacterController(win);
             var targetLv = int.Parse(ConfigUtil.GetAppSetting("DungeonLv"));
             if (RepairManager.NanfangAccounts.Contains(win.User.AccountName))
             {
                 targetLv = int.Parse(ConfigUtil.GetAppSetting("DungeonNanfangLv"));
             }
-            await controller.StartDungeon(win.GetBro(), win.User.Roles[0], true, targetLv);
+            await controller.StartDungeon(win.GetBro(), win.User.Roles[roleIndex], true, targetLv);
         }
 
         public static async Task StartMapSwitch(BroWindow window)
@@ -207,6 +211,61 @@ namespace IdleAuto.Scripts.Controller
                 //穿上
             }
         }
+
+        public static async Task SendRune()
+        {
+            var specifiedAccount = RepairManager.NainiuAccounts;
+            //所有资源将汇集到这 为了避免二次验证经常要换号收货
+            var reciver = "奶牛苦工24";
+            var reciverUser = "RasdGch";
+            var sendDic = new Dictionary<int, int>() { { 17, 1 } };
+            var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
+
+            for (int i = 1; i < userList.Count; i++)
+            {
+                var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
+                UserModel nextUser = null;
+                var user = new UserModel(userList[i]);
+                if (unfinishTask != null && user.AccountName != unfinishTask.UserName) continue;
+                if (unfinishTask == null)
+                {
+                    unfinishTask = new TaskProgress() { IsEnd = false, UserName = "", Type = emTaskType.RuneTrade };
+                }
+                if (i != userList.Count - 1)
+                {
+                    nextUser = new UserModel(userList[i + 1]);
+                    await SendRuneToNext(user, nextUser.AccountName, sendDic);
+                }
+                else
+                {
+                    var reciverAccount = AccountCfg.Instance.Accounts.Where(p => p.AccountName == reciverUser).First();
+                    nextUser = new UserModel(reciverAccount);
+                    await SendRuneToNext(user, nextUser.AccountName, sendDic);
+                    unfinishTask.IsEnd = true;
+                }
+                unfinishTask.UserName = nextUser.AccountName;
+                DbUtil.InsertOrUpdate<TaskProgress>(unfinishTask);
+            }
+
+
+        }
+
+        private static async Task SendRuneToNext(UserModel curUser, string reciverUser, Dictionary<int, int> sendDic)
+        {
+            var role = FreeDb.Sqlite.Select<CharAttributeModel>().Where(p => p.AccountName == reciverUser).First();
+            var w = await TabManager.Instance.TriggerAddBroToTap(curUser);
+            var t = new TradeController(w);
+
+            await Task.Delay(2000);
+            await t.AcceptAll(curUser);
+            await Task.Delay(2000);
+
+            await t.TradeRune(sendDic, role.RoleName, true);
+            w.Close();
+        }
+
+
+
 
     }
 }

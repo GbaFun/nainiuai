@@ -232,7 +232,9 @@ public enum emArtifactBase
     [Description("灿烂")]
     死灵灿烂,
     [Description("亡者遗产")]
-    亡者遗产
+    亡者遗产,
+    [Description("执法者")]
+    执法者
 }
 
 /// <summary>
@@ -240,6 +242,6 @@ public enum emArtifactBase
 /// </summary>
 public enum emSlotType
 {
-    Direct ,
-    Random 
+    Direct,
+    Random
 }

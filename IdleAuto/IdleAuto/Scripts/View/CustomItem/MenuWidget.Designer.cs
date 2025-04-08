@@ -58,6 +58,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnSendRune = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -90,6 +91,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnSendRune);
             this.HomeGroup.Controls.Add(this.btnProxy);
             this.HomeGroup.Controls.Add(this.btnDungeon);
             this.HomeGroup.Controls.Add(this.Button_Inventory);
@@ -386,6 +388,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnSendRune
+            // 
+            this.btnSendRune.Location = new System.Drawing.Point(124, 247);
+            this.btnSendRune.Name = "btnSendRune";
+            this.btnSendRune.Size = new System.Drawing.Size(99, 28);
+            this.btnSendRune.TabIndex = 1;
+            this.btnSendRune.Text = "发送符文";
+            this.btnSendRune.UseVisualStyleBackColor = true;
+            this.btnSendRune.Click += new System.EventHandler(this.btnSendRune_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -435,5 +447,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button Button_Inventory;
         private System.Windows.Forms.Button btnDungeon;
         private System.Windows.Forms.Button btnProxy;
+        private System.Windows.Forms.Button btnSendRune;
     }
 }

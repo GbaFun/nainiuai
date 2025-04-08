@@ -29,6 +29,7 @@ public class BaseController
     public BaseController(BroWindow win)
     {
         this._win = win;
+        this._browser = win.GetBro();
     }
 
     public BaseController()
