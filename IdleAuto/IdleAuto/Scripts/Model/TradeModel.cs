@@ -1,0 +1,58 @@
+﻿using FreeSql.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+public class TradeModel
+{
+    [Column(IsPrimary = true, IsIdentity = true)]
+    public int Id { get; set; }
+
+    public long EquipId { get; set; }
+
+    public emTradeStatus TrageStatus { get; set; }
+
+
+
+    /// <summary>
+    /// 需求人roleid 方便直接跳转修车
+    /// </summary>
+    public int DemandRoleId { get; set; }
+    /// <summary>
+    /// 需求人
+    /// </summary>
+    public string DemandRoleName { get; set; }
+
+    /// <summary>
+    /// 所属账户
+    /// </summary>
+    public int OwnerAccountName { get; set; }
+
+}
+
+public enum emTradeStatus
+{
+    /// <summary>
+    /// 登记
+    /// </summary>
+    Register = 0,
+
+    /// <summary>
+    /// 已发送
+    /// </summary>
+    Sended = 1,
+
+    /// <summary>
+    /// 已接收
+    /// </summary>
+    Received = 2,
+
+    /// <summary>
+    /// 拒绝
+    /// </summary>
+    Rejected = 3
+
+}

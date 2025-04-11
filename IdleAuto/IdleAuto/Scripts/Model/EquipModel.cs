@@ -76,6 +76,12 @@ public class EquipModel
     /// </summary>
     public bool IsLocal { get; set; }
 
+
+    /// <summary>
+    /// 装备状态
+    /// </summary>
+    public emEquipStatus EquipStatus { get; set; }
+
     private AttrV4 m_requareAttr;
     public AttrV4 RequareAttr
     {

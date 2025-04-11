@@ -80,6 +80,7 @@
     <Compile Include="Scripts\Manager\TabManager.cs" />
     <Compile Include="Scripts\Model\Efficency.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
+    <Compile Include="Scripts\Model\TradeModel.cs" />
     <Compile Include="Scripts\Utils\DbUtil.cs" />
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
@@ -272,6 +273,7 @@
     <Content Include="Document\1级过滤.txt" />
     <Content Include="Document\30过滤.txt" />
     <Content Include="Document\48过滤.txt" />
+    <Content Include="Document\60+过滤.txt" />
     <Content Include="Document\挂56过滤.txt" />
     <Content Include="Document\死灵110方案.jpg" />
     <Content Include="Document\职业基础属性表.txt">

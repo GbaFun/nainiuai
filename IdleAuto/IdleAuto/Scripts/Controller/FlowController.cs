@@ -78,7 +78,7 @@ namespace IdleAuto.Scripts.Controller
             var user = AccountController.Instance.User;
             var window = await TabManager.Instance.TriggerAddBroToTap(user);
             var controller = new CharacterController(window);
-            await controller.StartSwitchMap(window.GetBro(), window.User);
+            await controller.StartSwitchMap();
             window.Close();
 
         }
@@ -98,7 +98,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task StartMapSwitch(BroWindow window)
         {
             var controller = new CharacterController(window);
-            await controller.StartSwitchMap(window.GetBro(), window.User);
+            await controller.StartSwitchMap();
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace IdleAuto.Scripts.Controller
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工24";
             var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() { { 17, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 25, 1 } };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
 
             for (int i = 1; i < userList.Count; i++)
@@ -264,7 +264,27 @@ namespace IdleAuto.Scripts.Controller
             w.Close();
         }
 
-
+        public static async Task SendEquip()
+        {
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "萤火虫"&& p.EquipStatus==emEquipStatus.Repo&&p.IsLocal==false).ToList();
+            var group = list.GroupBy(g => g.AccountName).ToList();
+            foreach (var item in group)
+            {
+                var accountName = item.Key;
+                var u = AccountCfg.Instance.Accounts.Where(p => p.AccountName == accountName).First();
+                var user = new UserModel(u);
+                var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                var tradeControl = new TradeController(win);
+                await Task.Delay(1500);
+                foreach (var e in item)
+                {
+                    await tradeControl.StartTrade(e, "南方饰品");
+                    await Task.Delay(1500);
+                    e.EquipStatus = emEquipStatus.Trading;
+                    DbUtil.InsertOrUpdate<EquipModel>(e);
+                }
+            }
+        }
 
 
     }

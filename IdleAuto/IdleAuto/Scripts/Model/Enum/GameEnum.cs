@@ -211,6 +211,32 @@ public enum emMaskType
 }
 
 
+public enum emEquipStatus
+{
+    /// <summary>
+    /// 在背包
+    /// </summary>
+    Package = 0,
+    /// <summary>
+    /// 在仓库
+    /// </summary>
+    Repo = 1,
+
+    /// <summary>
+    /// 已装备
+    /// </summary>
+    Equipped = 2,
+    /// <summary>
+    /// 交易中
+    /// </summary>
+    Trading = 3,
+
+
+
+
+
+}
+
 
 public enum emArtifactBase
 {

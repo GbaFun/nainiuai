@@ -21,8 +21,11 @@ public class LevelRange
 public class Equipment
 {
     public emItemType emEquipType { get; set; }
+
     public string Category { get; set; }
     public string Quality { get; set; }
+
+    public bool IsTrade { get; set; } = false;
 
 
     public List<AttributeCondition> Conditions { get; set; }
@@ -37,6 +40,21 @@ public class Equipment
         get
         {
             return Category;
+        }
+    }
+
+    /// <summary>
+    /// 返回一个由category+quality的Key list 用于减少匹配装备那边过多数据造成的性能浪费
+    /// </summary>
+    public List<string> CategoryQualityKeyList
+    {
+
+        get
+        {
+            var cArr = Category.Split('|').ToList();
+            var qArr = Quality.Split('|').ToList();
+            
+            return cArr.SelectMany(a => qArr.Select(b => a + b)).ToList();
         }
     }
 }
@@ -168,7 +186,7 @@ public class SuitCfg
         {
             throw e;
         }
-       
+
 
         return null;
     }

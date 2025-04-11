@@ -14,6 +14,7 @@ using CefSharp.DevTools.FedCm;
 using CefSharp.WinForms;
 using IdleAuto.Scripts.Wrap;
 using System.Security.Principal;
+using IdleAuto.Scripts.Utils;
 
 public class EquipController
 {
@@ -188,7 +189,11 @@ public class EquipController
                             equip.Category = CategoryUtil.GetCategory(equip.EquipBaseName);
                             equip.SetAccountInfo(account);
                             if (!repositoryEquips.ContainsKey(item.Key))
+                            {
+                                item.Value.EquipStatus = emEquipStatus.Repo;
                                 repositoryEquips.Add(item.Key, item.Value);
+                            }
+
                         }
 
                         P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
@@ -315,7 +320,7 @@ public class EquipController
                                         if (toClear.Count != 0 && boxCount >= retainNum)
                                         {
                                             P.Log($"开始清理仓库第{page}页装备,清理数量:{toClear.Count}", emLogType.AutoEquip);
-                                           // P.Log(ConsoleEquips(toClear.Values.ToList()), emLogType.Debug);
+                                            // P.Log(ConsoleEquips(toClear.Values.ToList()), emLogType.Debug);
                                             await win.CallJsWaitReload($@"equipClear({account.FirstRole.RoleId},""{eids}"")", "equip");
                                             boxCount -= toClear.Count;
                                             P.Log($"清理仓库第{page}页装备完成,当前清理装备数量:{toClear.Count}", emLogType.AutoEquip);
@@ -370,6 +375,13 @@ public class EquipController
         }
     }
 
+    private void WrapEquip(EquipModel eq, UserModel user, RoleModel role, emEquipStatus status)
+    {
+        eq.EquipStatus = status;
+        eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
+        eq.SetAccountInfo(user, role);
+    }
+
     private string ConsoleEquips(List<EquipModel> list)
     {
         StringBuilder sb = new StringBuilder();
@@ -378,7 +390,7 @@ public class EquipController
             sb.Append(p.Content);
             sb.Append("*****************************************************");
             sb.Append("\r\n");
-        
+
         });
         return sb.ToString();
     }
@@ -398,120 +410,130 @@ public class EquipController
         await Task.Delay(1500);
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-        if (result.Success)
+        if (!result.Success) throw new Exception($"跳转{IdleUrlHelper.EquipUrl(role.RoleId)}失败");
+        P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
+        Dictionary<emEquipSort, EquipModel> curEquips = null;
+        var response = await win.CallJs($@"getCurEquips()");
+
+        P.Log($"获取{role.RoleName}当前穿戴的装备成功", emLogType.AutoEquip);
+        curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
+        var targetEquips = GetEquipConfig(role.Job, role.Level);
+        if (targetEquips != null)
         {
-            P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
-            Dictionary<emEquipSort, EquipModel> curEquips = null;
-            var response = await win.CallJs($@"getCurEquips()");
-            if (response.Success)
+            P.Log("获取{role.Level}级{role.Job}配置的装备成功");
+            foreach (var suit in targetEquips.EquipSuit)
             {
-                P.Log($"获取{role.RoleName}当前穿戴的装备成功", emLogType.AutoEquip);
-                curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-                P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
-                var targetEquips = GetEquipConfig(role.Job, role.Level);
-                if (targetEquips != null)
+                var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips);
+                if (suitEquips.IsSuccess)
                 {
-                    P.Log("获取{role.Level}级{role.Job}配置的装备成功");
-                    foreach (var suit in targetEquips.EquipSuit)
+                    P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
+                    towearEquips = suitEquips.ToWearEquips;
+                    toMakeEquips = suitEquips.ToMakeEquips;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            P.Log($"获取{role.Level}级{role.Job}配置的装备失败", emLogType.AutoEquip);
+        }
+
+        if (toMakeEquips.Count > 0)
+        {
+
+            var artifactControl = new ArtifactController(win);
+            foreach (var m in toMakeEquips)
+            {
+                bool isSuccessMake = false;
+                foreach (var toMake in m.Value)
+                {
+                    if (isSuccessMake) break;
+                    if (curEquips.ContainsKey(m.Key) && curEquips[m.Key].EquipName == toMake.ArtifactBase.GetEnumDescription())
                     {
-                        var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips);
-                        if (suitEquips.IsSuccess)
-                        {
-                            P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
-                            towearEquips = suitEquips.ToWearEquips;
-                            toMakeEquips = suitEquips.ToMakeEquips;
-                            break;
-                        }
+                        //当前穿戴装备就是最佳装备 跳过制作这个部位 此时towear应该是curEquip
+                        break;
                     }
-                }
-                else
-                {
-                    P.Log($"获取{role.Level}级{role.Job}配置的装备失败", emLogType.AutoEquip);
-                }
-
-                if (toMakeEquips.Count > 0)
-                {
-
-                    var artifactControl = new ArtifactController(win);
-                    foreach (var m in toMakeEquips)
+                    EquipModel artifactEquip = await artifactControl.MakeArtifact(toMake.ArtifactBase, toMake.EquipBase, role.RoleId, toMake.Config);
+                    if (artifactEquip != null)
                     {
-                        bool isSuccessMake = false;
-                        foreach (var toMake in m.Value)
+                        isSuccessMake = true;
+                        if (towearEquips.ContainsKey(m.Key))
                         {
-                            if (isSuccessMake) break;
-                            if (curEquips.ContainsKey(m.Key) && curEquips[m.Key].EquipName == toMake.ArtifactBase.GetEnumDescription())
+                            towearEquips[m.Key] = artifactEquip;
+
+                        }
+                        else towearEquips.Add(m.Key, artifactEquip);
+                    }
+                    await Task.Delay(1500);
+                }
+            }
+
+        }
+
+        if (towearEquips.Count > 0)
+        {
+            List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
+            bool canWear = await AutoAttributeSave(win, role, equipModels);
+            if (canWear)
+            {
+                await Task.Delay(1000);
+                var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+                if (result3.Success)
+                {
+                    for (int j = 0; j < 11; j++)
+                    {
+                        if (towearEquips.ContainsKey((emEquipSort)j))
+                        {
+                            EquipModel equip = towearEquips[(emEquipSort)j];
+                            ReplaceEquipStruct replaceResult = await WearEquip(win, equip, j, account, role);
+                            if (replaceResult.IsSuccess)
                             {
-                                //当前穿戴装备就是最佳装备 跳过制作这个部位 此时towear应该是curEquip
-                                break;
-                            }
-                            EquipModel artifactEquip = await artifactControl.MakeArtifact(toMake.ArtifactBase, toMake.EquipBase, role.RoleId, toMake.Config);
-                            if (artifactEquip != null)
-                            {
-                                isSuccessMake = true;
-                                if (towearEquips.ContainsKey(m.Key))
+                                if (replaceResult.ReplacedEquip != null)
                                 {
-                                    towearEquips[m.Key] = artifactEquip;
-
+                                    replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
+                                    replaceResult.ReplacedEquip.EquipStatus = emEquipStatus.Repo;
+                                    //如果有替换下来的装备，加入到仓库装备中
+                                    FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
                                 }
-                                else towearEquips.Add(m.Key, artifactEquip);
+
+                                //改变穿戴中的状态
+                                WrapEquip(equip, account, role, emEquipStatus.Equipped);
+                                FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
                             }
-                            await Task.Delay(1500);
+                            P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                         }
                     }
-
-                }
-
-                if (towearEquips.Count > 0)
-                {
-                    List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
-                    bool canWear = await AutoAttributeSave(win, role, equipModels);
-                    if (canWear)
-                    {
-                        await Task.Delay(1000);
-                        var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                        if (result3.Success)
-                        {
-                            for (int j = 0; j < 11; j++)
-                            {
-                                if (towearEquips.ContainsKey((emEquipSort)j))
-                                {
-                                    EquipModel equip = towearEquips[(emEquipSort)j];
-                                    ReplaceEquipStruct replaceResult = await WearEquip(win, equip, j, account, role);
-                                    if (replaceResult.IsSuccess)
-                                    {
-                                        if (replaceResult.ReplacedEquip != null)
-                                        {
-                                            replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
-                                            //如果有替换下来的装备，加入到仓库装备中
-                                            FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
-                                        }
-
-                                        //从仓库中移除穿戴的装备
-                                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.EquipID == equip.EquipID).ExecuteAffrows();
-                                    }
-                                    P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
-                                }
-                            }
-                            P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
-                        }
-                    }
-                    else
-                    {
-                        P.Log($"{role.RoleName}的属性需求不满足，跳过更换装备流程", emLogType.AutoEquip);
-                    }
-
-                    P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
-                }
-                else
-                {
-                    P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
+                    P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
                 }
             }
             else
             {
-                P.Log($"获取{role.RoleName}当前穿戴装备失败", emLogType.AutoEquip);
+                P.Log($"{role.RoleName}的属性需求不满足，跳过更换装备流程", emLogType.AutoEquip);
             }
+
+            P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
         }
+        else
+        {
+            P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
+        }
+
+
+        await UpdateCurEquips(win, role);
+    }
+
+
+    /// <summary>
+    /// 更新当前装备
+    /// </summary>
+    private async Task UpdateCurEquips(BroWindow win, RoleModel role)
+    {
+        var response = await win.CallJs($@"getCurEquips()");
+        var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        var list = curEquips.Select(p => p.Value).ToList();
+        list.ForEach(p => WrapEquip(p, win.User, role, emEquipStatus.Equipped));
+        DbUtil.InsertOrUpdate<EquipModel>(list);
     }
 
     /// <summary>
@@ -524,7 +546,10 @@ public class EquipController
     /// <returns></returns>
     private EquipSuitMatchStruct MatchEquipSuit(int accountId, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips)
     {
-        var _equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId).ToList();
+        //只查找仓库中的装备
+        var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
+        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
+        var dic1 = GetEquipDicWithCategoaryQuality(_equipsOthers);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
         result.MatchSuitName = equipSuit.SuitName;
         result.ToWearEquips = new Dictionary<emEquipSort, EquipModel>();
@@ -533,10 +558,7 @@ public class EquipController
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
         {
-            if (j == 7 || j == 8)
-            {
-                P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
-            }
+
             P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
             EquipModel curEquip = null;
             if (curEquips != null)
@@ -547,7 +569,7 @@ public class EquipController
                 P.Log($"{role.RoleName}{(emEquipSort)j}位置的装备没有找到配置，无需更换!");
                 continue;
             }
-            AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquips = _equips };
+            AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquipsSelf = _equipsSelf, DbEquipOthers = _equipsOthers };
             List<EquipModel> matchEquips = GetMatchEquip(dto);
             //寻找是否有可以制作神器的配置
             EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
@@ -559,7 +581,7 @@ public class EquipController
             }
             else
             {
-                var aa = _equips.Remove(bestEq);
+                var aa = _equipsSelf.Remove(bestEq);
             }
 
             if (curEquip != null && bestEq.EquipID == curEquip.EquipID)
@@ -581,7 +603,35 @@ public class EquipController
     }
 
 
+    /// <summary>
+    /// 将装备分类整理用于在匹配阶段大量减小运算量
+    /// </summary>
+    /// <param name="equips"></param>
+    /// <returns></returns>
+    private Dictionary<string, List<EquipModel>> GetEquipDicWithCategoaryQuality(List<EquipModel> equips)
+    {
+        Dictionary<string, List<EquipModel>> d = new Dictionary<string, List<EquipModel>>();
+        foreach (var e in equips)
+        {
+            var key = e.Category + e.emItemQuality.ToString();
+            var key1 = "全部" + e.emItemQuality.ToString();
+            var key2 = e.Category + "全部";
+            SaveEquipToDic(d, key, e);
+            SaveEquipToDic(d, key1, e);
+            SaveEquipToDic(d, key2, e);
+        }
+        return d;
+    }
 
+    private void SaveEquipToDic(Dictionary<string, List<EquipModel>> dic, string key, EquipModel e)
+    {
+        if (!dic.ContainsKey(key))
+        {
+            dic.Add(key, new List<EquipModel>());
+
+        }
+        dic[key].Add(e);
+    }
     /// <summary>
     /// 穿戴装备
     /// </summary>
@@ -597,13 +647,16 @@ public class EquipController
         ReplaceEquipStruct replaceEquipStruct = new ReplaceEquipStruct();
         replaceEquipStruct.ReplacedEquip = null;
         replaceEquipStruct.IsSuccess = false;
+        var sortEm = (emEquipSort)sort;
         var response = await win.CallJs($@"getCurEquips()");
         if (response.Success)
         {
             curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
 
             {
-                if (curEquips != null && curEquips.ContainsKey((emEquipSort)sort))
+                if (curEquips != null &&
+                    curEquips.ContainsKey((emEquipSort)sort) &&
+                    ((role.Job == emJob.死骑 && sortEm == emEquipSort.副手) || sortEm == emEquipSort.戒指2))
                 {
                     P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
                     await Task.Delay(1000);
@@ -618,11 +671,15 @@ public class EquipController
                 }
             }
 
+
             P.Log($"{role.RoleName}现在更换{(emEquipSort)sort}位置的装备{equip.EquipName}", emLogType.AutoEquip);
             await Task.Delay(1000);
             var response2 = await win.CallJsWaitReload($@"equipOn({role.RoleId},{equip.EquipID})", "equip");
             if (response2.Success)
             {
+                equip.SetAccountInfo(account);
+                replaceEquipStruct.ReplacedEquip = curEquips[(emEquipSort)sort];
+                replaceEquipStruct.ReplacedEquip.SetAccountInfo(account);
                 replaceEquipStruct.IsSuccess = true;
                 return replaceEquipStruct;
             }
@@ -760,18 +817,30 @@ public class EquipController
     public List<EquipModel> GetMatchEquip(AutoEquipMatchDto dto)
     {
         List<EquipModel> r = new List<EquipModel>();
-        foreach (var eqName in dto.Equipment.EquipNameArr)
+        for (int i = 0; i < dto.Equipment.EquipNameArr.Count; i++)
         {
+            var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
-            var equip = GetMatchEquipBySort(dto, equipConfig);
+            var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
+            if (i == 0 && equip == null && equipConfig.IsTrade)
+            {
+                var demandEquip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipOthers);
+                //放在首位且需要乞讨的装备允许交易获得
+                dto.Result.ToTradeEquips.Add(new TradeModel
+                {
+                    EquipId = demandEquip.EquipID
+                });
+            }
             if (equip != null)
             {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
                 r.Add(equip);
                 break;
             }
         }
+
         return r;
     }
+
     /// <summary>
     /// 找到权重最高的那件能穿的装备
     /// </summary>
@@ -780,7 +849,7 @@ public class EquipController
     /// <param name="curEquip"></param>
     /// <param name="targetConfig"></param>
     /// <returns></returns>
-    private EquipModel GetMatchEquipBySort(AutoEquipMatchDto dto, Equipment targetConfig)
+    private EquipModel GetMatchEquipBySort(AutoEquipMatchDto dto, Equipment targetConfig, List<EquipModel> dbEquips)
     {
 
         List<EquipModel> matchEquips = new List<EquipModel>();
@@ -789,7 +858,8 @@ public class EquipController
 
         P.Log($"开始查询数据库装备", emLogType.AutoEquip);
         List<EquipModel> findEquips = new List<EquipModel>();
-        var __equips = dto.DbEquips;
+        var __equips = dbEquips;
+        //这边有性能问题 应该先把装备按category和quality分类 手套&&稀有 手套&&全部
         foreach (var item in __equips)
         {
             if (AttributeMatchUtil.MatchCategory(item, targetConfig.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Quality))
@@ -970,7 +1040,19 @@ public struct EquipSuitMatchStruct
     //需要制作的神器
     public Dictionary<emEquipSort, List<ArtifactMakeStruct>> ToMakeEquips;
 
+    /// <summary>
+    /// 需要交易的装备
+    /// </summary>
+    public List<TradeModel> ToTradeEquips;
+
+    /// <summary>
+    /// 是否必要装备都满足匹配
+    /// </summary>
+    public bool IsNecessaryEquipMatch;
+
 }
+
+
 /// <summary>
 /// 匹配时用到的业务参数
 /// </summary>
@@ -987,6 +1069,13 @@ public class AutoEquipMatchDto
 
     public EquipSuitMatchStruct Result { get; set; }
 
-    public List<EquipModel> DbEquips { get; set; }
+    /// <summary>
+    /// 自己的装备
+    /// </summary>
+    public List<EquipModel> DbEquipsSelf { get; set; }
+    /// <summary>
+    /// 别人的装备
+    /// </summary>
+    public List<EquipModel> DbEquipOthers { get; set; }
 }
 

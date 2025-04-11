@@ -20,6 +20,7 @@
         var arr=[]
         rows.forEach(item => {
             var roleId = $(item).attr("data-id");
+            var lv = $(item).find("td[data-label='角色'] span")[0].innerText.match(/\d+/)[0];
             var roleName = $(item).find("td[data-label='角色'] span")[1].innerText;
             var mapLv = $(item).find("td[data-label='地图']").text();
             var battleNum = $(item).find("td[data-label='战斗']").text();
@@ -30,6 +31,7 @@
             arr.push({
                 roleId: roleId,
                 roleName: roleName,
+                lv:lv,
                 mapLv: mapLv,
                 battleNum:battleNum,
                 successNum: successNum,

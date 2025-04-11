@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,21 @@ public class TradeController : BaseController
         _eventMa = new EventSystem();
     }
 
-    public async Task<bool> StartTrade(BroWindow win, UserModel account, long equipID, string roleName)
+    public async Task<bool> StartTrade(EquipModel equip, string roleName)
     {
         //跳转装备页面
-        var role = account.FirstRole;
-        win.GetBro().ShowDevTools();
+        var role = _win.User.FirstRole;
+        //_win.GetBro().ShowDevTools();
         P.Log($"跳转{role.RoleName}的装备详情页面", emLogType.AutoEquip);
-        var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        await Task.Delay(1500);
         if (response.Success)
         {
             //向对应角色发送交易请求
-            var result2 = await win.CallJsWaitReload($@"equipTrade({role.RoleId},{equipID},""{roleName}"")", "equip");
+            var result2 = await _win.CallJsWaitReload($@"equipTrade({role.RoleId},{equip.EquipID},""{roleName}"")", "equip");
             if (result2.Success)
             {
+
                 return true;
             }
         }

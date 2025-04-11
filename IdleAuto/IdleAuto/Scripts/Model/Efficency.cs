@@ -17,6 +17,11 @@ namespace IdleAuto.Scripts.Model
         public string RoleName { get; set; }
 
         /// <summary>
+        /// 人物等级
+        /// </summary>
+        public int Lv { get; set; }
+
+        /// <summary>
         /// 回合数
         /// </summary>
         public decimal Round { get; set; }

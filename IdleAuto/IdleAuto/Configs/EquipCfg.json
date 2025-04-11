@@ -1318,18 +1318,27 @@
           "matchType": "任一",
           "matchGroupName": "手套",
           "operate": "大于等于",
-          "attributeType": "抗火",
+          "attributeType": "单项元素抗性之和",
           "seq": 1,
-          "conditionContent": "30"
+          "conditionContent": "45"
         },
         {
-          "matchType": "任一",
+          "matchType": "可选",
           "matchGroupName": "手套",
           "operate": "大于等于",
           "attributeType": "抗毒",
           "seq": 1,
           "conditionContent": "30"
         },
+        {
+          "matchType": "可选",
+          "matchGroupName": "手套",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 1,
+          "conditionContent": "30"
+        },
+
         {
           "matchType": "任一",
           "matchGroupName": "手套",
@@ -1378,9 +1387,10 @@
     "equipment": {
       "category": "护符",
       "quality": "魔法|稀有|传奇",
+      "isTrade": true,
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 40,
@@ -1389,9 +1399,27 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "抗寒",
+          "attributeType": "单项元素抗性之和",
           "seq": 1,
-          "conditionContent": "10"
+          "conditionContent": "20"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗性护符",
+    "description": "光环护符，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+       
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "20"
         }
       ]
     }

@@ -1448,11 +1448,28 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "亚瑞特的面容"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "战士头盔",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "恶魔号角的边缘"
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 10
   },
   {
     "equip": {
@@ -2097,20 +2114,27 @@
           "conditionContent": "审判光环,3"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 6,
           "conditionContent": "骑士,光环,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "冥想光环,3"
         }
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 300
   },
   {
     "equip": {
-      "category": "骑士盾牌",
+      "category": "骑士盾牌|盾",
       "quality": "魔法|稀有|传奇|套装|神器",
       "necessary": 0,
       "conditions": [
@@ -2120,7 +2144,7 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 6,
-          "conditionContent": "骑士,光环,2"
+          "conditionContent": "骑士,光环,3"
         },
         {
 
@@ -2133,11 +2157,41 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 10
   },
   {
     "equip": {
-      "category": "头饰|项链|护符|衣服|帽子|死骑面罩",
+      "category": "项链",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
+        },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,2"
+        },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        }
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "头饰|护符",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
         {
@@ -2160,18 +2214,60 @@
           "matchGroupName": "职业系列技能",
           "attributeType": "指定职业单系技能",
           "conditionContent": "骑士,光环,1"
-        },
-
-        {
-          "matchType": "任一",
-          "matchGroupName": "职业系列技能",
-          "operate": "大于等于",
-          "attributeType": "召唤最大数量",
-          "conditionContent": "骷髅法师,1"
         }
       ]
     },
     "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "四凋零以上",
+      "category": "死骑面罩",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        }
+      ]
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      "description": "四枯萎以上",
+      "category": "死骑面罩",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,鲜血,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "技能等级",
+          "conditionContent": "枯萎光环,3"
+        }
+      ]
+    },
+    "maxCount": 20
   },
   {
     "equip": {
@@ -2509,7 +2605,39 @@
         }
       ]
     },
-    "maxCount": 50
+    "maxCount": 500
+  },
+  //失败开孔保留 看下有没有bug
+  {
+    "equip": {
+      "category": "手杖|死灵副手",
+      "quality": "普通|破碎",
+      "conditions": [
+    
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "生生不息,1"
+        }
+      ]
+    },
+    "maxCount": 500
   },
 
   {
@@ -2591,6 +2719,86 @@
 
     },
     "maxCount": 20
+  },
+
+  {
+    "equip": {
+      "category": "项链",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性项链",
+          "operate": "大于等于",
+          "attributeType": "元素抗性",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "抗性项链",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "抗性项链",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天神"
+        }
+      ]
+
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "骷髅法师,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+      ]
+
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "影舞,1"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "刺客,格斗,1"
+        }
+      ]
+
+    },
+    "maxCount": 100
   }
 
 

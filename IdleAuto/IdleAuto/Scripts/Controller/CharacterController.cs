@@ -998,45 +998,39 @@ namespace IdleAuto.Scripts.Controller
 
         #region 切图
 
-        public async Task StartSwitchMap(ChromiumWebBrowser bro, UserModel user)
+        public async Task StartSwitchMap()
         {
-            _browser = bro;
-            int unFinishIndex = 0;
-            var list = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false && p.Type == emTaskType.MapSwitch).ToList();
-            var unfinishedTask = list.Count > 0 ? list[0] : null;
-            if (unfinishedTask == null)
-            {
-                unfinishedTask = new TaskProgress() { IsEnd = false, Type = emTaskType.MapSwitch, UserName = user.AccountName, Roleid = user.Roles[0].RoleId };
-                var rows = FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(unfinishedTask).ExecuteAffrows();
-            }
-            else
-            {
-                var index = user.Roles.FindIndex(p => p.RoleId == unfinishedTask.Roleid);
-                unFinishIndex = index;
+            var user = _win.User;
 
-            }
+            await Task.Delay(1500);
+            await _win.LoadUrlWaitJsInit("https://www.idleinfinity.cn/Battle/Guaji", "guaji");
+            var data = await _win.CallJs($"_guaji.getData()");
+            var arr = data.Result.ToObject<List<Efficency>>();
+            List<string> roleNameList = new List<string>();
+            arr.ForEach(p =>
+            {
+                int mapLv;
+                if (int.TryParse(p.MapLv, out mapLv))
+                {
+                    var setting = MapSettingCfg.Instance.GetSetting(p.Lv);
+                    var needSwitch = setting.CanSwitch(p.Lv, mapLv);
+                    if (needSwitch)
+                    {
+                        roleNameList.Add(p.RoleName);
+                    }
+                }
+
+
+            });
 
             //查询未完成的任务
-            for (int i = unFinishIndex; i < user.Roles.Count; i++)
+            for (int i = 0; i < user.Roles.Count; i++)
             {
                 RoleModel role = user.Roles[i];
-
-                await Task.Delay(1000);
+                if (!roleNameList.Contains(role.RoleName)) continue;
+                await Task.Delay(2000);
                 await SwitchMap(_browser, role);
-                await Task.Delay(1000);
-                if (unfinishedTask != null)
-                {
-                    unfinishedTask.Roleid = role.RoleId;
 
-                }
-                if (i == user.Roles.Count - 1)
-                {
-                    unfinishedTask.IsEnd = true;
-
-                }
-                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.UserName == user.AccountName && p.IsEnd == false && p.Type == emTaskType.MapSwitch).First();
-                unfinishedTask.Id = one.Id;
-                FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(unfinishedTask).ExecuteAffrows();
             }
         }
         public async Task SwitchMap(ChromiumWebBrowser bro, RoleModel role)

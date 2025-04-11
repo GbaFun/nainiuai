@@ -276,7 +276,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -338,6 +338,11 @@ namespace IdleAuto.Scripts.View
         private void btnSendRune_Click(object sender, EventArgs e)
         {
             FlowController.SendRune();
+        }
+
+        private void btnSendEquip_Click(object sender, EventArgs e)
+        {
+            FlowController.SendEquip();
         }
     }
 }

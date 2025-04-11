@@ -33,6 +33,7 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnSendRune = new System.Windows.Forms.Button();
             this.btnProxy = new System.Windows.Forms.Button();
             this.btnDungeon = new System.Windows.Forms.Button();
             this.Button_Inventory = new System.Windows.Forms.Button();
@@ -58,7 +59,8 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnSendRune = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnSendEquip = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -91,6 +93,8 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.button1);
+            this.HomeGroup.Controls.Add(this.btnSendEquip);
             this.HomeGroup.Controls.Add(this.btnSendRune);
             this.HomeGroup.Controls.Add(this.btnProxy);
             this.HomeGroup.Controls.Add(this.btnDungeon);
@@ -118,6 +122,16 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             this.HomeGroup.Enter += new System.EventHandler(this.HomeGroup_Enter);
+            // 
+            // btnSendRune
+            // 
+            this.btnSendRune.Location = new System.Drawing.Point(124, 247);
+            this.btnSendRune.Name = "btnSendRune";
+            this.btnSendRune.Size = new System.Drawing.Size(99, 28);
+            this.btnSendRune.TabIndex = 1;
+            this.btnSendRune.Text = "发送符文";
+            this.btnSendRune.UseVisualStyleBackColor = true;
+            this.btnSendRune.Click += new System.EventHandler(this.btnSendRune_Click);
             // 
             // btnProxy
             // 
@@ -237,7 +251,7 @@ namespace IdleAuto.Scripts.View
             this.btnMap.Name = "btnMap";
             this.btnMap.Size = new System.Drawing.Size(100, 30);
             this.btnMap.TabIndex = 4;
-            this.btnMap.Text = "切图测试";
+            this.btnMap.Text = "切图";
             this.btnMap.UseVisualStyleBackColor = true;
             this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
@@ -388,15 +402,24 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnSendRune
+            // button1
             // 
-            this.btnSendRune.Location = new System.Drawing.Point(124, 247);
-            this.btnSendRune.Name = "btnSendRune";
-            this.btnSendRune.Size = new System.Drawing.Size(99, 28);
-            this.btnSendRune.TabIndex = 1;
-            this.btnSendRune.Text = "发送符文";
-            this.btnSendRune.UseVisualStyleBackColor = true;
-            this.btnSendRune.Click += new System.EventHandler(this.btnSendRune_Click);
+            this.button1.Location = new System.Drawing.Point(124, 280);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(99, 27);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // btnSendEquip
+            // 
+            this.btnSendEquip.Location = new System.Drawing.Point(16, 280);
+            this.btnSendEquip.Name = "btnSendEquip";
+            this.btnSendEquip.Size = new System.Drawing.Size(100, 27);
+            this.btnSendEquip.TabIndex = 2;
+            this.btnSendEquip.Text = "发送装备";
+            this.btnSendEquip.UseVisualStyleBackColor = true;
+            this.btnSendEquip.Click += new System.EventHandler(this.btnSendEquip_Click);
             // 
             // MenuWidget
             // 
@@ -448,5 +471,7 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnDungeon;
         private System.Windows.Forms.Button btnProxy;
         private System.Windows.Forms.Button btnSendRune;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSendEquip;
     }
 }
