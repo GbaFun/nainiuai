@@ -822,7 +822,7 @@ public class EquipController
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
-            if (i == 0 && equip == null && equipConfig.IsTrade)
+            if (i == 1000 && equip == null && equipConfig.IsTrade)
             {
                 var demandEquip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipOthers);
                 //放在首位且需要乞讨的装备允许交易获得

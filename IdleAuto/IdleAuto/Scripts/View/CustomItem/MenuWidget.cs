@@ -157,8 +157,8 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                 //   await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
