@@ -162,7 +162,7 @@ namespace IdleAuto.Scripts.Controller
             var window = await TabManager.Instance.TriggerAddBroToTap(user);
             var control = new ArtifactController(window);
             var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
-            var eqControll = new EquipController();
+            var eqControll = new EquipController(window);
             var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
             if (baseEq.Value != null)
             {
@@ -185,7 +185,7 @@ namespace IdleAuto.Scripts.Controller
                 var window = await TabManager.Instance.TriggerAddBroToTap(user);
                 var control = new ArtifactController(window);
                 var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.天灾);
-                var eqControll = new EquipController();
+                var eqControll = new EquipController(window);
                 for (int j = 2; j < user.Roles.Count; j += 3)
                 {
                     var role = user.Roles[j];
@@ -266,7 +266,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "萤火虫"&& p.EquipStatus==emEquipStatus.Repo&&p.IsLocal==false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "彩虹刻面"&&p.Content.Contains("火焰")&& p.EquipStatus==emEquipStatus.Repo&&p.IsLocal==false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -278,7 +278,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "南方饰品");
+                    await tradeControl.StartTrade(e, "奶牛");
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);

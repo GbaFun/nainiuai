@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 public class TradeModel
 {
-    [Column(IsPrimary = true, IsIdentity = true)]
-    public int Id { get; set; }
+    
+    [Column(IsPrimary = true)]
 
     public long EquipId { get; set; }
 
-    public emTradeStatus TrageStatus { get; set; }
+    public emTradeStatus TradeStatus { get; set; }
 
 
 
@@ -29,7 +29,17 @@ public class TradeModel
     /// <summary>
     /// 所属账户
     /// </summary>
-    public int OwnerAccountName { get; set; }
+    public string OwnerAccountName { get; set; }
+    /// <summary>
+    /// 需求人账号
+    /// </summary>
+    public string DemandAccountName { get; set; }
+
+    /// <summary>
+    /// 乐观锁
+    /// </summary>
+    [Column(IsVersion =true)]
+    public int version { get; set; }
 
 }
 

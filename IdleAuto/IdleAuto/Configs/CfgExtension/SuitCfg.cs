@@ -43,6 +43,7 @@ public class Equipment
         }
     }
 
+    private List<string> _categoryQualityKeyList;
     /// <summary>
     /// 返回一个由category+quality的Key list 用于减少匹配装备那边过多数据造成的性能浪费
     /// </summary>
@@ -51,10 +52,15 @@ public class Equipment
 
         get
         {
-            var cArr = Category.Split('|').ToList();
-            var qArr = Quality.Split('|').ToList();
-            
-            return cArr.SelectMany(a => qArr.Select(b => a + b)).ToList();
+            if (_categoryQualityKeyList == null)
+            {
+                var cArr = Category.Split('|').ToList();
+                var qArr = Quality.Split('|').ToList();
+
+                _categoryQualityKeyList= cArr.SelectMany(a => qArr.Select(b => a + b)).ToList();
+            }
+            return _categoryQualityKeyList;
+
         }
     }
 }

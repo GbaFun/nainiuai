@@ -36,7 +36,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         }
 
         BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-        EquipController equipController = new EquipController();
+        EquipController equipController = new EquipController(window);
         //window.GetBro().ShowDevTools();
 
         //将挂机装备放入仓库
@@ -99,7 +99,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public async Task AutoRepair(BroWindow window)
     {
 
-        EquipController equipController = new EquipController();
+        EquipController equipController = new EquipController(window);
         //window.GetBro().ShowDevTools();
         var account = window.User;
         //将挂机装备放入仓库
@@ -170,7 +170,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 }
                 UserModel account = new UserModel(user);
                 BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-                EquipController equipController = new EquipController();
+                EquipController equipController = new EquipController(window);
                 //window.GetBro().ShowDevTools();
 
                 //将挂机装备放入仓库
@@ -207,7 +207,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         try
         {
             BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-            EquipController equipController = new EquipController();
+            EquipController equipController = new EquipController(window);
             //window.GetBro().ShowDevTools();
 
             //清理仓库

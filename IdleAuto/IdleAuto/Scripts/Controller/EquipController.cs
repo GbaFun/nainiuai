@@ -16,8 +16,12 @@ using IdleAuto.Scripts.Wrap;
 using System.Security.Principal;
 using IdleAuto.Scripts.Utils;
 
-public class EquipController
+public class EquipController:BaseController
 {
+    public EquipController(BroWindow bro):base(bro)
+    {
+
+    }
     /// <summary>
     /// 转移角色背包物品到仓库
     /// </summary>
@@ -549,11 +553,13 @@ public class EquipController
         //只查找仓库中的装备
         var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
         var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
-        var dic1 = GetEquipDicWithCategoaryQuality(_equipsOthers);
+        var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
+        var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
         result.MatchSuitName = equipSuit.SuitName;
         result.ToWearEquips = new Dictionary<emEquipSort, EquipModel>();
         result.ToMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
+        result.ToTradeEquips = new List<TradeModel>();
         result.IsSuccess = true;
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
@@ -569,7 +575,7 @@ public class EquipController
                 P.Log($"{role.RoleName}{(emEquipSort)j}位置的装备没有找到配置，无需更换!");
                 continue;
             }
-            AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquipsSelf = _equipsSelf, DbEquipOthers = _equipsOthers };
+            AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquipsSelf = _equipsSelf, DbEquipOthers = _equipsOthers, DbEquipDicOthers = dicOthers, DbEquipDicSelf = dicSelf };
             List<EquipModel> matchEquips = GetMatchEquip(dto);
             //寻找是否有可以制作神器的配置
             EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
@@ -822,13 +828,21 @@ public class EquipController
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
-            if (i == 1000 && equip == null && equipConfig.IsTrade)
+            if (i == 0 && equip == null && equipConfig.IsTrade)
             {
-                var demandEquip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipOthers);
+                var filteredList = GetEquipInDic(dto.DbEquipDicOthers,equipConfig);
+                var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
                 //放在首位且需要乞讨的装备允许交易获得
                 dto.Result.ToTradeEquips.Add(new TradeModel
                 {
-                    EquipId = demandEquip.EquipID
+                    EquipId = demandEquip.EquipID,
+                    DemandRoleId=dto.Role.RoleId,
+                    DemandRoleName=dto.Role.RoleName,
+                    OwnerAccountName=demandEquip.AccountName,
+                    DemandAccountName=_win.User.AccountName,
+                    TradeStatus=emTradeStatus.Register,
+                   
+                    
                 });
             }
             if (equip != null)
@@ -840,6 +854,21 @@ public class EquipController
 
         return r;
     }
+
+    private List<EquipModel> GetEquipInDic(Dictionary<string, List<EquipModel>> dic, Equipment config)
+    {
+        var keyList = config.CategoryQualityKeyList;
+        var list = new List<EquipModel>();
+        foreach (var item in dic)
+        {
+            if (config.CategoryQualityKeyList.Contains(item.Key))
+            {
+                list.AddRange(item.Value);
+            }
+        }
+        return list;
+    }
+
 
     /// <summary>
     /// 找到权重最高的那件能穿的装备
@@ -1077,5 +1106,15 @@ public class AutoEquipMatchDto
     /// 别人的装备
     /// </summary>
     public List<EquipModel> DbEquipOthers { get; set; }
+
+    /// <summary>
+    /// 本号仓库的装备分类
+    /// </summary>
+    public Dictionary<string, List<EquipModel>> DbEquipDicSelf { get; set; }
+
+    public Dictionary<string, List<EquipModel>> DbEquipDicOthers
+    {
+        get; set;
+    }
 }
 

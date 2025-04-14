@@ -97,7 +97,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<EquipModel> CheckBagArtifact(string eqName, Equipment config, int roleid)
         {
-            var eqControll = new EquipController();
+            var eqControll = new EquipController(_win);
             //做成神器凹槽匹配不到了
             var copyConfig = config.DeepCopy<Equipment>();
             copyConfig.Conditions.RemoveAll(p => p.AttributeType == emAttrType.凹槽);
