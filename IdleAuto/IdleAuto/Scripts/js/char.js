@@ -308,6 +308,11 @@ class Character {
     getCurMapLv() {
         return $(".panel-heading")[0].innerText.match(/\d+/)[0]
     }
+
+      hasNotice() {
+    var num = $(".navbar-fixed-top a:contains('消息') .badge").text() * 1;
+    return num > 0;
+}
 }
 
 var _char = new Character();

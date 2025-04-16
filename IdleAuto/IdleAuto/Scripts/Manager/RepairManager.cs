@@ -230,7 +230,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     {
         try
         {
-            EquipController equipController = new EquipController();
+            EquipController equipController = new EquipController(win);
             //window.GetBro().ShowDevTools();
             //清理仓库
             await equipController.ClearRepository(win);
@@ -248,7 +248,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         try
         {
             BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-            EquipController equipController = new EquipController();
+            EquipController equipController = new EquipController(window);
             //window.GetBro().ShowDevTools();
 
             //将挂机装备放入仓库
@@ -266,7 +266,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public async Task UpdateEquips(BroWindow win)
     {
-        var equipController = new EquipController();
+        var equipController = new EquipController(win);
         var account = win.User;
         //将挂机装备放入仓库
         await EquipToRepository(win, equipController, account, true);

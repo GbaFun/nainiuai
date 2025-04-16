@@ -37,6 +37,8 @@ public class TradeController : BaseController
         return false;
     }
 
+
+
     public async Task<bool> AcceptTrade(BroWindow win, UserModel account, long equipId, string fromName, string toName)
     {
         //TODO 交易请求的接受
@@ -70,17 +72,46 @@ public class TradeController : BaseController
         var anyId = result2.Result.ToObject<int>();
         if (anyId > 0)
         {
+            await Task.Delay(1500);
             var r3 = await _win.CallJsWaitReload($"_trade.acceptTrade({anyId})", "trade");
             if (!r3.Success)
             {
                 throw new Exception("接收失败");
             }
+            await UpdateTradeStatus(anyId, emTradeStatus.Received, emEquipStatus.Repo);
             await Task.Delay(1500);
             await AcceptAll(account);
         }
 
 
         return false;
+    }
+
+    /// <summary>
+    /// 需要更新仓库和交易记录中的状态
+    /// </summary>
+    /// <returns></returns>
+    private async Task UpdateTradeStatus(long eqId, emTradeStatus tradeStatus, emEquipStatus eqStatus)
+    {
+        var eq = FreeDb.Sqlite.Select<EquipModel>(new long[] { eqId }).First();
+        if (eq == null) return;//消息中有其它不是装备得东西
+        eq.EquipStatus = eqStatus;
+        eq.SetAccountInfo(_win.User);
+        var tradeInfo = FreeDb.Sqlite.Select<TradeModel>(new long[] { eq.EquipID }).First();
+
+        using (var uow = FreeDb.Sqlite.CreateUnitOfWork())
+        {
+            var repo = uow.GetRepository<EquipModel>(); //仓储 CRUD
+            repo.InsertOrUpdate(eq);
+            if (tradeInfo != null)
+            {
+                tradeInfo.TradeStatus = tradeStatus;
+                var r2 = uow.GetRepository<TradeModel>();
+                r2.InsertOrUpdate(tradeInfo);
+            }
+
+            uow.Commit();
+        }
     }
 
     /// <summary>
@@ -131,11 +162,40 @@ public class TradeController : BaseController
 
     }
 
+    /// <summary>
+    /// 检查符文是否为0 在汇集符文阶段跳过这种账号节省san
+    /// </summary>
+    /// <param name="dic">符文数量字典</param>
+
+    /// <returns></returns>
+    public async Task<bool> CheckRuneIsZero(Dictionary<int, int> dic)
+    {
+
+        var role = _win.User.FirstRole;
+        // _win.GetBro().ShowDevTools();
+        if (_win.GetBro().Address.IndexOf(IdleUrlHelper.MaterialUrl(role.RoleId)) == -1) await _win.LoadUrlWaitJsInit(IdleUrlHelper.MaterialUrl(role.RoleId), "rune");
+
+        var a = await _win.CallJs("getRuneMap()");
+        var runeMap = a.Result.ToObject<Dictionary<int, int>>();
+
+        bool result = false;
+        foreach (var item in dic)
+        {
+            if (runeMap[item.Key] == 0)
+            {
+                result = true; break;
+            }
+        }
+        return result;
+    }
+
+
+
     private async Task<bool> CheckRuneEnough(Dictionary<int, int> dic)
     {
         foreach (var item in dic)
         {
-            var r = await _win.CallJs(@"getRuneNum()");
+            var r = await _win.CallJs($"getRuneNum({item.Key})");
             if (r.Success)
             {
                 var count = r.Result.ToObject<int>();

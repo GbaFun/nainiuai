@@ -232,6 +232,63 @@
     "jobName": "骑士",
     "lv": {
       "min": 40,
+      "max": 44
+    },
+    "equipSuit": [
+      {
+        "suitName": "骑士40-50套装",
+        "主手": {
+          "name": "冥审光环权杖",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "光环盾牌",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "骑士40解毒头,1级光环头盔,知识",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速光环项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "抗寒戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗寒戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗寒电靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "零速技能衣服",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "零速抗寒手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "光环护符,抗性护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    //30级后有全部等级+1装备，部分部位以职业技能等级优先
+    "jobName": "骑士",
+    "lv": {
+      "min": 45,
       "max": 46
     },
     "equipSuit": [
@@ -299,7 +356,7 @@
           "isNecessery": 0
         },
         "副手": {
-          "name": "光环盾牌",
+          "name": "元帅盾牌,光环盾牌",
           "isNecessery": 0
         },
         "头盔": {
@@ -678,7 +735,7 @@
           "isNecessery": 0
         },
         "腰带": {
-          "name": "召唤腰带",
+          "name": "盗墓腰带,召唤腰带",
           "isNecessery": 0
         }
       }
@@ -735,7 +792,64 @@
           "isNecessery": 0
         },
         "腰带": {
-          "name": "召唤腰带",
+          "name": "盗墓腰带,召唤腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    //20级后主要堆骷髅法师，支配骷髅，生生不息，召唤技能等级，需要控制施法速度
+    "jobName": "死灵",
+    "lv": {
+      "min": 56,
+      "max": 60
+    },
+    "equipSuit": [
+      {
+        "suitName": "死灵19-45套装",
+        "主手": {
+          "name": "亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "32死灵副手,法老王的意志,死灵灿烂,31副手,3副手",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "1级召唤头盔,知识",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "施法召唤项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "死灵低级戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗火毒施法戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "时光扭曲行者,抗火毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "蛇皮,隐密",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "施法抗火毒手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "骷髅法师护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "盗墓腰带,召唤腰带",
           "isNecessery": 0
         }
       }

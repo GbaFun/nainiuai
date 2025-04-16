@@ -53,7 +53,7 @@ public enum emTradeStatus
     /// <summary>
     /// 已发送
     /// </summary>
-    Sended = 1,
+    Sent = 1,
 
     /// <summary>
     /// 已接收

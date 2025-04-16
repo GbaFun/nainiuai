@@ -1046,6 +1046,24 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "利亚之戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "布尔凯索之戒"
         }
 
@@ -1953,26 +1971,116 @@
       "quality": "魔法",
       "conditions": [
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "蓝黄宝珠",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "白热"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "璀璨"
+        }
+
+      ]
+    },
+    "maxCount": 120
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "白热"
+        },
+        {
+          "matchType": "必需",
           "matchGroupName": "蓝黄宝珠",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "血红"
+        }
+
+      ]
+    },
+    "maxCount": 120
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "白热"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "雄黄"
+        }
+
+      ]
+    },
+    "maxCount": 120
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "必需",
           "matchGroupName": "蓝黄宝珠",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "转换"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "雄黄"
         }
+
+      ]
+    },
+    "maxCount": 120
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "转换"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "血红"
+        }
+
       ]
     },
     "maxCount": 120
@@ -2312,7 +2420,24 @@
 
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,1"
+          "conditionContent": "死灵,召唤,2"
+        }
+      ]
+    },
+    "maxCount": 400
+  },
+  {
+    "equip": {
+      "category": "项链|腰带|头饰",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
         }
       ]
     },
@@ -2613,7 +2738,7 @@
       "category": "手杖|死灵副手",
       "quality": "普通|破碎",
       "conditions": [
-    
+
         {
           "matchType": "必需",
           "matchGroupName": "亡者遗产",

@@ -157,8 +157,8 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                 //   await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
-                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.UpdateEquips);
+                 //  await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
+                  //  await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
                    await FlowController.GroupWork(5, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
@@ -343,6 +343,11 @@ namespace IdleAuto.Scripts.View
         private void btnSendEquip_Click(object sender, EventArgs e)
         {
             FlowController.SendEquip();
+        }
+
+        private void BtnDealTrade_Click(object sender, EventArgs e)
+        {
+            FlowController.DealDemandEquip();
         }
     }
 }

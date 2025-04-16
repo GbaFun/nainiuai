@@ -55,9 +55,13 @@
         return $(arr[0]).attr("data-id");
     }
 
+   
+
+
     _trade.acceptAllTrade = acceptAllTrade;
     _trade.acceptTrade = acceptTrade;
     _trade.getAnyTradeId = getAnyTradeId;
+ 
 
 })();
 

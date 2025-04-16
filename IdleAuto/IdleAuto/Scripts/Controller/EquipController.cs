@@ -15,10 +15,11 @@ using CefSharp.WinForms;
 using IdleAuto.Scripts.Wrap;
 using System.Security.Principal;
 using IdleAuto.Scripts.Utils;
+using FreeSql.Internal;
 
-public class EquipController:BaseController
+public class EquipController : BaseController
 {
-    public EquipController(BroWindow bro):base(bro)
+    public EquipController(BroWindow bro) : base(bro)
     {
 
     }
@@ -169,6 +170,12 @@ public class EquipController:BaseController
 
         RoleModel role = account.FirstRole;
         await Task.Delay(1000);
+        var r = win.CallJs("_char.hasNotice()");
+        if (r.Result.ToObject<bool>())
+        {
+            var t = new TradeController(win);
+            await t.AcceptAll(win.User);
+        }
         P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
         var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (response.Success)
@@ -412,6 +419,7 @@ public class EquipController:BaseController
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
 
         await Task.Delay(1500);
+    
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (!result.Success) throw new Exception($"跳转{IdleUrlHelper.EquipUrl(role.RoleId)}失败");
@@ -559,7 +567,6 @@ public class EquipController:BaseController
         result.MatchSuitName = equipSuit.SuitName;
         result.ToWearEquips = new Dictionary<emEquipSort, EquipModel>();
         result.ToMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
-        result.ToTradeEquips = new List<TradeModel>();
         result.IsSuccess = true;
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
@@ -830,20 +837,8 @@ public class EquipController:BaseController
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
             if (i == 0 && equip == null && equipConfig.IsTrade)
             {
-                var filteredList = GetEquipInDic(dto.DbEquipDicOthers,equipConfig);
-                var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
-                //放在首位且需要乞讨的装备允许交易获得
-                dto.Result.ToTradeEquips.Add(new TradeModel
-                {
-                    EquipId = demandEquip.EquipID,
-                    DemandRoleId=dto.Role.RoleId,
-                    DemandRoleName=dto.Role.RoleName,
-                    OwnerAccountName=demandEquip.AccountName,
-                    DemandAccountName=_win.User.AccountName,
-                    TradeStatus=emTradeStatus.Register,
-                   
-                    
-                });
+                var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
+                SaveDemandEquip(dto, equipConfig, filteredList);
             }
             if (equip != null)
             {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
@@ -853,6 +848,45 @@ public class EquipController:BaseController
         }
 
         return r;
+    }
+
+    public void SaveDemandEquip(AutoEquipMatchDto dto, Equipment equipConfig, List<EquipModel> filteredList)
+    {
+        var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
+        if (demandEquip == null) return;
+        var eq = new TradeModel
+        {
+            EquipId = demandEquip.EquipID,
+            DemandRoleId = dto.Role.RoleId,
+            DemandRoleName = dto.Role.RoleName,
+            OwnerAccountName = demandEquip.AccountName,
+            DemandAccountName = _win.User.AccountName,
+            TradeStatus = emTradeStatus.Register,
+
+
+        }; try
+        {
+            var existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
+            if (existTrade != null&&(existTrade.TradeStatus!=emTradeStatus.Rejected&&existTrade.TradeStatus!=emTradeStatus.Received))
+            {
+                throw new Exception("登记中未处理的装备");
+            }
+            var flag = DbUtil.InsertOrUpdate<TradeModel>(eq);
+
+        }
+        catch( Exception e)
+        {
+           
+            var ex = e as DbUpdateVersionException;
+            if (ex != null)
+            {
+                P.Log("触发乐观锁", emLogType.Error);
+            }
+            filteredList = filteredList.Where(p => p.EquipID != demandEquip.EquipID).ToList();
+            SaveDemandEquip(dto, equipConfig, filteredList);
+        }
+
+
     }
 
     private List<EquipModel> GetEquipInDic(Dictionary<string, List<EquipModel>> dic, Equipment config)
@@ -1069,10 +1103,7 @@ public struct EquipSuitMatchStruct
     //需要制作的神器
     public Dictionary<emEquipSort, List<ArtifactMakeStruct>> ToMakeEquips;
 
-    /// <summary>
-    /// 需要交易的装备
-    /// </summary>
-    public List<TradeModel> ToTradeEquips;
+
 
     /// <summary>
     /// 是否必要装备都满足匹配

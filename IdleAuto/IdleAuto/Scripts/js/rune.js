@@ -1,5 +1,7 @@
 ﻿//(function () {
 //初始化Bridge
+
+var _rune = {};
 async function init() {
     try {
         await CefSharp.BindObjectAsync("Bridge");
@@ -102,6 +104,19 @@ function getRuneNum(rune) {
     });
     console.log('返回：{' + num + '}');
     return num;
+}
+
+function getRuneMap() {
+    var map = {};
+    $('.col-xs-12.col-sm-4.col-md-3.equip-container').each(function () {
+        var name = $(this).find('p:first .equip-name .artifact:nth-child(2)').text().trim(); // 获取符文名称的第二个 span
+        var regexResult = name.match(/-(\d+)#/);
+        var runeName = regexResult[1];
+        var num = parseInt($(this).find('p:first .artifact').last().text().trim());
+        map[runeName] = num;
+    });
+    _rune.runeMap = map;
+    return map;
 }
 
 function upgradeRune(rune, count) {
