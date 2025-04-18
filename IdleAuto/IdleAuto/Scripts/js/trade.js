@@ -49,10 +49,24 @@
         return true;
     }
 
-    async function getAnyTradeId() {
+    async function getAnyTrade() {
         var arr = $('.notice-content .notice-yes');
-        if (arr.length == 0) return -1;
-        return $(arr[0]).attr("data-id");
+        var eqid = $(arr[0]).parent().find(".equip-name").data("id");
+        var type=$(arr[0]).parent().find(".equip-name").data("type");
+        var content = $(arr[0]).parent().next().text();
+        var obj = {};
+        if (eqid) {
+            obj["type"] = "装备";
+            obj["equipId"] = eqid;
+            obj["content"] = content;
+            obj["quality"] = type;
+        }
+        else {
+            obj["type"] = "其它";
+        }
+        var noticeId = $(arr[0]).attr("data-id");
+        obj["noticeId"] = noticeId;
+        return obj;
     }
 
    
@@ -60,7 +74,7 @@
 
     _trade.acceptAllTrade = acceptAllTrade;
     _trade.acceptTrade = acceptTrade;
-    _trade.getAnyTradeId = getAnyTradeId;
+    _trade.getAnyTrade = getAnyTrade;
  
 
 })();

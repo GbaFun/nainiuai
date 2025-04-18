@@ -31,7 +31,13 @@ public class EquipController : BaseController
     public async Task EquipsToRepository(BroWindow win, UserModel account, bool cleanWhenFull = false)
     {
         if (account == null || account.Roles.Count <= 0) { MessageBox.Show("账户数据错误，或者账户内没有角色，请检查！"); return; }
-
+        var r = await win.CallJs("_char.hasNotice()");
+        if (r.Result.ToObject<bool>())
+        {
+            var t = new TradeController(win);
+            await t.AcceptAll(win.User);
+        }
+        await Task.Delay(2000);
         P.Log("开始转移角色背包物品到仓库", emLogType.AutoEquip);
         foreach (var role in account.Roles)
         {
@@ -170,12 +176,7 @@ public class EquipController : BaseController
 
         RoleModel role = account.FirstRole;
         await Task.Delay(1000);
-        var r = win.CallJs("_char.hasNotice()");
-        if (r.Result.ToObject<bool>())
-        {
-            var t = new TradeController(win);
-            await t.AcceptAll(win.User);
-        }
+      
         P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
         var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (response.Success)
@@ -419,7 +420,7 @@ public class EquipController : BaseController
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
 
         await Task.Delay(1500);
-    
+
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (!result.Success) throw new Exception($"跳转{IdleUrlHelper.EquipUrl(role.RoleId)}失败");
@@ -867,16 +868,19 @@ public class EquipController : BaseController
         }; try
         {
             var existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
-            if (existTrade != null&&(existTrade.TradeStatus!=emTradeStatus.Rejected&&existTrade.TradeStatus!=emTradeStatus.Received))
+            if (existTrade != null && (existTrade.TradeStatus != emTradeStatus.Rejected && existTrade.TradeStatus != emTradeStatus.Received))
             {
                 throw new Exception("登记中未处理的装备");
             }
+
             var flag = DbUtil.InsertOrUpdate<TradeModel>(eq);
 
+
+
         }
-        catch( Exception e)
+        catch (Exception e)
         {
-           
+
             var ex = e as DbUpdateVersionException;
             if (ex != null)
             {

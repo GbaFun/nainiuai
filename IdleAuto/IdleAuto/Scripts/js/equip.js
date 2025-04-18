@@ -65,6 +65,14 @@ async function getCurEquips() {
 //    return eMap;
 //}
 
+function readEquipInfo(data) {
+    var eid = data.eid;
+    var sortid = data.sortid;
+    var quality = data.quality;
+    var content = data.content;
+    return getEquipInfo(eid, sortid, quality, content);
+}
+
 function getEquipInfo(eid, sortid, quality, content) {
     console.log("getEquipInfo");
     var e = {};
@@ -336,6 +344,24 @@ function equipTrade(cid, eid, name) {
     POST_Message("EquipTrade", data, "post", 1000)
         .then(r => {
             console.log("EquipTrade success");
+        })
+        .catch(r => {
+            console.log(r);
+        });
+}
+
+function putToAuction(data) {
+    
+  
+    var data = MERGE_Form({
+        cid: data.cid,
+        eid: data.eid,
+        edes:data.priceJson
+    });
+    console.log(data);
+    POST_Message("EquipAuction", data, "post", 1000)
+        .then(r => {
+            console.log("EquipAuction success");
         })
         .catch(r => {
             console.log(r);

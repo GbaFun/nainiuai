@@ -274,6 +274,7 @@
     <Content Include="Document\30过滤.txt" />
     <Content Include="Document\48过滤.txt" />
     <Content Include="Document\60+过滤.txt" />
+    <Content Include="Document\todo.txt" />
     <Content Include="Document\挂56过滤.txt" />
     <Content Include="Document\死灵110方案.jpg" />
     <Content Include="Document\职业基础属性表.txt">

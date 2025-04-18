@@ -129,29 +129,45 @@ namespace IdleAuto.Scripts.Wrap
         {
             return await _bro.LoadUrlAsync(url);
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="jsName">可逗号拼接多个</param>
+        /// <param name="outTime"></param>
+        /// <returns></returns>
         public async Task<LoadUrlAsyncResponse> LoadUrlWaitJsInit(string url, string jsName, int outTime = 5000)
         {
-            var jsTask = new TaskCompletionSource<bool>();
+            var taskDic = new Dictionary<string, TaskCompletionSource<bool>>();
+            var jsNameArr = jsName.Split(',');
+            for (int i = 0; i < jsNameArr.Length; i++)
+            {
+                var key = jsNameArr[i];
+                taskDic.Add(key, new TaskCompletionSource<bool>());
+            }
             onJsInitCallBack = (result) =>
             {
-                if (jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+                if (jsNameArr.Contains(result)) { taskDic[result].SetResult(true); }
             };
 
             var res = await _bro.LoadUrlAsync(url);
             if (res.Success)
             {
-                await jsTask.Task;
-
+                await Task.WhenAll(taskDic.Values.Select(p => p.Task));
+                onJsInitCallBack = null;
                 return res;
             }
             else
             {
-                return res;
+                onJsInitCallBack = null;
+                throw new Exception($"载入页面{url}失败");
             }
         }
         public async Task<JavascriptResponse> CallJs(string jsFunc)
         {
-            var aa= await _bro.EvaluateScriptAsync(jsFunc);
+            var aa = await _bro.EvaluateScriptAsync(jsFunc);
             if (!aa.Success)
             {
                 throw new Exception("CallJs执行失败" + aa.Result);
@@ -177,17 +193,27 @@ namespace IdleAuto.Scripts.Wrap
         }
         public async Task<JavascriptResponse> CallJsWaitReload(string jsFunc, string jsName)
         {
-            var jsTask = new TaskCompletionSource<bool>();
+            var taskDic = new Dictionary<string, TaskCompletionSource<bool>>();
+            var jsNameArr = jsName.Split(',');
+            for (int i = 0; i < jsNameArr.Length; i++)
+            {
+                var key = jsNameArr[i];
+                taskDic.Add(key, new TaskCompletionSource<bool>());
+            }
             onJsInitCallBack = (result) =>
             {
-                if (jsName == string.Empty || jsName == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
+                if (jsNameArr.Contains(result)) { taskDic[result].SetResult(true); }
             };
             var response = await _bro.EvaluateScriptAsync(jsFunc);
             if (!response.Success)
             {
+                onJsInitCallBack = null;
                 throw new Exception("CallJsWaitReload执行失败" + response.Result);
+
             }
-            await jsTask.Task;
+
+            await Task.WhenAll(taskDic.Values.Select(p => p.Task));
+            onJsInitCallBack = null;
             return response;
         }
 
@@ -356,9 +382,9 @@ namespace IdleAuto.Scripts.Wrap
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
             var bro = sender as ChromiumWebBrowser;
-           
+
             P.Log($"On {name} FrameLoadStart");
-         
+
             P.Log($"On {name} FrameLoadStart");
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
@@ -410,7 +436,7 @@ namespace IdleAuto.Scripts.Wrap
 
         public MyRequestHandler()
         {
-           
+
         }
 
         protected override bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback)
@@ -478,18 +504,18 @@ namespace IdleAuto.Scripts.Wrap
             }
 
             // 如果这是最后一块数据
-         
-                // 处理完整内容
-                string originalContent = Encoding.UTF8.GetString(memoryStream.ToArray());
-                string modifiedContent = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "popup.js")); ;
-                byte[] modifiedData = Encoding.UTF8.GetBytes(modifiedContent);
 
-                // 写入输出
-                dataOut.Write(modifiedData, 0, modifiedData.Length);
-                dataOutWritten = modifiedData.Length;
+            // 处理完整内容
+            string originalContent = Encoding.UTF8.GetString(memoryStream.ToArray());
+            string modifiedContent = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "popup.js")); ;
+            byte[] modifiedData = Encoding.UTF8.GetBytes(modifiedContent);
 
-                return FilterStatus.Done;
-            
+            // 写入输出
+            dataOut.Write(modifiedData, 0, modifiedData.Length);
+            dataOutWritten = modifiedData.Length;
+
+            return FilterStatus.Done;
+
 
             return FilterStatus.NeedMoreData;
         }
@@ -504,7 +530,7 @@ namespace IdleAuto.Scripts.Wrap
             }
         }
 
-      
+
     }
 
 }

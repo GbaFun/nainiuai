@@ -1368,6 +1368,43 @@
     }
   },
   {
+    "name": "施法手",
+    "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "手套",
+      "isTrade": true,
+      "quality": "魔法|稀有|传奇|套装",
+      "conditions": [
+
+        {
+          "matchType": "可选",
+          "matchGroupName": "手套",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 1,
+          "conditionContent": "30"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "手套",
+          "operate": "大于等于",
+          "attributeType": "抗火",
+          "seq": 1,
+          "conditionContent": "30"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "手套",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 5000,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
     "name": "MF护符",
     "description": "前期没有技能护符，优先考虑MF->金币掉落->元素抗性",
     "equipment": {
@@ -1447,6 +1484,7 @@
     "equipment": {
       "category": "护符",
       "quality": "魔法|稀有|传奇",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "可选",
@@ -1466,11 +1504,47 @@
     }
   },
   {
+    "name": "死灵召唤护符",
+    "description": "骷髅法师+1护符，有其他属性更好，优先考虑死灵召唤->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "骷髅法师护符",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 50,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
     "name": "骷髅法师护符",
     "description": "骷髅法师+1护符，有其他属性更好，优先考虑死灵召唤->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "护符",
       "quality": "魔法|稀有|传奇",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "任一",

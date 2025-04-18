@@ -231,6 +231,11 @@ public enum emEquipStatus
     /// </summary>
     Trading = 3,
 
+    /// <summary>
+    /// 拍卖中
+    /// </summary>
+    Auction=4,
+
 
 
 

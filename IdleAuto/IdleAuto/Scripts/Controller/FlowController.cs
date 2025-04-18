@@ -218,9 +218,9 @@ namespace IdleAuto.Scripts.Controller
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工24";
             var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() { { 26, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 },{ 27,1},{ 28,1} };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
-            BroWindow curWin, nextWin = null;
+            BroWindow curWin=null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
             int continueIndex = 1;
             if (unfinishTask == null)
@@ -235,19 +235,23 @@ namespace IdleAuto.Scripts.Controller
             {
                 UserModel nextUser = null;
                 var user = new UserModel(userList[i]);
-
-                curWin = nextWin != null ? nextWin : await TabManager.Instance.TriggerAddBroToTap(user);
-
+                //寻找发送起点 有符文的账号为起点
+                if (curWin == null)
+                {
+                    var r1 = await CheckNextAccountRune(user, sendDic);
+                    if (r1 == null) continue;
+                    curWin = r1;
+                }
                 if (i != userList.Count - 1)
                 {
                     nextUser = new UserModel(userList[i + 1]);
-
-
-                    var r = await CheckNextAccountRune(nextUser, sendDic);
-                    if (r == null) { curWin.Close(); continue; };
-                    nextWin = r;
+                    //寻找给谁发 没符文的账号直接跳过
+                    var r2 = await CheckNextAccountRune(nextUser, sendDic);
+                    if (r2 == null) {  continue; };
+                  
                     await SendRuneToNext(curWin, nextUser.AccountName, sendDic);
                     curWin.Close();
+                    curWin = r2;//将当前窗口指向被发送方
                 }
                 else
                 {
@@ -294,7 +298,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "彩虹刻面" && p.Content.Contains("火焰") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName!="铁矿石"&& p.EquipName == "部落图腾" &&p.Content.Contains("+38")  && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -306,7 +310,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "奶牛");
+                    await tradeControl.StartTrade(e, "但丁");
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -314,6 +318,32 @@ namespace IdleAuto.Scripts.Controller
             }
         }
 
+        /// <summary>
+        /// 一键拍卖
+        /// </summary>
+        /// <returns></returns>
+        public static async Task SellEquipToAuction()
+        {
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName == "排齿" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var group = list.GroupBy(g => g.AccountName).ToList();
+            foreach (var item in group)
+            {
+                var accountName = item.Key;
+                var u = AccountCfg.Instance.Accounts.Where(p => p.AccountName == accountName).First();
+                var user = new UserModel(u);
+                var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                var tradeControl = new TradeController(win);
+                await Task.Delay(1500);
+                foreach (var e in item)
+                {
+                    await tradeControl.PutToAuction(e,22,2);
+                    await Task.Delay(1500);
+                    e.EquipStatus = emEquipStatus.Auction;
+                    DbUtil.InsertOrUpdate<EquipModel>(e);
+                }
+                win.Close();
+            }
+        }
         public static async Task DealDemandEquip()
         {
             var list = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList().GroupBy(g => g.OwnerAccountName);

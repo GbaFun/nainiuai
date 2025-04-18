@@ -61,6 +61,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnAuction = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -93,6 +94,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnAuction);
             this.HomeGroup.Controls.Add(this.btnDealTrade);
             this.HomeGroup.Controls.Add(this.btnSendEquip);
             this.HomeGroup.Controls.Add(this.btnSendRune);
@@ -422,6 +424,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnAuction
+            // 
+            this.btnAuction.Location = new System.Drawing.Point(18, 313);
+            this.btnAuction.Name = "btnAuction";
+            this.btnAuction.Size = new System.Drawing.Size(98, 29);
+            this.btnAuction.TabIndex = 15;
+            this.btnAuction.Text = "一键拍卖";
+            this.btnAuction.UseVisualStyleBackColor = true;
+            this.btnAuction.Click += new System.EventHandler(this.btnAuction_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -474,5 +486,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnSendRune;
         private System.Windows.Forms.Button btnDealTrade;
         private System.Windows.Forms.Button btnSendEquip;
+        private System.Windows.Forms.Button btnAuction;
     }
 }

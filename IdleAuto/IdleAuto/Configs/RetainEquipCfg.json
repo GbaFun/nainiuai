@@ -424,6 +424,24 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "尸体的哀伤"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "炫影之风"
         }
 
@@ -2411,6 +2429,7 @@
 
   {
     "equip": {
+      "description": "死灵腰带",
       "category": "项链|腰带|衣服|头饰",
       "quality": "全部",
       "conditions": [
@@ -2510,10 +2529,17 @@
           "conditionContent": "3"
         },
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "头饰护符",
+          "operate": "大于等于",
+          "attributeType": "攻击速度",
           "conditionContent": "1"
         }
       ]

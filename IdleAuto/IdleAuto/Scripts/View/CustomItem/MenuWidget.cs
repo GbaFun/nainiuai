@@ -14,6 +14,8 @@ using CefSharp.DevTools.FedCm;
 using CefSharp;
 using System.Threading;
 using System.Security.Principal;
+using IdleAuto.Scripts.Utils;
+using IdleAuto.Db;
 
 namespace IdleAuto.Scripts.View
 {
@@ -157,9 +159,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                 //  await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
-                  //  await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
-                   await FlowController.GroupWork(5, 1, RepairManager.Instance.AutoRepair);
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -290,12 +292,15 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            //Account item = this.AccountCombo.SelectedItem as Account;
-            //AccountController.Instance.User = new UserModel(item);
-            //var user = AccountController.Instance.User;
-            //var window = TabManager.Instance.GetWindow();
-            //TradeController controller = new TradeController();
-            //await controller.AcceptAll(window, user);
+            var t = new TradeModel() { EquipId = 1 };
+            var t2 = new TradeModel() { EquipId = 1 };
+
+            for (int i = 0; i < 10000; i++)
+            {
+                Task.Run(() => { FreeDb.Sqlite.Update<TradeModel>().SetSource(t).ExecuteAffrows(); });
+            }
+
+
         }
 
         private void btnTestArtifact_Click(object sender, EventArgs e)
@@ -348,6 +353,11 @@ namespace IdleAuto.Scripts.View
         private void BtnDealTrade_Click(object sender, EventArgs e)
         {
             FlowController.DealDemandEquip();
+        }
+
+        private void btnAuction_Click(object sender, EventArgs e)
+        {
+            FlowController.SellEquipToAuction();
         }
     }
 }

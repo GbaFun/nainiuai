@@ -1,6 +1,8 @@
-﻿using CefSharp;
+﻿using AttributeMatch;
+using CefSharp;
 using IdleAuto.Db;
 using IdleAuto.Scripts.Wrap;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,6 +40,44 @@ public class TradeController : BaseController
     }
 
 
+    public async Task<bool> PutToAuction(EquipModel equip, int rune, int count)
+    {
+        //跳转装备页面
+        var role = _win.User.FirstRole;
+        //_win.GetBro().ShowDevTools();
+        P.Log($"跳转{role.RoleName}的装备详情页面", emLogType.AutoEquip);
+        var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        await Task.Delay(1500);
+        var data = new Dictionary<string, object>();
+        data.Add("cid", role.RoleId);
+        data.Add("eid", equip.EquipID);
+        var obj = new
+        {
+            isFix = true,
+            gold = 0,
+            runes = new[]
+            {
+                new
+                {
+                    index = rune,
+                    count = count
+                 }
+            }
+        };
+
+
+        data.Add("priceJson", JsonConvert.SerializeObject(obj));
+        //向对应角色发送交易请求
+        var result2 = await _win.CallJsWaitReload($@"putToAuction({data.ToLowerCamelCase()})", "equip");
+        if (result2.Success)
+        {
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     public async Task<bool> AcceptTrade(BroWindow win, UserModel account, long equipId, string fromName, string toName)
     {
@@ -63,22 +103,32 @@ public class TradeController : BaseController
         P.Log($"跳转{role.RoleName}的消息页面", emLogType.AutoEquip);
         if (_browser.Address.IndexOf(IdleUrlHelper.NoticeUrl()) == -1)
         {
-            var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.NoticeUrl(), "trade");
+            var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.NoticeUrl(), "trade,equip");
             if (!response.Success) throw new Exception("消息页加载失败");
         }
 
         //同意全部交易请求
-        var result2 = await _win.CallJs($@"_trade.getAnyTradeId()");
-        var anyId = result2.Result.ToObject<int>();
-        if (anyId > 0)
+        var result2 = await _win.CallJs($@"_trade.getAnyTrade()");
+        var anyObj = result2.Result.ToObject<Dictionary<string, object>>();
+        var type = anyObj["type"].ToString();
+        var noticeId = anyObj["noticeId"] == null ? 0 : int.Parse(anyObj["noticeId"].ToString());
+        if (noticeId > 0)
         {
+
             await Task.Delay(1500);
-            var r3 = await _win.CallJsWaitReload($"_trade.acceptTrade({anyId})", "trade");
+            var r3 = await _win.CallJsWaitReload($"_trade.acceptTrade({noticeId})", "trade,equip");
             if (!r3.Success)
             {
                 throw new Exception("接收失败");
             }
-            await UpdateTradeStatus(anyId, emTradeStatus.Received, emEquipStatus.Repo);
+            if (type == "装备")
+            {
+                var content = anyObj["content"].ToString();
+                var eqid = anyObj["equipId"].ToString();
+                var quality = anyObj["quality"].ToString();
+                await UpdateTradeStatus(anyObj, emTradeStatus.Received, emEquipStatus.Repo);
+            }
+
             await Task.Delay(1500);
             await AcceptAll(account);
         }
@@ -91,11 +141,17 @@ public class TradeController : BaseController
     /// 需要更新仓库和交易记录中的状态
     /// </summary>
     /// <returns></returns>
-    private async Task UpdateTradeStatus(long eqId, emTradeStatus tradeStatus, emEquipStatus eqStatus)
+    private async Task UpdateTradeStatus(Dictionary<string, object> anyObj, emTradeStatus tradeStatus, emEquipStatus eqStatus)
     {
-        var eq = FreeDb.Sqlite.Select<EquipModel>(new long[] { eqId }).First();
-        if (eq == null) return;//消息中有其它不是装备得东西
+        var content = anyObj["content"].ToString();
+        var eqid = long.Parse(anyObj["equipId"].ToString());
+        var quality = anyObj["quality"].ToString();
+        // var eq = FreeDb.Sqlite.Select<EquipModel>(new long[] { eqid }).First();
+        var json = JsonConvert.SerializeObject(new { eid = eqid, sortid = 999, quality = quality, content = content });
+        var r = await _win.CallJs($"readEquipInfo({json})");
+        var eq = r.Result.ToObject<EquipModel>();
         eq.EquipStatus = eqStatus;
+        eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
         eq.SetAccountInfo(_win.User);
         var tradeInfo = FreeDb.Sqlite.Select<TradeModel>(new long[] { eq.EquipID }).First();
 
@@ -178,12 +234,13 @@ public class TradeController : BaseController
         var a = await _win.CallJs("getRuneMap()");
         var runeMap = a.Result.ToObject<Dictionary<int, int>>();
 
-        bool result = false;
+        bool result = true;
+
         foreach (var item in dic)
         {
-            if (runeMap[item.Key] == 0)
+            if (runeMap[item.Key] > 0)
             {
-                result = true; break;
+                result = false; break;
             }
         }
         return result;

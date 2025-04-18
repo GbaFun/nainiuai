@@ -11,12 +11,25 @@ namespace IdleAuto.Scripts.Utils
     {
         public static bool InsertOrUpdate<T>(T data) where T:class
         {
-            int rows = FreeDb.Sqlite.InsertOrUpdate<T>().SetSource(data).ExecuteAffrows();
-            if (rows != 1)
+            var r = FreeDb.Sqlite.Select<T>(data).First();
+            if (r == null)
             {
-                throw new Exception("保存失败");
+                int rows = FreeDb.Sqlite.InsertOrUpdate<T>().SetSource(data).ExecuteAffrows();
+                if (rows != 1)
+                {
+                    throw new Exception("保存失败");
+                }
             }
-            else return true;
+            else
+            {
+                //乐观锁仅在update 时生效 所以这样操作
+                int rows = FreeDb.Sqlite.Update<T>().SetSource(data).ExecuteAffrows();
+                if (rows != 1)
+                {
+                    throw new Exception("保存失败");
+                }
+            }
+             return true;
         }
         public static bool InsertOrUpdate<T>(IEnumerable<T> data) where T : class
         {
@@ -27,6 +40,8 @@ namespace IdleAuto.Scripts.Utils
             }
             else return true;
         }
+
+     
         public static bool Delete<T>(T data) where T : class
         {
             int rows = FreeDb.Sqlite.Delete<T>(data).ExecuteAffrows();

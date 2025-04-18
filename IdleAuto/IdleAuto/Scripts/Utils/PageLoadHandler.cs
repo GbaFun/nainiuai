@@ -66,13 +66,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "rune.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, EquipPage))
-        {
-            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
-            await LoadGlobalJs(jsPath, browser);
-            //var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "trade.js");
-            //await LoadGlobalJs(jsPath2, browser);
-        }
+       
         else if (ContainsUrl(url, CharCreate))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "init.js");
@@ -103,7 +97,14 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "reform.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, Notice))
+         if (ContainsUrl(url, EquipPage) || ContainsUrl(url, Notice))
+        {
+            var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "equip.js");
+            await LoadGlobalJs(jsPath, browser);
+            //var jsPath2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "trade.js");
+            //await LoadGlobalJs(jsPath2, browser);
+        }
+         if (ContainsUrl(url, Notice))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "trade.js");
             await LoadGlobalJs(jsPath, browser);
