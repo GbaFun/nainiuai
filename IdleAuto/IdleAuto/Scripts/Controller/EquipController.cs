@@ -176,7 +176,7 @@ public class EquipController : BaseController
 
         RoleModel role = account.FirstRole;
         await Task.Delay(1000);
-      
+
         P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
         var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         if (response.Success)
@@ -445,6 +445,10 @@ public class EquipController : BaseController
                     toMakeEquips = suitEquips.ToMakeEquips;
                     break;
                 }
+                else if (suitEquips.IsNecessaryEquipMatch == false)
+                { //必要装备没有命中的话 整套装备都舍弃 进入下一套方案
+                    continue;
+                }
             }
         }
         else
@@ -585,9 +589,15 @@ public class EquipController : BaseController
             }
             AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquipsSelf = _equipsSelf, DbEquipOthers = _equipsOthers, DbEquipDicOthers = dicOthers, DbEquipDicSelf = dicSelf };
             List<EquipModel> matchEquips = GetMatchEquip(dto);
-            //寻找是否有可以制作神器的配置
-            EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
 
+            EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
+            if (equipment.IsNecessery && bestEq == null)
+            {
+                //必要装备没有命中的话 整套装备都舍弃 进入下一套方案
+                result.IsNecessaryEquipMatch = false;
+                result.IsSuccess = false;
+                break;
+            }
             if (bestEq == null)
             {
                 P.Log("未找到现成装备");

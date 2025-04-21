@@ -431,11 +431,20 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "死骑冰霜",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 2,
+          "seq": 1,
           "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑冰霜",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 1,
+          "conditionContent": "1"
         },
         {
           "matchType": "必需",
@@ -471,6 +480,39 @@
           "attributeType": "单项元素抗性之和",
           "seq": 1,
           "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "2召唤项链",
+    "description": "死灵召唤技能项链，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "项链",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵项链",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 20,
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死灵项链",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 60,
+          "conditionContent": "死灵,召唤,2"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 30,
+          "conditionContent": "10"
         }
       ]
     }
@@ -1594,20 +1636,7 @@
           "seq": 1,
           "conditionContent": "1"
         },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
-          "conditionContent": "10"
-        },
+
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -1869,6 +1898,31 @@
     }
   },
   {
+    "name": "32亡者遗产",
+    "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "手杖",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "亡者遗产",
+          "conditionContent": "亡者遗产"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,2"
+        }
+      ]
+    }
+  },
+  {
     "name": "亡者遗产",
     "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
     "equipment": {
@@ -1887,7 +1941,6 @@
       ]
     }
   },
-
   {
     "name": "法老王的意志",
     "description": "",
@@ -2056,6 +2109,33 @@
           "artifactBase": "死灵灿烂",
           "seq": 10,
           "conditionContent": "灿烂"
+        }
+      ]
+    }
+  },
+  {
+    "name": "20施法头",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
+          "attributeType": "指定职业单系技能",
+          "seq": 50,
+          "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "20"
         }
       ]
     }

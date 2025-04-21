@@ -251,8 +251,11 @@ public class RepairManager : SingleManagerBase<RepairManager>
             EquipController equipController = new EquipController(window);
             //window.GetBro().ShowDevTools();
 
-            //将挂机装备放入仓库
-            await EquipToRepository(window, equipController, account, true);
+            if (account.AccountName != "铁矿石")
+            {
+                //将挂机装备放入仓库
+                await EquipToRepository(window, equipController, account, true);
+            }
             //盘点仓库装备
             await InventoryEquips(window, equipController, account);
 

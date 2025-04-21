@@ -1245,7 +1245,7 @@
 
       ]
     },
-    "maxCount": 3
+    "maxCount": 5
   },
   {
     "equip": {
@@ -2105,6 +2105,23 @@
   },
   {
     "equip": {
+      "category": "珠宝",
+      "quality": "稀有",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "稀有"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
       "category": "祭祀刀|牧师副手",
       "quality": "全部",
       "conditions": [
@@ -2317,7 +2334,55 @@
   },
   {
     "equip": {
+      "description": "20施法头",
       "category": "头饰|护符",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "死灵施法头",
+      "category": "头饰|护符",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "头饰",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
         {
@@ -2327,6 +2392,23 @@
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,1"
         },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,1"
+        }
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+      
         {
           "matchType": "任一",
           "operate": "大于等于",
@@ -2756,7 +2838,72 @@
         }
       ]
     },
-    "maxCount": 500
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "category": "头饰",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "category": "手杖|死灵副手",
+      "quality": "普通|破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,2"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "亡者遗产",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    },
+    "maxCount": 40
   },
   //失败开孔保留 看下有没有bug
   {
@@ -2785,6 +2932,13 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "生生不息,1"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "亡者遗产",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
       ]
     },
@@ -2877,20 +3031,7 @@
       "category": "项链",
       "quality": "全部",
       "conditions": [
-        {
-          "matchType": "任一",
-          "matchGroupName": "抗性项链",
-          "operate": "大于等于",
-          "attributeType": "元素抗性",
-          "conditionContent": "1"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "抗性项链",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "conditionContent": "10"
-        },
+
         {
           "matchType": "必需",
           "matchGroupName": "抗性项链",
