@@ -443,6 +443,10 @@ public class EquipController : BaseController
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
                     towearEquips = suitEquips.ToWearEquips;
                     toMakeEquips = suitEquips.ToMakeEquips;
+                    if (suit.IsTriggerSpecialMode)
+                    {
+
+                    }
                     break;
                 }
                 else if (suitEquips.IsNecessaryEquipMatch == false)

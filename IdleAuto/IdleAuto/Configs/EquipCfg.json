@@ -1909,13 +1909,13 @@
           "matchGroupName": "死灵手杖",
           "operate": "等于",
           "attributeType": "名称",
-          "artifactBase": "亡者遗产",
+          "artifactBase": "亡者遗产32",
           "conditionContent": "亡者遗产"
         },
         {
           "matchType": "必需",
           "matchGroupName": "死灵手杖",
-          "operate": "等于",
+          "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "支配骷髅,2"
         }

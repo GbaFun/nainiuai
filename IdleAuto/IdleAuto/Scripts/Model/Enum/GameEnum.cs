@@ -264,6 +264,8 @@ public enum emArtifactBase
     死灵灿烂,
     [Description("亡者遗产")]
     亡者遗产,
+    [Description("亡者遗产")]
+    亡者遗产32,
     [Description("执法者")]
     执法者
 }

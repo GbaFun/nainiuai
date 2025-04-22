@@ -921,7 +921,8 @@
     },
     "equipSuit": [
       {
-        "suitName": "死灵19-45套装",
+        "suitName": "满足特殊修车的一套装备",
+        "IsTriggerSpecialMode": true,
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true
@@ -939,7 +940,7 @@
           "isNecessery": true
         },
         "戒指1": {
-          "name": "抗寒电施法戒指",
+          "name": "死灵低级戒指",
           "isNecessery": 0
         },
         "戒指2": {

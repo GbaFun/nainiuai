@@ -324,7 +324,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task SellEquipToAuction()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName == "邪灵之束缚" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName .Contains("竞赛")&&p.Category=="护符" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -336,7 +336,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.PutToAuction(e,22,2);
+                    await tradeControl.PutToAuction(e,22,1);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Auction;
                     DbUtil.InsertOrUpdate<EquipModel>(e);

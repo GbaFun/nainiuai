@@ -78,6 +78,11 @@ public class EquipSuit
 {
     public string SuitName { get; set; }
 
+    /// <summary>
+    /// 触发特殊修车 控制死灵速度和法师速度 等等... 其他再议
+    /// </summary>
+    public bool IsTriggerSpecialMode { get; set; }
+
 
     public SuitInfo 主手 { get; set; }
     public SuitInfo 副手 { get; set; }
