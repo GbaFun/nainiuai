@@ -214,11 +214,12 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendRune()
         {
-            var specifiedAccount = RepairManager.NainiuAccounts;
+            var specifiedAccount = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts);
+            
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工24";
             var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() { { 26, 1 },{ 27,1},{ 28,1} };
+            var sendDic = new Dictionary<int, int>() { { 25, 1 }, { 26, 1 },{ 27,1} };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
             BroWindow curWin=null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
@@ -298,7 +299,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName!="铁矿石"&& p.EquipName == "彩虹刻面" && p.Content.Contains("火焰")  && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName!="铁矿石"&& p.Content.Contains("+1 重生最大召唤数量")  && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -310,7 +311,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "奶牛苦工24");
+                    await tradeControl.StartTrade(e, "admin");
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);

@@ -2408,7 +2408,7 @@
       "category": "护符",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
-      
+
         {
           "matchType": "任一",
           "operate": "大于等于",
@@ -3055,6 +3055,30 @@
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
           "conditionContent": "骷髅法师,1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+      ]
+
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "重生,1"
         },
         {
           "matchType": "可选",
