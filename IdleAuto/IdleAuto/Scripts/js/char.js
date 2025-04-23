@@ -144,11 +144,13 @@ class Character {
             var item = skillArr[i];
             var skillName = $(item).find("span")[1].innerText;
             var pointAdd = $(item).attr("data-add") * 1;
+            var lvSum = $(item).attr("data-lvl") * 1;
 
 
             r[skillName] = {
                 lv: pointAdd,
                 name: skillName,
+                lvSum: lvSum
             };
         }
         return r;

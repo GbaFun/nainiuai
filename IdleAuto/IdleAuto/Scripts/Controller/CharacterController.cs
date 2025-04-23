@@ -796,6 +796,80 @@ namespace IdleAuto.Scripts.Controller
             });
 
         }
+
+        /// <summary>
+        ///死灵特殊加点
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task<bool> AddNecSpecialSkill(RoleModel role, int targetSpeed)
+        {
+            if (role.Job != emJob.死灵) throw new Exception("职业错误");
+            int roleid = role.RoleId;
+            await Task.Delay(1000);
+            await _win.LoadUrlWaitJsInit(IdleUrlHelper.RoleUrl(role.RoleId), "char");
+            var curSkill = await GetSkillConfig();
+            int lv1 = curSkill["骷髅法师"].LvSum;
+            int lv2 = curSkill["支配骷髅"].LvSum;
+            //实际支配技能点
+            int realLv2 = curSkill["支配骷髅"].Lv;
+            int speed = lv1 * 2 + lv2;
+            if (speed >= targetSpeed) return true;
+            int lvDiff = targetSpeed - speed;
+
+            List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
+            var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+            targetSkillPoint["支配骷髅"] = +lvDiff;
+            targetSkillPoint["生生不息"] = -lvDiff;
+            var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill);
+            var isNeedRest = r.Item1;
+            var isNeedAdd = r.Item2;
+            var isNeedSetGroup = r.Item3;
+
+
+            P.Log("开始重置技能加点！", emLogType.AutoEquip);
+            if (isNeedRest) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillRest();
+            });
+
+            //重置一定加点
+            if (isNeedAdd || isNeedRest) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillSave(targetSkillPoint, skillConfig.JobName);
+            });
+
+            var groupid = GetSkillGroup(skillConfig);
+            if (isNeedSetGroup || isNeedRest) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillGroupSave(groupid);
+            });
+
+
+
+            if (_browser.Address.IndexOf(PageLoadHandler.CharDetail) == -1)
+            {
+                await _win.SignalCallback("charReload", () =>
+                {
+                    _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+
+                });
+
+            }
+            var s = await _browser.EvaluateScriptAsync("_char.hasKey()");
+            var hasKey = s.Result.ToObject<bool>();
+
+            if (!hasKey) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillKeySave(skillConfig.KeySkillId);
+            });
+
+            return false;
+
+        }
+
+
         private async Task SkillRest()
         {
             if (_browser.CanExecuteJavascriptInMainFrame)

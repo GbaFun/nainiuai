@@ -19,7 +19,15 @@ namespace IdleAuto.Scripts.Model
         [Column(IsPrimary = true)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// 已加技能点数
+        /// </summary>
         public int Lv { get; set; }
+
+        /// <summary>
+        /// 实际技能总额
+        /// </summary>
+        public int LvSum { get; set; }
 
         /// <summary>
         /// 技能名称
