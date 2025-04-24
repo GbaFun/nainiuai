@@ -1,6 +1,7 @@
 ﻿using AttributeMatch;
 using CefSharp;
 using IdleAuto.Db;
+using IdleAuto.Scripts.Utils;
 using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,20 @@ namespace IdleAuto.Scripts.Controller
             }
             else return false;
         }
+
+        public async Task RemoveRune(EquipModel equip, int roleId)
+        {
+            await Task.Delay(1500);
+            var aa = await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}", "reform");
+            await Task.Delay(1500);
+            var d = new Dictionary<string, object>();
+            var a = await _win.CallJsWaitReload($"_reform.removeRune()", "equip");
+            equip.Quality = "slot";
+            DbUtil.InsertOrUpdate<EquipModel>(equip);
+            await Task.Delay(1000);
+            //改造完会跳转到装备栏界面
+        }
+
 
     }
 }

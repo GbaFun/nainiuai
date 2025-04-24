@@ -2335,8 +2335,8 @@
   {
     "equip": {
       "description": "20施法头",
-      "category": "头饰|护符",
-      "quality": "魔法|稀有|传奇|神器|套装",
+      "category": "头饰",
+      "quality": "全部",
       "conditions": [
         {
           "matchType": "必需",

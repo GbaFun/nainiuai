@@ -37,6 +37,18 @@
         });
     }
 
+    async function removeRune() {
+        var data = {
+            type: $("td:contains('移除并销毁当前镶嵌物')").parent().find('.label-danger.equip-reform').attr("data-type") * 1
+        };
+        await POST_Message("EquipReform", MERGE_Form(data)).then((r) => {
+
+        }).catch((r, status, xhr) => {
+
+        });
+    }
+
     _reform.reform = reform;
     _reform.isMeterialEnough = isMeterialEnough;
+    _reform.removeRune = removeRune;
 })();

@@ -1,4 +1,5 @@
-﻿using IdleAuto.Db;
+﻿using AttributeMatch;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using IdleAuto.Scripts.Utils;
 using IdleAuto.Scripts.Wrap;
@@ -215,13 +216,13 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             var specifiedAccount = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts);
-            
+
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工24";
             var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() { { 25, 1 }, { 26, 1 },{ 27,1} };
+            var sendDic = new Dictionary<int, int>() { { 25, 1 }, { 26, 1 }, { 27, 1 } };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
-            BroWindow curWin=null, nextWin = null;
+            BroWindow curWin = null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
             int continueIndex = 1;
             if (unfinishTask == null)
@@ -248,8 +249,8 @@ namespace IdleAuto.Scripts.Controller
                     nextUser = new UserModel(userList[i + 1]);
                     //寻找给谁发 没符文的账号直接跳过
                     var r2 = await CheckNextAccountRune(nextUser, sendDic);
-                    if (r2 == null) {  continue; };
-                  
+                    if (r2 == null) { continue; };
+
                     await SendRuneToNext(curWin, nextUser.AccountName, sendDic);
                     curWin.Close();
                     curWin = r2;//将当前窗口指向被发送方
@@ -299,7 +300,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName!="铁矿石"&& p.Content.Contains("+1 重生最大召唤数量")  && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.Content.Contains("+1 重生最大召唤数量") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -325,7 +326,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task SellEquipToAuction()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName .Contains("竞赛")&&p.Category=="护符" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName.Contains("竞赛") && p.Category == "护符" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -337,7 +338,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.PutToAuction(e,22,1);
+                    await tradeControl.PutToAuction(e, 22, 1);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Auction;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -390,14 +391,98 @@ namespace IdleAuto.Scripts.Controller
                 }
                 foreach (var r in item)
                 {
-                   
+
                     var control = new EquipController(win);
                     var role = win.User.Roles.Find(p => p.RoleId == roleId);
-                   await RepairManager.Instance.AutoEquip(win,control, user, role);
+                    await RepairManager.Instance.AutoEquip(win, control, user, role);
                 }
                 win.Close();
             }
         }
+
+        public static async Task RollArtifact()
+        {
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
+            (p.Quality == "slot" || p.Quality == "base" || p.Quality == "artifact") && p.Content.Contains("+3 骷髅法师")).ToList().GroupBy(g => g.AccountName).ToList();
+            var con32 = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
+            var conPerfect = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产满roll);
+            foreach (var item in list)
+            {
+                var accName = item.Key;
+                var acc = AccountCfg.Instance.Accounts.Find(p => p.AccountName == accName);
+
+                var win = await TabManager.Instance.TriggerAddBroToTap(new UserModel(acc));
+                var a = new ArtifactController(win);
+                foreach (var e in item)
+                {
+
+                    if ((e.emItemQuality == emItemQuality.普通 || e.emItemQuality == emItemQuality.破碎) && AttributeMatchUtil.Match(e, con32, out _))
+                    {
+
+                        // await  a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, con32,true);
+                    }
+                    else if (e.emItemQuality == emItemQuality.神器 && !AttributeMatchUtil.Match(e, conPerfect, out _) && AttributeMatchUtil.Match(e, con32, out _))
+                    {
+                        await a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, con32, true);
+                        //检查是否roll满
+                    }
+                    else if (e.RoleID > 0)
+                    {
+                        //在身上的 
+                    }
+                }
+                win.Close();
+            }
+        }
+        public static async Task Roll32Wangzhe()
+        {
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
+            (p.Quality == "slot" || p.Quality == "base" || p.Quality == "artifact") && p.Content.Contains("+3 骷髅法师") && p.Content.Contains("支配骷髅")).ToList().GroupBy(g => g.AccountName).ToList();
+            var con32 = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
+            var conPerfect = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产满roll);
+            foreach (var item in list)
+            {
+                var accName = item.Key;
+                var acc = AccountCfg.Instance.Accounts.Find(p => p.AccountName == accName);
+
+                var win = await TabManager.Instance.TriggerAddBroToTap(new UserModel(acc));
+
+                foreach (var e in item)
+                {
+
+                    if ((e.emItemQuality == emItemQuality.普通 || e.emItemQuality == emItemQuality.破碎) && AttributeMatchUtil.Match(e, con32, out _))
+                    {
+
+                        // await  a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, con32,true);
+                    }
+                    else if (e.emItemQuality == emItemQuality.神器 && !AttributeMatchUtil.Match(e, conPerfect, out _) && AttributeMatchUtil.Match(e, con32, out _))
+                    {
+
+                        //检查是否roll满
+                        await ReMakeArtifact(e, conPerfect, con32, win);
+                    }
+                    else if (e.RoleID > 0)
+                    {
+                        //在身上的 
+                    }
+                }
+                win.Close();
+            }
+        }
+
+        private static async Task ReMakeArtifact(EquipModel e, ArtifactBaseConfig stopConfig, ArtifactBaseConfig artifactConfig, BroWindow win)
+        {
+            var a = new ArtifactController(win);
+            var r = new ReformController(win);
+            await r.RemoveRune(e, e.RoleID == 0 ? win.User.FirstRole.RoleId : e.RoleID);
+            await Task.Delay(1500);
+            await a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, artifactConfig, true);
+            if(!AttributeMatchUtil.Match(e, stopConfig, out _))
+            {
+                await ReMakeArtifact(e,stopConfig,artifactConfig,win);
+            }
+        }
+
 
 
     }

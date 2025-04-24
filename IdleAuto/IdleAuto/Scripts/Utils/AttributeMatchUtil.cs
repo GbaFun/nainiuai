@@ -143,6 +143,22 @@ namespace AttributeMatch
             };
             int weight = 0;
             int seq = _condition.Seq <= 0 ? 1 : _condition.Seq;
+            string eqContentCopy = _equip.Content;
+            switch (_condition.EquipContent)
+            {
+                case emEquipContent.全部:
+                    break;
+                case emEquipContent.神器底子:
+                    if (_equip.emItemQuality != emItemQuality.神器) break;
+                    string[] r = Regex.Split(_equip.Content, "神器");
+                    _equip.Content = r[0];
+                    break;
+                case emEquipContent.神器词条:
+                    if (_equip.emItemQuality != emItemQuality.神器) break;
+                    string[] r1 = Regex.Split(_equip.Content, "神器");
+                    _equip.Content = r1[1];
+                    break;
+            }
             switch (_condition.AttributeType)
             {
                 case emAttrType.名称:
@@ -224,8 +240,11 @@ namespace AttributeMatch
                     break;
             }
 
+            //还原装备内容
+            _equip.Content = eqContentCopy;
             return result;
         }
+
 
         /// <summary>
         /// 匹配装备名称
@@ -456,6 +475,10 @@ namespace AttributeMatch
                         ismatch = OperateValue(slotValue, _condition.ConditionContent, emOperateType, out _);
                     }
                     break;
+                case emItemQuality.神器:
+                    ismatch = true;
+                    break;
+
             }
             weight = ismatch ? 1 : 0;
             return ismatch;
@@ -676,6 +699,10 @@ namespace AttributeMatch
         public emOperateType Operate;
         public emAttrType AttributeType;
         public emArtifactBase ArtifactBase;
+        /// <summary>
+        /// 匹配装备的部分内容
+        /// </summary>
+        public emEquipContent EquipContent;
         /// <summary>
         /// 条件匹配权重
         /// </summary>

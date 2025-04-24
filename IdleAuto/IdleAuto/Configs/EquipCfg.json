@@ -743,7 +743,7 @@
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "seq": 40,
+          "seq": 50,
           "conditionContent": "20"
         },
         {
@@ -1918,6 +1918,14 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "支配骷髅,2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "equipContent": "神器词条",
+          "conditionContent": "骷髅法师,3"
         }
       ]
     }

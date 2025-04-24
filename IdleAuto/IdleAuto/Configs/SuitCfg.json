@@ -922,7 +922,7 @@
     "equipSuit": [
       {
         "suitName": "满足特殊修车的一套装备",
-        "IsTriggerSpecialMode": true,
+        "SkillMode": "Nec110",
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true

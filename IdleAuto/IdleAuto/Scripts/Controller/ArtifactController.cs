@@ -49,6 +49,9 @@ namespace IdleAuto.Scripts.Controller
             {
                 baseEq.Quality = "artifact";
                 baseEq.EquipName = art.GetEnumDescription();
+                var content = await _win.CallJs("_inlay.getEquipContent()");
+                baseEq.Content = content.Result.ToObject<string>();
+                //把content也覆盖
                 var rows = FreeDb.Sqlite.Update<EquipModel>().SetSource(baseEq).ExecuteAffrows();
                 return baseEq;
             }

@@ -81,7 +81,7 @@ public class EquipSuit
     /// <summary>
     /// 触发特殊修车 控制死灵速度和法师速度 等等... 其他再议
     /// </summary>
-    public bool IsTriggerSpecialMode { get; set; }
+    public emSkillMode SkillMode { get; set; }
 
 
     public SuitInfo 主手 { get; set; }

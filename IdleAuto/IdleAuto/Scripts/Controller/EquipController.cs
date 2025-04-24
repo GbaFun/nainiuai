@@ -413,8 +413,9 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task AutoEquips(BroWindow win, UserModel account, RoleModel role)
+    public async Task<emSkillMode> AutoEquips(BroWindow win, UserModel account, RoleModel role)
     {
+        emSkillMode skillMode = emSkillMode.None;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
@@ -443,10 +444,7 @@ public class EquipController : BaseController
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
                     towearEquips = suitEquips.ToWearEquips;
                     toMakeEquips = suitEquips.ToMakeEquips;
-                    if (suit.IsTriggerSpecialMode)
-                    {
-
-                    }
+                    skillMode = suit.SkillMode;
                     break;
                 }
                 else if (suitEquips.IsNecessaryEquipMatch == false)
@@ -542,6 +540,7 @@ public class EquipController : BaseController
 
 
         await UpdateCurEquips(win, role);
+        return skillMode;
     }
 
 

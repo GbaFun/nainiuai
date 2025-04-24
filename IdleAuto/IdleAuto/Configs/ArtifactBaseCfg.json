@@ -320,6 +320,24 @@
       }
     ]
   },
+  "亡者遗产满roll": {
+    "category": "手杖",
+    "quality": "神器",
+    "isUpdateRune": true,
+
+    "conditions": [
+
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "equipContent": "神器词条",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
+      }
+    
+    ]
+  },
   "执法者": {
     "category": "锤",
     "quality": "破碎",

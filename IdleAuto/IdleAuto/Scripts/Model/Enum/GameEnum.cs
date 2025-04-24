@@ -91,6 +91,15 @@ public enum emAttrType
     武器速度,
     自定义,
 }
+
+public enum emEquipContent
+{
+    全部,
+
+    神器底子,
+
+    神器词条,
+}
 public enum emOperateType
 {
     大于,
@@ -234,7 +243,7 @@ public enum emEquipStatus
     /// <summary>
     /// 拍卖中
     /// </summary>
-    Auction=4,
+    Auction = 4,
 
 
 
@@ -266,6 +275,8 @@ public enum emArtifactBase
     亡者遗产,
     [Description("亡者遗产")]
     亡者遗产32,
+    [Description("亡者遗产")]
+    亡者遗产满roll,
     [Description("执法者")]
     执法者
 }
@@ -277,4 +288,13 @@ public enum emSlotType
 {
     Direct,
     Random
+}
+
+public enum emSkillMode
+{
+    None,
+    /// <summary>
+    /// 死灵110速方案
+    /// </summary>
+    Nec110
 }

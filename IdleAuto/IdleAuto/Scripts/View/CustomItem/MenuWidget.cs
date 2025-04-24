@@ -160,8 +160,8 @@ namespace IdleAuto.Scripts.View
                 try
                 {
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips, accounts);
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair,RepairManager.NanfangAccounts);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair,RepairManager.NanfangAccounts);
                 }
                 catch (Exception ex)
                 {
@@ -358,6 +358,11 @@ namespace IdleAuto.Scripts.View
         private void btnAuction_Click(object sender, EventArgs e)
         {
             FlowController.SellEquipToAuction();
+        }
+
+        private void btnRollArtifact_Click(object sender, EventArgs e)
+        {
+            FlowController.Roll32Wangzhe();
         }
     }
 }
