@@ -1254,6 +1254,7 @@
     "equipment": {
       "category": "衣服",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
 
 
@@ -1903,6 +1904,7 @@
     "equipment": {
       "category": "手杖",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -1918,6 +1920,39 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "支配骷髅,2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "equipContent": "神器词条",
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "31亡者遗产",
+    "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "手杖",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "亡者遗产32",
+          "conditionContent": "亡者遗产"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "支配骷髅,1"
         },
         {
           "matchType": "必需",

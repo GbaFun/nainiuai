@@ -807,9 +807,57 @@
     },
     "equipSuit": [
       {
+        "suitName": "满足特殊修车的一套装备",
+        "SkillMode": "Nec110",
+        "主手": {
+          "name": "32亡者遗产",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "32死灵副手",
+          "isNecessery": true
+        },
+        "头盔": {
+          "name": "20施法头",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "2召唤项链",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "死灵低级戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗寒电施法戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "时光扭曲行者,抗寒电靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "蛇皮",
+          "isNecessery": true
+        },
+        "手套": {
+          "name": "施法手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "骷髅法师护符,死灵召唤护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "盗墓腰带",
+          "isNecessery": true
+        }
+      },
+      {
         "suitName": "死灵19-45套装",
         "主手": {
-          "name": "亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
+          "name": "31亡者遗产,亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
           "isNecessery": 0
         },
         "副手": {
@@ -864,9 +912,57 @@
     },
     "equipSuit": [
       {
+        "suitName": "满足特殊修车的一套装备",
+        "SkillMode": "Nec110",
+        "主手": {
+          "name": "32亡者遗产",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "32死灵副手",
+          "isNecessery": true
+        },
+        "头盔": {
+          "name": "20施法头",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "2召唤项链",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "死灵低级戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "抗寒电施法戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "时光扭曲行者,抗寒电靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "蛇皮",
+          "isNecessery": true
+        },
+        "手套": {
+          "name": "施法手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "骷髅法师护符,死灵召唤护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "盗墓腰带",
+          "isNecessery": true
+        }
+      },
+      {
         "suitName": "死灵19-45套装",
         "主手": {
-          "name": "亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
+          "name": "31亡者遗产,亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
           "isNecessery": 0
         },
         "副手": {
@@ -971,7 +1067,7 @@
       {
         "suitName": "死灵19-45套装",
         "主手": {
-          "name": "亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
+          "name": "31亡者遗产,亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
           "isNecessery": 0
         },
         "副手": {

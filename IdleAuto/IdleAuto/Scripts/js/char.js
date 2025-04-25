@@ -222,10 +222,11 @@ class Character {
         });
         console.log(data);
         POST_Message("SkillSave", data, "post", 1500).then((r) => {
-
+            console.log("技能加点成功")
         }).catch((e) => {
             debugger
             // location.reload();
+            console.log("技能加点失败")
         })
     }
 

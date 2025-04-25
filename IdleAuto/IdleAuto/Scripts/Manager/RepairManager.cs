@@ -26,7 +26,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     /// 盘库、技能加点、自动更换装备、剩余属性点分配
     /// 修车过程不会将背包物品收拢，不会清仓
     /// </summary>
-    public async Task AutoRepair(UserModel account)
+    public async Task AutoRepair(UserModel account,emJob job=emJob.None)
     {
         //大号跳过自动修车逻辑，需要手动修车
         if (account.AccountName == "铁矿石")
@@ -39,14 +39,11 @@ public class RepairManager : SingleManagerBase<RepairManager>
         EquipController equipController = new EquipController(window);
         //window.GetBro().ShowDevTools();
 
-        //将挂机装备放入仓库
-        // await EquipToRepository(window, equipController, account, true);
-        //盘点仓库装备
-        // await InventoryEquips(window, equipController, account);
         List<string> InterruptNames = new List<string>();
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
+            if (role.Job != job && job != emJob.None) continue;
             try
             {
                 lock (_lock)

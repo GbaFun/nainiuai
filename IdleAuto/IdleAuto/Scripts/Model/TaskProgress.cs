@@ -15,7 +15,9 @@ public enum emTaskType
     [Description("修车")]
     AutoEquip,
     [Description("发送符文")]
-    RuneTrade
+    RuneTrade,
+    [Description("精修死灵")]
+    RepairNec
 }
 
 /// <summary>

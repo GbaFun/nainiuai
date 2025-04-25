@@ -260,22 +260,7 @@
           "conditionContent": "法师之拳"
         },
 
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "塔因"
-        },
 
-
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "无形潜行之刃"
-        },
 
 
         {
@@ -284,15 +269,6 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "蛇魔法师"
-        },
-
-
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇装备",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "海鸥"
         }
 
       ]
@@ -363,7 +339,7 @@
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "1"
+          "conditionContent": "2"
         }
 
       ]

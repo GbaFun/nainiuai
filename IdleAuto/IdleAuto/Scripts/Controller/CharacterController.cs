@@ -818,6 +818,7 @@ namespace IdleAuto.Scripts.Controller
             int realLv2 = curSkill["支配骷髅"].Lv;
             int speed = lv1 * 2 + lv2;
             if (speed >= targetSpeed) return;
+            if (speed == 0) return;
             int lvDiff = targetSpeed - speed;         
             targetSkillPoint["支配骷髅"] +=lvDiff;
             targetSkillPoint["生生不息"] -=lvDiff;

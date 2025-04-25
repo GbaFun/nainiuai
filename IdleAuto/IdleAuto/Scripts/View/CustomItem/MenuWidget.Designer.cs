@@ -63,6 +63,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnNec = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -95,6 +96,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnNec);
             this.HomeGroup.Controls.Add(this.btnRollArtifact);
             this.HomeGroup.Controls.Add(this.btnAuction);
             this.HomeGroup.Controls.Add(this.btnDealTrade);
@@ -224,7 +226,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnTest
             // 
-            this.BtnTest.Location = new System.Drawing.Point(123, 365);
+            this.BtnTest.Location = new System.Drawing.Point(136, 472);
             this.BtnTest.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnTest.Name = "BtnTest";
             this.BtnTest.Size = new System.Drawing.Size(100, 30);
@@ -446,6 +448,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnNec
+            // 
+            this.btnNec.Location = new System.Drawing.Point(18, 348);
+            this.btnNec.Name = "btnNec";
+            this.btnNec.Size = new System.Drawing.Size(98, 26);
+            this.btnNec.TabIndex = 17;
+            this.btnNec.Text = "精修死灵";
+            this.btnNec.UseVisualStyleBackColor = true;
+            this.btnNec.Click += new System.EventHandler(this.btnNec_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -500,5 +512,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnSendEquip;
         private System.Windows.Forms.Button btnAuction;
         private System.Windows.Forms.Button btnRollArtifact;
+        private System.Windows.Forms.Button btnNec;
     }
 }
