@@ -51,10 +51,24 @@ public class EquipModel
     /// </summary>
     public string EquipBaseName { get; set; }
 
+    private string _equipName;
     /// <summary>
     /// 装备名
     /// </summary>
-    public string EquipName { get; set; }
+    public string EquipName
+    {
+        set
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                this._equipName = value.Replace("★", "");
+            }
+        }
+        get
+        {
+            return _equipName ;
+        }
+    }
 
     /// <summary>
     /// 底子

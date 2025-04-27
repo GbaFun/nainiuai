@@ -34,7 +34,7 @@ async function FetchPost(_url, _data, needReload = true) {
             body: formData,
         })
             .then(async response => { // 将回调声明为async函数
-                debugger
+                
                 if (response.type === "opaqueredirect") {
                     needReload && location.reload();
                     resolve(response)

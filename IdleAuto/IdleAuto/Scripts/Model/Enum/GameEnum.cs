@@ -254,9 +254,9 @@ public enum emEquipStatus
 public enum emArtifact
 {
     未知 = 0,
-    [Description("亡者遗产")]
+   
     亡者遗产32,
-    [Description("亡者遗产")]
+  
     亡者遗产满roll,
 }
 public enum emArtifactBase
@@ -282,8 +282,6 @@ public enum emArtifactBase
     亡者遗产,
     [Description("亡者遗产")]
     亡者遗产32,
-    [Description("亡者遗产")]
-    亡者遗产满roll,
     [Description("执法者")]
     执法者
 }

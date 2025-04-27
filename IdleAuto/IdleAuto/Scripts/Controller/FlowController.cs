@@ -1,4 +1,5 @@
 ﻿using AttributeMatch;
+using IdleAuto.Configs.CfgExtension;
 using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using IdleAuto.Scripts.Utils;
@@ -220,7 +221,7 @@ namespace IdleAuto.Scripts.Controller
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工24";
             var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() { { 25, 1 }, { 26, 1 }, { 27, 1 } };
+            var sendDic = new Dictionary<int, int>() {  { 26, 1 }, { 27, 1 }, { 28, 1 } };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
             BroWindow curWin = null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
@@ -404,8 +405,8 @@ namespace IdleAuto.Scripts.Controller
         {
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
             (p.Quality == "slot" || p.Quality == "base" || p.Quality == "artifact") && p.Content.Contains("+3 骷髅法师")).ToList().GroupBy(g => g.AccountName).ToList();
-            var con32 = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
-            var conPerfect = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产满roll);
+            var con32 = ArtifactBaseCfg.Instance.Data[emArtifactBase.亡者遗产32];
+            var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
             foreach (var item in list)
             {
                 var accName = item.Key;
@@ -431,7 +432,7 @@ namespace IdleAuto.Scripts.Controller
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
             (/*p.Quality == "slot" || p.Quality == "base" || */p.Quality == "artifact") && p.EquipStatus == emEquipStatus.Repo && p.Content.Contains("+3 骷髅法师") && p.Content.Contains("支配骷髅")).ToList().GroupBy(g => g.AccountName).ToList();
             var con32 = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
-            var conPerfect = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产满roll);
+            var conPerfect = ArtifactCfg.Instance.GetEquipCondition(emArtifact.亡者遗产满roll);
             foreach (var item in list)
             {
                 var accName = item.Key;
@@ -463,7 +464,7 @@ namespace IdleAuto.Scripts.Controller
             }
         }
 
-        private static async Task ReMakeArtifact(EquipModel e, emArtifactBase artifactBase, ArtifactBaseConfig stopConfig, ArtifactBaseConfig artifactConfig, BroWindow win)
+        private static async Task ReMakeArtifact(EquipModel e, emArtifactBase artifactBase, Equipment stopConfig, ArtifactBaseConfig artifactConfig, BroWindow win)
         {
             var a = new ArtifactController(win);
             var r = new ReformController(win);
@@ -511,7 +512,7 @@ namespace IdleAuto.Scripts.Controller
         private static async Task RollOrEquipWangzhe(UserModel user, BroWindow win)
         {
             var con32 = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
-            var conPerfect = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产满roll);
+            var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
             var e = new EquipController(win);
             var a = new ArtifactController(win);
             foreach (var role in user.Roles)

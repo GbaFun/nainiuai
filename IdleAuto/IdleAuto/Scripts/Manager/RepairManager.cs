@@ -21,13 +21,15 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public static string[] NanfangAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
     public static string[] NainiuAccounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
+    public static readonly List<int> FcrSpeeds = new List<int> { 0, 25, 50, 75, 110, 145, 180 };
     /// <summary>
     /// 一键修车（单账号）
     /// 盘库、技能加点、自动更换装备、剩余属性点分配
     /// 修车过程不会将背包物品收拢，不会清仓
     /// </summary>
-    public async Task AutoRepair(UserModel account,emJob job=emJob.None)
+    public async Task AutoRepair(UserModel account, emJob job = emJob.None)
     {
+        var repairJob = ConfigUtil.GetAppSetting("RepairJob");
         //大号跳过自动修车逻辑，需要手动修车
         if (account.AccountName == "铁矿石")
         {
@@ -52,11 +54,12 @@ public class RepairManager : SingleManagerBase<RepairManager>
                     if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                         continue;
                 }
+                if (repairJob != "" && role.Job.ToString() != repairJob) continue;
                 //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
                 //自动更换装备
-                var skillMode = await AutoEquip(window, equipController, account, role);
+                await AutoEquip(window, equipController, account, role);
                 //技能加点
-                await AddSkillPoint(window, role, skillMode);
+                await AddSkillPoint(window, role);
 
                 //角色剩余属性点分配
                 await AddAttrPoint(window, role);
@@ -107,6 +110,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
+            var repairJob = ConfigUtil.GetAppSetting("RepairJob");
+            if (repairJob != "" && role.Job.ToString() != repairJob) continue;
             try
             {
                 //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
@@ -114,9 +119,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
                 //自动更换装备
-                var skillMode = await AutoEquip(window, equipController, account, role);
+                await AutoEquip(window, equipController, account, role);
                 //技能加点
-                await AddSkillPoint(window, role, skillMode);
+                await AddSkillPoint(window, role);
 
                 //角色剩余属性点分配
                 await AddAttrPoint(window, role);
@@ -178,9 +183,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 //遍历账户下角色修车
                 foreach (var role in account.Roles)
                 {
-                    var skillMode = await AutoEquip(window, equipController, account, role);
+                    await AutoEquip(window, equipController, account, role);
                     //技能加点
-                    await AddSkillPoint(window, role, skillMode);
+                    await AddSkillPoint(window, role);
                     //自动更换装备
 
                     //角色剩余属性点分配
@@ -286,14 +291,14 @@ public class RepairManager : SingleManagerBase<RepairManager>
     {
         await controller.InventoryEquips(win, account, true);
     }
-    public async Task AddSkillPoint(BroWindow win, RoleModel role, emSkillMode skillMode)
+    public async Task AddSkillPoint(BroWindow win, RoleModel role)
     {
         var charControl = new CharacterController(win);
-        await charControl.AddSkillPoints(win.GetBro(), role, skillMode);
+        await charControl.AddSkillPoints(win.GetBro(), role);
     }
-    public async Task<emSkillMode> AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
+    public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
     {
-        return await controller.AutoEquips(win, account, role);
+         await controller.AutoEquips(win, account, role);
     }
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {

@@ -39,5 +39,10 @@ namespace IdleAuto.Configs.CfgExtension
                 throw e;
             }
         }
+
+        public Equipment GetEquipCondition(emArtifact e)
+        {
+            return Data[e];
+        }
     }
 }

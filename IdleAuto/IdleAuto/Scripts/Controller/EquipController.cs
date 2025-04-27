@@ -413,9 +413,9 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task<emSkillMode> AutoEquips(BroWindow win, UserModel account, RoleModel role)
+    public async Task AutoEquips(BroWindow win, UserModel account, RoleModel role)
     {
-        emSkillMode skillMode = emSkillMode.None;
+
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
@@ -444,7 +444,7 @@ public class EquipController : BaseController
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
                     towearEquips = suitEquips.ToWearEquips;
                     toMakeEquips = suitEquips.ToMakeEquips;
-                    skillMode = suit.SkillMode;
+                
                     break;
                 }
                 else if (suitEquips.IsNecessaryEquipMatch == false)
@@ -540,7 +540,7 @@ public class EquipController : BaseController
 
 
         await UpdateCurEquips(win, role);
-        return skillMode;
+    
     }
 
 
@@ -849,6 +849,10 @@ public class EquipController : BaseController
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
+            if (eqName == "盗墓腰带")
+            {
+                Console.WriteLine();
+            }
             if (i == 0 && equip == null && equipConfig.IsTrade)
             {
                 var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
@@ -870,6 +874,7 @@ public class EquipController : BaseController
         if (demandEquip == null) return;
         var eq = new TradeModel
         {
+            EquipName = dto.Equipment.EquipNameArr[0],
             EquipId = demandEquip.EquipID,
             DemandRoleId = dto.Role.RoleId,
             DemandRoleName = dto.Role.RoleName,
@@ -880,7 +885,14 @@ public class EquipController : BaseController
 
         }; try
         {
-            var existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
+            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p=>p.EquipName==eq.EquipName&&p.DemandRoleId==eq.DemandRoleId).First();
+            if (existTrade != null)
+            {
+                //同角色同一个需求不能大于1
+                return;
+            }
+             existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
+            
             if (existTrade != null && (existTrade.TradeStatus != emTradeStatus.Rejected && existTrade.TradeStatus != emTradeStatus.Received))
             {
                 throw new Exception("登记中未处理的装备");

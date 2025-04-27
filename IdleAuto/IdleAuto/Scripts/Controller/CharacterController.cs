@@ -730,13 +730,13 @@ namespace IdleAuto.Scripts.Controller
             for (int i = 0; i < user.Roles.Count; i++)
             {
                 var role = user.Roles[i];
-                await AddSkillPoints(_browser, role,emSkillMode.None);
+                await AddSkillPoints(_browser, role);
                 await Task.Delay(2000);
             }
 
         }
 
-        public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role,emSkillMode skillMode)
+        public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
         {
             _browser = bro;
             int roleid = role.RoleId;
@@ -752,9 +752,9 @@ namespace IdleAuto.Scripts.Controller
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
             var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
-            if (skillMode == emSkillMode.Nec110)
+            if (role.Job == emJob.死灵)
             {
-                await SetNecSpecialSkill(role, 110, targetSkillPoint);
+                await SetNecSpecialSkill(role, targetSkillPoint);
             }
             var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill);
             var isNeedRest = r.Item1;
@@ -806,23 +806,51 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
-        public async Task SetNecSpecialSkill(RoleModel role, int targetSpeed,Dictionary<string,int> targetSkillPoint)
+        public async Task SetNecSpecialSkill(RoleModel role, Dictionary<string, int> targetSkillPoint)
         {
             if (role.Job != emJob.死灵) throw new Exception("职业错误");
-            int roleid = role.RoleId;
-       
             var curSkill = await GetSkillConfig();
             int lv1 = curSkill["骷髅法师"].LvSum;
             int lv2 = curSkill["支配骷髅"].LvSum;
+            //意外需要介入
+            if (lv1 == 0)
+            {
+                throw new Exception("技能点为0");
+            }
             //实际支配技能点
+            int realLv1 = curSkill["骷髅法师"].Lv;
             int realLv2 = curSkill["支配骷髅"].Lv;
-            int speed = lv1 * 2 + lv2;
+
+            //装备提供的等级
+            int equipLv1 = lv1 - realLv1;
+            int equipLv2 = lv2 - realLv2;
+
+            int targetLv1 = targetSkillPoint["骷髅法师"];
+            int targetLv2 = targetSkillPoint["支配骷髅"];
+
+            int speed = (equipLv1 + targetLv1) * 2 + (equipLv2 + targetLv2);//装备等级+目标加点算出速度
+
+            int roleid = role.RoleId;
+            int roleLv = role.Level;
+            if (speed < 50) return;
+            var targetIndex = RepairManager.FcrSpeeds.FindIndex(p => p > speed);
+            var targetSpeed = RepairManager.FcrSpeeds[targetIndex];
             if (speed >= targetSpeed) return;
-            if (speed == 0) return;
-            int lvDiff = targetSpeed - speed;         
-            targetSkillPoint["支配骷髅"] +=lvDiff;
-            targetSkillPoint["生生不息"] -=lvDiff;
-          
+
+            int lvDiff = targetSpeed - speed;
+
+
+            if (targetSkillPoint["支配骷髅"] + lvDiff > 20 || targetSkillPoint["生生不息"] - lvDiff <= 1)
+            {
+                //无法达成则匹配慢一档位
+                targetSpeed = RepairManager.FcrSpeeds[targetIndex - 1];
+                lvDiff = targetSpeed - speed;
+                if (lvDiff < 0) return; //无需调整
+            }
+
+            targetSkillPoint["支配骷髅"] += lvDiff;
+            targetSkillPoint["生生不息"] -= lvDiff;
+
 
         }
 

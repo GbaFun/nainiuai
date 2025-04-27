@@ -64,10 +64,11 @@
   {
     "name": "元帅盾牌",
     "description": "骑士副手，优先堆冥想和审判光环",
-    "isTrade": true,
+
     "equipment": {
       "category": "盾|骑士盾牌",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -794,7 +795,31 @@
       ]
     }
   },
+  {
+    "name": "抗毒靴子",
+    "description": "71用",
+    "equipment": {
+      "category": "靴子",
+      "quality": "全部",
+      "conditions": [
 
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
   {
     "name": "抗寒戒指",
     "description": "抗寒戒指",
@@ -1058,6 +1083,30 @@
           "seq": 40,
           "conditionContent": "20"
         },
+        {
+          "matchType": "必需",
+          "operate": "大于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗毒施法戒指",
+    "description": "",
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "抗毒",
+          "seq": 40,
+          "conditionContent": "20"
+        },
+
         {
           "matchType": "必需",
           "operate": "大于",
@@ -1696,10 +1745,10 @@
   {
     "name": "盗墓腰带",
     "description": "召唤等级腰带",
-    "isTrade": true,
     "equipment": {
       "category": "腰带",
       "quality": "魔法|稀有|传奇",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -1903,7 +1952,7 @@
     "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
     "equipment": {
       "category": "手杖",
-      "quality": "全部",
+      "quality": "神器",
       "isTrade": true,
       "conditions": [
         {
@@ -1921,6 +1970,32 @@
           "attributeType": "技能等级",
           "conditionContent": "支配骷髅,2"
         },
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "equipContent": "神器词条",
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "3亡者遗产",
+    "description": "死灵手杖，若有凯恩碎片，优先凯恩，否则必需3骷髅法，支配、生生、召唤等级可选",
+    "equipment": {
+      "category": "手杖",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "亡者遗产"
+        },
+
         {
           "matchType": "必需",
           "matchGroupName": "死灵手杖",
@@ -2052,6 +2127,46 @@
     }
   },
   {
+    "name": "232死灵副手",
+    "description": "",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵手杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 20,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 1,
+          "conditionContent": "死灵,召唤,2"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "支配骷髅,2"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "生生不息,1"
+        }
+
+      ]
+    }
+  },
+  {
     "name": "31副手",
     "description": "",
     "equipment": {
@@ -2157,6 +2272,37 @@
     }
   },
   {
+    "name": "133灿烂",
+    "description": "死灵副手， 32施法副手 3级技能法老王 31施法副手 +3骷髅法灿烂",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 10,
+          "conditionContent": "灿烂"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "支配骷髅,3"
+        }
+      ]
+    }
+  },
+  {
     "name": "20施法头",
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
@@ -2179,6 +2325,30 @@
           "attributeType": "施法速度",
           "seq": 1,
           "conditionContent": "20"
+        }
+      ]
+    }
+  },
+  {
+    "name": "冰晶",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "冰晶"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
       ]
     }
@@ -2214,6 +2384,41 @@
           "attributeType": "指定职业单系技能",
           "seq": 50,
           "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "2召唤头",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "帽子|头饰",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
+          "attributeType": "所有技能",
+          "seq": 50,
+          "conditionContent": "2"
+        },
+
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "死灵1级头",
+          "attributeType": "指定职业单系技能",
+          "seq": 50,
+          "conditionContent": "死灵,召唤,2"
         },
         {
           "matchType": "可选",
@@ -2491,6 +2696,32 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "时光扭曲行者"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  //神器
+  {
+    "name": "飞龙衣服",
+    "description": "",
+    "equipment": {
+      "category": "衣服",
+      "quality": "神器",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "飞龙"
         },
 
         {

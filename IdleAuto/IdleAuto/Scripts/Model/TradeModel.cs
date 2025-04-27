@@ -15,6 +15,11 @@ public class TradeModel
 
     public emTradeStatus TradeStatus { get; set; }
 
+    /// <summary>
+    /// 同一个配置同一个角色只乞讨一次
+    /// </summary>
+    public string EquipName { get; set; }
+
 
 
     /// <summary>
