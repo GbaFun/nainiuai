@@ -702,6 +702,7 @@
     "equipment": {
       "category": "戒指",
       "quality": "魔法|稀有|传奇|套装",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "任一",
@@ -1987,6 +1988,7 @@
     "equipment": {
       "category": "手杖",
       "quality": "神器",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -2013,6 +2015,7 @@
     "equipment": {
       "category": "手杖",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -2401,6 +2404,7 @@
     "equipment": {
       "category": "帽子|头饰",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
 
         {
@@ -2650,7 +2654,7 @@
     "name": "死骑冰霜武器",
     "description": "死骑眼光,",
     "equipment": {
-      "category": "斧|剑|锤|匕首|标枪|投掷武器",
+      "category": "斧|剑|锤",
       "quality": "魔法|稀有|传奇",
       "necessary": 0,
       "conditions": [
@@ -2666,12 +2670,6 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死骑,冰霜,1"
-        },
-        {
-          "matchType": "必需",
-          "operate": "在范围内",
-          "attributeType": "武器速度",
-          "conditionContent": "0-20"
         },
         {
           "matchType": "必需",

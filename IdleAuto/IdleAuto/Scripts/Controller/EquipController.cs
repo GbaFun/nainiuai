@@ -58,90 +58,89 @@ public class EquipController : BaseController
         await Task.Delay(1000);
         P.Log($"跳转{role.RoleName}的装备详情页面", emLogType.AutoEquip);
         var response = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-        if (response.Success)
+        await UpdateCurEquips(win, role);
+        bool hasEquips = false;
+        int boxCount = 0;
+        P.Log($"检查{role.RoleName}的仓库物品总量", emLogType.AutoEquip);
+        var response1 = await win.CallJs($@"repositoryEquipsCount()");
+        if (response1.Success)
         {
-            bool hasEquips = false;
-            int boxCount = 0;
-            P.Log($"检查{role.RoleName}的仓库物品总量", emLogType.AutoEquip);
-            var response1 = await win.CallJs($@"repositoryEquipsCount()");
-            if (response1.Success)
+            boxCount = (int)response1.Result;
+            P.Log($"{role.RoleName}的仓库物品总量为{boxCount}", emLogType.AutoEquip);
+            P.Log($"检查{role.RoleName}当前页背包物品总量", emLogType.AutoEquip);
+            int maxNum = int.Parse(ConfigUtil.GetAppSetting("BoxMaxNum"));
+            var result = await win.CallJs($@"packageHasEquips()");
+            if (result.Success)
             {
-                boxCount = (int)response1.Result;
-                P.Log($"{role.RoleName}的仓库物品总量为{boxCount}", emLogType.AutoEquip);
-                P.Log($"检查{role.RoleName}当前页背包物品总量", emLogType.AutoEquip);
-                int maxNum = int.Parse(ConfigUtil.GetAppSetting("BoxMaxNum"));
-                var result = await win.CallJs($@"packageHasEquips()");
-                if (result.Success)
+                int bagCount = (int)result.Result;
+                P.Log($"{role.RoleName}当前页背包物品总量为{bagCount}", emLogType.AutoEquip);
+                hasEquips = bagCount > 0;
+                while (hasEquips)
                 {
-                    int bagCount = (int)result.Result;
-                    P.Log($"{role.RoleName}当前页背包物品总量为{bagCount}", emLogType.AutoEquip);
-                    hasEquips = bagCount > 0;
-                    while (hasEquips)
+                    if (bagCount + boxCount >= 2800)
                     {
-                        if (bagCount + boxCount >= 2800)
+                        P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
+                        if (cleanWhenFull)
                         {
-                            P.Log($"{role.RoleName}的背包物品存储到仓库失败，仓库已满", emLogType.AutoEquip);
-                            if (cleanWhenFull)
-                            {
-                                await ClearRepository(win);
-                            }
-                            else
-                            {
-                                hasEquips = false;
-                                break;
-                            }
-                        }
-
-                        await Task.Delay(1000);
-                        P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
-                        var result2 = await win.CallJsWaitReload($@"equipStorage({role.RoleId})", "equip");
-                        if (result2.Success)
-                        {
-                            boxCount += bagCount;
-                            P.Log($"{role.RoleName}的背包物品存储到仓库完成", emLogType.AutoEquip);
-                            P.Log($"检查{role.RoleName}当前页背包物品总量", emLogType.AutoEquip);
-                            var result3 = await win.CallJs($@"packageHasEquips()");
-                            if (result3.Success)
-                            {
-                                bagCount = (int)result3.Result;
-                                hasEquips = bagCount > 0;
-                                P.Log($"{role.RoleName}当前页背包物品总量为{bagCount}", emLogType.AutoEquip);
-                            }
-                            else
-                            {
-                                hasEquips = false;
-                                P.Log($"检查{role.RoleName}当前页背包物品总量失败", emLogType.AutoEquip);
-                            }
+                            await ClearRepository(win);
                         }
                         else
                         {
                             hasEquips = false;
-                            P.Log($"{role.RoleName}的背包物品存储到仓库失败", emLogType.AutoEquip);
+                            break;
                         }
                     }
 
-                    P.Log($"重新检查{role.RoleName}的仓库物品总量", emLogType.AutoEquip);
-                    var response2 = await win.CallJs($@"repositoryEquipsCount()");
-                    if (response2.Success)
+                    await Task.Delay(1000);
+                    P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
+                    var result2 = await win.CallJsWaitReload($@"equipStorage({role.RoleId})", "equip");
+                    if (result2.Success)
                     {
-                        boxCount = (int)response1.Result;
-                        int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
-                        if (boxCount >= 3000)
+                        boxCount += bagCount;
+                        P.Log($"{role.RoleName}的背包物品存储到仓库完成", emLogType.AutoEquip);
+                        P.Log($"检查{role.RoleName}当前页背包物品总量", emLogType.AutoEquip);
+                        var result3 = await win.CallJs($@"packageHasEquips()");
+                        if (result3.Success)
                         {
-                            //await ClearRepository(win, account);
+                            bagCount = (int)result3.Result;
+                            hasEquips = bagCount > 0;
+                            P.Log($"{role.RoleName}当前页背包物品总量为{bagCount}", emLogType.AutoEquip);
+                        }
+                        else
+                        {
+                            hasEquips = false;
+                            P.Log($"检查{role.RoleName}当前页背包物品总量失败", emLogType.AutoEquip);
                         }
                     }
+                    else
+                    {
+                        hasEquips = false;
+                        P.Log($"{role.RoleName}的背包物品存储到仓库失败", emLogType.AutoEquip);
+                    }
                 }
-                else
+
+                P.Log($"重新检查{role.RoleName}的仓库物品总量", emLogType.AutoEquip);
+                var response2 = await win.CallJs($@"repositoryEquipsCount()");
+                if (response2.Success)
                 {
-                    P.Log($"检查{role.RoleName}当前页背包物品总量失败", emLogType.AutoEquip);
+                    boxCount = (int)response1.Result;
+                    int retainNum = int.Parse(ConfigUtil.GetAppSetting("BoxRetainNum"));
+                    if (boxCount >= 3000)
+                    {
+                        //await ClearRepository(win, account);
+                    }
                 }
             }
             else
             {
-                P.Log($"检查{role.RoleName}的仓库物品总量失败", emLogType.AutoEquip);
+                P.Log($"检查{role.RoleName}当前页背包物品总量失败", emLogType.AutoEquip);
             }
         }
+        else
+        {
+            P.Log($"检查{role.RoleName}的仓库物品总量失败", emLogType.AutoEquip);
+        }
+
     }
 
     /// <summary>
@@ -444,7 +443,7 @@ public class EquipController : BaseController
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
                     towearEquips = suitEquips.ToWearEquips;
                     toMakeEquips = suitEquips.ToMakeEquips;
-                
+
                     break;
                 }
                 else if (suitEquips.IsNecessaryEquipMatch == false)
@@ -540,7 +539,7 @@ public class EquipController : BaseController
 
 
         await UpdateCurEquips(win, role);
-    
+
     }
 
 
@@ -568,7 +567,7 @@ public class EquipController : BaseController
     {
         //只查找仓库中的装备
         var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
-        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
+        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo&&p.IsLocal==false).ToList();
         var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
         var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
@@ -849,7 +848,7 @@ public class EquipController : BaseController
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
-            if (eqName == "盗墓腰带")
+            if (eqName == "死骑冰霜武器")
             {
                 Console.WriteLine();
             }
@@ -875,6 +874,7 @@ public class EquipController : BaseController
         var eq = new TradeModel
         {
             EquipName = dto.Equipment.EquipNameArr[0],
+            EquipSortName=dto.EmEquipSort.ToString(),
             EquipId = demandEquip.EquipID,
             DemandRoleId = dto.Role.RoleId,
             DemandRoleName = dto.Role.RoleName,
@@ -885,14 +885,14 @@ public class EquipController : BaseController
 
         }; try
         {
-            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p=>p.EquipName==eq.EquipName&&p.DemandRoleId==eq.DemandRoleId).First();
+            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p =>  p.DemandRoleId == eq.DemandRoleId&&p.EquipSortName==eq.EquipSortName).First();
             if (existTrade != null)
             {
                 //同角色同一个需求不能大于1
                 return;
             }
-             existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
-            
+            existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
+
             if (existTrade != null && (existTrade.TradeStatus != emTradeStatus.Rejected && existTrade.TradeStatus != emTradeStatus.Received))
             {
                 throw new Exception("登记中未处理的装备");

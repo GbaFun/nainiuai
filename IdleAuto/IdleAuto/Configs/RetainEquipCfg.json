@@ -2196,7 +2196,7 @@
   ///-------职业前缀-------///
   {
     "equip": {
-      "category": "斧|锤",
+      "category": "斧|锤|剑",
       "quality": "全部",
       "necessary": 0,
       "conditions": [
@@ -2211,7 +2211,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死骑,冰霜,1"
+          "conditionContent": "死骑,冰霜,2"
         },
 
         {
@@ -2266,14 +2266,14 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 6,
-          "conditionContent": "审判光环,3"
+          "conditionContent": "审判光环,2"
         },
         {
           "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 6,
-          "conditionContent": "骑士,光环,1"
+          "conditionContent": "骑士,光环,2"
         },
         {
           "matchType": "可选",

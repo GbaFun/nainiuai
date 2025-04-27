@@ -19,6 +19,10 @@ public class TradeModel
     /// 同一个配置同一个角色只乞讨一次
     /// </summary>
     public string EquipName { get; set; }
+    /// <summary>
+    /// 同一个部位只乞讨一次
+    /// </summary>
+    public string EquipSortName { get; set; }
 
 
 
