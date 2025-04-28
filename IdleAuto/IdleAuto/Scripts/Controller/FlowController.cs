@@ -174,45 +174,7 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        public static async Task MakeArtifactTest()
-        {
-            for (int i = 1; i < AccountCfg.Instance.Accounts.Count; i++)
-            {
-                var account = AccountCfg.Instance.Accounts[i];
-                if (account.AccountName == "铁矿石") continue;
-                var user = new UserModel(account);
-
-                //await RepairManager.Instance.ClearEquips(user);
-                // await RepairManager.Instance.UpdateEquips(user);
-                var window = await TabManager.Instance.TriggerAddBroToTap(user);
-                var control = new ArtifactController(window);
-                var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.天灾);
-                var eqControll = new EquipController(window);
-                for (int j = 2; j < user.Roles.Count; j += 3)
-                {
-                    var role = user.Roles[j];
-                    var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
-                    if (baseEq.Value != null)
-                    {
-                        var equip = await control.MakeArtifact(emArtifactBase.天灾, baseEq.Value, role.RoleId, condition);
-                        long equipId = equip.EquipID;
-                        await Task.Delay(2000);
-                        await eqControll.AutoAttributeSave(window, role, new List<EquipModel> { baseEq.Value });
-                        await Task.Delay(2000);
-                        var result3 = await window.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                        await Task.Delay(2000);
-                        await window.CallJsWaitReload($@"equipOn({role.RoleId},{equipId})", "equip");
-                    }
-                }
-
-                window.Close();
-                //给每个死灵穿上隐密
-                //先清包
-                //盘库
-                //做神器
-                //穿上
-            }
-        }
+    
 
         public static async Task SendRune()
         {
@@ -221,7 +183,7 @@ namespace IdleAuto.Scripts.Controller
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
             var reciver = "奶牛苦工792";
             var reciverUser = "南方工具人7";
-            var sendDic = new Dictionary<int, int>() { { 23, 1 }, { 24, 1 }, { 26, 1 }, { 27, 1 }, { 28, 1 } };
+            var sendDic = new Dictionary<int, int>() {  { 26, 1 }, { 27, 1 }, { 28, 1 } };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
             BroWindow curWin = null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
@@ -328,7 +290,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task SellEquipToAuction()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName.Contains("彩虹刻面") && p.Content.Contains("火焰") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName=="击头者" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -340,7 +302,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.PutToAuction(e, 25, 2);
+                    await tradeControl.PutToAuction(e, 15, 1);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Auction;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -614,6 +576,8 @@ namespace IdleAuto.Scripts.Controller
             }
 
         }
+
+        //public static async  Task Reform()
 
 
 

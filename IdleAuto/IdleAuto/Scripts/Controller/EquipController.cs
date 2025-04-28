@@ -315,7 +315,7 @@ public class EquipController : BaseController
                                         P.Log($"获取仓库第{page}页装备成功，装备总数：{equips.Count}", emLogType.AutoEquip);
                                         foreach (var item in equips)
                                         {
-                                            if (item.Value.Quality == "base" && item.Value.Content.Contains("戒指"))
+                                            if (item.Value.Quality == "base" && item.Value.Content.Contains("海蛇"))
                                             {
                                                 P.Log("获取到白戒指");
                                             }

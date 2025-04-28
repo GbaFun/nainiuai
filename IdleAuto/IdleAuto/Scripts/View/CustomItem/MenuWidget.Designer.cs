@@ -33,6 +33,7 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnNec = new System.Windows.Forms.Button();
             this.btnRollArtifact = new System.Windows.Forms.Button();
             this.btnAuction = new System.Windows.Forms.Button();
             this.btnDealTrade = new System.Windows.Forms.Button();
@@ -41,7 +42,7 @@ namespace IdleAuto.Scripts.View
             this.btnProxy = new System.Windows.Forms.Button();
             this.btnDungeon = new System.Windows.Forms.Button();
             this.Button_Inventory = new System.Windows.Forms.Button();
-            this.btnTestArtifact = new System.Windows.Forms.Button();
+            this.btnReform = new System.Windows.Forms.Button();
             this.BtnTest = new System.Windows.Forms.Button();
             this.btnHomePage = new System.Windows.Forms.Button();
             this.BtnInit = new System.Windows.Forms.Button();
@@ -63,7 +64,6 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnNec = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -105,7 +105,7 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.Controls.Add(this.btnProxy);
             this.HomeGroup.Controls.Add(this.btnDungeon);
             this.HomeGroup.Controls.Add(this.Button_Inventory);
-            this.HomeGroup.Controls.Add(this.btnTestArtifact);
+            this.HomeGroup.Controls.Add(this.btnReform);
             this.HomeGroup.Controls.Add(this.BtnTest);
             this.HomeGroup.Controls.Add(this.btnHomePage);
             this.HomeGroup.Controls.Add(this.BtnInit);
@@ -128,6 +128,16 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             this.HomeGroup.Enter += new System.EventHandler(this.HomeGroup_Enter);
+            // 
+            // btnNec
+            // 
+            this.btnNec.Location = new System.Drawing.Point(18, 348);
+            this.btnNec.Name = "btnNec";
+            this.btnNec.Size = new System.Drawing.Size(98, 26);
+            this.btnNec.TabIndex = 17;
+            this.btnNec.Text = "精修死灵";
+            this.btnNec.UseVisualStyleBackColor = true;
+            this.btnNec.Click += new System.EventHandler(this.btnNec_Click);
             // 
             // btnRollArtifact
             // 
@@ -212,17 +222,17 @@ namespace IdleAuto.Scripts.View
             this.Button_Inventory.UseVisualStyleBackColor = true;
             this.Button_Inventory.Click += new System.EventHandler(this.Button_Inventory_Click);
             // 
-            // btnTestArtifact
+            // btnReform
             // 
-            this.btnTestArtifact.Location = new System.Drawing.Point(16, 138);
-            this.btnTestArtifact.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.btnTestArtifact.Name = "btnTestArtifact";
-            this.btnTestArtifact.Size = new System.Drawing.Size(100, 28);
-            this.btnTestArtifact.TabIndex = 12;
-            this.btnTestArtifact.Text = "神器测试";
-            this.btnTestArtifact.UseMnemonic = false;
-            this.btnTestArtifact.UseVisualStyleBackColor = true;
-            this.btnTestArtifact.Click += new System.EventHandler(this.btnTestArtifact_Click);
+            this.btnReform.Location = new System.Drawing.Point(18, 138);
+            this.btnReform.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.btnReform.Name = "btnReform";
+            this.btnReform.Size = new System.Drawing.Size(100, 28);
+            this.btnReform.TabIndex = 12;
+            this.btnReform.Text = "改造白装";
+            this.btnReform.UseMnemonic = false;
+            this.btnReform.UseVisualStyleBackColor = true;
+            this.btnReform.Click += new System.EventHandler(this.BtnReform_Click);
             // 
             // BtnTest
             // 
@@ -448,16 +458,6 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnNec
-            // 
-            this.btnNec.Location = new System.Drawing.Point(18, 348);
-            this.btnNec.Name = "btnNec";
-            this.btnNec.Size = new System.Drawing.Size(98, 26);
-            this.btnNec.TabIndex = 17;
-            this.btnNec.Text = "精修死灵";
-            this.btnNec.UseVisualStyleBackColor = true;
-            this.btnNec.Click += new System.EventHandler(this.btnNec_Click);
-            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -502,7 +502,7 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnMonitor;
 
         private System.Windows.Forms.Button BtnTest;
-        private System.Windows.Forms.Button btnTestArtifact;
+        private System.Windows.Forms.Button btnReform;
         private System.Windows.Forms.Button BtnInventory;
         private System.Windows.Forms.Button Button_Inventory;
         private System.Windows.Forms.Button btnDungeon;

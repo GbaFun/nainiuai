@@ -303,10 +303,7 @@ namespace IdleAuto.Scripts.View
 
         }
 
-        private void btnTestArtifact_Click(object sender, EventArgs e)
-        {
-            FlowController.MakeArtifactTest();
-        }
+   
 
         private void Button_Inventory_Click(object sender, EventArgs e)
         {
@@ -368,6 +365,11 @@ namespace IdleAuto.Scripts.View
         private void btnNec_Click(object sender, EventArgs e)
         {
             FlowController.RepairNec();
+        }
+
+        private void BtnReform_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
