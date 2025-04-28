@@ -320,6 +320,49 @@
       }
     ]
   },
+  "亡者遗产31": {
+    "category": "手杖",
+    "quality": "普通|破碎",
+    "isUpdateRune": true,
+    "targetSlotCount": 2,
+    "slotRule": "333:direct,32:direct,33:direct,else:random",
+    "remakeRule": "333:true",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "支配骷髅,1"
+      },
+      {
+        "matchType": "可选",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "生生不息,1"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
+  },
 
   "执法者": {
     "category": "锤",

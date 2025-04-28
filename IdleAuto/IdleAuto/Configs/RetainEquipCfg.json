@@ -2876,7 +2876,7 @@
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,2"
+          "conditionContent": "支配骷髅,1"
         },
         {
           "matchType": "可选",
@@ -2991,46 +2991,7 @@
     },
     "maxCount": 40
   },
-  //失败开孔保留 看下有没有bug
-  {
-    "equip": {
-      "category": "手杖|死灵副手",
-      "quality": "普通|破碎",
-      "conditions": [
-
-        {
-          "matchType": "必需",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "骷髅法师,3"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,1"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "亡者遗产",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "生生不息,1"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "亡者遗产",
-          "operate": "不等于",
-          "attributeType": "自定义",
-          "conditionContent": "无形"
-        }
-      ]
-    },
-    "maxCount": 500
-  },
-
+  
   {
     "equip": {
       "category": "剑",

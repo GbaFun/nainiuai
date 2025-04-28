@@ -22,7 +22,7 @@
     "quality": "神器",
 
     "conditions": [
- 
+
       {
         "matchType": "必需",
         "matchGroupName": "亡者遗产",
@@ -37,12 +37,32 @@
         "attributeType": "技能等级",
         "conditionContent": "支配骷髅,2"
       },
-     
+
       {
         "matchType": "必需",
         "operate": "不等于",
         "attributeType": "自定义",
         "conditionContent": "无形"
+      }
+    ]
+  },
+  "天灾2": {
+    "category": "衣服",
+    "quality": "神器",
+    "conditions": [
+     
+
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "指定职业全系技能",
+        "conditionContent": "死骑,2"
       }
     ]
   }

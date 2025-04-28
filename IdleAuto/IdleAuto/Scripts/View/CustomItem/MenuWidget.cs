@@ -160,8 +160,8 @@ namespace IdleAuto.Scripts.View
                 try
                 {
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
-                   // await FlowController.GroupWork(6, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(6, 1, RepairManager.Instance.AutoRepair);
+                     await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -362,7 +362,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnRollArtifact_Click(object sender, EventArgs e)
         {
-           
+            FlowController.ContinueJob(emTaskType.RollTianzai, FlowController.RollTianzai);
         }
 
         private void btnNec_Click(object sender, EventArgs e)

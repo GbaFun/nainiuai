@@ -215,6 +215,7 @@ namespace AttributeMatch
                 case emAttrType.职业单系技能:
                 case emAttrType.召唤最大数量:
                 case emAttrType.指定职业单系技能:
+                case emAttrType.指定职业全系技能:
                     result.IsMatch = MatchSkill(_equip, _condition, out weight);
                     result.MatchWeight = weight * seq;
                     break;

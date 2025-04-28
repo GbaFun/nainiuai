@@ -1294,6 +1294,14 @@
           "seq": 120,
           "artifactBase": "天灾",
           "conditionContent": "天灾"
+        },
+        {
+
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死骑,2"
+
         }
       ]
     }

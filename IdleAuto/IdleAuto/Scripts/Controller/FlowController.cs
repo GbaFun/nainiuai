@@ -219,9 +219,9 @@ namespace IdleAuto.Scripts.Controller
             var specifiedAccount = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts);
 
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
-            var reciver = "奶牛苦工24";
-            var reciverUser = "RasdGch";
-            var sendDic = new Dictionary<int, int>() {  { 26, 1 }, { 27, 1 }, { 28, 1 } };
+            var reciver = "奶牛苦工792";
+            var reciverUser = "南方工具人7";
+            var sendDic = new Dictionary<int, int>() { { 23, 1 }, { 24, 1 }, { 26, 1 }, { 27, 1 }, { 28, 1 } };
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
             BroWindow curWin = null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
@@ -255,6 +255,7 @@ namespace IdleAuto.Scripts.Controller
                     await SendRuneToNext(curWin, nextUser.AccountName, sendDic);
                     curWin.Close();
                     curWin = r2;//将当前窗口指向被发送方
+                    unfinishTask.IsEnd = true;
                 }
                 else
                 {
@@ -405,9 +406,10 @@ namespace IdleAuto.Scripts.Controller
         public static async Task RollArtifact()
         {
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
-            (p.Quality == "slot" || p.Quality == "base"||p.Quality=="artifact" ) && p.Content.Contains("+3 骷髅法师")&&p.Content.Contains("支配骷髅")).ToList().GroupBy(g => g.AccountName).ToList();
+            (p.Quality == "slot" || p.Quality == "base" || p.Quality == "artifact") && p.Content.Contains("+3 骷髅法师") && p.Content.Contains("支配骷髅")).ToList().GroupBy(g => g.AccountName).ToList();
             var con32Base = ArtifactBaseCfg.Instance.Data[emArtifactBase.亡者遗产32];
             var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
+            var con32 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.亡者遗产32);
             foreach (var item in list)
             {
                 var accName = item.Key;
@@ -426,7 +428,7 @@ namespace IdleAuto.Scripts.Controller
                         {
                             await ReMakeArtifact(e, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, win.User.FirstRole);
                         }
-                       
+
                     }
                     else
                     {
@@ -440,9 +442,9 @@ namespace IdleAuto.Scripts.Controller
                 win.Close();
             }
         }
-     
 
-        private static async Task ReMakeArtifact(EquipModel e, emArtifactBase artifactBase, Equipment stopConfig, ArtifactBaseConfig artifactConfig, BroWindow win,RoleModel role)
+
+        private static async Task ReMakeArtifact(EquipModel e, emArtifactBase artifactBase, Equipment stopConfig, ArtifactBaseConfig artifactConfig, BroWindow win, RoleModel role)
         {
             var a = new ArtifactController(win);
             var r = new ReformController(win);
@@ -451,18 +453,22 @@ namespace IdleAuto.Scripts.Controller
             await a.MakeArtifact(artifactBase, e, role.RoleId, artifactConfig, true);
             if (!AttributeMatchUtil.Match(e, stopConfig, out _))
             {
-                await ReMakeArtifact(e, artifactBase, stopConfig, artifactConfig, win,role);
+                await ReMakeArtifact(e, artifactBase, stopConfig, artifactConfig, win, role);
             }
         }
 
 
         public static async Task RepairNec()
         {
-            await RollArtifact();
-            var t = FreeDb.Sqlite.Select<TaskProgress>().Where(p => !p.IsEnd && p.Type == emTaskType.RepairNec).First();
+            await ContinueJob(emTaskType.RepairNec, RollOrEquipWangzhe);
+        }
+
+        public static async Task ContinueJob(emTaskType taskType, Func<BroWindow, Task> act, List<string> specialAccounts = null)
+        {
+            var t = FreeDb.Sqlite.Select<TaskProgress>().Where(p => !p.IsEnd && p.Type == taskType).First();
             if (t == null)
             {
-                t = new TaskProgress() { Type = emTaskType.RepairNec, IsEnd = false };
+                t = new TaskProgress() { Type = taskType, IsEnd = false };
             }
             var accs = AccountCfg.Instance.Accounts;
             var index = accs.FindIndex(p => p.AccountName == t.UserName);
@@ -471,37 +477,59 @@ namespace IdleAuto.Scripts.Controller
             {
                 var acc = accs[i];
                 if (acc.AccountName == "铁矿石") continue;
-
+                if (specialAccounts != null)
+                {
+                    if (!specialAccounts.Contains(acc.AccountName)) continue;
+                }
                 var user = new UserModel(acc);
                 var win = await TabManager.Instance.TriggerAddBroToTap(user);
                 await Task.Delay(1500);
-                await RollOrEquipWangzhe(user, win);
-              
                 t.UserName = acc.AccountName;
                 DbUtil.InsertOrUpdate<TaskProgress>(t);
+                await act(win);
+
                 win.Close();
             }
             t.IsEnd = true;
             DbUtil.InsertOrUpdate<TaskProgress>(t);
+
         }
 
         /// <summary>
         /// 选更好的亡者穿上
         /// </summary>
         /// <returns></returns>
-        private static async Task RollOrEquipWangzhe(UserModel user, BroWindow win)
+        private static async Task RollOrEquipWangzhe( BroWindow win)
         {
+            var user = win.User;
             var con32Base = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
+            var con31Base = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产31);
             var con32 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.亡者遗产32);
             var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
             var e = new EquipController(win);
             var a = new ArtifactController(win);
             var c = new CharacterController(win);
+
+            //将背包中的31底子做完
+            var r2 = e.GetMatchEquips(user.Id, con31Base, out _);
+            foreach (var base31 in r2.Values)
+            {
+
+
+                await a.MakeArtifact(emArtifactBase.亡者遗产31, base31, user.FirstRole.RoleId, con32Base,true);
+                if (!AttributeMatchUtil.Match(base31, conPerfect, out _))
+                {
+                    await ReMakeArtifact(base31, emArtifactBase.亡者遗产31, conPerfect, con32Base, win, user.FirstRole);
+                }
+
+
+            }
+
+
             foreach (var role in user.Roles)
             {
 
                 if (role.Job != emJob.死灵) continue;
-                var list = FreeDb.Sqlite.Select<EquipModel>().Where(P => P.AccountName == user.AccountName && P.EquipName == "亡者遗产").ToList();
 
                 //跳转装备详情页面
                 var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
@@ -510,99 +538,6 @@ namespace IdleAuto.Scripts.Controller
                 var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
                 //穿戴亡者
                 var curWagezhe = curEquips[emEquipSort.主手];
-                //主手亡者是否32且完美 然后下一个号
-                if (AttributeMatchUtil.Match(curWagezhe, con32, out _))
-                {
-                    if (AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                    {
-                        
-                    }
-                    else
-                    {
-                        await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win,role);
-                       
-                    }
-                    await Task.Delay(1500);
-                    await e.AutoEquips(win, win.User, role);
-                    await c.AddSkillPoints(win.GetBro(), role);
-                    continue;
-                }
-                //现成32亡者
-                var r1 = e.GetMatchEquips(user.Id, con32, out _);
-                if (r1.Count > 0)
-                {
-                    //现成的32遗产 con32这个配置有问题 决定新增一个神器配置文件
-                    var any32 = r1.Values.Where(p => p.EquipStatus == emEquipStatus.Repo ).FirstOrDefault();
-                    if (any32 != null)
-                    {
-                        if (!AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                        {
-                            await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win,role);
-                        }
-                        await Task.Delay(1500);
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-
-
-                }  //没有现成的32 尝试做一把32并roll
-                else
-                {
-                    var r2 = e.GetMatchEquips(user.Id, con32Base, out _);
-                    var any32Base = r2.Values.Count > 0 ? r2.FirstOrDefault().Value : null;
-                    if (any32Base != null)
-                    {
-                        await a.MakeArtifact(emArtifactBase.亡者遗产32, any32Base, role.RoleId, con32Base);
-                        if (!AttributeMatchUtil.Match(any32Base, conPerfect, out _))
-                        {
-                            await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
-                        }
-
-                        await Task.Delay(1500);
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-                }
-
-                //最后roll普通遗产
-                if (!AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                {
-                   var fashi3= e.GetMatchEquips(user.Id, conPerfect, out _);
-                    if (fashi3.Count > 0)
-                    {
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// 选更好的亡者穿上
-        /// </summary>
-        /// <returns></returns>
-        private static async Task RollTianzai(UserModel user, BroWindow win,emArtifactBase conBase,Equipment conPerfect,emJob job,emEquipSort sort)
-        {
-            var e = new EquipController(win);
-            var a = new ArtifactController(win);
-            var c = new CharacterController(win);
-            foreach (var role in user.Roles)
-            {
-
-                if (role.Job != job) continue;
-                var list = FreeDb.Sqlite.Select<EquipModel>().Where(P => P.AccountName == user.AccountName && P.EquipName == "亡者遗产").ToList();
-
-                //跳转装备详情页面
-                var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                await Task.Delay(1500);
-                var response = await win.CallJs($@"getCurEquips()");
-                var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-                //穿戴亡者
-                var curWagezhe = curEquips[sort];
                 //主手亡者是否32且完美 然后下一个号
                 if (AttributeMatchUtil.Match(curWagezhe, con32, out _))
                 {
@@ -640,39 +575,46 @@ namespace IdleAuto.Scripts.Controller
 
 
                 }  //没有现成的32 尝试做一把32并roll
-                else
-                {
-                    var r2 = e.GetMatchEquips(user.Id, con32Base, out _);
-                    var any32Base = r2.Values.Count > 0 ? r2.FirstOrDefault().Value : null;
-                    if (any32Base != null)
-                    {
-                        await a.MakeArtifact(emArtifactBase.亡者遗产32, any32Base, role.RoleId, con32Base);
-                        if (!AttributeMatchUtil.Match(any32Base, conPerfect, out _))
-                        {
-                            await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
-                        }
 
-                        await Task.Delay(1500);
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-                }
 
-                //最后roll普通遗产
-                if (!AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                {
-                    var fashi3 = e.GetMatchEquips(user.Id, conPerfect, out _);
-                    if (fashi3.Count > 0)
-                    {
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-                }
+
 
             }
         }
+
+        /// <summary>
+        /// 选更好的亡者穿上
+        /// </summary>
+        /// <returns></returns>
+        public static async Task RollTianzai(BroWindow win)
+        {
+            var e = new EquipController(win);
+            var a = new ArtifactController(win);
+            var c = new CharacterController(win);
+            var con2 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.天灾2);
+            var conBase = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.天灾);
+            var user = win.User;
+            foreach (var role in user.Roles)
+            {
+                if (role.Job != emJob.死骑) continue;
+                //跳转装备详情页面
+                var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+                await Task.Delay(1500);
+                var response = await win.CallJs($@"getCurEquips()");
+                var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+                //穿戴天灾
+                var curSort = curEquips[emEquipSort.衣服];
+                //是否完美
+                if (!AttributeMatchUtil.Match(curSort, con2, out _))
+                {
+                    await ReMakeArtifact(curSort, emArtifactBase.天灾, con2, conBase, win, role);
+
+
+                }
+            }
+
+        }
+
 
 
     }

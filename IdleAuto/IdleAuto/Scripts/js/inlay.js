@@ -183,3 +183,103 @@
     
 
 })();
+
+// ==UserScript==
+// @name         Idle Infinity - 一键做神器
+// @version      0.4
+// @description  一键神器，记得保证自己有足够的符文！！！
+// @author       浮世
+// @match        https://www.idleinfinity.cn/Equipment/Inlay?*
+// @grant        none
+// ==/UserScript==
+
+(function () {
+    addColumnWithButton();
+    // 从 URL 参数中获取 id
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // 获取当前页面的 id
+    var id = getUrlParameter('id');
+    var eid = getUrlParameter('eid');
+
+    // 点击按钮后的事件处理程序
+    $(document).on('click', '.btn-default', function () {
+        // 获取当前行的所有 <span class="artifact"> 元素的文本内容中的数字部分
+        var artifacts = $(this).closest('tr').find('.equip-name .artifact').map(function () {
+            // 使用正则表达式匹配文本中的数字部分
+            var match = $(this).text().match(/\d+/);
+            // 如果匹配到数字则返回，否则返回 undefined
+            return match ? match[0] : undefined;
+        }).get().filter(function (item) {
+            // 过滤掉 undefined 和空字符串
+            return item !== undefined && item.trim() !== '';
+        });
+
+        // 获取 __RequestVerificationToken 的值
+        var requestVerificationToken = $('input[name="__RequestVerificationToken"]').val();
+
+        // 循环发送同步请求
+        var requestsCompleted = 0;
+        artifacts.forEach(function (eid2, index) {
+            // 添加延迟
+            setTimeout(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://www.idleinfinity.cn/Equipment/RuneInlay',
+                    data: {
+                        cid: id,
+                        eid: eid,
+                        eid2: eid2,
+                        __RequestVerificationToken: requestVerificationToken // 添加 __RequestVerificationToken 参数
+                    },
+                    async: false, // 设置为同步请求
+                    success: function (response) {
+                        // 从响应中提取新的 RequestVerificationToken
+                        var newToken = $(response).find('input[name="__RequestVerificationToken"]').val();
+
+                        // 如果找到新token，则更新全局变量
+                        if (newToken) {
+                            requestVerificationToken = newToken;
+                        }
+
+                        // 请求成功后的处理
+                        requestsCompleted++;
+                        // 如果所有请求都完成了，则刷新当前页面
+                        if (requestsCompleted === artifacts.length) {
+                            // 刷新当前页面
+                            window.location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+
+                        console.error('Error:', error);
+                        window.location.reload();
+
+                    }
+                });
+            }, (index + 1) * 2000); // 延迟时间为请求的序号乘以2秒
+        });
+    });
+
+
+})();
+// 添加一个新列到表格中，包含一个按钮
+function addColumnWithButton() {
+    // 选择具有 'table-condensed' 类的表格
+    $('.table-condensed tbody tr').each(function () {
+        // 在当前行的末尾添加一个新的单元格
+        var buttonCell = $('<td></td>');
+        var button = $('<a class="btn btn-xs btn-default" role="button">一键神器</a>');
+
+        // 添加按钮到单元格中
+        buttonCell.append(button);
+
+        // 将单元格添加到当前行的末尾
+        $(this).append(buttonCell);
+    });
+}

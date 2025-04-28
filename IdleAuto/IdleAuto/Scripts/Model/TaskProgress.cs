@@ -17,7 +17,10 @@ public enum emTaskType
     [Description("发送符文")]
     RuneTrade,
     [Description("精修死灵")]
-    RepairNec
+    RepairNec,
+    [Description("刷天灾")]
+    RollTianzai
+
 }
 
 /// <summary>

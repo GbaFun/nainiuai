@@ -258,6 +258,8 @@ public enum emArtifact
     亡者遗产32,
   
     亡者遗产满roll,
+
+    天灾2
 }
 public enum emArtifactBase
 {
@@ -282,6 +284,8 @@ public enum emArtifactBase
     亡者遗产,
     [Description("亡者遗产")]
     亡者遗产32,
+    [Description("亡者遗产")]
+    亡者遗产31,
     [Description("执法者")]
     执法者
 }
