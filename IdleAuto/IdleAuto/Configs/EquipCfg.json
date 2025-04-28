@@ -714,14 +714,7 @@
         },
 
 
-        {
-          "matchType": "任一",
-          "matchGroupName": "死灵戒指",
-          "operate": "大于等于",
-          "attributeType": "施法速度",
-          "seq": 1,
-          "conditionContent": "1"
-        },
+       
         {
           "matchType": "可选",
           "operate": "大于等于",
