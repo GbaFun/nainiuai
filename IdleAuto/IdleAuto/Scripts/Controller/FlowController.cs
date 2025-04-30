@@ -157,33 +157,31 @@ namespace IdleAuto.Scripts.Controller
             await charControl.StartInit();
         }
 
-        public static async Task MakeArtifact()
+
+
+
+
+        public static async Task SendRune()
         {
-            var account = AccountCfg.Instance.Accounts[19];
-            var user = new UserModel(account);
-            var window = await TabManager.Instance.TriggerAddBroToTap(user);
-            var control = new ArtifactController(window);
-            var condition = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.低力量隐密);
-            var eqControll = new EquipController(window);
-            var baseEq = eqControll.GetMatchEquips(account.AccountID, condition, out _).ToList().FirstOrDefault();
-            if (baseEq.Value != null)
+
+            var sendDic = new Dictionary<int, int>() { { 27, 1 }, { 28, 1 }, { 26, 1 } };
+            foreach (var job in sendDic)
             {
-                var equip = await control.MakeArtifact(emArtifactBase.低力量隐密, baseEq.Value, user.Roles[1].RoleId, condition);
+                var dic = new Dictionary<int, int>() { { job.Key, job.Value } };
+                await SendRune(dic);
             }
 
 
         }
-
-    
-
-        public static async Task SendRune()
+        private static async Task SendRune(Dictionary<int, int> dic)
         {
             var specifiedAccount = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts);
 
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
-            var reciver = "奶牛苦工792";
-            var reciverUser = "南方工具人7";
-            var sendDic = new Dictionary<int, int>() {  { 26, 1 }, { 27, 1 }, { 28, 1 } };
+            var reciver = "奶牛苦工72";
+            var reciverUser = "绿宝石";
+            var sendDic = dic;
+
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
             BroWindow curWin = null, nextWin = null;
             var unfinishTask = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.RuneTrade && !p.IsEnd).First();
@@ -264,7 +262,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName=="彩虹刻面"&&p.Content.Contains("火焰") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName == "彩虹刻面" && p.Content.Contains("火焰") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -290,7 +288,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task SellEquipToAuction()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName=="击头者" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName == "击头者" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -359,7 +357,7 @@ namespace IdleAuto.Scripts.Controller
                     var control = new EquipController(win);
                     var role = win.User.Roles.Find(p => p.RoleId == r.DemandRoleId);
                     await RepairManager.Instance.AutoEquip(win, control, user, role);
-                    await RepairManager.Instance.AddSkillPoint(win, role);
+                    if (role.Job == emJob.死灵) await RepairManager.Instance.AddSkillPoint(win, role);
                 }
                 win.Close();
             }
@@ -370,8 +368,8 @@ namespace IdleAuto.Scripts.Controller
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "手杖" &&
             (p.Quality == "slot" || p.Quality == "base" || p.Quality == "artifact") && p.Content.Contains("+3 骷髅法师") && p.Content.Contains("支配骷髅")).ToList().GroupBy(g => g.AccountName).ToList();
             var con32Base = ArtifactBaseCfg.Instance.Data[emArtifactBase.亡者遗产32];
-            var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
-            var con32 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.亡者遗产32);
+            var conPerfect = EmEquipCfg.Instance.Data[emEquip.亡者遗产满roll];
+            var con32 = EmEquipCfg.Instance.GetEquipCondition(emEquip.亡者遗产32);
             foreach (var item in list)
             {
                 var accName = item.Key;
@@ -385,7 +383,7 @@ namespace IdleAuto.Scripts.Controller
                     if ((e.emItemQuality == emItemQuality.普通 || e.emItemQuality == emItemQuality.破碎) && AttributeMatchUtil.Match(e, con32Base, out _))
                     {
 
-                        await a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, con32Base, true);
+                        await a.MakeArtifact(emArtifactBase.亡者遗产32, e, win.User.FirstRole.RoleId, con32Base, isCheckBag: false);
                         if (!AttributeMatchUtil.Match(e, conPerfect, out _))
                         {
                             await ReMakeArtifact(e, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, win.User.FirstRole);
@@ -412,7 +410,7 @@ namespace IdleAuto.Scripts.Controller
             var r = new ReformController(win);
             await r.RemoveRune(e, e.RoleID == 0 ? role.RoleId : e.RoleID);
             await Task.Delay(1500);
-            await a.MakeArtifact(artifactBase, e, role.RoleId, artifactConfig, true);
+            await a.MakeArtifact(artifactBase, e, role.RoleId, artifactConfig, isCheckBag: false);
             if (!AttributeMatchUtil.Match(e, stopConfig, out _))
             {
                 await ReMakeArtifact(e, artifactBase, stopConfig, artifactConfig, win, role);
@@ -461,13 +459,13 @@ namespace IdleAuto.Scripts.Controller
         /// 选更好的亡者穿上
         /// </summary>
         /// <returns></returns>
-        private static async Task RollOrEquipWangzhe( BroWindow win)
+        private static async Task RollOrEquipWangzhe(BroWindow win)
         {
             var user = win.User;
             var con32Base = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
             var con31Base = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产31);
-            var con32 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.亡者遗产32);
-            var conPerfect = ArtifactCfg.Instance.Data[emArtifact.亡者遗产满roll];
+            var con32 = EmEquipCfg.Instance.GetEquipCondition(emEquip.亡者遗产32);
+            var conPerfect = EmEquipCfg.Instance.Data[emEquip.亡者遗产满roll];
             var e = new EquipController(win);
             var a = new ArtifactController(win);
             var c = new CharacterController(win);
@@ -478,70 +476,70 @@ namespace IdleAuto.Scripts.Controller
             {
 
 
-                await a.MakeArtifact(emArtifactBase.亡者遗产31, base31, user.FirstRole.RoleId, con32Base,true);
+                await a.MakeArtifact(emArtifactBase.亡者遗产31, base31, user.FirstRole.RoleId, con31Base, isCheckBag: false);
                 if (!AttributeMatchUtil.Match(base31, conPerfect, out _))
                 {
-                    await ReMakeArtifact(base31, emArtifactBase.亡者遗产31, conPerfect, con32Base, win, user.FirstRole);
+                    await ReMakeArtifact(base31, emArtifactBase.亡者遗产31, conPerfect, con31Base, win, user.FirstRole);
                 }
 
 
             }
 
 
-            foreach (var role in user.Roles)
-            {
+            //foreach (var role in user.Roles)
+            //{
 
-                if (role.Job != emJob.死灵) continue;
+            //    if (role.Job != emJob.死灵) continue;
 
-                //跳转装备详情页面
-                var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                await Task.Delay(1500);
-                var response = await win.CallJs($@"getCurEquips()");
-                var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-                //穿戴亡者
-                var curWagezhe = curEquips[emEquipSort.主手];
-                //主手亡者是否32且完美 然后下一个号
-                if (AttributeMatchUtil.Match(curWagezhe, con32, out _))
-                {
-                    if (AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                    {
+            //    //跳转装备详情页面
+            //    var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+            //    await Task.Delay(1500);
+            //    var response = await win.CallJs($@"getCurEquips()");
+            //    var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+            //    //穿戴亡者
+            //    var curWagezhe = curEquips[emEquipSort.主手];
+            //    //主手亡者是否32且完美 然后下一个号
+            //    if (AttributeMatchUtil.Match(curWagezhe, con32, out _))
+            //    {
+            //        if (AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
+            //        {
 
-                    }
-                    else
-                    {
-                        await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
+            //        }
+            //        else
+            //        {
+            //            await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
 
-                    }
-                    await Task.Delay(1500);
-                    await e.AutoEquips(win, win.User, role);
-                    await c.AddSkillPoints(win.GetBro(), role);
-                    continue;
-                }
-                //现成32亡者
-                var r1 = e.GetMatchEquips(user.Id, con32, out _);
-                if (r1.Count > 0)
-                {
-                    //现成的32遗产 con32这个配置有问题 决定新增一个神器配置文件
-                    var any32 = r1.Values.Where(p => p.EquipStatus == emEquipStatus.Repo).FirstOrDefault();
-                    if (any32 != null)
-                    {
-                        if (!AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
-                        {
-                            await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
-                        }
-                        await Task.Delay(1500);
-                        await e.AutoEquips(win, win.User, role);
-                        await c.AddSkillPoints(win.GetBro(), role);
-                        continue;
-                    }
-
-
-                }  //没有现成的32 尝试做一把32并roll
+            //        }
+            //        await Task.Delay(1500);
+            //        await e.AutoEquips(win, win.User, role);
+            //        await c.AddSkillPoints(win.GetBro(), role);
+            //        continue;
+            //    }
+            //    //现成32亡者
+            //    var r1 = e.GetMatchEquips(user.Id, con32, out _);
+            //    if (r1.Count > 0)
+            //    {
+            //        //现成的32遗产 con32这个配置有问题 决定新增一个神器配置文件
+            //        var any32 = r1.Values.Where(p => p.EquipStatus == emEquipStatus.Repo).FirstOrDefault();
+            //        if (any32 != null)
+            //        {
+            //            if (!AttributeMatchUtil.Match(curWagezhe, conPerfect, out _))
+            //            {
+            //                await ReMakeArtifact(curWagezhe, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, role);
+            //            }
+            //            await Task.Delay(1500);
+            //            await e.AutoEquips(win, win.User, role);
+            //            await c.AddSkillPoints(win.GetBro(), role);
+            //            continue;
+            //        }
 
 
+            //    }  //没有现成的32 尝试做一把32并roll
 
 
-            }
+
+
+            //}
         }
 
         /// <summary>
@@ -553,7 +551,7 @@ namespace IdleAuto.Scripts.Controller
             var e = new EquipController(win);
             var a = new ArtifactController(win);
             var c = new CharacterController(win);
-            var con2 = ArtifactCfg.Instance.GetEquipCondition(emArtifact.天灾2);
+            var con2 = EmEquipCfg.Instance.GetEquipCondition(emEquip.天灾2);
             var conBase = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.天灾);
             var user = win.User;
             foreach (var role in user.Roles)
@@ -578,6 +576,60 @@ namespace IdleAuto.Scripts.Controller
         }
 
         //public static async  Task Reform()
+
+        /// <summary>
+        /// 移动塔格奥到有轮回且没成套的死灵 配一套塔格奥
+        /// </summary>
+        /// <returns></returns>
+        public static async Task MoveTaGeAo()
+        {
+
+            //按有轮回的号分组
+            var lunhuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "轮回").ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
+            var tageaoList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "塔格奥之鳞" && p.EquipStatus == emEquipStatus.Repo).ToList();
+            var tageaoList2 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "塔格奥之手" && p.EquipStatus == emEquipStatus.Repo).ToList();
+            tageaoList1 = tageaoList1.Where(p => AttributeMatchUtil.Match(p, EmEquipCfg.Instance.GetEquipCondition(emEquip.塔格奥之鳞), out _)).ToList();
+
+            foreach (var item in lunhuiList)
+            {
+                //身上或者仓库没有 发一件过来
+
+                var local = FreeDb.Sqlite.Select<EquipModel>().Where(p => (p.EquipName == "塔格奥之鳞" && p.RoleID == item.Key.RoleID) || (p.EquipName == "塔格奥之鳞" && p.AccountName == item.Key.AccountName)).ToList();
+                var hasTa1 = local.Find(p => AttributeMatchUtil.Match(p, EmEquipCfg.Instance.GetEquipCondition(emEquip.塔格奥之鳞), out _)) != null;
+                var hasTa2 = FreeDb.Sqlite.Select<EquipModel>().Where(p => (p.EquipName == "塔格奥之手" && p.RoleID == item.Key.RoleID) || (p.EquipName == "塔格奥之手" && p.AccountName == item.Key.AccountName)).First() != null;
+                if (!hasTa1 && tageaoList1.Count > 0)
+                {
+                    var userName = tageaoList1[0].AccountName;
+
+                    var user = AccountCfg.Instance.GetUserModel(userName);
+                    var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                    var t = new TradeController(win);
+                    await t.StartTrade(tageaoList1[0], item.Key.RoleName);
+                    tageaoList1.RemoveAt(0);
+                    win.Close();
+                }
+                if (!hasTa2 && tageaoList2.Count > 0)
+                {
+                    var userName = tageaoList2[0].AccountName;
+
+                    var user = AccountCfg.Instance.GetUserModel(userName);
+                    var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                    var t = new TradeController(win);
+                    await t.StartTrade(tageaoList2[0], item.Key.RoleName);
+                    tageaoList2.RemoveAt(0);
+                    win.Close();
+                }
+                var receiver = AccountCfg.Instance.GetUserModel(item.Key.AccountName);
+                var win2 = await TabManager.Instance.TriggerAddBroToTap(receiver);
+                var t2 = new TradeController(win2);
+                await t2.AcceptAll(win2.User);
+                win2.Close();
+            }
+
+
+
+
+        }
 
 
 

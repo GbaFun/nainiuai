@@ -22,10 +22,10 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="baseEq">ArtifactBaseCfg.Instance.GetEquip(e);通过这个接口查询到可用的底子传进来开始制作</param>
         /// <param name="art">神器枚举</param>
         /// <returns></returns>
-        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid, ArtifactBaseConfig config, bool isSecondCheck = false)
+        public async Task<EquipModel> MakeArtifact(emArtifactBase art, EquipModel baseEq, int roleid, ArtifactBaseConfig config, bool isSecondCheck = false,bool isCheckBag=true)
         {
             if (baseEq == null) return null;
-            var existedEq = !isSecondCheck ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
+            var existedEq = isCheckBag ? await CheckBagArtifact(art.GetEnumDescription(), config, roleid) : null;
             if (existedEq != null) return existedEq;
             if (baseEq.emItemQuality == emItemQuality.普通)
             {//需要打孔
@@ -86,7 +86,7 @@ namespace IdleAuto.Scripts.Controller
 
             if (!isEnd)
             {
-                await MakeArtifact(art, baseEq, roleid, config, true);
+                await MakeArtifact(art, baseEq, roleid, config, true,false);
             }
             return baseEq;
         }

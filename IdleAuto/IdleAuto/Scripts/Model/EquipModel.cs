@@ -66,9 +66,11 @@ public class EquipModel
         }
         get
         {
-            return _equipName ;
+            return _equipName;
         }
     }
+    //物等
+    public int Lv { get; set; }
 
     /// <summary>
     /// 底子

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace IdleAuto.Configs.CfgExtension
 {
-    public class ArtifactCfg
+    public class EmEquipCfg
     {
-        private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "ArtifactCfg.json");
-        public static ArtifactCfg Instance { get; } = new ArtifactCfg();
-        public Dictionary<emArtifact, Equipment> Data;
+        private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "EmEquipCfg.json");
+        public static EmEquipCfg Instance { get; } = new EmEquipCfg();
+        public Dictionary<emEquip, Equipment> Data;
 
 
-        public ArtifactCfg()
+        public EmEquipCfg()
         {
       
             LoadConfig();
@@ -32,7 +32,7 @@ namespace IdleAuto.Configs.CfgExtension
             var json = File.ReadAllText(ConfigFilePath);
             try
             {
-                Data = json.ToUpperCamelCase<Dictionary<emArtifact, Equipment>>();
+                Data = json.ToUpperCamelCase<Dictionary<emEquip, Equipment>>();
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace IdleAuto.Configs.CfgExtension
             }
         }
 
-        public Equipment GetEquipCondition(emArtifact e)
+        public Equipment GetEquipCondition(emEquip e)
         {
             return Data[e];
         }

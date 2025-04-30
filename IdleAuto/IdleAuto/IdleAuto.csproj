@@ -65,7 +65,7 @@
     <Compile Include="Configs\CfgExtension\AccountCfg.cs" />
     <Compile Include="Configs\CfgExtension\ArtifactBaseConfig.cs" />
     <Compile Include="Configs\CfgExtension\ArtifactBaseCfg.cs" />
-    <Compile Include="Configs\CfgExtension\ArtifactCfg.cs" />
+    <Compile Include="Configs\CfgExtension\EmEquipCfg.cs" />
     <Compile Include="Configs\CfgExtension\SuitCfg.cs" />
     <Compile Include="Configs\CfgExtension\MapSettingCfg.cs" />
     <Compile Include="Configs\CfgExtension\RetainEquipCfg.cs" />
@@ -96,7 +96,7 @@
     <None Include="Configs\ArtifactBaseCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configs\ArtifactCfg.json">
+    <None Include="Configs\EmEquipCfg.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Configs\EquipCfg.json">

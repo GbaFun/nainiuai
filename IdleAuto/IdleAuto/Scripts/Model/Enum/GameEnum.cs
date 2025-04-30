@@ -251,15 +251,18 @@ public enum emEquipStatus
 
 }
 
-public enum emArtifact
+public enum emEquip
 {
     未知 = 0,
-   
+
     亡者遗产32,
-  
+
     亡者遗产满roll,
 
-    天灾2
+    天灾2,
+    塔格奥之手,
+    塔格奥之鳞,
+    施法手
 }
 public enum emArtifactBase
 {

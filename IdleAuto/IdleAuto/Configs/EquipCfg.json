@@ -609,13 +609,14 @@
     "equipment": {
       "category": "项链",
       "quality": "魔法|稀有|传奇",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "任一",
           "matchGroupName": "死灵项链",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 20,
+          "seq": 30,
           "conditionContent": "2"
         },
         {
@@ -623,15 +624,8 @@
           "matchGroupName": "死灵项链",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "seq": 60,
+          "seq": 1,
           "conditionContent": "死灵,召唤,2"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "施法速度",
-          "seq": 30,
-          "conditionContent": "10"
         }
       ]
     }
@@ -819,7 +813,7 @@
     "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "戒指",
-      "quality": "魔法|稀有|传奇|套装",
+      "quality": "传奇|套装",
       "isTrade": true,
       "conditions": [
         {
@@ -831,15 +825,38 @@
           "conditionContent": "1"
         },
 
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "绑定"
+        }
+
+      ]
+    }
+  },
+  {
+    "name": "绑定技能戒指",
+    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇|套装",
+
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
+
 
 
         {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "matchGroupName": "死灵戒指",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "绑定"
         }
 
       ]
@@ -1428,12 +1445,16 @@
 
 
         {
-          "matchType": "任一",
-          "matchGroupName": "施法衣服",
+          "matchType": "必需",
           "operate": "等于",
           "attributeType": "名称",
-          "seq": 10,
           "conditionContent": "蛇魔法师之皮"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "绑定"
         }
       ]
     }
@@ -1498,6 +1519,45 @@
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
           "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "抗性手",
+    "description": "",
+    "equipment": {
+      "category": "手套",
+      "quality": "魔法|稀有|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "额外金币取得",
+          "seq": 2,
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 100,
           "conditionContent": "5"
         }
       ]
@@ -1612,6 +1672,49 @@
           "attributeType": "施法速度",
           "seq": 5000,
           "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "塔格奥之手",
+
+    "equipment": {
+      "category": "手套",
+      "quality": "套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "matchGroupName": "手套",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥之手"
+        }
+      ]
+    }
+  },
+  {
+    "name": "塔格奥之鳞",
+
+    "equipment": {
+      "category": "衣服",
+      "quality": "套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥之鳞"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
         }
       ]
     }
@@ -2426,6 +2529,30 @@
     }
   },
   {
+    "name": "轮回",
+    "description": "死灵副手",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 10,
+          "conditionContent": "轮回"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    }
+  },
+  {
     "name": "20施法头",
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
@@ -2458,6 +2585,7 @@
     "equipment": {
       "category": "帽子|头饰",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
 
 
@@ -2796,7 +2924,39 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "攻击速度提升"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "武器速度",
+          "conditionContent": "0-30"
         }
+      ]
+    }
+  },
+  {
+    "name": "死骑冰霜武器副手",
+    "description": "死骑眼光,",
+    "equipment": {
+      "category": "斧|剑|锤",
+      "quality": "魔法|稀有|传奇",
+      "necessary": 0,
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "双手伤害"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,1"
+        }
+        
+        
       ]
     }
   },

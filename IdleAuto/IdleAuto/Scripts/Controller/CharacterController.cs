@@ -726,10 +726,12 @@ namespace IdleAuto.Scripts.Controller
         #region 技能
         public async Task StartAddSkill(ChromiumWebBrowser bro, UserModel user)
         {
+            var repairJob = ConfigUtil.GetAppSetting("RepairJob");
             _browser = bro;
             for (int i = 0; i < user.Roles.Count; i++)
             {
                 var role = user.Roles[i];
+                if (repairJob != "" && role.Job.ToString() != repairJob) continue;
                 await AddSkillPoints(_browser, role);
                 await Task.Delay(2000);
             }

@@ -86,6 +86,8 @@ function getEquipInfo(eid, sortid, quality, content) {
     var sc = content.split('\n');
     var name = sc[0].match(/(.*)★{0,1}\(\d*\)/);
     var baseName = name[1];
+    var eqLv = sc[0].match(/\d+/)[0];
+    e.lv = eqLv;
 
     if (sc[1].includes("可以作为镶嵌物")) {
         baseName = "珠宝";
@@ -351,12 +353,12 @@ function equipTrade(cid, eid, name) {
 }
 
 function putToAuction(data) {
-    
-  
+
+
     var data = MERGE_Form({
         cid: data.cid,
         eid: data.eid,
-        edes:data.priceJson
+        edes: data.priceJson
     });
     console.log(data);
     POST_Message("EquipAuction", data, "post", 1000)

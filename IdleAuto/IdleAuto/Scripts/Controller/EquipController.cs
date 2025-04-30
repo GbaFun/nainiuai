@@ -19,6 +19,7 @@ using FreeSql.Internal;
 
 public class EquipController : BaseController
 {
+    public static readonly object _obj = new object();
     public EquipController(BroWindow bro) : base(bro)
     {
 
@@ -168,9 +169,7 @@ public class EquipController : BaseController
                 }
             }
         }
-
-        P.Log($"清空当前账号{account.AccountName}在数据库的所有数据", emLogType.AutoEquip);
-        FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.AccountID == account.Id).ExecuteAffrows();
+      
         P.Log("开始盘点所有装备", emLogType.AutoEquip);
 
         RoleModel role = account.FirstRole;
@@ -553,6 +552,7 @@ public class EquipController : BaseController
         var list = curEquips.Select(p => p.Value).ToList();
         list.ForEach(p => WrapEquip(p, win.User, role, emEquipStatus.Equipped));
         DbUtil.InsertOrUpdate<EquipModel>(list);
+        await Task.Delay(1000);
     }
 
     /// <summary>
@@ -567,7 +567,7 @@ public class EquipController : BaseController
     {
         //只查找仓库中的装备
         var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
-        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo&&p.IsLocal==false).ToList();
+        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
         var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
         var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
@@ -874,7 +874,7 @@ public class EquipController : BaseController
         var eq = new TradeModel
         {
             EquipName = dto.Equipment.EquipNameArr[0],
-            EquipSortName=dto.EmEquipSort.ToString(),
+            EquipSortName = dto.EmEquipSort.ToString(),
             EquipId = demandEquip.EquipID,
             DemandRoleId = dto.Role.RoleId,
             DemandRoleName = dto.Role.RoleName,
@@ -885,7 +885,7 @@ public class EquipController : BaseController
 
         }; try
         {
-            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p =>  p.DemandRoleId == eq.DemandRoleId&&p.EquipSortName==eq.EquipSortName).First();
+            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.DemandRoleId == eq.DemandRoleId && p.EquipSortName == eq.EquipSortName).First();
             if (existTrade != null)
             {
                 //同角色同一个需求不能大于1

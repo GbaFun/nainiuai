@@ -15,6 +15,12 @@ public class AccountCfg
         LoadConfig();
     }
 
+    public UserModel GetUserModel(string name)
+    {
+        var acc = Accounts.Find(f => f.AccountName == name);
+        return new UserModel(acc);
+    }
+
     public void LoadConfig()
     {
         if (File.Exists(ConfigFilePath))

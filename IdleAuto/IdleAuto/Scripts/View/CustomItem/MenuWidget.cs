@@ -138,17 +138,9 @@ namespace IdleAuto.Scripts.View
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
-            if (AccountController.Instance.User != null)
-            {
-                Task.Run(async () =>
-                {
-                    var window = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
-                    await FlowController.StartAddSkill(window);
+         
 
-                });
-            }
-
-            else FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
+             FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
         }
 
         private void BtnRefresh_Click(object sender, EventArgs e)
@@ -159,7 +151,7 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
                     // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
@@ -292,18 +284,12 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            var t = new TradeModel() { EquipId = 1 };
-            var t2 = new TradeModel() { EquipId = 1 };
-
-            for (int i = 0; i < 10000; i++)
-            {
-                Task.Run(() => { FreeDb.Sqlite.Update<TradeModel>().SetSource(t).ExecuteAffrows(); });
-            }
+            FlowController.MoveTaGeAo();
 
 
         }
 
-   
+
 
         private void Button_Inventory_Click(object sender, EventArgs e)
         {
