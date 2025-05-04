@@ -459,7 +459,7 @@ namespace IdleAuto.Scripts.Controller
         /// 选更好的亡者穿上
         /// </summary>
         /// <returns></returns>
-        private static async Task RollOrEquipWangzhe(BroWindow win)
+        public static async Task RollOrEquipWangzhe(BroWindow win)
         {
             var user = win.User;
             var con32Base = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.亡者遗产32);
@@ -471,15 +471,15 @@ namespace IdleAuto.Scripts.Controller
             var c = new CharacterController(win);
 
             //将背包中的31底子做完
-            var r2 = e.GetMatchEquips(user.Id, con31Base, out _);
+            var r2 = e.GetMatchEquips(user.Id, con32Base, out _);
             foreach (var base31 in r2.Values)
             {
 
 
-                await a.MakeArtifact(emArtifactBase.亡者遗产31, base31, user.FirstRole.RoleId, con31Base, isCheckBag: false);
+                await a.MakeArtifact(emArtifactBase.亡者遗产32, base31, user.FirstRole.RoleId, con32Base, isCheckBag: false);
                 if (!AttributeMatchUtil.Match(base31, conPerfect, out _))
                 {
-                    await ReMakeArtifact(base31, emArtifactBase.亡者遗产31, conPerfect, con31Base, win, user.FirstRole);
+                    await ReMakeArtifact(base31, emArtifactBase.亡者遗产32, conPerfect, con32Base, win, user.FirstRole);
                 }
 
 
