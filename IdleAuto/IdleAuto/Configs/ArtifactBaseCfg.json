@@ -363,6 +363,80 @@
       }
     ]
   },
+  "轮回法师": {
+    "category": "死灵副手",
+    "quality": "普通|破碎",
+
+    "targetSlotCount": 2,
+    "slotRule": "333:direct,else:direct",
+    "remakeRule": "333:true",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "支配骷髅,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "生生不息,3"
+      }
+    ]
+  },
+  "轮回献祭": {
+    "category": "死灵副手",
+    "quality": "普通|破碎",
+
+    "targetSlotCount": 2,
+    "slotRule": "333:direct,else:direct",
+    "remakeRule": "333:true",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+      {
+        "matchType": "必需",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "生生不息,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "重生,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "亡者遗产",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "献祭,3"
+      }
+    ]
+  },
 
   "执法者": {
     "category": "锤",

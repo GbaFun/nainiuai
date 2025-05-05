@@ -2534,6 +2534,7 @@
     "equipment": {
       "category": "死灵副手",
       "quality": "神器",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -2955,8 +2956,8 @@
           "attributeType": "指定职业单系技能",
           "conditionContent": "死骑,冰霜,1"
         }
-        
-        
+
+
       ]
     }
   },

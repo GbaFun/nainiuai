@@ -152,9 +152,9 @@ namespace IdleAuto.Scripts.View
                 try
                 {
                     // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
-                  await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController. ContinueJob(emTaskType.RepairNec,FlowController. RollOrEquipWangzhe);
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+                  await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
+                    //await FlowController. ContinueJob(emTaskType.RepairNec,FlowController. RollOrEquipWangzhe);
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -285,7 +285,7 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            FlowController.MoveTaGeAo();
+            FlowController.MoveLunhuiBase();
 
 
         }

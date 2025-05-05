@@ -290,7 +290,11 @@ public enum emArtifactBase
     [Description("亡者遗产")]
     亡者遗产31,
     [Description("执法者")]
-    执法者
+    执法者,
+    [Description("轮回")]
+    轮回法师,
+    [Description("轮回")]
+    轮回献祭
 }
 
 /// <summary>

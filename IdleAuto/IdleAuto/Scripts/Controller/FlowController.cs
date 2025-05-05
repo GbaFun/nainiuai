@@ -164,7 +164,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
 
-            var sendDic = new Dictionary<int, int>() { { 27, 1 }, { 28, 1 }, { 26, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 27, 1 }, { 28, 1 } };
             foreach (var job in sendDic)
             {
                 var dic = new Dictionary<int, int>() { { job.Key, job.Value } };
@@ -178,8 +178,8 @@ namespace IdleAuto.Scripts.Controller
             var specifiedAccount = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts);
 
             //所有资源将汇集到这 为了避免二次验证经常要换号收货
-            var reciver = "奶牛苦工72";
-            var reciverUser = "绿宝石";
+            var reciver = "奶牛苦工25";
+            var reciverUser = "RasdGch";
             var sendDic = dic;
 
             var userList = AccountCfg.Instance.Accounts.Where(p => p.AccountName != reciverUser && specifiedAccount.Contains(p.AccountName)).ToList();
@@ -624,6 +624,46 @@ namespace IdleAuto.Scripts.Controller
                 var t2 = new TradeController(win2);
                 await t2.AcceptAll(win2.User);
                 win2.Close();
+            }
+
+
+
+
+        }
+
+        /// <summary>
+        /// 移动轮回底子
+        /// </summary>
+        /// <returns></returns>
+        public static async Task MoveLunhuiBase()
+        {
+
+            //按有轮回的号分组
+           var lunhuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p =>p.AccountName!= "RasdGch"&& p.Category=="死灵副手"&&(p.Quality=="slot"|| p.Quality=="base")&& p.Content.Contains("+3 骷髅法师") && (p.Content.Contains("+3 支配骷髅") || p.Content.Contains("+3 生生不息"))&&p.Lv>=70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
+           // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
+         
+
+
+
+            foreach (var item in lunhuiList)
+            {
+                //身上或者仓库没有 发一件过来
+
+
+                var userName = item.Key.AccountName;
+
+                var user = AccountCfg.Instance.GetUserModel(userName);
+                var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                var t = new TradeController(win);
+                foreach (var e in item)
+                {
+                    await t.StartTrade(e, "奶牛苦工24");
+                    await Task.Delay(1500);
+                }
+                win.Close();
+
+
+
             }
 
 
