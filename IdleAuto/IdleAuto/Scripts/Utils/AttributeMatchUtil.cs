@@ -135,115 +135,123 @@ namespace AttributeMatch
         /// <returns>匹配结果报告</returns>
         internal static AttributeMatchResult MatchOne(EquipModel _equip, AttributeCondition _condition)
         {
-            AttributeMatchResult result = new AttributeMatchResult()
+            try
             {
-                IsMatch = false,
-                Condition = _condition,
-                MatchWeight = 0
-            };
-            int weight = 0;
-            int seq = _condition.Seq <= 0 ? 1 : _condition.Seq;
-            string eqContentCopy = _equip.Content;
-            switch (_condition.EquipContent)
-            {
-                case emEquipContent.全部:
-                    break;
-                case emEquipContent.神器底子:
-                    if (_equip.emItemQuality != emItemQuality.神器) break;
-                    string[] r = Regex.Split(_equip.Content, "神器");
-                    _equip.Content = r[0];
-                    break;
-                case emEquipContent.神器词条:
-                    if (_equip.emItemQuality != emItemQuality.神器) break;
-                    string[] r1 = Regex.Split(_equip.Content, "神器");
-                    _equip.Content = r1[1];
-                    break;
+                AttributeMatchResult result = new AttributeMatchResult()
+                {
+                    IsMatch = false,
+                    Condition = _condition,
+                    MatchWeight = 0
+                };
+                int weight = 0;
+                int seq = _condition.Seq <= 0 ? 1 : _condition.Seq;
+                string eqContentCopy = _equip.Content;
+                switch (_condition.EquipContent)
+                {
+                    case emEquipContent.全部:
+                        break;
+                    case emEquipContent.神器底子:
+                        if (_equip.emItemQuality != emItemQuality.神器) break;
+                        string[] r = Regex.Split(_equip.Content, "神器");
+                        _equip.Content = r[0];
+                        break;
+                    case emEquipContent.神器词条:
+                        if (_equip.emItemQuality != emItemQuality.神器) break;
+                        string[] r1 = Regex.Split(_equip.Content, "神器");
+                        _equip.Content = r1[1];
+                        break;
+                }
+                switch (_condition.AttributeType)
+                {
+                    case emAttrType.名称:
+                        result.IsMatch = MatchName(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.词缀:
+                        result.IsMatch = MatchAffix(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.凹槽:
+                        result.IsMatch = MatchSlot(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.力量:
+                    case emAttrType.敏捷:
+                    case emAttrType.体力:
+                    case emAttrType.精力:
+                    case emAttrType.生命:
+                    case emAttrType.法力:
+                    case emAttrType.增强伤害:
+                    case emAttrType.物理伤害:
+                    case emAttrType.魔法伤害:
+                    case emAttrType.元素抗性:
+                    case emAttrType.抗电:
+                    case emAttrType.抗火:
+                    case emAttrType.抗毒:
+                    case emAttrType.抗寒:
+                    case emAttrType.最大伤害:
+                    case emAttrType.最小伤害:
+                    case emAttrType.物品掉率:
+                    case emAttrType.施法速度:
+                    case emAttrType.攻击速度:
+                    case emAttrType.更佳魔法装备:
+                    case emAttrType.额外金币取得:
+                    case emAttrType.所有技能:
+                    case emAttrType.伤害转换:
+                    case emAttrType.需要力量:
+                    case emAttrType.需要敏捷:
+                    case emAttrType.掉落等级:
+                        result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
+                        if (_condition.AttributeType == emAttrType.更佳魔法装备 || _condition.AttributeType == emAttrType.额外金币取得)
+                        {
+                            weight = (int)Math.Floor(weight / 10.0f);
+                        }
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.单项元素抗性之和:
+                        result.IsMatch = MatchResistance(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.技能等级:
+                    case emAttrType.职业全系技能:
+                    case emAttrType.职业单系技能:
+                    case emAttrType.召唤最大数量:
+                    case emAttrType.指定职业单系技能:
+                    case emAttrType.指定职业全系技能:
+                        result.IsMatch = MatchSkill(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.毒素伤害:
+                        result.IsMatch = MatchPoisonAttr(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.物品等级:
+                        result.IsMatch = MatchLevel(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.武器速度:
+                        result.IsMatch = MatchWeaponSpeed(_equip, _condition, out weight);
+                        result.MatchWeight = weight * seq;
+                        break;
+                    case emAttrType.自定义:
+                        if (_condition.Operate == emOperateType.不等于)
+                            result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
+                        else
+                            result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
+                        weight = result.IsMatch ? 1 : 0;
+                        result.MatchWeight = weight * seq;
+                        break;
+                }
+
+                //还原装备内容
+                _equip.Content = eqContentCopy;
+                return result;
             }
-            switch (_condition.AttributeType)
+            catch (Exception e)
             {
-                case emAttrType.名称:
-                    result.IsMatch = MatchName(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.词缀:
-                    result.IsMatch = MatchAffix(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.凹槽:
-                    result.IsMatch = MatchSlot(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.力量:
-                case emAttrType.敏捷:
-                case emAttrType.体力:
-                case emAttrType.精力:
-                case emAttrType.生命:
-                case emAttrType.法力:
-                case emAttrType.增强伤害:
-                case emAttrType.物理伤害:
-                case emAttrType.魔法伤害:
-                case emAttrType.元素抗性:
-                case emAttrType.抗电:
-                case emAttrType.抗火:
-                case emAttrType.抗毒:
-                case emAttrType.抗寒:
-                case emAttrType.最大伤害:
-                case emAttrType.最小伤害:
-                case emAttrType.物品掉率:
-                case emAttrType.施法速度:
-                case emAttrType.攻击速度:
-                case emAttrType.更佳魔法装备:
-                case emAttrType.额外金币取得:
-                case emAttrType.所有技能:
-                case emAttrType.伤害转换:
-                case emAttrType.需要力量:
-                case emAttrType.需要敏捷:
-                case emAttrType.掉落等级:
-                    result.IsMatch = MatchBaseAttr(_equip, _condition, out weight);
-                    if (_condition.AttributeType == emAttrType.更佳魔法装备 || _condition.AttributeType == emAttrType.额外金币取得)
-                    {
-                        weight = (int)Math.Floor(weight / 10.0f);
-                    }
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.单项元素抗性之和:
-                    result.IsMatch = MatchResistance(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.技能等级:
-                case emAttrType.职业全系技能:
-                case emAttrType.职业单系技能:
-                case emAttrType.召唤最大数量:
-                case emAttrType.指定职业单系技能:
-                case emAttrType.指定职业全系技能:
-                    result.IsMatch = MatchSkill(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.毒素伤害:
-                    result.IsMatch = MatchPoisonAttr(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.物品等级:
-                    result.IsMatch = MatchLevel(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.武器速度:
-                    result.IsMatch = MatchWeaponSpeed(_equip, _condition, out weight);
-                    result.MatchWeight = weight * seq;
-                    break;
-                case emAttrType.自定义:
-                    if (_condition.Operate == emOperateType.不等于)
-                        result.IsMatch = !_equip.Content.Contains(_condition.ConditionContent);
-                    else
-                        result.IsMatch = _equip.Content.Contains(_condition.ConditionContent);
-                    weight = result.IsMatch ? 1 : 0;
-                    result.MatchWeight = weight * seq;
-                    break;
+                throw e;
             }
 
-            //还原装备内容
-            _equip.Content = eqContentCopy;
-            return result;
         }
 
 
@@ -645,49 +653,57 @@ namespace AttributeMatch
         /// <returns></returns>
         private static bool OperateValue(int _value, string _condition, emOperateType _operate, out int weight)
         {
-            bool ismatch = false;
-            weight = 0;
-            int[] condition = Array.ConvertAll(_condition.Split('-'), int.Parse);
-            switch (_operate)
+            try
             {
-                case emOperateType.大于:
-                    ismatch = _value > condition[0];
-                    if (ismatch)
-                        weight = _value - condition[0] + 1;
-                    break;
-                case emOperateType.大于等于:
-                    ismatch = _value >= condition[0];
-                    if (ismatch)
-                        weight = _value - condition[0] + 1;
-                    break;
-                case emOperateType.小于:
-                    ismatch = _value < condition[0];
-                    if (ismatch)
-                        weight = -_value + condition[0] + 1;
-                    break;
-                case emOperateType.小于等于:
-                    ismatch = _value <= condition[0];
-                    if (ismatch)
-                        weight = -_value + condition[0] + 1;
-                    break;
-                case emOperateType.等于:
-                    ismatch = _value == condition[0];
-                    if (ismatch)
-                        weight = 1;
-                    break;
-                case emOperateType.不等于:
-                    ismatch = _value != condition[0];
-                    if (ismatch)
-                        weight = 1;
-                    break;
-                case emOperateType.在范围内:
-                    ismatch = _value >= condition[0] && _value <= condition[1];
-                    if (ismatch)
-                        weight = 1;
-                    break;
+                bool ismatch = false;
+                weight = 0;
+                int[] condition = Array.ConvertAll(_condition.Split('-'), int.Parse);
+                switch (_operate)
+                {
+                    case emOperateType.大于:
+                        ismatch = _value > condition[0];
+                        if (ismatch)
+                            weight = _value - condition[0] + 1;
+                        break;
+                    case emOperateType.大于等于:
+                        ismatch = _value >= condition[0];
+                        if (ismatch)
+                            weight = _value - condition[0] + 1;
+                        break;
+                    case emOperateType.小于:
+                        ismatch = _value < condition[0];
+                        if (ismatch)
+                            weight = -_value + condition[0] + 1;
+                        break;
+                    case emOperateType.小于等于:
+                        ismatch = _value <= condition[0];
+                        if (ismatch)
+                            weight = -_value + condition[0] + 1;
+                        break;
+                    case emOperateType.等于:
+                        ismatch = _value == condition[0];
+                        if (ismatch)
+                            weight = 1;
+                        break;
+                    case emOperateType.不等于:
+                        ismatch = _value != condition[0];
+                        if (ismatch)
+                            weight = 1;
+                        break;
+                    case emOperateType.在范围内:
+                        ismatch = _value >= condition[0] && _value <= condition[1];
+                        if (ismatch)
+                            weight = 1;
+                        break;
+                }
+
+                return ismatch;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
 
-            return ismatch;
         }
     }
     /// <summary>

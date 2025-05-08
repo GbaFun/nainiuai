@@ -45,7 +45,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         //遍历账户下角色修车
         foreach (var role in account.Roles)
         {
-            
+
             try
             {
                 lock (_lock)
@@ -273,10 +273,14 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public async Task UpdateEquips(BroWindow win)
     {
+        bool isCollect = bool.Parse(ConfigUtil.GetAppSetting("isCollectEquip"));
         var equipController = new EquipController(win);
         var account = win.User;
-        //将挂机装备放入仓库
-        await EquipToRepository(win, equipController, account, true);
+        if (isCollect)
+        {
+            //将挂机装备放入仓库
+            await EquipToRepository(win, equipController, account, true);
+        }
         //盘点仓库装备
         await InventoryEquips(win, equipController, account);
     }
@@ -298,7 +302,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     }
     public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
     {
-         await controller.AutoEquips(win, account, role);
+        await controller.AutoEquips(win, account, role);
     }
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {

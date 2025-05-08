@@ -86,6 +86,8 @@
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
+    <Compile Include="Scripts\Wrap\QueueTest.cs" />
+    <Compile Include="Scripts\Wrap\RateControlledQueue.cs" />
     <None Include="BackUp\Cookies\RasdGch.json" />
     <None Include="BackUp\Cookies\RasdSky.json" />
     <None Include="BackUp\Cookies\史蒂夫.json" />

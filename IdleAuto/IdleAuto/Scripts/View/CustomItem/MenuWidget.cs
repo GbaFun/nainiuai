@@ -16,6 +16,7 @@ using System.Threading;
 using System.Security.Principal;
 using IdleAuto.Scripts.Utils;
 using IdleAuto.Db;
+using IdleAuto.Scripts.Wrap;
 
 namespace IdleAuto.Scripts.View
 {
@@ -138,9 +139,9 @@ namespace IdleAuto.Scripts.View
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
-         
 
-             FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
+
+            FlowController.GroupWork(4, 1, FlowController.StartAddSkill);
         }
 
         private void BtnRefresh_Click(object sender, EventArgs e)
@@ -151,10 +152,12 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
-                  await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
-                    //await FlowController. ContinueJob(emTaskType.RepairNec,FlowController. RollOrEquipWangzhe);
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    //var count = FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    //// await FlowController.MakeLunhui();
+
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -285,8 +288,10 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            FlowController.MoveLunhuiBase();
-
+            //await FlowController.MakeLunhui();
+            //await FlowController.MoveTaGeAo();
+            // await FlowController.UpgradeBaseEq();
+             QueueTest.Test();
 
         }
 

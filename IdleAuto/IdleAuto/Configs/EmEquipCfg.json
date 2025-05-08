@@ -137,6 +137,40 @@
         "conditionContent": "塔格奥之手"
       }
     ]
+  },
+  "轮回底子": {
+    "category": "死灵副手",
+    "quality": "普通|破碎",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "凹槽",
+        "conditionContent": "2"
+      },
+  
+      {
+        "matchType": "必需",
+        "matchGroupName": "轮回",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "轮回",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "支配骷髅,3"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "轮回",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "生生不息,3"
+      }
+    ]
   }
 
 }

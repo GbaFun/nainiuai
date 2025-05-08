@@ -47,7 +47,7 @@ namespace IdleAuto.Scripts.Controller
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
             await Task.Delay(1500);
             await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Equipment/Inlay?id={roleId}&eid={equip.EquipID} ", "inlay");
-       
+
             var dd = await _win.CallJs("_inlay.getSlotCount();");
             //更新下content
             var count = dd.Result.ToObject<int>();
@@ -74,6 +74,24 @@ namespace IdleAuto.Scripts.Controller
             DbUtil.InsertOrUpdate<EquipModel>(equip);
             await Task.Delay(1000);
             //改造完会跳转到装备栏界面
+        }
+
+        /// <summary>
+        /// 升级背包
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="eqList"></param>
+        /// <returns></returns>
+        public async Task UpgradeBaseEquip(RoleModel role, List<EquipModel> eqList)
+        {
+            //https://www.idleinfinity.cn/Equipment/EquipUpgradeBoxAll
+            //eidsbox: 拼接
+            var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+            await Task.Delay(1000);
+            var edis = string.Join(",", eqList.Select(p => p.EquipID));
+            var data = new Dictionary<string, object> { { "eidsbox", edis } };
+            var r = await _win.CallJsWaitReload($"upgradeAllInRepo({data.ToLowerCamelCase()})", "equip");
+
         }
 
 

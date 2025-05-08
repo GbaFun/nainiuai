@@ -245,6 +245,11 @@ public enum emEquipStatus
     /// </summary>
     Auction = 4,
 
+    /// <summary>
+    /// 已升级
+    /// </summary>
+    Upgraded = 5,
+
 
 
 
@@ -262,7 +267,8 @@ public enum emEquip
     天灾2,
     塔格奥之手,
     塔格奥之鳞,
-    施法手
+    施法手,
+    轮回底子
 }
 public enum emArtifactBase
 {

@@ -66,7 +66,7 @@ public class ArtifactBaseCfg
                     var matchSkill = skillArr[i].DeepCopy();
                     matchSkill.Operate = emOperateType.大于等于;
                     matchSkill.MatchType = emMatchType.必需;
-                    matchSkill.ConditionContent = skillArr[i].ConditionContent.Split(',')[0]+","+ skillLvArr[i].ToString();
+                    matchSkill.ConditionContent = skillArr[i].ConditionContent.Split(',')[0] + "," + skillLvArr[i].ToString();
                     newConfig.Conditions.Add(matchSkill);
                 }
                 var ss = new SlotConfigStruct();
@@ -74,8 +74,8 @@ public class ArtifactBaseCfg
                 ss.SlotType = s.Value;
                 list.Add(ss);
             }
-            
-            
+
+
             SlotConfig.Add(item.Key, list);
         }
     }
@@ -104,19 +104,38 @@ public class ArtifactBaseCfg
             if (match.Success)
             {
                 int slotValue = int.Parse(match.Groups["v"].Value);
-                if (slotValue > targetSlotCount )
+                if (slotValue > targetSlotCount)
                 {
                     return emSlotType.Random;
                 }
-              
+
             }
             var isMatch = AttributeMatchUtil.Match(eq, item.Config, out _);
             if (isMatch)
             {
                 return item.SlotType;
             }
+
         }
+
+        var elseRegex = @"else:(\w+)";
+        var reg = new Regex(elseRegex, RegexOptions.Multiline);
+        var matchResult = reg.Match(configs[0].Config.SlotRule);
+        if (matchResult.Success)
+        {
+            var matchStr = matchResult.Groups[1].Value;
+            
+            return (emSlotType)Enum.Parse(typeof(emSlotType), matchStr,true);
+        }
+
         return emSlotType.Random;
+
+
+
+
+     
+
+
 
     }
 

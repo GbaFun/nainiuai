@@ -369,3 +369,18 @@ function putToAuction(data) {
             console.log(r);
         });
 }
+
+function upgradeAllInRepo(data) {
+    var data = MERGE_Form({
+        eidsbox: data.eidsbox,
+
+    });
+    console.log(data);
+    POST_Message("EquipUpgradeBoxAll", data, "post", 1000)
+        .then(r => {
+            console.log("EquipAuction success");
+        })
+        .catch(r => {
+            console.log(r);
+        });
+}

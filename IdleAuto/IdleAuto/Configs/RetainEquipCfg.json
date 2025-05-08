@@ -29,13 +29,7 @@
         //  "attributeType": "名称",
         //  "conditionContent": "达内塔"
         //},
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "塔格奥"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -277,6 +271,46 @@
   },
   {
     "equip": {
+      "category": "锤",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "维特之脚"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "套装",
+          "operate": "大于等于",
+          "attributeType": "物品等级",
+          "conditionContent": "85"
+        }
+      ]
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      "category": "手套|衣服",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "套装",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥"
+        }
+
+      ]
+    },
+    "maxCount": 20
+  },
+  {
+    "equip": {
       "description": "传奇护符",
       "category": "护符",
       "quality": "传奇",
@@ -419,6 +453,24 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "炫影之风"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "海王利维亚桑"
         }
 
       ]
@@ -601,6 +653,24 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "天谴之路"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "蔑视之靴"
         },
         {
@@ -667,14 +737,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "虚幻长靴"
         },
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "牧师,暗影,2"
         }
@@ -792,6 +862,24 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "蜘蛛之网"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "饮血者"
         }
 
       ]
@@ -1264,7 +1352,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "2"
+          "conditionContent": "1"
         }
 
       ]
@@ -2376,7 +2464,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2466,14 +2554,14 @@
           "matchGroupName": "职业系列技能",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,1"
+          "conditionContent": "死灵,召唤,2"
         },
         {
           "matchType": "任一",
           "operate": "大于等于",
           "matchGroupName": "职业系列技能",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "骑士,光环,1"
+          "conditionContent": "骑士,光环,2"
         }
       ]
     },
@@ -3112,6 +3200,36 @@
           "attributeType": "技能等级",
           "conditionContent": "献祭,3"
         }
+      ]
+    },
+    "maxCount": 40
+  },
+
+  {
+    "equip": {
+      "category": "剑",
+      "quality": "破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "5"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "物品等级",
+          "conditionContent": "70"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "永恒",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "水晶剑"
+        }
+
       ]
     },
     "maxCount": 40

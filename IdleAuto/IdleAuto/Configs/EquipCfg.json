@@ -352,6 +352,24 @@
     }
   },
   {
+    "name": "永恒",
+    "description": "",
+    "equipment": {
+      "category": "剑|斧",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+        
+          "seq": 50,
+          "conditionContent": "永恒"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意项链",
     "description": "前期没有技能项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -1460,6 +1478,24 @@
     }
   },
   {
+    "name": "魁黑刚的智慧",
+    "description": "优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "魁黑刚的智慧"
+        }
+      ]
+    }
+  },
+  {
     "name": "隐密",
     "description": "优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
@@ -2353,6 +2389,46 @@
     }
   },
   {
+    "name": "33死灵副手",
+    "description": "",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "全部",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 20,
+          "conditionContent": "骷髅法师,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 1,
+          "conditionContent": "死灵,召唤,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "支配骷髅,1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 1,
+          "conditionContent": "生生不息,1"
+        }
+
+      ]
+    }
+  },
+  {
     "name": "232死灵副手",
     "description": "",
     "equipment": {
@@ -2584,9 +2660,9 @@
     "name": "冰晶",
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
-      "category": "帽子|头饰",
+      "category": "头饰",
       "quality": "全部",
-     
+
       "conditions": [
 
 
@@ -2595,6 +2671,31 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "冰晶"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "教化",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "头饰",
+      "quality": "全部",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "教化"
         },
         {
           "matchType": "必需",
