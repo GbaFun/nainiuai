@@ -166,7 +166,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
 
-            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 },{30,1 } };
             foreach (var job in sendDic)
             {
                 var dic = new Dictionary<int, int>() { { job.Key, job.Value } };
