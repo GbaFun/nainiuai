@@ -362,7 +362,7 @@
           "matchType": "必需",
           "operate": "在范围内",
           "attributeType": "名称",
-        
+
           "seq": 50,
           "conditionContent": "永恒"
         }
@@ -841,6 +841,33 @@
           "seq": 30,
           "attributeType": "所有技能",
           "conditionContent": "1"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "绑定"
+        }
+
+      ]
+    }
+  },
+  {
+    "name": "全能",
+    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "死灵戒指",
+          "operate": "等于",
+          "seq": 30,
+          "attributeType": "名称",
+          "conditionContent": "全能法戒"
         },
 
         {
@@ -1726,6 +1753,31 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "塔格奥之手"
+        }
+      ]
+    }
+  },
+  {
+    "name": "塔格奥之束带",
+
+    "equipment": {
+      "category": "腰带",
+      "quality": "套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥之束带"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死灵,2"
         }
       ]
     }

@@ -1263,6 +1263,24 @@
   },
   {
     "equip": {
+      "description": "手工项链",
+      "category": "项链",
+      "quality": "手工",
+      "conditions": [
+        {
+          "matchType": "必需",
+         
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "15"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
       "description": "完美传奇",
       "category": "项链",
       "quality": "传奇",
