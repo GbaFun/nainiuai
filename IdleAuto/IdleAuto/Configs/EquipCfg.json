@@ -853,6 +853,33 @@
       ]
     }
   },
+
+  {
+    "name": "mf戒指",
+    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇|套装",
+
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 800,
+          "conditionContent": "利亚之戒"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "10"
+        }
+
+      ]
+    }
+  },
   {
     "name": "全能",
     "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
@@ -1952,6 +1979,14 @@
         {
           "matchType": "任一",
           "matchGroupName": "骷髅法师护符",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 200,
+          "conditionContent": "李奥瑞克王的印玺"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骷髅法师护符",
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
           "seq": 200,
@@ -2738,7 +2773,7 @@
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
       "category": "头饰",
-      "quality": "全部",
+      "quality": "套装",
 
       "conditions": [
 

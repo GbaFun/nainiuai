@@ -1,4 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 public class RoleModel
 {
-    [Column( IsPrimary = true)]
+    [Column(IsPrimary = true)]
     public int RoleId { get; set; }
     public string RoleName { get; set; }
     public string RoleInfo { get; set; }
@@ -53,6 +54,20 @@ public class RoleModel
     public override int GetHashCode()
     {
         return this.RoleId;
+    }
+
+    /// <summary>
+    /// 获取小组技能bd
+    /// </summary>
+    /// <returns></returns>
+    public emSkillMode GetRoleSkillMode()
+    {
+        var role = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == RoleId).First();
+        if (role == null)
+        {
+            throw new Exception("请先初始化组队表");
+        }
+        return role.SkillMode;
     }
 
 

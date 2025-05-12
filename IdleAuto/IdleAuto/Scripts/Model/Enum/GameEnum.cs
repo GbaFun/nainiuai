@@ -314,9 +314,7 @@ public enum emSlotType
 
 public enum emSkillMode
 {
-    None,
-    /// <summary>
-    /// 死灵110速方案
-    /// </summary>
-    Nec110
+    默认,
+
+    献祭
 }

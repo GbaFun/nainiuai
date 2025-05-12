@@ -166,7 +166,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
 
-            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 },{30,1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 } };
             foreach (var job in sendDic)
             {
                 var dic = new Dictionary<int, int>() { { job.Key, job.Value } };
@@ -265,7 +265,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.Category == "戒指" && p.EquipName=="希望之翼" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.Category == "戒指" && p.EquipName == "希望之翼" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -714,6 +714,10 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        /// <summary>
+        /// 升级底子
+        /// </summary>
+        /// <returns></returns>
         public async static Task UpgradeBaseEq()
         {
             var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("海蛇皮甲") && p.Quality == "base" && p.EquipStatus == emEquipStatus.Repo).ToList();
@@ -733,6 +737,26 @@ namespace IdleAuto.Scripts.Controller
                 win.Close();
 
             }
+        }
+
+        public async static Task InitGroup()
+        {
+            foreach (var acc in AccountCfg.Instance.Accounts)
+            {
+
+                var user = AccountCfg.Instance.GetUserModel(acc.AccountName);
+                var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                for (int index = 0; index < win.User.Roles.Count; index++)
+                {
+                    var teamIndex = int.Parse(Math.Floor(index / 3.0).ToString());
+                    var role = win.User.Roles[index];
+                    var g = new GroupModel() { AccountName = acc.AccountName, Job = role.Job, RoleId = role.RoleId, RoleName = role.RoleName, TeamIndex = teamIndex };
+                    DbUtil.InsertOrUpdate<GroupModel>(g);
+
+                }
+                win.Close();
+            }
+
         }
 
 

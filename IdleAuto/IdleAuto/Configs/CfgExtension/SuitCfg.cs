@@ -57,7 +57,7 @@ public class Equipment
                 var cArr = Category.Split('|').ToList();
                 var qArr = Quality.Split('|').ToList();
 
-                _categoryQualityKeyList= cArr.SelectMany(a => qArr.Select(b => a + b)).ToList();
+                _categoryQualityKeyList = cArr.SelectMany(a => qArr.Select(b => a + b)).ToList();
             }
             return _categoryQualityKeyList;
 
@@ -82,6 +82,7 @@ public class EquipSuit
     /// 触发特殊修车 控制死灵速度和法师速度 等等... 其他再议
     /// </summary>
     public emSkillMode SkillMode { get; set; }
+
 
 
     public SuitInfo 主手 { get; set; }
@@ -143,8 +144,14 @@ public class SuitInfo
     }
     public Equipment GetEquipment(string name)
     {
-
-        return EquipCfg.Instance.Get(name);
+        try
+        {
+            return EquipCfg.Instance.Get(name);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
 
     }
 }

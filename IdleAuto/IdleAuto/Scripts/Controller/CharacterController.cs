@@ -740,6 +740,7 @@ namespace IdleAuto.Scripts.Controller
 
         public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
         {
+            if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
             _browser = bro;
             int roleid = role.RoleId;
             await Task.Delay(1000);
@@ -1088,6 +1089,7 @@ namespace IdleAuto.Scripts.Controller
             for (int i = 0; i < user.Roles.Count; i++)
             {
                 RoleModel role = user.Roles[i];
+                if (role.GetRoleSkillMode() == emSkillMode.献祭) continue;
                 if (!roleNameList.Contains(role.RoleName)) continue;
                 await Task.Delay(2000);
                 await SwitchMap(_browser, role);

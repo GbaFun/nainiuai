@@ -169,7 +169,7 @@ public class EquipController : BaseController
                 }
             }
         }
-      
+
         P.Log("开始盘点所有装备", emLogType.AutoEquip);
 
         RoleModel role = account.FirstRole;
@@ -413,7 +413,7 @@ public class EquipController : BaseController
     /// <returns></returns>
     public async Task AutoEquips(BroWindow win, UserModel account, RoleModel role)
     {
-
+        if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
@@ -589,7 +589,20 @@ public class EquipController : BaseController
                 P.Log($"{role.RoleName}{(emEquipSort)j}位置的装备没有找到配置，无需更换!");
                 continue;
             }
-            AutoEquipMatchDto dto = new AutoEquipMatchDto() { AccountId = accountId, Role = role, EmEquipSort = (emEquipSort)j, CurEquip = curEquip, Equipment = equipment, Result = result, DbEquipsSelf = _equipsSelf, DbEquipOthers = _equipsOthers, DbEquipDicOthers = dicOthers, DbEquipDicSelf = dicSelf };
+            AutoEquipMatchDto dto = new AutoEquipMatchDto()
+            {
+                AccountId = accountId,
+                Role = role,
+                EmEquipSort = (emEquipSort)j,
+                CurEquip = curEquip,
+                Equipment = equipment,
+                Result = result,
+                DbEquipsSelf = _equipsSelf,
+                DbEquipOthers = _equipsOthers,
+                DbEquipDicOthers = dicOthers,
+                DbEquipDicSelf = dicSelf,
+                TradeResult = new EquipTradeStruct()
+            };
             List<EquipModel> matchEquips = GetMatchEquip(dto);
 
             EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
@@ -1141,6 +1154,33 @@ public struct EquipSuitMatchStruct
 
 }
 
+public struct EquipTradeStruct
+{
+    public EquipTradeStruct(int index)
+    {
+        SuitIndex = index;
+        IsAllFound = false;
+        FoundEquips = new List<EquipModel>();
+    }
+    /// <summary>
+    /// 装备位于套装中的索引
+    /// </summary>
+    public int SuitIndex;
+
+    /// <summary>
+    /// 找到的装备
+    /// </summary>
+    public List<EquipModel> FoundEquips;
+
+
+    /// <summary>
+    /// 是否都找到
+    /// </summary>
+    public bool IsAllFound { get; set; }
+
+}
+
+
 
 /// <summary>
 /// 匹配时用到的业务参数
@@ -1157,6 +1197,8 @@ public class AutoEquipMatchDto
     public SuitInfo Equipment { get; set; }
 
     public EquipSuitMatchStruct Result { get; set; }
+
+    public EquipTradeStruct TradeResult { get; set; }
 
     /// <summary>
     /// 自己的装备

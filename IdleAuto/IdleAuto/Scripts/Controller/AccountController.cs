@@ -66,6 +66,7 @@ public class AccountController
         }
     }
 
+
     private void OnCharLoaded(params object[] args)
     {
         lock (lockObject)
