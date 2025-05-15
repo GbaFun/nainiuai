@@ -431,12 +431,17 @@ public class EquipController : BaseController
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
         var targetEquips = GetEquipConfig(role.Job, role.Level);
+        var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
         {
+
             P.Log("获取{role.Level}级{role.Job}配置的装备成功");
-            foreach (var suit in targetEquips.EquipSuit)
+            for (int i = 0; i < targetEquips.EquipSuit.Count; i++)
             {
-                var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips);
+                var suit = targetEquips.EquipSuit[i];
+
+                tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
+                var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
                 if (suitEquips.IsSuccess)
                 {
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
@@ -445,15 +450,21 @@ public class EquipController : BaseController
 
                     break;
                 }
-                else if (suitEquips.IsNecessaryEquipMatch == false)
-                { //必要装备没有命中的话 整套装备都舍弃 进入下一套方案
-                    continue;
-                }
+
             }
         }
         else
         {
-            P.Log($"获取{role.Level}级{role.Job}配置的装备失败", emLogType.AutoEquip);
+            throw new Exception("未配置该等级配置");
+        }
+        if (tradeSuitMap.Count > 0)
+        {
+            foreach (var toTradeSuit in tradeSuitMap)
+            {
+                if (toTradeSuit.Count == 0 || toTradeSuit.Values.Contains(null)) continue;
+                EquipTradeQueue.Enqueue(toTradeSuit.Values.ToList());
+                break;
+            }
         }
 
         if (toMakeEquips.Count > 0)
@@ -563,11 +574,16 @@ public class EquipController : BaseController
     /// <param name="equipSuit"></param>
     /// <param name="curEquips"></param>
     /// <returns></returns>
-    private EquipSuitMatchStruct MatchEquipSuit(int accountId, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips)
+    private EquipSuitMatchStruct MatchEquipSuit(int accountId, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, TradeModel> tradeResult)
     {
         //只查找仓库中的装备
+        var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
         var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
         var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+        if (registeredEquips != null)
+        {
+            _equipsOthers = _equipsOthers.Where(p => !registeredEquips.Select(s => s.EquipId).Contains(p.EquipID)).ToList();
+        }
         var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
         var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();
@@ -601,17 +617,15 @@ public class EquipController : BaseController
                 DbEquipOthers = _equipsOthers,
                 DbEquipDicOthers = dicOthers,
                 DbEquipDicSelf = dicSelf,
-                TradeResult = new EquipTradeStruct()
+
             };
-            List<EquipModel> matchEquips = GetMatchEquip(dto);
+            List<EquipModel> matchEquips = GetMatchEquip(dto, tradeResult);
 
             EquipModel bestEq = matchEquips.Count > 0 ? matchEquips[0] : null;
             if (equipment.IsNecessery && bestEq == null)
             {
-                //必要装备没有命中的话 整套装备都舍弃 进入下一套方案
                 result.IsNecessaryEquipMatch = false;
                 result.IsSuccess = false;
-                break;
             }
             if (bestEq == null)
             {
@@ -680,7 +694,7 @@ public class EquipController : BaseController
     /// <param name="account">所属账号</param>
     /// <param name="role">执行逻辑的角色</param>
     /// <returns></returns>
-    private async Task<ReplaceEquipStruct> WearEquip(BroWindow win, EquipModel equip, int sort, UserModel account, RoleModel role)
+    public async Task<ReplaceEquipStruct> WearEquip(BroWindow win, EquipModel equip, int sort, UserModel account, RoleModel role)
     {
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         ReplaceEquipStruct replaceEquipStruct = new ReplaceEquipStruct();
@@ -853,7 +867,7 @@ public class EquipController : BaseController
     /// <param name="curEquip"></param>
     /// <param name="targetConfig"></param>
     /// <returns></returns>
-    public List<EquipModel> GetMatchEquip(AutoEquipMatchDto dto)
+    public List<EquipModel> GetMatchEquip(AutoEquipMatchDto dto, Dictionary<emEquipSort, TradeModel> tradeResult)
     {
         List<EquipModel> r = new List<EquipModel>();
         for (int i = 0; i < dto.Equipment.EquipNameArr.Count; i++)
@@ -861,32 +875,44 @@ public class EquipController : BaseController
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
-            if (eqName == "死骑冰霜武器")
-            {
-                Console.WriteLine();
-            }
-            if (i == 0 && equip == null && equipConfig.IsTrade)
-            {
-                var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
-                SaveDemandEquip(dto, equipConfig, filteredList);
-            }
+
+
             if (equip != null)
             {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
                 r.Add(equip);
                 break;
+            }
+            if (equip == null && equipConfig.IsTrade)
+            {
+                //整套装备能凑齐才乞讨交易 然后index较大的不会被后续乞讨覆盖 可以直接查库跳过index更大的交易请求
+                var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
+                var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
+
+
+                //没有现成装备 且没有已经登记的需求装备则加入
+                if (demandEquip != null)
+                {
+                    if (!tradeResult.ContainsKey(dto.EmEquipSort))
+                    {
+                        tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName));
+                    }
+                }
+                else if (dto.Equipment.IsNecessery)
+                {//这个部位标记为null则表明这套装备找不齐 稍后会跳过
+                    tradeResult.Add(dto.EmEquipSort, null);
+                }
             }
         }
 
         return r;
     }
 
-    public void SaveDemandEquip(AutoEquipMatchDto dto, Equipment equipConfig, List<EquipModel> filteredList)
+    public TradeModel GetTradeMode(AutoEquipMatchDto dto, EquipModel demandEquip, string eqName)
     {
-        var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
-        if (demandEquip == null) return;
+
         var eq = new TradeModel
         {
-            EquipName = dto.Equipment.EquipNameArr[0],
+            EquipName = eqName,
             EquipSortName = dto.EmEquipSort.ToString(),
             EquipId = demandEquip.EquipID,
             DemandRoleId = dto.Role.RoleId,
@@ -896,39 +922,9 @@ public class EquipController : BaseController
             TradeStatus = emTradeStatus.Register,
 
 
-        }; try
-        {
-            var existTrade = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.DemandRoleId == eq.DemandRoleId && p.EquipSortName == eq.EquipSortName).First();
-            if (existTrade != null)
-            {
-                //同角色同一个需求不能大于1
-                return;
-            }
-            existTrade = FreeDb.Sqlite.Select<TradeModel>(new long[] { demandEquip.EquipID }).First();
+        };
 
-            if (existTrade != null && (existTrade.TradeStatus != emTradeStatus.Rejected && existTrade.TradeStatus != emTradeStatus.Received))
-            {
-                throw new Exception("登记中未处理的装备");
-            }
-
-            var flag = DbUtil.InsertOrUpdate<TradeModel>(eq);
-
-
-
-        }
-        catch (Exception e)
-        {
-
-            var ex = e as DbUpdateVersionException;
-            if (ex != null)
-            {
-                P.Log("触发乐观锁", emLogType.Error);
-            }
-            filteredList = filteredList.Where(p => p.EquipID != demandEquip.EquipID).ToList();
-            SaveDemandEquip(dto, equipConfig, filteredList);
-        }
-
-
+        return eq;
     }
 
     private List<EquipModel> GetEquipInDic(Dictionary<string, List<EquipModel>> dic, Equipment config)
@@ -1154,31 +1150,7 @@ public struct EquipSuitMatchStruct
 
 }
 
-public struct EquipTradeStruct
-{
-    public EquipTradeStruct(int index)
-    {
-        SuitIndex = index;
-        IsAllFound = false;
-        FoundEquips = new List<EquipModel>();
-    }
-    /// <summary>
-    /// 装备位于套装中的索引
-    /// </summary>
-    public int SuitIndex;
 
-    /// <summary>
-    /// 找到的装备
-    /// </summary>
-    public List<EquipModel> FoundEquips;
-
-
-    /// <summary>
-    /// 是否都找到
-    /// </summary>
-    public bool IsAllFound { get; set; }
-
-}
 
 
 
@@ -1187,6 +1159,10 @@ public struct EquipTradeStruct
 /// </summary>
 public class AutoEquipMatchDto
 {
+    public AutoEquipMatchDto()
+    {
+
+    }
     public int AccountId { get; set; }
     public RoleModel Role { get; set; }
 
@@ -1198,7 +1174,7 @@ public class AutoEquipMatchDto
 
     public EquipSuitMatchStruct Result { get; set; }
 
-    public EquipTradeStruct TradeResult { get; set; }
+
 
     /// <summary>
     /// 自己的装备

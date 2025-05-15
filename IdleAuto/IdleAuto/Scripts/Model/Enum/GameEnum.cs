@@ -268,7 +268,10 @@ public enum emEquip
     塔格奥之手,
     塔格奥之鳞,
     施法手,
-    轮回底子
+    轮回底子,
+    骑士技能衣服,
+    死骑冰霜武器
+
 }
 public enum emArtifactBase
 {
@@ -314,7 +317,12 @@ public enum emSlotType
 
 public enum emSkillMode
 {
-    默认,
 
-    献祭
+
+
+    法师,
+
+    献祭,
+    boss,
+
 }

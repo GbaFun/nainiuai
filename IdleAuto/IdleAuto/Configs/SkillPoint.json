@@ -1,6 +1,6 @@
 ﻿[
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 1,
       "max": 1
@@ -13,7 +13,7 @@
     "keySkillId": 4101 //牺牲
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 1,
       "max": 6
@@ -39,7 +39,7 @@
     "keySkillId": 12104 //冰霜打击
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 2,
       "max": 5
@@ -67,7 +67,7 @@
     "keySkillId": 12104 //冰霜打击
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 6,
       "max": 17
@@ -82,7 +82,7 @@
     "keySkillId": 4103 //奉献
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 17,
       "max": 23
@@ -99,7 +99,7 @@
     "keySkillId": 4103 //奉献
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 6,
       "max": 11
@@ -128,7 +128,7 @@
     "keySkillId": 12107 //死亡寒潮
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 12,
       "max": 17
@@ -160,7 +160,7 @@
     "keySkillId": 12107 //死亡寒潮
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 18,
       "max": 23
@@ -195,7 +195,7 @@
     "keySkillId": 12107 //死亡寒潮
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 24,
       "max": 29
@@ -213,7 +213,7 @@
     "keySkillId": 4107 //忏悔
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 24,
       "max": 29
@@ -250,7 +250,7 @@
     "keySkillId": 12107 //死亡寒潮
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 30,
       "max": 49
@@ -271,7 +271,7 @@
     "keySkillId": 4109 //祝福之锤
   },
   {
-    "jobName": "骑士",
+    "jobName": "骑士","skillMode": "法师",
     "lv": {
       "min": 50,
       "max": 100
@@ -292,7 +292,7 @@
     "keySkillId": 4109 //祝福之锤
   },
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 30,
       "max": 49
@@ -312,7 +312,7 @@
   },
   //70本需要特殊加点带带石墨坟墓衰老骨法重生
   {
-    "jobName": "死灵",
+    "jobName": "死灵","skillMode": "法师",
     "lv": {
       "min": 50,
       "max": 100
@@ -333,29 +333,29 @@
     "groupSkill": [ "骷髅法师", "坟墓呼唤", "生命分流", "衰老", "支配骷髅", "生生不息" ],
     "keySkillId": 8202 //骷髅法师
   },
-  //{
-  //  "jobName": "死灵",
-  //  "lv": {
-  //    "min": 50,
-  //    "max": 100
-  //  },
-  //  "remainSkill": {
-  //    "骷髅复生": 1,
-  //    "骷髅法师": 1,
-  //    "致伤诅咒": 1,
-  //    "支配骷髅": 1,
-  //    "献祭": 1,
-  //    "坟墓呼唤": 1,
-  //    "生生不息": 1,
-  //    "生命分流": 1,
-  //    "粘土石魔": 1,
-  //    "重生": 1,
-  //    "衰老": 1
-  //  },
-  //  "prioritySkill": [ "骷髅法师", "生生不息", "支配骷髅", "坟墓呼唤", "衰老", "生命分流" ],
-  //  "groupSkill": [ "骷髅法师", "粘土石魔", "坟墓呼唤", "重生", "衰老", "支配骷髅", "生生不息" ],
-  //  "keySkillId": 8202 //骷髅法师
-  //},
+  {
+    "jobName": "死灵","skillMode": "boss",
+    "lv": {
+      "min": 50,
+      "max": 100
+    },
+    "remainSkill": {
+      "骷髅复生": 1,
+      "骷髅法师": 1,
+      "致伤诅咒": 1,
+      "支配骷髅": 1,
+      "献祭": 1,
+      "坟墓呼唤": 1,
+      "生生不息": 1,
+      "生命分流": 1,
+      "粘土石魔": 1,
+      "重生": 1,
+      "衰老": 1
+    },
+    "prioritySkill": [ "骷髅法师", "生生不息", "支配骷髅", "坟墓呼唤", "衰老", "生命分流" ],
+    "groupSkill": [ "骷髅法师", "粘土石魔", "坟墓呼唤", "重生", "衰老", "支配骷髅", "生生不息" ],
+    "keySkillId": 8202 //骷髅法师
+  },
 
   {
     "jobName": "死骑",

@@ -11,6 +11,7 @@ using CefSharp.WinForms;
 using System.Data;
 using IdleAuto.Scripts.Controller;
 using IdleAuto.Scripts.Wrap;
+using IdleAuto.Scripts.Utils;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -244,10 +245,11 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        private async Task AutoDungeon(bool isReset)
+        private async Task AutoDungeon(bool isReset,bool bossOnly=false)
         {
             var data = new Dictionary<string, object>();
             data.Add("isReset", isReset);
+            data.Add("boss", bossOnly);
             await _win.SignalCallback("startAuto", () =>
             {
                 _win.CallJs($"_map.autoDungeon({data.ToLowerCamelCase()});");
@@ -1128,9 +1130,48 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="targetLv"></param>
+        /// <param name="targetDungeonLv"></param>
+        /// <param name="g"></param>
+        /// <returns>代表切秘境是否成功</returns>
+        public async Task<bool> SwitchMap(RoleModel role, int targetLv, int targetDungeonLv, GroupModel g)
+        {
+            int roleid = role.RoleId;
+            var bro = _win.GetBro();
+            if (bro.Address.IndexOf("https://www.idleinfinity.cn/Map/Detail?id={roleid}") == -1) await _win.SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
+            });
+            var curMapLv = await GetCurMapLv();
+            await _win.SignalRaceCallBack(new string[] { "charReload" }, async () =>
+            {
+                await SwitchTo(targetLv);
+
+            });
+
+            if (_isNeedDungeon)
+            {
+                _isNeedDungeon = false;//进来了就重置
+                await StartDungeon(bro, role, targetDungeonLv: targetDungeonLv);
+                return false;
+            }
+            else
+            {
+                g.DungeonPassedLv = targetDungeonLv;
+                DbUtil.InsertOrUpdate<GroupModel>(g);
+                await SwitchTo(curMapLv);
+                await Task.Delay(1000);
+                return true;
+            }
+        }
+
         private async Task SwitchTo(int targetLv)
         {
-            var d = await _browser.EvaluateScriptAsync($@"_char.mapSwitch({targetLv});");
+            var d = await _win.CallJsWaitReload($@"_char.mapSwitch({targetLv});", "char");
         }
 
 

@@ -148,7 +148,7 @@
         "attributeType": "凹槽",
         "conditionContent": "2"
       },
-  
+
       {
         "matchType": "必需",
         "matchGroupName": "轮回",
@@ -169,6 +169,70 @@
         "operate": "大于等于",
         "attributeType": "技能等级",
         "conditionContent": "生生不息,3"
+      }
+    ]
+  },
+  "骑士技能衣服": {
+    "category": "衣服",
+    "quality": "传奇|套装",
+    "conditions": [
+      {
+        "matchType": "任一",
+        "matchGroupName": "骑士技能衣服",
+        "operate": "大于等于",
+        "attributeType": "所有技能",
+        "conditionContent": "1",
+        "seq": 30
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "骑士技能衣服",
+        "operate": "大于等于",
+        "attributeType": "指定职业单系技能",
+        "conditionContent": "骑士,光环,2",
+        "seq": 100
+      },
+
+      {
+        "matchType": "任一",
+        "matchGroupName": "骑士技能衣服",
+        "operate": "大于等于",
+        "attributeType": "更佳魔法装备",
+        "conditionContent": "20",
+        "seq": 1
+      }
+
+    ]
+  },
+  "死骑冰霜武器": {
+    "category": "斧|剑|锤",
+    "quality": "魔法|稀有|传奇",
+ 
+    "conditions": [
+      {
+        "matchType": "必需",
+
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "双手伤害"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "指定职业单系技能",
+        "conditionContent": "死骑,冰霜,1"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "攻击速度提升"
+      },
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "武器速度",
+        "conditionContent": "0-30"
       }
     ]
   }

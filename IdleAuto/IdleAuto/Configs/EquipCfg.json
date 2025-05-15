@@ -561,6 +561,39 @@
     }
   },
   {
+    "name": "炽天使之韵",
+    "description": "骑士光环项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "项链",
+      "quality": "全部",
+
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "炽天使之韵"
+        },
+
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "骑士光环",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骑士光环",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速冰霜项链",
     "description": "死骑冰霜项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -1384,34 +1417,22 @@
           "conditionContent": "1"
         },
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "骑士技能衣服",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "seq": 104,
-          "conditionContent": "1"
+          "conditionContent": "1",
+          "seq": 30
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "骑士技能衣服",
           "operate": "大于等于",
-          "attributeType": "抗寒",
-          "seq": 8,
-          "conditionContent": "1"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
-        },
-
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2",
+          "seq": 100
         }
+
       ]
     }
   },
@@ -1772,6 +1793,7 @@
     "equipment": {
       "category": "手套",
       "quality": "套装",
+      "isTrade": true,
       "conditions": [
 
         {
@@ -1790,6 +1812,7 @@
     "equipment": {
       "category": "腰带",
       "quality": "套装",
+      "isTrade": true,
       "conditions": [
 
         {
@@ -1815,6 +1838,7 @@
     "equipment": {
       "category": "衣服",
       "quality": "套装",
+      "isTrade": true,
       "conditions": [
 
         {
@@ -1981,7 +2005,7 @@
           "matchGroupName": "骷髅法师护符",
           "operate": "等于",
           "attributeType": "名称",
-          "seq": 200,
+          "seq": 800,
           "conditionContent": "李奥瑞克王的印玺"
         },
         {

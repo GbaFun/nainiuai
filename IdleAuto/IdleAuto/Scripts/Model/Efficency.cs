@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IdleAuto.Scripts.Model
 {
-    public class Efficency
+    public class Efficency : IModel
     {
         [Column(IsPrimary = true, IsIdentity = true)]
         public int Roleid { get; set; }

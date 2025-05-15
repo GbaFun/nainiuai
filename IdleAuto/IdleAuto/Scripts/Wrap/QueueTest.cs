@@ -21,6 +21,8 @@ namespace IdleAuto.Scripts.Wrap
                 Console.WriteLine($"处理项目: {item} 在 {DateTime.Now:HH:mm:ss.fff}");
             };
 
+       
+
             // 添加一些项目到队列
             for (int i = 1; i <= 200; i++)
             {

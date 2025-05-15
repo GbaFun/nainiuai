@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 public class SkillPoint
 {
     public string JobName;
+
+    public emSkillMode SkillMode { get; set; }
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
     public LevelRange Lv { get; set; }
     /// <summary>
@@ -51,10 +53,10 @@ public class SkillPointCfg
         Data = json.ToUpperCamelCase<List<SkillPoint>>();
     }
 
-    public SkillPoint GetSkillPoint(emJob job, int level)
+    public SkillPoint GetSkillPoint(emJob job, int level, emSkillMode mode = emSkillMode.法师)
     {
         //理论就一个命中的
-        var config = Data.Where(p => p.Job == job && p.Lv.AdaptLevel(level)).FirstOrDefault();
+        var config = Data.Where(p => p.Job == job && p.Lv.AdaptLevel(level) && p.SkillMode == mode).FirstOrDefault();
         if (config == null) throw new Exception($"没有配置{job.ToString()},{level}级的配置");
         return config;
     }

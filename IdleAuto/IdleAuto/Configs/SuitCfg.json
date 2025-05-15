@@ -574,7 +574,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 62,
-      "max": 70
+      "max": 64
     },
     "equipSuit": [
       {
@@ -593,6 +593,63 @@
         },
         "项链": {
           "name": "2光环项链,零速光环项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "飞龙衣服,零速技能衣服",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "抗性手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "光环护符,抗性护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      }
+    ]
+  },
+  {
+    //30级后有全部等级+1装备，部分部位以职业技能等级优先
+    "jobName": "骑士",
+    "lv": {
+      "min": 65,
+      "max": 75
+    },
+    "equipSuit": [
+      {
+        "suitName": "骑士40-50套装",
+        "主手": {
+          "name": "22光环权杖,冥审光环权杖",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "元帅盾牌,光环盾牌",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "2级光环头盔,骑士40解毒头,1级光环头盔,知识",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "炽天使之韵,2光环项链",
           "isNecessery": 0
         },
         "戒指1": {
@@ -978,7 +1035,7 @@
     "equipSuit": [
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true
@@ -1026,7 +1083,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1074,7 +1131,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1122,7 +1179,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1227,7 +1284,7 @@
     "equipSuit": [
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true
@@ -1275,7 +1332,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1323,7 +1380,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1371,7 +1428,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1476,7 +1533,7 @@
     "equipSuit": [
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true
@@ -1524,7 +1581,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1572,7 +1629,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1620,7 +1677,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1726,7 +1783,7 @@
     "equipSuit": [
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产"
         },
@@ -1773,7 +1830,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产"
         },
@@ -1820,7 +1877,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产"
         },
@@ -1865,7 +1922,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "32亡者遗产",
           "isNecessery": true
@@ -1913,7 +1970,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -1961,7 +2018,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -2009,7 +2066,7 @@
       },
       {
         "suitName": "满足特殊修车的一套装备",
-        
+
         "主手": {
           "name": "3亡者遗产",
           "isNecessery": true
@@ -2524,7 +2581,7 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "抗寒戒指",
+          "name": "绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
@@ -2584,7 +2641,7 @@
           "isNecessery": 0
         },
         "戒指2": {
-          "name": "抗毒戒指",
+          "name": "绑定技能戒指",
           "isNecessery": 0
         },
         "手套": {

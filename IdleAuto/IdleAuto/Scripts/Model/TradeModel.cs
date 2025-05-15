@@ -1,4 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
+using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class TradeModel
+public class TradeModel:IModel
 {
     
     [Column(IsPrimary = true)]

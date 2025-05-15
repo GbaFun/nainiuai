@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class RoleModel
+public class RoleModel: IModel
 {
     [Column(IsPrimary = true)]
     public int RoleId { get; set; }

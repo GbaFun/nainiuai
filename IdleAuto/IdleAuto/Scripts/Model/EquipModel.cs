@@ -7,8 +7,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AttributeMatch;
 using FreeSql.DataAnnotations;
+using IdleAuto.Scripts.Model;
 
-public class EquipModel
+public class EquipModel : IModel
 {
 
     /// <summary>

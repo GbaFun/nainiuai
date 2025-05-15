@@ -108,7 +108,7 @@ let _map = {};
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid,
             reset: d.isReset,
-            boss: false,
+            boss: d.boss,
             max: 60
 
         };

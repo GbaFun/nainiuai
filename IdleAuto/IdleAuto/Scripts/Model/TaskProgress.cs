@@ -1,4 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
+using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +27,7 @@ public enum emTaskType
 /// <summary>
 /// 记录任务执行到哪
 /// </summary>
-public class TaskProgress
+public class TaskProgress: IModel
 {
     [Column(IsPrimary = true, IsIdentity = true)]
     public int Id { get; set; }

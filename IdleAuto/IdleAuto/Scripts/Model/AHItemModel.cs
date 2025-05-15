@@ -1,10 +1,11 @@
-﻿using System;
+﻿using IdleAuto.Scripts.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class AHItemModel
+public class AHItemModel : IModel
 {
     /// <summary>
     /// 装备id

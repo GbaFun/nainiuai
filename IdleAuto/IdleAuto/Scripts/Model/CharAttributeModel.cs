@@ -28,7 +28,7 @@ namespace IdleAuto.Scripts.Model
 
 
     }
-    public class CharAttributeModel
+    public class CharAttributeModel : IModel
     {
       
 

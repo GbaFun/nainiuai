@@ -10,7 +10,7 @@ namespace IdleAuto.Scripts.Model
     /// <summary>
     /// 记录人物所在层数 秘境等状态
     /// </summary>
-    public class MapModel
+    public class MapModel: IModel
     {
         [Column(IsPrimary = true)]
         public int RoleId { get; set; }

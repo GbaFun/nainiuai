@@ -2,6 +2,7 @@
 using CefSharp.WinForms;
 using IdleAuto.Db;
 using IdleAuto.Scripts.View;
+using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,13 @@ namespace IdleAuto
             {
                 Cef.Initialize(settings);
             }
+            EquipTradeQueue.AppDomainInitializer();
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+         
         }
         // 处理 UI 线程中的未处理异常
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)

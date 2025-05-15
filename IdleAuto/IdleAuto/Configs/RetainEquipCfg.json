@@ -79,20 +79,7 @@
           "attributeType": "自定义",
           "conditionContent": "毁灭之王"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "日出"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "日落"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -268,6 +255,23 @@
       ]
     },
     "maxCount": 1200
+  },
+  {
+    "equip": {
+      "category": "戒指",
+      "quality": "套装|传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        }
+
+      ]
+    },
+    "maxCount": 200
   },
   {
     "equip": {
@@ -471,6 +475,24 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "海王利维亚桑"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "衣卒尔之魔铠"
         }
 
       ]
@@ -963,7 +985,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业全系技能",
           "conditionContent": "牧师,3"
         }
@@ -1042,7 +1064,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "牧师,暗影,3"
         }
@@ -1067,7 +1089,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "3"
         }
@@ -1075,30 +1097,7 @@
     },
     "maxCount": 10
   },
-  {
-    "equip": {
-      "description": "完美传奇",
-      "category": "头饰",
-      "quality": "传奇",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "matchGroupName": "传奇",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "格利风之眼"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "传奇",
-          "operate": "在范围内",
-          "attributeType": "所有技能",
-          "conditionContent": "3"
-        }
-      ]
-    },
-    "maxCount": 10
-  },
+
   {
     "equip": {
       "description": "完美传奇",
@@ -1269,7 +1268,7 @@
       "conditions": [
         {
           "matchType": "必需",
-         
+
           "operate": "大于等于",
           "attributeType": "施法速度",
           "conditionContent": "15"
@@ -1436,7 +1435,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "3"
+          "conditionContent": "1"
         }
 
       ]
@@ -2003,7 +2002,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 2
   },
   {
     "equip": {
@@ -2283,7 +2282,7 @@
 
       ]
     },
-    "maxCount": 120
+    "maxCount": 1200
   },
   {
     "equip": {
@@ -2555,7 +2554,7 @@
           "matchGroupName": "职业系列技能",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,1"
+          "conditionContent": "死灵,召唤,3"
         }
 
       ]
@@ -2673,7 +2672,23 @@
         }
       ]
     },
-    "maxCount": 500
+    "maxCount": 1
+  },
+  {
+    "equip": {
+      "description": "骑士技能衣服",
+      "category": "衣服",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        }
+      ]
+    },
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2694,7 +2709,7 @@
   {
     "equip": {
       "description": "死灵腰带",
-      "category": "项链|腰带|衣服|头饰",
+      "category": "腰带",
       "quality": "全部",
       "conditions": [
 
@@ -2707,7 +2722,25 @@
         }
       ]
     },
-    "maxCount": 400
+    "maxCount": 2
+  },
+  {
+    "equip": {
+      "description": "死灵项链头饰",
+      "category": "项链|头饰",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
+        }
+      ]
+    },
+    "maxCount": 10
   },
   {
     "equip": {
@@ -3037,12 +3070,12 @@
     },
     "maxCount": 1
   },
-  //执法者
+  //执法者 正义 永恒....
   {
     "equip": {
       "category": "权杖",
       "quality": "普通|破碎",
-      "necessary": 0,
+
       "conditions": [
 
         {
@@ -3053,11 +3086,20 @@
           "conditionContent": "审判光环,3"
         },
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "权杖",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "冥想光环,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "权杖",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 6,
-          "conditionContent": "冥想光环,2"
+          "conditionContent": "狂热光环,3"
         }
 
       ]
@@ -3354,7 +3396,7 @@
           "matchGroupName": "抗性",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "conditionContent": "50"
+          "conditionContent": "60"
         }
       ]
 
@@ -3415,6 +3457,13 @@
           "operate": "大于等于",
           "attributeType": "抗毒",
           "conditionContent": "35"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "抗性",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "conditionContent": "70"
         }
       ]
 

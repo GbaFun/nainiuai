@@ -1,6 +1,8 @@
 ﻿using AttributeMatch;
 using CefSharp;
 using IdleAuto.Db;
+using IdleAuto.Scripts.Model;
+using IdleAuto.Scripts.Utils;
 using IdleAuto.Scripts.Wrap;
 using Newtonsoft.Json;
 using System;
@@ -20,6 +22,7 @@ public class TradeController : BaseController
 
     public async Task<bool> StartTrade(EquipModel equip, string roleName)
     {
+        await Task.Delay(1000);
         //跳转装备页面
         var role = _win.User.FirstRole;
         //_win.GetBro().ShowDevTools();
@@ -97,6 +100,7 @@ public class TradeController : BaseController
     }
     public async Task<bool> AcceptAll(UserModel account)
     {
+        await Task.Delay(1500);
         //跳转消息页面
         var role = account.FirstRole;
         // _win.GetBro().ShowDevTools();
@@ -244,6 +248,20 @@ public class TradeController : BaseController
             }
         }
         return result;
+    }
+
+    public async Task SaveRuneMap()
+    {
+        var role = _win.User.FirstRole;
+        // _win.GetBro().ShowDevTools();
+        if (_win.GetBro().Address.IndexOf(IdleUrlHelper.MaterialUrl(role.RoleId)) == -1) await _win.LoadUrlWaitJsInit(IdleUrlHelper.MaterialUrl(role.RoleId), "rune");
+        var a = await _win.CallJs("getRuneMap()");
+        var runeMap = a.Result.ToObject<Dictionary<int, int>>();
+        foreach (var item in runeMap)
+        {
+            var model = new RuneMapModel() { Key = _win.User.AccountName + item.Key, AccountName = _win.User.AccountName, Count = item.Value, RuneName = item.Key };
+            DbUtil.InsertOrUpdate<RuneMapModel>(model);
+        }
     }
 
 

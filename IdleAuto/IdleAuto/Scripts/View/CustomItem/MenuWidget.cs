@@ -152,12 +152,13 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(5, 1, RepairManager.Instance.ClearEquips);
-                    //var count = FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    //await FlowController.MakeLunhui();
+                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
+                   // await FlowController.MakeLunhui();
 
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -290,9 +291,11 @@ namespace IdleAuto.Scripts.View
         {
             //await FlowController.MakeLunhui();
             //await FlowController.MoveTaGeAo();
-            // await FlowController.UpgradeBaseEq();
-            // QueueTest.Test();
-            await FlowController.InitGroup();
+            //await FlowController.UpgradeBaseEq();
+
+            // await FlowController.SendXianji();
+            // await FlowController.SaveRuneMap();
+            await FlowController.PassDungeon(71,70);
 
         }
 

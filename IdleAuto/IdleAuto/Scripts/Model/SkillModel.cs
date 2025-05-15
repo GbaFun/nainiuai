@@ -11,7 +11,7 @@ namespace IdleAuto.Scripts.Model
     /// <summary>
     /// 技能配置表和读取人物技能公用
     /// </summary>
-    public class SkillModel
+    public class SkillModel: IModel
     {
         /// <summary>
         /// 和爱液库保持一致

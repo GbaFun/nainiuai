@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IdleAuto.Scripts.Model
 {
-    public class GroupModel
+    public class GroupModel: IModel
     {
         [Column(IsPrimary = true)]
         public int RoleId { get; set; }
@@ -22,10 +22,14 @@ namespace IdleAuto.Scripts.Model
         public string RoleName { get; set; }
 
 
-
         public emJob Job { get; set; }
 
      
-        public emSkillMode SkillMode { get; set; } = emSkillMode.默认;
+        public emSkillMode SkillMode { get; set; } = emSkillMode.法师;
+
+        /// <summary>
+        /// 已过秘境
+        /// </summary>
+        public int DungeonPassedLv { get; set; }
     }
 }
