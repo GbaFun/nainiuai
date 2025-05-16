@@ -227,12 +227,6 @@
         "operate": "不等于",
         "attributeType": "自定义",
         "conditionContent": "攻击速度提升"
-      },
-      {
-        "matchType": "必需",
-        "operate": "在范围内",
-        "attributeType": "武器速度",
-        "conditionContent": "0-30"
       }
     ]
   }
