@@ -126,7 +126,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 await AddSkillPoint(window, role);
 
                 //角色剩余属性点分配
-                await AddAttrPoint(window, role);
+                //await AddAttrPoint(window, role);
                 TaskProgress progress = new TaskProgress()
                 {
                     Roleid = role.RoleId,

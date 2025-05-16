@@ -153,13 +153,14 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
+                    //await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
                     //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
-                     //await FlowController.MakeLunhui();
+                    //await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
+                  //  await FlowController.MakeLunhui();
 
-                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                  //  await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
                 }
                 catch (Exception ex)
                 {
@@ -234,7 +235,7 @@ namespace IdleAuto.Scripts.View
         {
             DateTime now = DateTime.Now;
             // 每两小时自动运行效率监控
-              refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+           // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
 
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
@@ -296,7 +297,7 @@ namespace IdleAuto.Scripts.View
 
             // await FlowController.SendXianji();
             // await FlowController.SaveRuneMap();
-          await FlowController.PassDungeon(71, 70);
+            await FlowController.PassDungeon(71, 70);
 
         }
 
