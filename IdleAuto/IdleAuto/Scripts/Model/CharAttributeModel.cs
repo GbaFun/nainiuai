@@ -163,6 +163,7 @@ namespace IdleAuto.Scripts.Model
                 VitAdd += cva;
                 EngAdd += cea;
                 Point -= csa + cda + cva + cea;
+                VitAdd += Point;
                 return true;
             }
 

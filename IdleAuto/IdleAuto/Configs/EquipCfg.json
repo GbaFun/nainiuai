@@ -1055,6 +1055,23 @@
     }
   },
   {
+    "name": "天启鞋",
+    "description": "死骑技能鞋",
+    "equipment": {
+      "category": "靴子",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "天启降临之靴"
+        }
+      ]
+    }
+  },
+  {
     "name": "抗寒戒指",
     "description": "抗寒戒指",
     "equipment": {

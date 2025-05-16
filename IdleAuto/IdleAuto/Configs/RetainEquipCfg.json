@@ -474,6 +474,31 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "吟唱"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "等于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "海王利维亚桑"
         }
 
@@ -741,9 +766,9 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
-          "attributeType": "指定职业全系技能",
-          "conditionContent": "死骑,2"
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
 
       ]
@@ -2710,7 +2735,7 @@
     "equip": {
       "description": "死灵腰带",
       "category": "腰带",
-      "quality": "全部",
+      "quality": "传奇",
       "conditions": [
 
         {
@@ -2718,11 +2743,11 @@
 
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,2"
+          "conditionContent": "死灵,召唤,3"
         }
       ]
     },
-    "maxCount": 2
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2879,7 +2904,7 @@
         }
       ]
     },
-    "maxCount": 40
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2900,7 +2925,7 @@
         }
       ]
     },
-    "maxCount": 40
+    "maxCount": 4
   },
   {
     "equip": {
@@ -3123,7 +3148,7 @@
           "matchGroupName": "亡者遗产",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "骷髅法师,3"
+          "conditionContent": "骷髅法师,4"
         },
         {
           "matchType": "必需",
@@ -3272,7 +3297,7 @@
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "大于等于",
+          "operate": "等于",
           "attributeType": "凹槽",
           "conditionContent": "5"
         },
@@ -3406,13 +3431,13 @@
   {
     "equip": {
       "category": "戒指",
-      "quality": "全部",
+      "quality": "稀有",
       "conditions": [
         {
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "抗寒",
-          "conditionContent": "30"
+          "conditionContent": "25"
         },
         {
           "matchType": "必需",
@@ -3423,7 +3448,7 @@
       ]
 
     },
-    "maxCount": 4
+    "maxCount": 5
   },
   {
     "equip": {

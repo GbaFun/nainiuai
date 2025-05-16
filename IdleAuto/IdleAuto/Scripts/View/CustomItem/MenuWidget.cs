@@ -17,6 +17,7 @@ using System.Security.Principal;
 using IdleAuto.Scripts.Utils;
 using IdleAuto.Db;
 using IdleAuto.Scripts.Wrap;
+using System.IO;
 
 namespace IdleAuto.Scripts.View
 {
@@ -152,13 +153,13 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
                     await FlowController.GroupWork(2, 1, RepairManager.Instance.UpdateEquips);
-                   // await FlowController.MakeLunhui();
+                     //await FlowController.MakeLunhui();
 
-                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
                 }
                 catch (Exception ex)
                 {
@@ -233,7 +234,7 @@ namespace IdleAuto.Scripts.View
         {
             DateTime now = DateTime.Now;
             // 每两小时自动运行效率监控
-            //  refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromHours(1), TimeSpan.FromHours(6));
+              refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
 
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
@@ -245,11 +246,11 @@ namespace IdleAuto.Scripts.View
             // 执行BtnRefresh的点击事件
             if (InvokeRequired)
             {
-                Invoke(new Action(() => btnMonitor_Click(null, EventArgs.Empty)));
+                Invoke(new Action(() => BtnTest_Click(null, EventArgs.Empty)));
             }
             else
             {
-                btnMonitor_Click(null, EventArgs.Empty);
+                BtnTest_Click(null, EventArgs.Empty);
             }
         }
         private void AutoEquipElapsed(object state)
@@ -295,7 +296,7 @@ namespace IdleAuto.Scripts.View
 
             // await FlowController.SendXianji();
             // await FlowController.SaveRuneMap();
-            await FlowController.PassDungeon(71,70);
+          await FlowController.PassDungeon(71, 70);
 
         }
 
@@ -365,6 +366,15 @@ namespace IdleAuto.Scripts.View
 
         private void BtnReform_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void btnCookie_Click(object sender, EventArgs e)
+        {
+            var target = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookie");
+            var des = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "backup"));
+            ;
+            FileUtil.CopyDirectory(target, des);
 
         }
     }

@@ -167,7 +167,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="role"></param>
         /// <param name="isReset">是否自动重置，每日安排秘境</param>
         /// <returns></returns>
-        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0)
+        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0,bool bossOnly=false)
         {
             _browser = bro;
             var isDungeonBack = bool.Parse(ConfigUtil.GetAppSetting("IsDungeonBack"));
@@ -214,7 +214,7 @@ namespace IdleAuto.Scripts.Controller
 
             if (role.Level >= 30)
             {
-                await AutoDungeon(isReset);
+                await AutoDungeon(isReset,bossOnly);
                 return;
             }
             if (targetDungeonLv > 0 && role.Level < 30)
@@ -1147,6 +1147,9 @@ namespace IdleAuto.Scripts.Controller
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={roleid}");
             });
             var curMapLv = await GetCurMapLv();
+            var r = await _win.CallJs("_map.canSwitch()");
+            var canSwitch = r.Result.ToObject<bool>();
+            if (!canSwitch) return false;
             await _win.SignalRaceCallBack(new string[] { "charReload" }, async () =>
             {
                 await SwitchTo(targetLv);
@@ -1156,7 +1159,7 @@ namespace IdleAuto.Scripts.Controller
             if (_isNeedDungeon)
             {
                 _isNeedDungeon = false;//进来了就重置
-                await StartDungeon(bro, role, targetDungeonLv: targetDungeonLv);
+                await StartDungeon(bro, role, targetDungeonLv: targetDungeonLv,bossOnly:true);
                 return false;
             }
             else

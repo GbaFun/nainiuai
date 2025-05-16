@@ -64,6 +64,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnCookie = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -96,6 +97,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnCookie);
             this.HomeGroup.Controls.Add(this.btnNec);
             this.HomeGroup.Controls.Add(this.btnRollArtifact);
             this.HomeGroup.Controls.Add(this.btnAuction);
@@ -458,6 +460,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnCookie
+            // 
+            this.btnCookie.Location = new System.Drawing.Point(14, 472);
+            this.btnCookie.Name = "btnCookie";
+            this.btnCookie.Size = new System.Drawing.Size(102, 30);
+            this.btnCookie.TabIndex = 1;
+            this.btnCookie.Text = "cookie";
+            this.btnCookie.UseVisualStyleBackColor = true;
+            this.btnCookie.Click += new System.EventHandler(this.btnCookie_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -513,5 +525,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnAuction;
         private System.Windows.Forms.Button btnRollArtifact;
         private System.Windows.Forms.Button btnNec;
+        private System.Windows.Forms.Button btnCookie;
     }
 }

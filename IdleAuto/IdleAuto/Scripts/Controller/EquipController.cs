@@ -514,21 +514,7 @@ public class EquipController : BaseController
                         if (towearEquips.ContainsKey((emEquipSort)j))
                         {
                             EquipModel equip = towearEquips[(emEquipSort)j];
-                            ReplaceEquipStruct replaceResult = await WearEquip(win, equip, j, account, role);
-                            if (replaceResult.IsSuccess)
-                            {
-                                if (replaceResult.ReplacedEquip != null)
-                                {
-                                    replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
-                                    replaceResult.ReplacedEquip.EquipStatus = emEquipStatus.Repo;
-                                    //如果有替换下来的装备，加入到仓库装备中
-                                    FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
-                                }
-
-                                //改变穿戴中的状态
-                                WrapEquip(equip, account, role, emEquipStatus.Equipped);
-                                FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
-                            }
+                            await WearEquipAndRecord(win, equip, j, account, role);
                             P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                         }
                     }
@@ -550,6 +536,29 @@ public class EquipController : BaseController
 
         await UpdateCurEquips(win, role);
 
+    }
+
+    /// <summary>
+    /// 穿戴装备
+    /// </summary>
+    /// <returns></returns>
+    public async Task WearEquipAndRecord(BroWindow win, EquipModel equip, int sort, UserModel account, RoleModel role)
+    {
+        ReplaceEquipStruct replaceResult = await WearEquip(win, equip, sort, account, role);
+        if (replaceResult.IsSuccess)
+        {
+            if (replaceResult.ReplacedEquip != null)
+            {
+                replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
+                replaceResult.ReplacedEquip.EquipStatus = emEquipStatus.Repo;
+                //如果有替换下来的装备，加入到仓库装备中
+                FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
+            }
+
+            //改变穿戴中的状态
+            WrapEquip(equip, account, role, emEquipStatus.Equipped);
+            FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
+        }
     }
 
 
@@ -694,7 +703,7 @@ public class EquipController : BaseController
     /// <param name="account">所属账号</param>
     /// <param name="role">执行逻辑的角色</param>
     /// <returns></returns>
-    public async Task<ReplaceEquipStruct> WearEquip(BroWindow win, EquipModel equip, int sort, UserModel account, RoleModel role)
+    private async Task<ReplaceEquipStruct> WearEquip(BroWindow win, EquipModel equip, int sort, UserModel account, RoleModel role)
     {
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         ReplaceEquipStruct replaceEquipStruct = new ReplaceEquipStruct();
@@ -1059,7 +1068,7 @@ public class EquipController : BaseController
 
         P.Log($"开始查询数据库装备", emLogType.AutoEquip);
         List<EquipModel> findEquips = new List<EquipModel>();
-        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid).ToList();
+        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid&&p.RoleID==0).ToList();
         try
         {
             foreach (var item in __equips)
