@@ -160,7 +160,7 @@ namespace IdleAuto.Scripts.View
                   //  await FlowController.MakeLunhui();
 
                   //  await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
-                    refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+                    refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
                 }
                 catch (Exception ex)
                 {

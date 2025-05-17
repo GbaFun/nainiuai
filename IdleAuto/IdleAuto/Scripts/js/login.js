@@ -1,5 +1,5 @@
 ﻿
-let userKey="1.1.1.1";
+
 //初始化Bridge
 async function init() {
     try {
@@ -51,6 +51,7 @@ init().then((r) => {
     //登录页逻辑
     if (location.href.indexOf("Login") > -1) {
         setUsernamePwd();
+        (function () { function r(t) { return t[Math.floor(Math.random() * t.length)] } const uaTypes = [`Mozilla/5.0 (Linux; Android ${r(["8", "9", "10", "11", "12"])}; ${r(["Pixel 5", "Mi 10T", "SM-G975F"])}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${r([80, 90, 100])}.0.0.0 Mobile Safari/537.36`, `Mozilla/5.0 (iPhone; CPU iPhone OS ${r(["14", "15", "16"])}_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/${r(["14", "15"])}.0 Mobile/15E148 Safari/604.1`]; function f() { try { Object.defineProperty(navigator, "userAgent", { value: r(uaTypes) }); const res = r(["360x640", "414x896", "375x812"]).split("x"); Object.defineProperties(screen, { width: { value: +res[0] }, height: { value: +res[1] } }); Object.defineProperty(navigator, "language", { value: r(["zh-CN", "en-US", "ja-JP"]) }); Object.defineProperty(navigator, "hardwareConcurrency", { value: r([2, 4, 8]) }); return "✅ 指纹修改成功\nUA: " + navigator.userAgent } catch (e) { return "❌ 修改失败: " + e.message } } const d = document.createElement("div"); d.style = "position:fixed;bottom:0;left:0;right:0;background:#fff;padding:10px;z-index:99999;font-family:Arial;box-shadow:0 0 10px #0003;"; d.textContent = f(); document.body.appendChild(d); setTimeout(() => d.remove(), 3000); })();
         // checkIP();
     }
 
@@ -64,47 +65,7 @@ init().then((r) => {
     }, 1000);//首页保存cookie或者替换cookie
   
 });
-function generatePrint() {
-    const regex = /encrypt\(\`([a-zA-Z0-9]+)\$\{CryptoJS\.SHA256\(rawString\)\.toString\(\)\}\`\);/;
-    var code = document.head.innerHTML.match(regex)[1];
 
-    const components = {};
-    components.userAgent = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${userKey} Safari/537.36`;
-    console.log(components.userAgent);
-    components.screen = `${screen.width}x${screen.height}-${screen.colorDepth}`;
-    components.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    components.language = navigator.language;
-    components.platform = navigator.platform;
-    components.deviceMemory = navigator.deviceMemory;
-    components.hardwareConcurrency = navigator.hardwareConcurrency;
-
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.textBaseline = 'top';
-    ctx.fillText('Fingerprint', 2, 2);
-    components.canvas = CryptoJS.MD5(ctx.getImageData(0, 0, 200, 50).data).toString();
-
-    try {
-        const canvas2 = document.createElement('canvas');
-        const gl = canvas2.getContext('webgl');
-        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        components.webglVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-        components.webglRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-    } catch (e) {
-        components.webglVendor = 'unsupported';
-        components.webglRenderer = 'unsupported';
-    }
-    try {
-        components.plugins = Array.from(navigator.plugins).map(plugin => plugin.name);
-    }
-    catch (e) {
-        components.plugins = "undefined";
-    }
-
-    const rawString = JSON.stringify(components);
-    //console.log(rawString);
-    return encrypt(`${code}${CryptoJS.SHA256(rawString).toString()}`);
-}
 
 function checkIP() {
     var errTxt = $(".validation-summary-errors").text();

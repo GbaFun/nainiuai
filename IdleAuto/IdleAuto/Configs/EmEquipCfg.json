@@ -194,6 +194,20 @@
       },
 
       {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "施法速度"
+      },
+
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      },
+
+      {
         "matchType": "任一",
         "matchGroupName": "骑士技能衣服",
         "operate": "大于等于",
@@ -227,6 +241,12 @@
         "operate": "不等于",
         "attributeType": "自定义",
         "conditionContent": "攻击速度提升"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
       }
     ]
   }
