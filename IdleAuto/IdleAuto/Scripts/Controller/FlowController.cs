@@ -840,6 +840,16 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        public static void TestSpeed()
+        {
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "斧" && p.Content.Contains("死骑冰霜")).ToList();
+            var dkWeaponConfig = EmEquipCfg.Instance.GetEquipCondition(emEquip.死骑冰霜武器);
+            foreach (var item in list)
+            {
+                AttributeMatchUtil.Match(item, dkWeaponConfig, out _);
+            }
+        }
+
         public async static Task PassDungeon(int testLv, int dungeonLv)
         {
             var groupList = FreeDb.Sqlite.Select<GroupModel>().ToList();

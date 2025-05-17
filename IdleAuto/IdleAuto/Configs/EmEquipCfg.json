@@ -247,6 +247,12 @@
         "operate": "不等于",
         "attributeType": "自定义",
         "conditionContent": "无形"
+      },
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "武器速度",
+        "conditionContent": "-20,30"
       }
     ]
   }

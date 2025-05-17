@@ -3159,7 +3159,7 @@
           "matchType": "必需",
           "operate": "在范围内",
           "attributeType": "武器速度",
-          "conditionContent": "0-30"
+          "conditionContent": "0,30"
         }
       ]
     }

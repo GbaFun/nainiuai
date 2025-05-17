@@ -587,18 +587,21 @@ namespace AttributeMatch
 
         private static bool MatchWeaponSpeed(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
+           
             bool ismatch = false;
             weight = 0;
             string regexAttr1 = $@"[斧|剑|锤|长矛|匕首|法杖|权杖|弓|十字弓|标枪|投掷武器|法珠|爪|游侠弓|游侠标枪|祭祀刀|手杖|拳套|手弩]速度：(?<v>\d+)";
             string regexAttr2 = $@"[斧|剑|锤|长矛|匕首|法杖|权杖|弓|十字弓|标枪|投掷武器|法珠|爪|游侠弓|游侠标枪|祭祀刀|手杖|拳套|手弩]速度：-(?<v>\d+)";
 
             int attrValue = 0;
+            int[] condition = Array.ConvertAll(_condition.ConditionContent.Split(','), int.Parse);
             Regex regex = new Regex(regexAttr1, RegexOptions.Multiline);
+
             var match = regex.Match(_equip.Content);
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
-                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
+               
             }
             else
             {
@@ -607,13 +610,11 @@ namespace AttributeMatch
                 if (match2.Success)
                 {
                     attrValue = int.Parse(match2.Groups["v"].Value) * -1;
-                    ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
+                  
                 }
-                else
-                {
-                    ismatch = OperateValue(0, _condition.ConditionContent, _condition.Operate, out weight);
-                }
+               
             }
+            ismatch = condition[0] <= attrValue && attrValue <= condition[1];
 
             return ismatch;
         }
