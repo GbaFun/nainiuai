@@ -177,7 +177,7 @@
     "quality": "传奇|套装",
     "conditions": [
       {
-        "matchType": "任一",
+        "matchType": "可选",
         "matchGroupName": "骑士技能衣服",
         "operate": "大于等于",
         "attributeType": "所有技能",
@@ -185,7 +185,7 @@
         "seq": 30
       },
       {
-        "matchType": "任一",
+        "matchType": "可选",
         "matchGroupName": "骑士技能衣服",
         "operate": "大于等于",
         "attributeType": "指定职业单系技能",
@@ -208,7 +208,7 @@
       },
 
       {
-        "matchType": "任一",
+        "matchType": "可选",
         "matchGroupName": "骑士技能衣服",
         "operate": "大于等于",
         "attributeType": "更佳魔法装备",

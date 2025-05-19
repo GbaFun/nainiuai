@@ -962,6 +962,12 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "绑定"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "全能"
         }
 
       ]
@@ -2790,7 +2796,7 @@
     "equipment": {
       "category": "头饰",
       "quality": "全部",
-
+      "isTrade": true,
       "conditions": [
 
 

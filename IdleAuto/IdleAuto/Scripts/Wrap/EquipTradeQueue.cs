@@ -17,7 +17,7 @@ namespace IdleAuto.Scripts.Wrap
             _queue.ItemProcessed += (sender, list) =>
             {
                 Console.WriteLine("处理装备登记");
-                var l = FreeDb.Sqlite.Select<TradeModel>().Where(p => list.Select(s => s.EquipId).Contains(p.EquipId) ).ToList();
+                var l = FreeDb.Sqlite.Select<TradeModel>().Where(p =>(list.Select(s => s.EquipId).Contains(p.EquipId) )||( list.Select(s => s.DemandRoleId).Contains(p.DemandRoleId))).ToList();
                 //确保套装中没有被登记掉的装备
                 if (l.Count == 0)
                 {
