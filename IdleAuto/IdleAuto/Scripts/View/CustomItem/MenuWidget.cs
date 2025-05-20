@@ -153,13 +153,13 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(2, 1, RepairManager.Instance.ClearEquips);
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips,RepairManager.NanfangAccounts);
                    // await FlowController.MakeLunhui();
 
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
                    
                 }
                 catch (Exception ex)
@@ -291,13 +291,13 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            await FlowController.MakeLunhui();
-            //await FlowController.MoveTaGeAo();
-            //await FlowController.UpgradeBaseEq();
+           // await FlowController.MakeLunhui();
+           // //await FlowController.MoveTaGeAo();
+           // //await FlowController.UpgradeBaseEq();
 
-           //  await FlowController.SendXianji();
-            // await FlowController.SaveRuneMap();
-             //await FlowController.PassDungeon(71, 70);
+           ////  await FlowController.SendXianji();
+           // // await FlowController.SaveRuneMap();
+             await FlowController.PassDungeon(71, 70);
            // FlowController.TestSpeed();
 
         }

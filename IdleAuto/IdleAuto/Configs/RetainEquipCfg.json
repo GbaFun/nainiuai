@@ -155,7 +155,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "克己"
+          "conditionContent": "克己1"
         },
         {
           "matchType": "任一",
@@ -2358,7 +2358,7 @@
           "matchGroupName": "死灵手杖",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,1"
+          "conditionContent": "死灵,召唤,3"
         },
         {
           "matchType": "可选",
@@ -2446,7 +2446,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2725,6 +2725,13 @@
           "operate": "大于等于",
           "attributeType": "施法速度",
           "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+         
+          "conditionContent": "20"
         }
       ]
     },
