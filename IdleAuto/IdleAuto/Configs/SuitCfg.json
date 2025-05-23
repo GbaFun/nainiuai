@@ -641,7 +641,7 @@
           "isNecessery": 0
         },
         "副手": {
-          "name": "元帅盾牌,光环盾牌",
+          "name": "梦境盾,元帅盾牌,光环盾牌",
           "isNecessery": 0
         },
         "头盔": {
@@ -1781,6 +1781,56 @@
       "max": 78
     },
     "equipSuit": [
+      {
+        "suitName": "献祭",
+        "skillMode": "献祭",
+        "主手": {
+          "name": "自杀支系",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "2孔教化",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "阴影之环",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "施法戒指",
+          "isNecessery": true
+        },
+        "戒指2": {
+          "name": "施法戒指",
+          "isNecessery": true
+        },
+        "靴子": {
+          "name": "时光扭曲行者,抗火毒靴子"
+
+        },
+        "衣服": {
+          "name": "尸体的哀伤",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "施法手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "重生护符",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "20施法腰带",
+          "isNecessery": true
+        }
+      },
       {
         "suitName": "满足特殊修车的一套装备",
 

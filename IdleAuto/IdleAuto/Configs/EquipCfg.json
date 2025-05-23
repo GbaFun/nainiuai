@@ -315,6 +315,24 @@
     }
   },
   {
+    "name": "梦境盾",
+    "description": "骑士光环技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "盾",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 2,
+          "conditionContent": "梦境"
+        }
+      ]
+    }
+  },
+  {
     "name": "骑士40解毒头",
     "description": "骑士40带解毒",
     "equipment": {
@@ -1778,7 +1796,6 @@
     "description": "抗寒手套，有其他属性更好，优先考虑施法->MF->金币掉落->元素抗性",
     "equipment": {
       "category": "手套",
-      "isTrade": true,
       "quality": "魔法|稀有|传奇|套装",
       "conditions": [
 
@@ -3221,7 +3238,7 @@
       ]
     }
   },
-  //神器
+
   {
     "name": "飞龙衣服",
     "description": "",
@@ -3243,6 +3260,192 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+
+  //献祭套装
+  {
+    "name": "自杀支系",
+    "description": "",
+    "equipment": {
+      "category": "手杖",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "自杀支系"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+ 
+  {
+    "name": "2孔教化",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "头饰",
+      "quality": "套装",
+      
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "教化"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "尸体的哀伤",
+    "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
+    "equipment": {
+      "category": "衣服",
+      "quality": "传奇",
+      
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "尸体的哀伤"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "20施法腰带",
+
+    "equipment": {
+      "category": "腰带",
+      "quality": "套装",
+      
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "施法速度",
+          "conditionContent": "20"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "阴影之环",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇|手工",
+      
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "15"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+
+  {
+    "name": "施法戒指",
+
+    "equipment": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "conditionContent": "50"
+        },
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "希望之翼",
+          "seq": 200
+        }
+      ]
+    }
+  },
+  {
+    "name": "重生护符",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "稀有|传奇|魔法",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "重生,1"
         }
       ]
     }

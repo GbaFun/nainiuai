@@ -31,5 +31,9 @@ namespace IdleAuto.Scripts.Model
         /// 已过秘境
         /// </summary>
         public int DungeonPassedLv { get; set; }
+        /// <summary>
+        /// 永恒速度
+        /// </summary>
+        public int YonghengSpeed { get; set; }
     }
 }

@@ -411,8 +411,9 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task AutoEquips(BroWindow win, UserModel account, RoleModel role)
+    public async Task AutoEquips(BroWindow win, RoleModel role)
     {
+        var account = win.User;
         if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
@@ -442,8 +443,17 @@ public class EquipController : BaseController
 
                 tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
                 var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
+                if (suitEquips.MatchSuitName == "献祭")
+                {
+                    P.Log("满足献祭装备");
+                }
                 if (suitEquips.IsSuccess)
                 {
+                    if (role.Job == emJob.死灵)
+                    {
+                        FlowController.SetSkillMode(role, account, suitEquips.MatchSkillModel);
+                    }
+
                     P.Log($"匹配{role.Level}级{role.Job}配置的装备成功，匹配套装：{suitEquips.MatchSuitName},开始更换装备", emLogType.AutoEquip);
                     towearEquips = suitEquips.ToWearEquips;
                     toMakeEquips = suitEquips.ToMakeEquips;
@@ -660,6 +670,7 @@ public class EquipController : BaseController
 
             }
         }
+        result.MatchSkillModel = equipSuit.SkillMode;
 
         return result;
     }
@@ -883,6 +894,10 @@ public class EquipController : BaseController
         {
             var eqName = dto.Equipment.EquipNameArr[i];
             var equipConfig = dto.Equipment.GetEquipment(eqName);
+            if (equipConfig == null)
+            {
+                throw new Exception("配置为空");
+            }
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
 
 
@@ -1042,15 +1057,15 @@ public class EquipController : BaseController
             var baseEqList = GetMatchEquips(dto.AccountId, condition, out _).ToList();
             if (baseEqList.Count != 0)
             {    //为了满足孔位大于目标可以运用随机打孔公式 所以可能会匹配出来孔位大于目标孔位的装备需要额外筛选下
-                var slotList = baseEqList.Where(p => p.Value.emItemQuality == emItemQuality.破碎).ToList();
-                var baseList = baseEqList.Where(p => p.Value.emItemQuality == emItemQuality.普通).ToList();
+                var slotList = baseEqList.Where(p => p.emItemQuality == emItemQuality.破碎).ToList();
+                var baseList = baseEqList.Where(p => p.emItemQuality == emItemQuality.普通).ToList();
                 var slotConfig = condition.DeepCopy();
                 slotConfig.Conditions.Where(p => p.AttributeType == emAttrType.凹槽).First().Operate = emOperateType.等于;
-                var slotMatchList = slotList.Where(p => AttributeMatchUtil.Match(p.Value, slotConfig, out _));
+                var slotMatchList = slotList.Where(p => AttributeMatchUtil.Match(p, slotConfig, out _));
                 var concatList = slotMatchList.Concat(baseList);
                 if (concatList.Count() != 0)
                 {
-                    var baseEq = concatList.FirstOrDefault().Value;
+                    var baseEq = concatList.FirstOrDefault();
                     dto.Result.ToMakeEquips[dto.EmEquipSort].Add(new ArtifactMakeStruct() { ArtifactBase = config.ArtifactBase, Config = ArtifactBaseCfg.Instance.GetEquipCondition(config.ArtifactBase), EquipBase = baseEq, Seq = config.Seq });
                 }
 
@@ -1061,14 +1076,14 @@ public class EquipController : BaseController
         return bestEq;
 
     }
-    public Dictionary<long, EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
+    public List<EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
     {
-        Dictionary<long, EquipModel> matchEquipMap = new Dictionary<long, EquipModel>();
+        List<EquipModel> matchEquips = new List<EquipModel>();
         Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();
 
         P.Log($"开始查询数据库装备", emLogType.AutoEquip);
         List<EquipModel> findEquips = new List<EquipModel>();
-        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid&&p.RoleID==0).ToList();
+        var __equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountid && p.RoleID == 0).ToList();
         try
         {
             foreach (var item in __equips)
@@ -1092,11 +1107,19 @@ public class EquipController : BaseController
             if (AttributeMatchUtil.Match(item, target, out AttributeMatchReport report))
             {
                 matchReports.Add(item.EquipID, report);
-                matchEquipMap.Add(item.EquipID, item);
+                matchEquips.Add(item);
             }
         }
         reportMap = matchReports;
-        return matchEquipMap;
+        if (reportMap.Count > 0)
+        {
+            var best = reportMap.OrderByDescending(o => o.Value.MatchWeight).First();
+            var bestEq = matchEquips.Find(p => p.EquipID == best.Key);
+            matchEquips.Remove(bestEq);
+            matchEquips.Insert(0, bestEq);
+        }
+
+        return matchEquips;
     }
 
     private EquipSuits GetEquipConfig(emJob job, int level)
@@ -1146,6 +1169,7 @@ public struct EquipSuitMatchStruct
 {
     public bool IsSuccess;
     public string MatchSuitName;
+    public emSkillMode MatchSkillModel;
     public Dictionary<emEquipSort, EquipModel> ToWearEquips;
     //需要制作的神器
     public Dictionary<emEquipSort, List<ArtifactMakeStruct>> ToMakeEquips;

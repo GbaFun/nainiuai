@@ -1,22 +1,3 @@
-﻿https://www.idleinfinity.cn/Equipment/EquipAuction
-
-__RequestVerificationToken: Ta_adfv3D2KZtB_KNdxV-27g2LGmFqIkgCFQXH_yPjAkwyuC04MGbZm915u5q70332wPkQ2Bcnzg42hDcGXG-UcMi8p3Z3J2E1oYs7ZJs5p0W8hkQjZsNspIFOrTWNIScEyu5Mf0GsGdeUvrt6TzGqr3h5eXFoVZUttW1RUHPrHonXyjJNFz71FbZo_CEpYy0
-cid: 1264
-eid: 15411496
-eidsbox: 
-eidsbag: 
-aid: 
-cet: 
-et: 
-pt: 
-pi: 0
-et2: 
-pt2: 1
-pi2: 0
-cname: 
-edes: {"isFix":true,"gold":0,"runes":[{"index":"18","count":"1"}]}
-max: -1
-min: -1
-replace: 
-cfid: 
-cfname: 
+﻿1.自动换装那里 匹配到献祭套装的把整队标记献祭 永恒 飞龙 末日 冰冻 情况插在组队表里
+2. 然后骑士换加点 死骑检查有没有永恒
+3.在流程控制那里修献祭 攒装备 换装 打孔 插冰转 洗点

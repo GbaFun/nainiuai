@@ -10,9 +10,12 @@ public class AccountCfg
 
     public List<Account> Accounts { get; set; }
 
+    public List<UserModel> Users { get; set; }
+
     public AccountCfg()
     {
         LoadConfig();
+        LoadUserModel();
     }
 
     public UserModel GetUserModel(string name)
@@ -31,6 +34,16 @@ public class AccountCfg
         else
         {
             Accounts = new List<Account>();
+        }
+    }
+
+    private void LoadUserModel()
+    {
+        Users = new List<UserModel>();
+        foreach (var acc in Accounts)
+        {
+            var user = GetUserModel(acc.AccountName);
+            Users.Add(user);
         }
     }
 }

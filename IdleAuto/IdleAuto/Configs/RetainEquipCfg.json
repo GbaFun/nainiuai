@@ -141,7 +141,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "浩劫"
+          "conditionContent": "浩劫复生"
         },
         {
           "matchType": "任一",
@@ -2730,7 +2730,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-         
+
           "conditionContent": "20"
         }
       ]
@@ -3132,6 +3132,108 @@
           "attributeType": "技能等级",
           "seq": 6,
           "conditionContent": "狂热光环,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "权杖",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "seq": 6,
+          "conditionContent": "4"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  //毁灭
+  {
+    "equip": {
+      "category": "权杖",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "祝福之锤,3"
+        },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "权杖",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "忏悔,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "权杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 6,
+          "conditionContent": "奉献,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "权杖",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "seq": 6,
+          "conditionContent": "5"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  //黎明
+  {
+    "equip": {
+      "category": "手弩",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "seq": 6,
+          "conditionContent": "攻城"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  //复仇女神
+  {
+    "equip": {
+      "category": "爪",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "seq": 6,
+          "conditionContent": "近身"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "3"
         }
 
       ]

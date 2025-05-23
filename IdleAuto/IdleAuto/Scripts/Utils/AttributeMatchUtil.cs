@@ -475,7 +475,11 @@ namespace AttributeMatch
                     }
                     break;
                 case emItemQuality.破碎:
-                    regexStr = @"凹槽\(0\/(?<v>\d+)\)";
+                case emItemQuality.套装:
+                case emItemQuality.传奇:
+                case emItemQuality.稀有:
+                case emItemQuality.魔法:
+                    regexStr = @"凹槽\(\d\/(?<v>\d+)\)";
                     regex = new Regex(regexStr, RegexOptions.Multiline);
                     match = regex.Match(_equip.Content);
                     if (match.Success)

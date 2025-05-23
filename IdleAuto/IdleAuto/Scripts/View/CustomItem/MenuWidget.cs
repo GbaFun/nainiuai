@@ -156,11 +156,10 @@ namespace IdleAuto.Scripts.View
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
                     //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips,RepairManager.NanfangAccounts);
-                   // await FlowController.MakeLunhui();
-
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    //await FlowController.MakeLunhui();
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -235,12 +234,13 @@ namespace IdleAuto.Scripts.View
         {
             DateTime now = DateTime.Now;
             // 每两小时自动运行效率监控
-           // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+            // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
 
             // 每天凌晨6点自动运行全部账号清库盘库修车指令
             DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
             TimeSpan initialDelay2 = nextRun2 - now;
             // autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
+            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -277,7 +277,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.SyncFilter);
+            var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "Rasdgch").ToArray();
+            FlowController.GroupWork(4, 1, FlowController.SyncFilter, acc);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
@@ -291,14 +292,15 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-           // await FlowController.MakeLunhui();
-           // //await FlowController.MoveTaGeAo();
-           // //await FlowController.UpgradeBaseEq();
+            // await FlowController.MakeLunhui();
+            // //await FlowController.MoveTaGeAo();
+            // //await FlowController.UpgradeBaseEq();
 
-           ////  await FlowController.SendXianji();
-           // // await FlowController.SaveRuneMap();
-             await FlowController.PassDungeon(71, 70);
-           // FlowController.TestSpeed();
+            ////  await FlowController.SendXianji();
+            // // await FlowController.SaveRuneMap();
+            //await FlowController.PassDungeon(71, 70);
+            // FlowController.TestSpeed();
+
 
         }
 
@@ -363,7 +365,8 @@ namespace IdleAuto.Scripts.View
 
         private void btnNec_Click(object sender, EventArgs e)
         {
-            FlowController.RepairNec();
+            //FlowController.RepairNec();
+            FlowController.RepairXianji();
         }
 
         private void BtnReform_Click(object sender, EventArgs e)

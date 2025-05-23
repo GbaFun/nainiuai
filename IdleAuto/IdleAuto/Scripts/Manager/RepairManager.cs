@@ -24,6 +24,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public static readonly List<int> FcrSpeeds = new List<int> { 0, 25, 50, 75, 110, 145, 180 };
     public static long PublicFeilongId = long.Parse(ConfigUtil.GetAppSetting("feilong"));
     public static long PublicYonghengId = long.Parse(ConfigUtil.GetAppSetting("yongheng"));
+    public static readonly string RepoAcc = ConfigUtil.GetAppSetting("repoAcc");
+    public static readonly string RepoRole = ConfigUtil.GetAppSetting("repoRole");
     /// <summary>
     /// 一键修车（单账号）
     /// 盘库、技能加点、自动更换装备、剩余属性点分配
@@ -304,7 +306,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     }
     public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
     {
-        await controller.AutoEquips(win, account, role);
+        await controller.AutoEquips(win, role);
     }
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {
