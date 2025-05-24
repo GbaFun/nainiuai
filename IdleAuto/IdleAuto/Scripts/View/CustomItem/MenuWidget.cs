@@ -298,7 +298,7 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-            //await FlowController.PassDungeon(71, 70);
+            await FlowController.PassDungeon(71, 70);
             // FlowController.TestSpeed();
 
 
