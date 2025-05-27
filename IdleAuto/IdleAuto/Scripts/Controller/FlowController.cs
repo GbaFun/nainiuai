@@ -182,11 +182,11 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             await SaveRuneMap();
-            //var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
-            //foreach (var job in sendDic)
-            //{
-            //    await SendRune(job.Key, job.Value);
-            //}
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+            foreach (var job in sendDic)
+            {
+                await SendRune(job.Key, job.Value);
+            }
 
 
         }
@@ -277,7 +277,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && (p.EquipName == "飞雪") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && (p.EquipName == "雄黄之白热的珠宝") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             list = list.Take(2).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
@@ -302,7 +302,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendXianji(string targetAcc, string targetRole)
         {
 
-            var bingzhuanList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("冰冷转换") && p.Category == "珠宝" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var bingzhuanList = FreeDb.Sqlite.Select<EquipModel>().Where(p => !p.Content.Contains("增强伤害") && p.EquipName.Contains("冰冷转换") && p.Category == "珠宝" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var zishaList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("自杀支系") && p.EquipStatus == emEquipStatus.Repo && !p.EquipName.Contains("无形") && p.IsLocal == false).ToList();
             var shitiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("尸体的哀伤") && p.EquipStatus == emEquipStatus.Repo && !p.EquipName.Contains("无形") && p.IsLocal == false).ToList();
             var xianglianList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("阴影之环") && p.Category == "项链" && !p.EquipName.Contains("无形") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
@@ -313,7 +313,7 @@ namespace IdleAuto.Scripts.Controller
             var list = new List<EquipModel>();
 
             var localBingzhuanList = bingzhuanList.Where(p => p.AccountName == targetAcc).ToList();
-            if (bingzhuanList.Count < 4)
+            if (localBingzhuanList.Count < 4)
             {
                 list.AddRange(bingzhuanList.Take(4 - localBingzhuanList.Count));
             }
@@ -573,7 +573,7 @@ namespace IdleAuto.Scripts.Controller
             var c = new CharacterController(win);
 
             //将背包中的31底子做完
-            var r2 = e.GetMatchEquips(user.Id, con32Base, out _);
+            var r2 = e.GetMatchEquips(user.Id, con32Base, null, out _);
             foreach (var base31 in r2)
             {
 
@@ -926,7 +926,7 @@ namespace IdleAuto.Scripts.Controller
 
                 var knightRole = win.User.Roles.Where(p => p.RoleId == feilong.RoleID).First();
 
-                var anyCloth = e.GetMatchEquips(feilong.AccountID, clothConfig, out _).FirstOrDefault();
+                var anyCloth = e.GetMatchEquips(feilong.AccountID, clothConfig, knightRole, out _).FirstOrDefault();
 
                 await e.AutoAttributeSave(win, knightRole, new List<EquipModel>() { { anyCloth } });
                 //得跳转换装页面
@@ -941,7 +941,7 @@ namespace IdleAuto.Scripts.Controller
             if (yongheng.RoleID > 0 && targetDk.RoleId != yongheng.RoleID)
             {
                 var dkRole = win.User.Roles.Where(p => p.RoleId == yongheng.RoleID).First();
-                var anyWeapon = e.GetMatchEquips(yongheng.AccountID, dkWeaponConfig, out _).FirstOrDefault();
+                var anyWeapon = e.GetMatchEquips(yongheng.AccountID, dkWeaponConfig, dkRole, out _).FirstOrDefault();
                 await e.AutoAttributeSave(win, dkRole, new List<EquipModel>() { { anyWeapon } });
                 await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(yongheng.RoleID), "equip");
                 await e.WearEquipAndRecord(win, anyWeapon, (int)emEquipSort.副手, win.User, dkRole);
@@ -997,19 +997,66 @@ namespace IdleAuto.Scripts.Controller
             foreach (var user in AccountCfg.Instance.Users)
             {
                 var groups = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.AccountName == user.AccountName).ToList();
-                var index = groups.FindIndex(p => p.SkillMode != emSkillMode.献祭 && p.Job == emJob.死灵);
+                var index = groups.FindIndex(p => p.Job == emJob.死灵 && (!p.IsRepairSacrificeDone));
                 if (index == -1) continue;
                 var nec = groups[index];
                 await SendXianji(user.AccountName, nec.RoleName);
                 var win = await TabManager.Instance.TriggerAddBroToTap(user);
                 var e = new EquipController(win);
-                var role = win.User.Roles.Find(p => p.RoleId == nec.RoleId);
-                await e.AutoEquips(win, role);
+                var necRole = win.User.Roles.Find(p => p.RoleId == nec.RoleId);
+                var curEquips = await e.AutoEquips(win, necRole);
+                await InsertColdConversion(curEquips, win, necRole);
                 //给死灵洗点 打宝珠 切换骑士拯救光环 监控永恒速度
+                var c = new CharacterController(win);
+                await c.AddSkillPoints(necRole);
 
-
+                groups = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.AccountName == user.AccountName).ToList();
+                var curGroup = groups.Where(p => p.TeamIndex == nec.TeamIndex).ToList();
+                curGroup.ForEach(p => { p.IsRepairSacrificeDone = true; });
+                //DbUtil.InsertOrUpdate<GroupModel>(curGroup);
 
             }
+        }
+
+        private static async Task InsertColdConversion(Dictionary<emEquipSort, EquipModel> curEquips, BroWindow win, RoleModel role)
+        {
+            var bro = win.GetBro();
+            var head = curEquips[emEquipSort.头盔];
+            int headCount = RegexUtil.MatchCount(head.Content, "冰冷转换");
+            if (headCount == 0)
+            {
+                if (head.EquipName == "教化")
+                {
+
+
+
+                }
+                else if (head.EquipName == "冰晶")
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
+            var url = IdleUrlHelper.InlayUrl(role.RoleId, head.EquipID);
+            if (bro.Address != url) await win.LoadUrlWaitJsInit(url, "inlay");
+            await Task.Delay(1500);
+            var r = await win.CallJs("_inlay.isEnd()");
+            var isEnd = r.Result.ToObject<bool>();
+            var e = new EquipController(win);
+            var list = e.GetMatchEquips(win.User.Id, EmEquipCfg.Instance.GetEquipCondition(emEquip.冰转珠宝), role, out _);
+            if (!isEnd)
+            {
+                await win.CallJsWaitReload($"_inlay.equipInlay({list[0].EquipID})", "inlay");
+                await Task.Delay(1500);
+                list[0].SetAccountInfo(win.User, role);
+                DbUtil.InsertOrUpdate<EquipModel>(list[0]);
+                await InsertColdConversion(curEquips, win, role);
+            }
+
         }
 
         public static void SetSkillMode(RoleModel role, UserModel user, emSkillMode matchSkillMode)

@@ -72,14 +72,7 @@
           "attributeType": "名称",
           "conditionContent": "无形布尔凯索的"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "毁灭之王"
-        },
-
+     
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -139,7 +132,7 @@
         {
           "matchType": "任一",
           "matchGroupName": "套装",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "浩劫复生"
         },
@@ -723,7 +716,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业全系技能",
           "conditionContent": "猎手,2"
         }
@@ -1302,6 +1295,30 @@
       ]
     },
     "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "施法腰带",
+      "category": "腰带",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "15"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    },
+    "maxCount": 100
   },
   {
     "equip": {
@@ -3025,7 +3042,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 0
   },
   {
     "equip": {
@@ -3206,6 +3223,37 @@
           "attributeType": "名称",
           "seq": 6,
           "conditionContent": "攻城"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  //巨神 末日 死呼
+  {
+    "equip": {
+      "category": "剑",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "seq": 6,
+          "conditionContent": "巨神"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+
+          "attributeType": "凹槽",
+          "seq": 6,
+          "conditionContent": "5"
         }
 
       ]
@@ -3689,6 +3737,23 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "刺客,格斗,1"
+        }
+      ]
+
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "category": "秘境",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "物品掉率",
+          "conditionContent": "1"
         }
       ]
 

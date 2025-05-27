@@ -35,5 +35,10 @@ namespace IdleAuto.Scripts.Model
         /// 永恒速度
         /// </summary>
         public int YonghengSpeed { get; set; }
+
+        /// <summary>
+        /// 献祭是否修完
+        /// </summary>
+        public bool IsRepairSacrificeDone { get; set; } = false;
     }
 }

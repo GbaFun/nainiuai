@@ -167,7 +167,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="role"></param>
         /// <param name="isReset">是否自动重置，每日安排秘境</param>
         /// <returns></returns>
-        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0,bool bossOnly=false)
+        public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0, bool bossOnly = false)
         {
             _browser = bro;
             var isDungeonBack = bool.Parse(ConfigUtil.GetAppSetting("IsDungeonBack"));
@@ -214,7 +214,7 @@ namespace IdleAuto.Scripts.Controller
 
             if (role.Level >= 30)
             {
-                await AutoDungeon(isReset,bossOnly);
+                await AutoDungeon(isReset, bossOnly);
                 return;
             }
             if (targetDungeonLv > 0 && role.Level < 30)
@@ -245,7 +245,7 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        private async Task AutoDungeon(bool isReset,bool bossOnly=false)
+        private async Task AutoDungeon(bool isReset, bool bossOnly = false)
         {
             var data = new Dictionary<string, object>();
             data.Add("isReset", isReset);
@@ -734,16 +734,17 @@ namespace IdleAuto.Scripts.Controller
             {
                 var role = user.Roles[i];
                 if (repairJob != "" && role.Job.ToString() != repairJob) continue;
-                await AddSkillPoints(_browser, role);
+                await AddSkillPoints(role);
                 await Task.Delay(2000);
             }
 
         }
 
-        public async Task AddSkillPoints(ChromiumWebBrowser bro, RoleModel role)
+        public async Task AddSkillPoints(RoleModel role)
         {
-            if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
-            _browser = bro;
+            //if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
+            _browser = _win.GetBro();
+            var bro = _win.GetBro();
             int roleid = role.RoleId;
             await Task.Delay(1000);
             //不在详细页先去详细页读取属性
@@ -751,16 +752,23 @@ namespace IdleAuto.Scripts.Controller
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
             });
-
+            var groupList = RepairManager.GetGroup(role);
+            var nec = groupList.Where(p => p.Job == emJob.死灵).First();
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level);
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level,nec.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+         
             if (role.Job == emJob.死灵)
             {
-                await SetNecSpecialSkill(role, targetSkillPoint);
+                if (nec.SkillMode == emSkillMode.法师)
+                {
+                    await SetNecSpecialSkill(role, targetSkillPoint);
+                }
+                
             }
+            
             var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill);
             var isNeedRest = r.Item1;
             var isNeedAdd = r.Item2;
@@ -1159,7 +1167,7 @@ namespace IdleAuto.Scripts.Controller
             if (_isNeedDungeon)
             {
                 _isNeedDungeon = false;//进来了就重置
-                await StartDungeon(bro, role, targetDungeonLv: targetDungeonLv,bossOnly:true);
+                await StartDungeon(bro, role, targetDungeonLv: targetDungeonLv, bossOnly: true);
                 return false;
             }
             else

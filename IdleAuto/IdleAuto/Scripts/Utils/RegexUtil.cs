@@ -117,6 +117,12 @@ public class RegexUtil
         throw new ArgumentException($"你配的什么玩意: {op}");
     }
 
+    public static int MatchCount(string text, string pattern)
+    {
+        int count = Regex.Matches(text, pattern).Count;
+        return count;
+    }
+
 
 }
 

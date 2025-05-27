@@ -51,7 +51,7 @@ public class IdleSkillCfg
 
     public SkillModel GetIdleSkill(string jobName, string skillName)
     {
-        var skills = Data[jobName];
+        var skills = Data[jobName].Concat(Data["其它"]).ToList();
         var s = skills.Find(p => p.Name == skillName);
         if (s == null)
         {

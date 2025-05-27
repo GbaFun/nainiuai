@@ -976,7 +976,7 @@
 
 
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "绑定"
@@ -3437,7 +3437,7 @@
 
     "equipment": {
       "category": "护符",
-      "quality": "稀有|传奇|魔法",
+      "quality": "稀有|魔法",
       "conditions": [
 
 
@@ -3446,6 +3446,24 @@
           "operate": "大于等于",
           "attributeType": "召唤最大数量",
           "conditionContent": "重生,1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "巨魔人",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "巨魔人"
         }
       ]
     }

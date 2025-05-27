@@ -302,7 +302,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public async Task AddSkillPoint(BroWindow win, RoleModel role)
     {
         var charControl = new CharacterController(win);
-        await charControl.AddSkillPoints(win.GetBro(), role);
+        await charControl.AddSkillPoints( role);
     }
     public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
     {
@@ -335,5 +335,21 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// 任一role取出整队
+    /// </summary>
+    /// <param name="role"></param>
+    /// <returns></returns>
+    public static List<GroupModel> GetGroup(RoleModel role)
+    {
+        var g1 = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+        if (g1 == null)
+        {
+            throw new Exception("请先初始化组队信息");
+        }
+        var accName = g1.AccountName;
+        return FreeDb.Sqlite.Select<GroupModel>().Where(p => p.AccountName == accName && p.TeamIndex == g1.TeamIndex).ToList();
     }
 }

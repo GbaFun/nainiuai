@@ -411,10 +411,10 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task AutoEquips(BroWindow win, RoleModel role)
+    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role)
     {
         var account = win.User;
-        if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
+        if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
@@ -542,10 +542,12 @@ public class EquipController : BaseController
         {
             P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
         }
+        var r1 = await win.CallJs($@"getCurEquips()");
 
 
         await UpdateCurEquips(win, role);
-
+        var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        return curEquip;
     }
 
     /// <summary>
@@ -1054,7 +1056,7 @@ public class EquipController : BaseController
 
 
             //找底子
-            var baseEqList = GetMatchEquips(dto.AccountId, condition, out _).ToList();
+            var baseEqList = GetMatchEquips(dto.AccountId, condition, dto.Role, out _).ToList();
             if (baseEqList.Count != 0)
             {    //为了满足孔位大于目标可以运用随机打孔公式 所以可能会匹配出来孔位大于目标孔位的装备需要额外筛选下
                 var slotList = baseEqList.Where(p => p.emItemQuality == emItemQuality.破碎).ToList();
@@ -1076,7 +1078,7 @@ public class EquipController : BaseController
         return bestEq;
 
     }
-    public List<EquipModel> GetMatchEquips(int accountid, Equipment target, out Dictionary<long, AttributeMatchReport> reportMap)
+    public List<EquipModel> GetMatchEquips(int accountid, Equipment target, RoleModel role, out Dictionary<long, AttributeMatchReport> reportMap)
     {
         List<EquipModel> matchEquips = new List<EquipModel>();
         Dictionary<long, AttributeMatchReport> matchReports = new Dictionary<long, AttributeMatchReport>();
@@ -1090,6 +1092,7 @@ public class EquipController : BaseController
             {
                 if (AttributeMatchUtil.MatchCategory(item, target.Category) && AttributeMatchUtil.MatchQuallity(item, target.Quality))
                 {
+                    if (role != null && !item.CanWear(role)) continue;
                     findEquips.Add(item);
                 }
             }

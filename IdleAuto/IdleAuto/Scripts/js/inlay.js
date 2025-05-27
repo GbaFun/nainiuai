@@ -119,6 +119,17 @@
         });
     }
 
+    async function equipInlay(eid) {
+        var data = {
+            eid2: eid
+        };
+        await POST_Message("EquipInlay", MERGE_Form(data)).then((r) => {
+
+        }).catch((r, status, xhr) => {
+
+        });
+    }
+
 
 
     let map = {};//记录神器名和他的符文顺序
@@ -180,7 +191,8 @@
     _inlay.insertRune = insertRune;
     _inlay.getSlotCount = getSlotCount;
     _inlay.getEquipContent = getEquipContent;
-    
+    _inlay.equipInlay = equipInlay
+
 
 })();
 

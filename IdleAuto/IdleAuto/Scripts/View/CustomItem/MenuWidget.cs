@@ -232,14 +232,8 @@ namespace IdleAuto.Scripts.View
 
         private void SetDailyTimer()
         {
-            DateTime now = DateTime.Now;
-            // 每两小时自动运行效率监控
-            // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
-
-            // 每天凌晨6点自动运行全部账号清库盘库修车指令
-            DateTime nextRun2 = now.Date.AddDays(1).AddHours(6);
-            TimeSpan initialDelay2 = nextRun2 - now;
-            // autoTimer = new System.Threading.Timer(AutoEquipElapsed, null, initialDelay2, TimeSpan.FromHours(24));
+      
+       
             refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
         }
         private void AutoMonitorElapsed(object state)
@@ -298,7 +292,7 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-            await FlowController.PassDungeon(71, 70);
+           // await FlowController.PassDungeon(71, 70);
             // FlowController.TestSpeed();
 
 

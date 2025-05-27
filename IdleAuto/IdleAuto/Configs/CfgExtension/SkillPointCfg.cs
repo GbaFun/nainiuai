@@ -14,6 +14,7 @@ public class SkillPoint
     public emSkillMode SkillMode { get; set; }
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
     public LevelRange Lv { get; set; }
+
     /// <summary>
     /// 保留技能 前置技能 key 技能名称 value 为保留几级 
     /// </summary>

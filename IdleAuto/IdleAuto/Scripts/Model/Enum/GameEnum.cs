@@ -270,7 +270,8 @@ public enum emEquip
     施法手,
     轮回底子,
     骑士技能衣服,
-    死骑冰霜武器
+    死骑冰霜武器,
+    冰转珠宝
 
 }
 public enum emArtifactBase
