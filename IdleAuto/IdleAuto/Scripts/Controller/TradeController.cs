@@ -14,10 +14,17 @@ using System.Threading.Tasks;
 
 public class TradeController : BaseController
 {
+    private bool _isSkipTrade { get; set; } = false;
 
     public TradeController(BroWindow win) : base(win)
     {
-        _eventMa = new EventSystem();
+        _eventMa = win.GetEventMa();
+        _eventMa.SubscribeEvent(emEventType.OnSanError, OnSanNotEnough);
+    }
+
+    public void OnSanNotEnough(params object[] args)
+    {
+        _isSkipTrade = true;
     }
 
     public async Task<bool> StartTrade(EquipModel equip, string roleName)
@@ -100,7 +107,8 @@ public class TradeController : BaseController
     }
     public async Task<bool> AcceptAll(UserModel account)
     {
-        await Task.Delay(1500);
+        if (_isSkipTrade) return false;
+        await Task.Delay(1000);
         //跳转消息页面
         var role = account.FirstRole;
         // _win.GetBro().ShowDevTools();
@@ -119,7 +127,7 @@ public class TradeController : BaseController
         if (noticeId > 0)
         {
 
-            await Task.Delay(1500);
+            await Task.Delay(1000);
             var r3 = await _win.CallJsWaitReload($"_trade.acceptTrade({noticeId})", "trade,equip");
             if (!r3.Success)
             {
@@ -133,7 +141,7 @@ public class TradeController : BaseController
                 await UpdateTradeStatus(anyObj, emTradeStatus.Received, emEquipStatus.Repo);
             }
 
-            await Task.Delay(1500);
+            await Task.Delay(1000);
             await AcceptAll(account);
         }
 

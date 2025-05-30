@@ -13,12 +13,13 @@ using FreeSql.Sqlite;
 using IdleAuto.Scripts.Wrap;
 using IdleAuto.Db;
 
-public class RuneController
+public class RuneController : BaseController
 {
     private EventSystem EventSystem;
-    public RuneController()
+    public RuneController(BroWindow win) : base(win)
     {
         EventSystem = new EventSystem();
+
     }
 
     private delegate void OnUpgradeRuneBack(bool result);
@@ -151,5 +152,35 @@ public class RuneController
         }
         return isSuccess;
     }
+
+    /// <summary>
+    /// 合成宝石
+    /// </summary>
+    /// <param name="type">宝石种类0开始到6</param>
+    /// <param name="power">直到这个级别停止</param>
+    /// <returns></returns>
+    public async Task UpgradeGem(emGem type, int power)
+    {
+        await Task.Delay(1000);
+        P.Log("开始跳转材料页面", emLogType.RuneUpgrate);
+        await _win.LoadUrlWaitJsInit(IdleUrlHelper.MaterialUrl(_win.User.FirstRole.RoleId), "rune");
+        var r = await _win.CallJs("getGemArr()");
+        var arr = r.Result.ToObject<List<Dictionary<string, int>>>();
+
+        int typeVal = (int)type;
+        for (int i = typeVal * 5; i < typeVal * 5 + power; i++)
+        {
+            await Task.Delay(1000);
+            var count = arr[i]["count"];
+            if (count < 3) continue;
+            var data = new Dictionary<string, int>();
+            data.Add("type", arr[i]["type"]);
+            data.Add("power", arr[i]["power"]);
+            data.Add("count", count);
+            await _win.CallJsWaitReload($"gemUpgrade({data.ToLowerCamelCase()})", "rune");
+            arr[i + 1]["count"] += int.Parse(Math.Floor((count / 3.0)).ToString());
+        }
+    }
+
 }
 

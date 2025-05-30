@@ -15,6 +15,8 @@ public class MapSetting
 
     public int MapLv { get; set; }
 
+    public emSkillMode SkillMode { get; set; } = emSkillMode.法师;
+
     public bool CanSwitch(int roleLv, int curMapLv)
     {
         if (Lv.AdaptLevel(roleLv) && curMapLv != MapLv) return true;
@@ -46,9 +48,11 @@ public class MapSettingCfg
         }
     }
 
-    public MapSetting GetSetting(int roleLv)
+    public MapSetting GetSetting(RoleModel role)
     {
-        var last = Data.Where(p => p.Lv.AdaptLevel(roleLv)).LastOrDefault();
+        var skillMode = role.GetRoleSkillMode();
+        int roleLv = role.Level;
+        var last = Data.Where(p => p.Lv.AdaptLevel(roleLv) && p.SkillMode == skillMode).LastOrDefault();
         if (last == null) P.Log("未配置该级别切图数据"); //throw new Exception("未配置该级别切图数据");
         return last;
     }

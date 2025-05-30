@@ -130,6 +130,11 @@ public class EquipModel : IModel
         }
     }
 
+    public bool IsMatch(Equipment con)
+    {
+        return AttributeMatchUtil.Match(this, con, out _);
+    }
+
     /// <summary>
     /// 装备所属账户ID
     /// </summary>

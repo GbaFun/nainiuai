@@ -14,6 +14,7 @@ public enum emLogType
     Error = 3,
     Warning = 4,
     RuneUpgrate = 5,
+    FcrLog
 }
 public static class P
 {

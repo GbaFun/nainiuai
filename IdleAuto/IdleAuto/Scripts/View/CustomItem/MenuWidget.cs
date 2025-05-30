@@ -134,9 +134,9 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = null;
+            string[] MapSwitchAccounts = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
 
-            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch);
+            FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
         private void BtnSkillPoint_Click(object sender, EventArgs e)
         {
@@ -153,11 +153,11 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
-                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    //await FlowController.MakeLunhui();
+                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.MakeLunhui();
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
@@ -232,9 +232,9 @@ namespace IdleAuto.Scripts.View
 
         private void SetDailyTimer()
         {
-      
-       
-            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
+
+
+            // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -248,18 +248,7 @@ namespace IdleAuto.Scripts.View
                 BtnTest_Click(null, EventArgs.Empty);
             }
         }
-        private void AutoEquipElapsed(object state)
-        {
-            // 执行BtnRefresh的点击事件
-            if (InvokeRequired)
-            {
-                Invoke(new Action(() => { RepairManager.Instance.AutoRepair(); }));
-            }
-            else
-            {
-                RepairManager.Instance.AutoRepair();
-            }
-        }
+
 
         private async void btnHomePage_Click(object sender, EventArgs e)
         {
@@ -271,7 +260,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
-            var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "Rasdgch").ToArray();
+            var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, acc);
         }
 
@@ -292,8 +281,9 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-           // await FlowController.PassDungeon(71, 70);
+            await FlowController.PassDungeon(71, 70);
             // FlowController.TestSpeed();
+           // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
 
 
         }
@@ -374,6 +364,16 @@ namespace IdleAuto.Scripts.View
             var des = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "backup"));
             ;
             FileUtil.CopyDirectory(target, des);
+
+        }
+
+        private void btnGem_Click(object sender, EventArgs e)
+        {
+            Task.Run(async () =>
+            {
+                await FlowController.GroupWork(3, 1, FlowController.AutoUpgradeGem);
+            });
+
 
         }
     }

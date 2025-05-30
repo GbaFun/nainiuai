@@ -271,7 +271,8 @@ public enum emEquip
     轮回底子,
     骑士技能衣服,
     死骑冰霜武器,
-    冰转珠宝
+    冰转珠宝,
+    蓝项链
 
 }
 public enum emArtifactBase
@@ -325,5 +326,27 @@ public enum emSkillMode
 
     献祭,
     boss,
+    自动,
+
+}
+
+public enum emReformType
+{
+    /// <summary>
+    /// 施法者
+    /// </summary>
+    Mage,
+    Direct
+}
+
+public enum emGem
+{
+    骷髅,
+    黄宝石,
+    绿宝石,
+    蓝宝石,
+    红宝石,
+    紫宝石,
+    钻石
 
 }

@@ -411,10 +411,11 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role)
+    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动)
     {
         var account = win.User;
-        if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
+        //   if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
+        var curSkillMode = emSkillMode.自动;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
@@ -435,7 +436,10 @@ public class EquipController : BaseController
         var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
         {
-
+            if (targetSkillMode != emSkillMode.自动)
+            {
+                targetEquips.EquipSuit.RemoveAll(p => p.SkillMode != targetSkillMode);
+            }
             P.Log("获取{role.Level}级{role.Job}配置的装备成功");
             for (int i = 0; i < targetEquips.EquipSuit.Count; i++)
             {
@@ -443,12 +447,14 @@ public class EquipController : BaseController
 
                 tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
                 var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
-                if (suitEquips.MatchSuitName == "献祭")
-                {
-                    P.Log("满足献祭装备");
-                }
+
                 if (suitEquips.IsSuccess)
                 {
+                    if (suitEquips.MatchSuitName == emSkillMode.献祭.ToString())
+                    {
+                        curSkillMode = emSkillMode.献祭;
+
+                    }
                     if (role.Job == emJob.死灵)
                     {
                         FlowController.SetSkillMode(role, account, suitEquips.MatchSkillModel);
@@ -542,12 +548,42 @@ public class EquipController : BaseController
         {
             P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
         }
+
+        if (curSkillMode == emSkillMode.献祭)
+        {
+            await Task.Delay(2000);
+
+        }
         var r1 = await win.CallJs($@"getCurEquips()");
-
-
         await UpdateCurEquips(win, role);
         var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        if (role.Job == emJob.死灵 && role.GetRoleSkillMode() == emSkillMode.献祭)
+        {
+
+            await FlowController.InsertColdConversion(curEquip, win, role);
+            CalNecFcrSpeed(win.User, role, curEquip, role.GetRoleSkillMode());
+        }
+
         return curEquip;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CalNecFcrSpeed(UserModel user, RoleModel role, Dictionary<emEquipSort, EquipModel> curEquip, emSkillMode skillMode)
+    {
+        //侏儒自带
+        var basicSpeed = 5M;
+
+        foreach (var item in curEquip)
+        {
+            var speed = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, item.Value.Content).Item2;
+            basicSpeed += speed;
+        }
+        if (skillMode == emSkillMode.献祭 && basicSpeed < 180)
+        {
+            P.Log($"{user.AccountName} {role.RoleName}施法速度不够", emLogType.FcrLog);
+        }
     }
 
     /// <summary>

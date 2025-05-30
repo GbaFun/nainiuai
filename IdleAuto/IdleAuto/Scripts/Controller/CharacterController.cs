@@ -757,19 +757,19 @@ namespace IdleAuto.Scripts.Controller
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level,nec.SkillMode);
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
-         
+
             if (role.Job == emJob.死灵)
             {
                 if (nec.SkillMode == emSkillMode.法师)
                 {
                     await SetNecSpecialSkill(role, targetSkillPoint);
                 }
-                
+
             }
-            
-            var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill);
+
+            var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill, skillConfig.GroupSkill);
             var isNeedRest = r.Item1;
             var isNeedAdd = r.Item2;
             var isNeedSetGroup = r.Item3;
@@ -1001,7 +1001,7 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="skills"></param>
         /// <param name="targetSkillDic"></param>
         /// <returns></returns>
-        private Tuple<bool, bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic, List<string> curGroupSkill)
+        private Tuple<bool, bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic, List<string> curGroupSkill, List<string> targetGroupSkill)
         {
             var noZeroSkill = skills.Where(p => p.Value.Lv > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
             if (noZeroSkill.Count == 0)
@@ -1020,14 +1020,8 @@ namespace IdleAuto.Scripts.Controller
             {
                 isNeedSetGroup = true;
             }
-            foreach (var item in groupList)
-            {
-                if (!targetSkillDic.ContainsKey(item))
-                {
-                    isNeedSetGroup = true;
-                    break;
-                }
-            }
+            var exceptList = targetGroupSkill.Except(groupList);
+            if (exceptList.Count() > 0) isNeedSetGroup = true;
             foreach (var item in targetSkillDic)
             {
                 //加的技能不包含在目标技能
@@ -1079,12 +1073,24 @@ namespace IdleAuto.Scripts.Controller
             var data = await _win.CallJs($"_guaji.getData()");
             var arr = data.Result.ToObject<List<Efficency>>();
             List<string> roleNameList = new List<string>();
+            var roleIdList = user.Roles.Select(s => s.RoleId).ToList();
+            var groupList = FreeDb.Sqlite.Select<GroupModel>().Where(s => roleIdList.Contains(s.RoleId)).ToList().Select(g =>
+            {
+                var matchedRole = user.Roles.FirstOrDefault(r => r.RoleId == g.RoleId);
+                if (matchedRole != null) g.Lv = matchedRole.Level;
+                return g;
+            }).ToList(); ;
+
+            DbUtil.InsertOrUpdate<GroupModel>(groupList);
             arr.ForEach(p =>
             {
                 int mapLv;
                 if (int.TryParse(p.MapLv, out mapLv))
                 {
-                    var setting = MapSettingCfg.Instance.GetSetting(p.Lv);
+                    var role = user.Roles.Find(w => w.RoleId == p.Roleid);
+
+
+                    var setting = MapSettingCfg.Instance.GetSetting(role);
                     var needSwitch = setting.CanSwitch(p.Lv, mapLv);
                     if (needSwitch)
                     {
@@ -1099,7 +1105,6 @@ namespace IdleAuto.Scripts.Controller
             for (int i = 0; i < user.Roles.Count; i++)
             {
                 RoleModel role = user.Roles[i];
-                if (role.GetRoleSkillMode() == emSkillMode.献祭) continue;
                 if (!roleNameList.Contains(role.RoleName)) continue;
                 await Task.Delay(2000);
                 await SwitchMap(_browser, role);
@@ -1116,7 +1121,7 @@ namespace IdleAuto.Scripts.Controller
             var curMapLv = await GetCurMapLv();
             _curMapLv = curMapLv;
             //检查是否层数合适
-            var setting = MapSettingCfg.Instance.GetSetting(role.Level);
+            var setting = MapSettingCfg.Instance.GetSetting(role);
             if (setting == null || !setting.CanSwitch(role.Level, curMapLv)) return;
 
             int targetLv = setting.MapLv; //setting.MapLv;

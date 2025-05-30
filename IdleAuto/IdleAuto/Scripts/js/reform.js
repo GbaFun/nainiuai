@@ -15,17 +15,26 @@
 
     })
 
+    //随机打孔不同部位数值不一样
+    var reformType = {
+        random: $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        direct: 50,
+        mage: $("td:contains('合成施法者系列物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+    }
+
     async function isMeterialEnough() {
         var canDirect = $("td:contains('最大数量凹槽')").parent().find('.label ').text() == "执行";
         var canRandom = $("td:contains('随机数量凹槽')").parent().find('.label ').text() == "执行";
-        return { canDirect: canDirect, canRandom: canRandom }
+        var canMage = $("td:contains('合成施法者系列物品')").parent().find('.label ').text() == "执行";
+
+        return { canDirect: canDirect, canRandom: canRandom, canMage: canMage }
     }
 
     async function reform(d) {
 
         var type = d.type;
         var data = {
-            type: type == "random" ? $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type") * 1 : 50
+            type: reformType[type]
         };
         debugger
         await POST_Message("EquipReform", MERGE_Form(data)).then((r) => {
@@ -48,7 +57,12 @@
         });
     }
 
+    function getEquipContent() {
+        return $(".panel-body").text()
+    }
+
     _reform.reform = reform;
     _reform.isMeterialEnough = isMeterialEnough;
     _reform.removeRune = removeRune;
+    _reform.getEquipContent = getEquipContent;
 })();

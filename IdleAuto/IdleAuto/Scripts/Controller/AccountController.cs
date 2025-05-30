@@ -33,7 +33,7 @@ public class AccountController
         EventSystem = new EventSystem();
         EventSystem.SubscribeEvent(emEventType.OnLoginSuccess, OnLoginSuccess);
         EventSystem.SubscribeEvent(emEventType.OnCharLoaded, OnCharLoaded);
-        EventSystem.SubscribeEvent(emEventType.OnIpBan, RestIp);
+        
     }
 
     //当前登录账号

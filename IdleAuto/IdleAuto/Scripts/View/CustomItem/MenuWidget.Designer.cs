@@ -33,6 +33,7 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnGem = new System.Windows.Forms.Button();
             this.btnCookie = new System.Windows.Forms.Button();
             this.btnNec = new System.Windows.Forms.Button();
             this.btnRollArtifact = new System.Windows.Forms.Button();
@@ -65,7 +66,6 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -98,7 +98,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
-            this.HomeGroup.Controls.Add(this.button1);
+            this.HomeGroup.Controls.Add(this.btnGem);
             this.HomeGroup.Controls.Add(this.btnCookie);
             this.HomeGroup.Controls.Add(this.btnNec);
             this.HomeGroup.Controls.Add(this.btnRollArtifact);
@@ -132,6 +132,16 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             this.HomeGroup.Enter += new System.EventHandler(this.HomeGroup_Enter);
+            // 
+            // btnGem
+            // 
+            this.btnGem.Location = new System.Drawing.Point(124, 351);
+            this.btnGem.Name = "btnGem";
+            this.btnGem.Size = new System.Drawing.Size(99, 23);
+            this.btnGem.TabIndex = 18;
+            this.btnGem.Text = "合宝石";
+            this.btnGem.UseVisualStyleBackColor = true;
+            this.btnGem.Click += new System.EventHandler(this.btnGem_Click);
             // 
             // btnCookie
             // 
@@ -472,15 +482,6 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(124, 351);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -537,6 +538,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnRollArtifact;
         private System.Windows.Forms.Button btnNec;
         private System.Windows.Forms.Button btnCookie;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnGem;
     }
 }

@@ -176,7 +176,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<bool> UpdateRune(Dictionary<int, int> map)
         {
-            var runeConrol = new RuneController();
+            var runeConrol = new RuneController(_win);
             await Task.Delay(1000);
             var isSuccess = await runeConrol.UpgradeRune(_win, _win.User, map);
             return isSuccess;

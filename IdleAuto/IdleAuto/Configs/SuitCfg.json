@@ -637,7 +637,7 @@
       {
         "suitName": "骑士40-50套装",
         "主手": {
-          "name": "22光环权杖,冥审光环权杖",
+          "name": "末日,22光环权杖,冥审光环权杖",
           "isNecessery": 0
         },
         "副手": {
@@ -1794,7 +1794,7 @@
 
         },
         "头盔": {
-          "name": "2孔教化",
+          "name": "教化",
           "isNecessery": true
         },
         "项链": {
@@ -1810,7 +1810,57 @@
           "isNecessery": true
         },
         "靴子": {
-          "name": "时光扭曲行者,抗火毒靴子"
+          "name": "时光扭曲行者,抗寒电靴子"
+
+        },
+        "衣服": {
+          "name": "尸体的哀伤",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "施法手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "巨魔人,重生护符",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "20施法腰带",
+          "isNecessery": true
+        }
+      },
+      {
+        "suitName": "献祭",
+        "skillMode": "献祭",
+        "主手": {
+          "name": "自杀支系",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "20施法头",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "阴影之环",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "施法戒指",
+          "isNecessery": true
+        },
+        "戒指2": {
+          "name": "施法戒指",
+          "isNecessery": true
+        },
+        "靴子": {
+          "name": "时光扭曲行者,抗寒电靴子"
 
         },
         "衣服": {
@@ -2211,6 +2261,7 @@
       }
     ]
   },
+  
   {
     "jobName": "死骑",
     "lv": {
@@ -2721,7 +2772,7 @@
     "jobName": "死骑",
     "lv": {
       "min": 65,
-      "max": 75
+      "max": 78
     },
     "equipSuit": [
       {

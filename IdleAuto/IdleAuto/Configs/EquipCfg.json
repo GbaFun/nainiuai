@@ -388,6 +388,24 @@
     }
   },
   {
+    "name": "末日",
+    "description": "",
+    "equipment": {
+      "category": "剑|斧",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+
+          "seq": 50,
+          "conditionContent": "末日"
+        }
+      ]
+    }
+  },
+  {
     "name": "零速任意项链",
     "description": "前期没有技能项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
@@ -986,6 +1004,12 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "全能"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "希望之翼"
         }
 
       ]
@@ -1799,21 +1823,13 @@
       "quality": "魔法|稀有|传奇|套装",
       "conditions": [
 
+      
         {
           "matchType": "可选",
-          "matchGroupName": "手套",
-          "operate": "大于等于",
-          "attributeType": "抗毒",
+          "operate": "不等于",
+          "attributeType": "名称",
           "seq": 1,
-          "conditionContent": "30"
-        },
-        {
-          "matchType": "可选",
-          "matchGroupName": "手套",
-          "operate": "大于等于",
-          "attributeType": "抗火",
-          "seq": 1,
-          "conditionContent": "30"
+          "conditionContent": "塔格奥之手"
         },
 
         {
@@ -2784,7 +2800,7 @@
     "name": "20施法头",
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
-      "category": "帽子|头饰",
+      "category": "头饰",
       "quality": "全部",
       "conditions": [
 
@@ -3290,14 +3306,14 @@
       ]
     }
   },
- 
+
   {
     "name": "2孔教化",
     "description": "死灵召唤技能头盔，考虑其他职业也需要技能头，优先寻找骑士职业技能",
     "equipment": {
       "category": "头饰",
       "quality": "套装",
-      
+
       "conditions": [
 
 
@@ -3328,7 +3344,7 @@
     "equipment": {
       "category": "衣服",
       "quality": "传奇",
-      
+
       "conditions": [
 
 
@@ -3354,7 +3370,7 @@
     "equipment": {
       "category": "腰带",
       "quality": "套装",
-      
+
       "conditions": [
 
 
@@ -3380,7 +3396,7 @@
     "equipment": {
       "category": "项链",
       "quality": "传奇|手工",
-      
+
       "conditions": [
 
 

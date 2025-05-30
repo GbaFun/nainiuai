@@ -28,6 +28,8 @@
             .catch(r => {
                 debugger;
                 console.log(r);
+                Bridge.invokeEvent('OnSanError', 'san');
+                setTimeout(() => { window.location.reload(); }, 1000);
             });
     }
     async function acceptAllTrade() {
@@ -52,7 +54,7 @@
     async function getAnyTrade() {
         var arr = $('.notice-content .notice-yes');
         var eqid = $(arr[0]).parent().find(".equip-name").data("id");
-        var type=$(arr[0]).parent().find(".equip-name").data("type");
+        var type = $(arr[0]).parent().find(".equip-name").data("type");
         var content = $(arr[0]).parent().next().text();
         var obj = {};
         if (eqid) {
@@ -69,13 +71,13 @@
         return obj;
     }
 
-   
+
 
 
     _trade.acceptAllTrade = acceptAllTrade;
     _trade.acceptTrade = acceptTrade;
     _trade.getAnyTrade = getAnyTrade;
- 
+
 
 })();
 

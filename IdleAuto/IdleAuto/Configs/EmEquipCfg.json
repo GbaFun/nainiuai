@@ -275,6 +275,20 @@
         "conditionContent": "冰冷转换"
       }
     ]
+  },
+  "蓝项链": {
+    "category": "项链",
+    "quality": "魔法",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+
+        "operate": "小于等于",
+        "attributeType": "职业单系技能",
+        "conditionContent": "1"
+      }
+    ]
   }
 
 }

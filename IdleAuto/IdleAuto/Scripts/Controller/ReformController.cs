@@ -63,6 +63,45 @@ namespace IdleAuto.Scripts.Controller
             else return false;
         }
 
+        public async Task<bool> ReformEquip(EquipModel equip, int roleId, emReformType reformType)
+        {
+
+            await Task.Delay(1500);
+            var aa = await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}", "reform");
+            await Task.Delay(1500);
+            var d = new Dictionary<string, object>();
+
+            d.Add("type", reformType);
+            //改造完会跳转到装备栏界面
+            var materialResult = await _win.CallJs("_reform.isMeterialEnough()");
+            if (materialResult.Success)
+            {
+                var r = materialResult.Result.ToObject<Dictionary<string, bool>>();
+                if (reformType == emReformType.Mage)
+                {
+                    if (!r["canMage"]) return false;
+                }
+
+            }
+            var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "equip");
+            await Task.Delay(1000);
+            await UpdateContent(equip, reformType);
+            return true;
+        }
+
+        private async Task UpdateContent(EquipModel equip, emReformType reformType)
+        {
+            //打孔会直接跳到装备页不能更新装备内容
+            if (reformType != emReformType.Mage) return;
+            var c = await _win.CallJs("_reform.getEquipContent()");
+            var content = c.Result.ToObject<string>();
+            equip.Quality = "craft";
+            equip.Content = content;
+            FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
+        }
+
+
+
         public async Task RemoveRune(EquipModel equip, int roleId)
         {
             await Task.Delay(1500);

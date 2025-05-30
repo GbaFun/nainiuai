@@ -149,11 +149,40 @@ function tradeRune(d) {
     });
     POST_Message("RuneTrade", data)
         .then(r => {
-            
+
         })
         .catch(r => {
             console.log("发送失败")
         });
 }
 
-//})();
+function gemUpgrade(data) {
+ 
+    var data = MERGE_Form({
+        cid: _char.cid,
+        type: data.type,
+        count: data.count,
+        power: data.power
+    });
+    POST_Message("https://www.idleinfinity.cn/Equipment/GemUpgrade", data)
+        .then(r => {
+
+        })
+        .catch(r => {
+            console.log("发送失败")
+        });
+}
+
+function getGemArr() {
+    var arr = $($(".panel-body")[2]).find(".equip-container").toArray();
+    var result = [];
+    arr.forEach((item, index) => {
+        var txt = $(item).text();
+        var type = Math.floor(index / 5);
+        var power = index % 5;
+        var count = txt.match(/\d+/)[0];
+        var o = { type: type, power: power, count: count };
+        result.push(o);
+    })
+    return result;
+}

@@ -12,6 +12,8 @@ public class RoleModel: IModel
 {
     [Column(IsPrimary = true)]
     public int RoleId { get; set; }
+
+
     public string RoleName { get; set; }
     public string RoleInfo { get; set; }
     [Navigate(nameof(CharAttributeModel.RoleId))]

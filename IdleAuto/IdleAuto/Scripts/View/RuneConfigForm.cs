@@ -72,8 +72,9 @@ namespace IdleAuto.Scripts.View
             await Task.Delay(500);
             this.Close();
 
-            RuneController controller = new RuneController();
+         
             BroWindow window = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+            RuneController controller = new RuneController(window);
             await controller.AutoUpgradeRune(window, AccountController.Instance.User);
 
             var result = MessageBox.Show("合符文成功，是否需要关闭当前页面", "提示", MessageBoxButtons.OKCancel);

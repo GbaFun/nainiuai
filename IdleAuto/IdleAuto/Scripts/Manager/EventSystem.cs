@@ -52,7 +52,10 @@ public enum emEventType
     /// </summary>
     OnSignal,
 
-    OnIpBan,
+    /// <summary>
+    /// san值不够
+    /// </summary>
+    OnSanError
 
 }
 

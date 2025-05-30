@@ -61,7 +61,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (repairJob != "" && role.Job.ToString() != repairJob) continue;
                 //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
                 //自动更换装备
-                await AutoEquip(window, equipController, account, role);
+                await equipController.AutoEquips(window, role);
                 //技能加点
                 await AddSkillPoint(window, role);
 
@@ -123,12 +123,13 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
                 //自动更换装备
-                await AutoEquip(window, equipController, account, role);
+                var curEquips = await equipController.AutoEquips(window, role);
+
                 //技能加点
                 await AddSkillPoint(window, role);
 
                 //角色剩余属性点分配
-                //await AddAttrPoint(window, role);
+                if (role.Job == emJob.死灵) await AddAttrPoint(window, role);
                 TaskProgress progress = new TaskProgress()
                 {
                     Roleid = role.RoleId,
@@ -143,7 +144,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
             }
             catch (Exception ex)
             {
-                P.Log($"自动修车中断，中断角色{role.RoleName},中断原因：{ex.StackTrace}", emLogType.Error);
+                P.Log($"自动修车中断，中断角色{role.RoleName},中断原因：{ex.Message}", emLogType.Error);
                 InterruptNames.Add(role.RoleName);
             }
         }
@@ -155,54 +156,6 @@ public class RepairManager : SingleManagerBase<RepairManager>
         else
         {
             // MessageBox.Show($"自动修车完成,但部分角色修车进程意外中断，中断角色列表：{string.Join("-", InterruptNames.ToArray())}");
-        }
-    }
-
-    /// <summary>
-    /// 一键修车（全账号，凌晨自动任务用）
-    /// 收菜、盘库、技能加点、自动更换装备、剩余属性点分配
-    /// 修车过程不会清仓，如果收菜过程仓库满了，会跳过后续角色背包收菜
-    /// </summary>
-    public async Task AutoRepair()
-    {
-        try
-        {
-            foreach (var user in AccountCfg.Instance.Accounts)
-            {
-                //大号跳过自动修车逻辑，需要手动修车
-                if (user.AccountName == "铁矿石")
-                {
-                    P.Log($"大号跳过自动修车逻辑，请手动修！", emLogType.Warning);
-                    continue;
-                }
-                UserModel account = new UserModel(user);
-                BroWindow window = await TabManager.Instance.TriggerAddBroToTap(account);
-                EquipController equipController = new EquipController(window);
-                //window.GetBro().ShowDevTools();
-
-                //将挂机装备放入仓库
-                await EquipToRepository(window, equipController, account, false);
-                //盘点仓库装备
-                await InventoryEquips(window, equipController, account);
-                //遍历账户下角色修车
-                foreach (var role in account.Roles)
-                {
-                    await AutoEquip(window, equipController, account, role);
-                    //技能加点
-                    await AddSkillPoint(window, role);
-                    //自动更换装备
-
-                    //角色剩余属性点分配
-                    await AddAttrPoint(window, role);
-                }
-
-                window.Close();
-            }
-            MessageBox.Show($"自动修车完成");
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"自动修车异常：{ex.Message}");
         }
     }
 
@@ -302,12 +255,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public async Task AddSkillPoint(BroWindow win, RoleModel role)
     {
         var charControl = new CharacterController(win);
-        await charControl.AddSkillPoints( role);
+        await charControl.AddSkillPoints(role);
     }
-    public async Task AutoEquip(BroWindow win, EquipController controller, UserModel account, RoleModel role)
-    {
-        await controller.AutoEquips(win, role);
-    }
+
     public async Task AddAttrPoint(BroWindow win, RoleModel role)
     {
         await Task.Delay(1000);

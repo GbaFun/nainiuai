@@ -4,13 +4,34 @@
       "category": "全部",
       "quality": "传奇|套装|神器",
       "conditions": [
-
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "掉落等级",
+          "conditionContent": "50"
+        },
         {
           "matchType": "任一",
-          "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "太古"
+        }
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "category": "全部",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "圣衣"
         }
       ]
     },
@@ -72,7 +93,7 @@
           "attributeType": "名称",
           "conditionContent": "无形布尔凯索的"
         },
-     
+
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -154,7 +175,7 @@
           "matchType": "任一",
           "matchGroupName": "套装",
           "operate": "在范围内",
-          "attributeType": "名称",
+          "attributeType": "自定义",
           "conditionContent": "圣衣"
         }
       ]
@@ -432,6 +453,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "尸体的哀伤"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
 
       ]
@@ -615,13 +643,6 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "猩红之爪"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "传奇",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "conditionContent": "法师,元素,2"
         }
 
       ]
@@ -1276,11 +1297,11 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
-      "description": "手工项链",
+      "description": "20速项链",
       "category": "项链",
       "quality": "手工",
       "conditions": [
@@ -1294,7 +1315,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -1770,7 +1791,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1795,7 +1816,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 4
   },
   {
     "equip": {
@@ -1820,7 +1841,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
 
   {
@@ -2754,6 +2775,21 @@
     },
     "maxCount": 10
   },
+  {
+    "equip": {
+      "category": "戒指",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        }
+      ]
+    },
+    "maxCount": 8
+  },
 
   {
     "equip": {
@@ -2841,21 +2877,21 @@
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "牧师,暗影,3"
+          "conditionContent": "牧师,暗影,4"
         },
         {
           "matchType": "任一",
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "游侠,辅助,3"
+          "conditionContent": "游侠,辅助,4"
         },
         {
           "matchType": "任一",
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死骑,鲜血,3"
+          "conditionContent": "死骑,鲜血,4"
         }
       ]
     },
@@ -2872,7 +2908,7 @@
           "matchGroupName": "头",
           "operate": "大于等于",
           "attributeType": "职业单系技能",
-          "conditionContent": "3"
+          "conditionContent": "2"
         },
         {
           "matchType": "可选",
@@ -2880,14 +2916,8 @@
           "operate": "大于等于",
           "attributeType": "施法速度",
           "conditionContent": "1"
-        },
-        {
-          "matchType": "可选",
-          "matchGroupName": "头饰护符",
-          "operate": "大于等于",
-          "attributeType": "攻击速度",
-          "conditionContent": "1"
         }
+
       ]
     },
     "maxCount": 500
@@ -3260,6 +3290,41 @@
     },
     "maxCount": 10
   },
+  {
+    "equip": {
+      "category": "十字弓",
+      "quality": "破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "conditionContent": "巨神"
+        },
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "conditionContent": "无形"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "4"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
   //复仇女神
   {
     "equip": {
@@ -3272,9 +3337,7 @@
         {
           "matchType": "必需",
           "operate": "在范围内",
-
           "attributeType": "名称",
-          "seq": 6,
           "conditionContent": "近身"
         },
         {
@@ -3717,7 +3780,7 @@
       ]
 
     },
-    "maxCount": 100
+    "maxCount": 10
   },
   {
     "equip": {

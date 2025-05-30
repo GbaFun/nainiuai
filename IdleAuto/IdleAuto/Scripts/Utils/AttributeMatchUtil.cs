@@ -302,7 +302,23 @@ namespace AttributeMatch
             bool ismatch = false;
             string regexAttr = "";
             weight = 0;
-            switch (_condition.AttributeType)
+            if (_condition.AttributeType == emAttrType.掉落等级)
+            {
+                Console.WriteLine("掉落等级测试");
+            }
+            var matchResult = GetBaseAttValue(_condition.AttributeType, _equip.Content);
+            ismatch = OperateValue(matchResult.Item2, _condition.ConditionContent, _condition.Operate, out weight);
+            return ismatch;
+        }
+
+        /// <summary>
+        /// 获取基础属性的数值
+        /// </summary>
+        /// <returns></returns>
+        public static Tuple<bool, decimal> GetBaseAttValue(emAttrType attributeType, string content)
+        {
+            var regexAttr = "";
+            switch (attributeType)
             {
                 case emAttrType.力量:
                     regexAttr = $@"\+(?<v>\d+) 力量";
@@ -383,20 +399,10 @@ namespace AttributeMatch
                     regexAttr = $@"掉落等级：(?<v>\d+)";
                     break;
             }
-            int attrValue = 0;
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
-            var match = regex.Match(_equip.Content);
-            if (match.Success)
-            {
-                attrValue = int.Parse(match.Groups["v"].Value);
-                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
-            }
-            else
-            {
-                ismatch = OperateValue(attrValue, _condition.ConditionContent, _condition.Operate, out weight);
-            }
-
-            return ismatch;
+            var match = regex.Match(content);
+            var val = match.Success ? decimal.Parse(match.Groups["v"].Value) : 0;
+            return new Tuple<bool, decimal>(match.Success, val);
         }
 
         /// <summary>
@@ -567,11 +573,11 @@ namespace AttributeMatch
                     break;
                 //_condition.ConditionContent = "3"
                 case emAttrType.职业全系技能:
-                    regexAttr = $@"\+(?<v>\d+) [骑士|法师|战士|游侠|牧师|刺客|萨满|死灵|贤者|武僧|猎手|死骑]技能";
+                    regexAttr = $@"\+(?<v>\d+) (骑士|法师|战士|游侠|牧师|刺客|萨满|死灵|贤者|武僧|猎手|死骑)技能";
                     break;
                 //_condition.ConditionContent = "3"
                 case emAttrType.职业单系技能:
-                    regexAttr = $@"\+(?<v>\d+) [骑士光环|骑士惩戒|法师元素|法师冥想|战士作战|战士防御|游侠远程|游侠辅助|牧师神圣|牧师暗影|刺客格斗|刺客刺杀|萨满增强|萨满元素|死灵白骨|死灵召唤|贤者变形|贤者自然|武僧武学|武僧真言|猎手陷阱|猎手生存|死骑冰霜|死骑鲜血]技能";
+                    regexAttr = $@"\+(?<v>\d+) (骑士光环|骑士惩戒|法师元素|法师冥想|战士作战|战士防御|游侠远程|游侠辅助|牧师神圣|牧师暗影|刺客格斗|刺客刺杀|萨满增强|萨满元素|死灵白骨|死灵召唤|贤者变形|贤者自然|武僧武学|武僧真言|猎手陷阱|猎手生存|死骑冰霜|死骑鲜血)技能";
                     break;
                 //_condition.ConditionContent = "骷髅法师,1" ||",1"(所有召唤物)
                 case emAttrType.召唤最大数量:
@@ -586,12 +592,17 @@ namespace AttributeMatch
                 attrValue = int.Parse(match.Groups["v"].Value);
                 ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate, out weight);
             }
+            else
+            {
+                attrValue = 0;
+                ismatch = OperateValue(attrValue, scondition[scondition.Length - 1], _condition.Operate, out weight);
+            }
             return ismatch;
         }
 
         private static bool MatchWeaponSpeed(EquipModel _equip, AttributeCondition _condition, out int weight)
         {
-           
+
             bool ismatch = false;
             weight = 0;
             string regexAttr1 = $@"[斧|剑|锤|长矛|匕首|法杖|权杖|弓|十字弓|标枪|投掷武器|法珠|爪|游侠弓|游侠标枪|祭祀刀|手杖|拳套|手弩]速度：(?<v>\d+)";
@@ -605,7 +616,7 @@ namespace AttributeMatch
             if (match.Success)
             {
                 attrValue = int.Parse(match.Groups["v"].Value);
-               
+
             }
             else
             {
@@ -614,9 +625,9 @@ namespace AttributeMatch
                 if (match2.Success)
                 {
                     attrValue = int.Parse(match2.Groups["v"].Value) * -1;
-                  
+
                 }
-               
+
             }
             ismatch = condition[0] <= attrValue && attrValue <= condition[1];
 
@@ -656,7 +667,7 @@ namespace AttributeMatch
         /// <param name="_condition">要操作的条件值</param>
         /// <param name="_operate">操作类型</param>
         /// <returns></returns>
-        private static bool OperateValue(int _value, string _condition, emOperateType _operate, out int weight)
+        private static bool OperateValue(decimal _value, string _condition, emOperateType _operate, out int weight)
         {
             try
             {
@@ -668,22 +679,22 @@ namespace AttributeMatch
                     case emOperateType.大于:
                         ismatch = _value > condition[0];
                         if (ismatch)
-                            weight = _value - condition[0] + 1;
+                            weight = int.Parse((_value - condition[0] + 1).ToString());
                         break;
                     case emOperateType.大于等于:
                         ismatch = _value >= condition[0];
                         if (ismatch)
-                            weight = _value - condition[0] + 1;
+                            weight = int.Parse((_value - condition[0] + 1).ToString());
                         break;
                     case emOperateType.小于:
                         ismatch = _value < condition[0];
                         if (ismatch)
-                            weight = -_value + condition[0] + 1;
+                            weight = int.Parse((-_value + condition[0] + 1).ToString());
                         break;
                     case emOperateType.小于等于:
                         ismatch = _value <= condition[0];
                         if (ismatch)
-                            weight = -_value + condition[0] + 1;
+                            weight = int.Parse((-_value + condition[0] + 1).ToString());
                         break;
                     case emOperateType.等于:
                         ismatch = _value == condition[0];
