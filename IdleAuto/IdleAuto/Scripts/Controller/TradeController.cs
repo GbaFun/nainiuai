@@ -42,7 +42,8 @@ public class TradeController : BaseController
             var result2 = await _win.CallJsWaitReload($@"equipTrade({role.RoleId},{equip.EquipID},""{roleName}"")", "equip");
             if (result2.Success)
             {
-
+                equip.EquipStatus = emEquipStatus.Trading;
+                DbUtil.InsertOrUpdate<EquipModel>(equip);
                 return true;
             }
         }

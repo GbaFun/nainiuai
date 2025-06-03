@@ -143,6 +143,56 @@
     },
     "skillMode": "献祭",
     "mapLv": 78
-  }
+  },
 
+  {
+    "lv": {
+      "min": 80,
+      "max": 81
+    },
+    "skillMode": "法师",
+    "mapLv": 88
+  },
+  {
+    "lv": {
+      "min": 80,
+      "max": 81
+    },
+    "skillMode": "献祭",
+    "mapLv": 88
+  },
+
+  {
+    "lv": {
+      "min": 82,
+      "max": 83
+    },
+    "skillMode": "法师",
+    "mapLv": 90
+  },
+  {
+    "lv": {
+      "min": 82,
+      "max": 83
+    },
+    "skillMode": "献祭",
+    "mapLv": 90
+  },
+
+  {
+    "lv": {
+      "min": 89,
+      "max": 100
+    },
+    "skillMode": "法师",
+    "mapLv": 97
+  },
+  {
+    "lv": {
+      "min": 89,
+      "max": 100
+    },
+    "skillMode": "献祭",
+    "mapLv": 97
+  }
 ]

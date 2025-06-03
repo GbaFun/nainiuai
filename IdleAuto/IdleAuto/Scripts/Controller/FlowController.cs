@@ -760,7 +760,7 @@ namespace IdleAuto.Scripts.Controller
             //按有轮回的号分组
             var lunhuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Lv >= 70 && p.Category == "死灵副手" &&
             (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 骷髅法师") &&
-            (p.Content.Contains("+3 生生不息") || p.Content.Contains("+3 支配骷髅"))).ToList();
+            (p.Content.Contains("+3 生生不息") || p.Content.Contains("+3 支配骷髅")) && p.EquipStatus == emEquipStatus.Repo).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
             await CollectAndMakeArtifact(emArtifactBase.轮回法师, lunhuiList, RepairManager.RepoRole, RepairManager.RepoAcc);
             //发给装备了塔手的号
@@ -777,21 +777,21 @@ namespace IdleAuto.Scripts.Controller
             var r = new AttributeMatchReport();
             baseList = baseList.Where(p => AttributeMatchUtil.Match(p, eqBase, out r)).ToList();
             var l = baseList.GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
-            foreach (var item in l)
-            {
-                if (item.Key.AccountName == RepairManager.RepoAcc) continue;
-                var userName = item.Key.AccountName;
-                var user = AccountCfg.Instance.GetUserModel(userName);
-                var win = await TabManager.Instance.TriggerAddBroToTap(user);
-                var t = new TradeController(win);
-                foreach (var e in item)
-                {
-                    await t.StartTrade(e, receiver);
-                    await Task.Delay(1500);
-                }
-                win.Close();
+            //foreach (var item in l)
+            //{
+            //    if (item.Key.AccountName == RepairManager.RepoAcc) continue;
+            //    var userName = item.Key.AccountName;
+            //    var user = AccountCfg.Instance.GetUserModel(userName);
+            //    var win = await TabManager.Instance.TriggerAddBroToTap(user);
+            //    var t = new TradeController(win);
+            //    foreach (var e in item)
+            //    {
+            //        await t.StartTrade(e, receiver);
+            //        await Task.Delay(1500);
+            //    }
+            //    win.Close();
 
-            }
+            //}
 
             var receiverUserModel = AccountCfg.Instance.GetUserModel(receiverAcc);
             var win2 = await TabManager.Instance.TriggerAddBroToTap(receiverUserModel);
@@ -910,10 +910,11 @@ namespace IdleAuto.Scripts.Controller
 
         public async static Task PassDungeon(int testLv, int dungeonLv, int minRoleLv = -1)
         {
+            await RecoverNec(dungeonLv);
             var groupList = FreeDb.Sqlite.Select<GroupModel>().ToList();
             foreach (var acc in AccountCfg.Instance.Accounts)
             {
-                if (acc.AccountName == "铁矿石") continue;
+                if (acc.AccountName == "铁矿石"|| acc.AccountName == "打火石") continue;
 
                 var matchRoles = groupList.Where(p => p.AccountName == acc.AccountName);
                 //该账号下目标秘境全过了
@@ -924,12 +925,13 @@ namespace IdleAuto.Scripts.Controller
 
                     if (matchRoles.Where(p => p.Lv >= minRoleLv).Count() == 0) continue;
                 }
+
+
                 var user = AccountCfg.Instance.GetUserModel(acc.AccountName);
                 var win = await TabManager.Instance.TriggerAddBroToTap(user);
                 var c = new CharacterController(win);
                 await Task.Delay(1000);
                 int curTeamIndex = -1;
-
                 for (int index = 0; index < win.User.Roles.Count; index++)
                 {
                     var teamIndex = int.Parse(Math.Floor(index / 3.0).ToString());
@@ -940,7 +942,8 @@ namespace IdleAuto.Scripts.Controller
                     }
                     var role = win.User.Roles[index];
                     var g = groupList.Where(p => p.RoleId == role.RoleId).FirstOrDefault();
-                    var nec = groupList.Where(w => w.TeamIndex == g.TeamIndex && w.AccountName == g.AccountName&&w.Job==emJob.死灵).FirstOrDefault();
+                    var nec = groupList.Where(w => w.TeamIndex == g.TeamIndex && w.AccountName == g.AccountName && w.Job == emJob.死灵).FirstOrDefault();
+                    var knight = groupList.Where(w => w.TeamIndex == g.TeamIndex && w.AccountName == g.AccountName && w.Job == emJob.骑士).FirstOrDefault();
                     if (g.DungeonPassedLv >= dungeonLv) continue;
                     bool isPass = await c.SwitchMap(role, testLv, dungeonLv, g);
                     await Task.Delay(1000);
@@ -954,14 +957,59 @@ namespace IdleAuto.Scripts.Controller
 
                         var e = new EquipController(win);
                         var necRole = win.User.Roles.Where(w => w.RoleId == nec.RoleId).FirstOrDefault();
-                        await e.AutoEquips(win, necRole, emSkillMode.boss);
+                        var knightRole = win.User.Roles.Where(w => w.RoleId == knight.RoleId).FirstOrDefault();
+                        if (role.Job == emJob.死灵)
+                        {
+                            await e.AutoEquips(win, necRole, emSkillMode.法师);
+                            await c.AddSkillPoints(knightRole);
+                            nec.SkillMode = emSkillMode.boss;
+                            DbUtil.InsertOrUpdate<GroupModel>(nec);
+                            await c.AddSkillPoints(necRole);
+                        }
 
-                        await c.AddSkillPoints(necRole);
+
                     }
+                    else
+                    {
+                        await RecoverNec(dungeonLv);
+                    }
+
 
                 }
                 win.Close();
                 break;
+            }
+        }
+
+        private async static Task RecoverNec(int dungeonLv)
+        {
+            var lastNec = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.DungeonPassedLv == dungeonLv && p.SkillMode == emSkillMode.boss).First();
+            if (lastNec != null)
+            {
+                var lastTeamIndex = lastNec.TeamIndex;
+                var lastAcc = lastNec.AccountName;
+                var lastUser = AccountCfg.Instance.GetUserModel(lastAcc);
+
+
+                var lastTeam = FreeDb.Sqlite.Select<GroupModel>().
+                    Where(p => p.TeamIndex == lastTeamIndex && p.AccountName == lastAcc).ToList();
+                var isAllPass = lastTeam.Where(p => p.DungeonPassedLv == dungeonLv).Count() == 3;
+                if (lastNec.SkillMode == emSkillMode.boss && isAllPass)
+                {
+                    var win1 = await TabManager.Instance.TriggerAddBroToTap(lastUser);
+                    var c1 = new CharacterController(win1);
+                    var e1 = new EquipController(win1);
+                    var nec = lastTeam.Where(w => w.TeamIndex == lastTeamIndex && w.Job == emJob.死灵).FirstOrDefault();
+                    var knight = lastTeam.Where(w => w.TeamIndex == lastTeamIndex && w.Job == emJob.骑士).FirstOrDefault();
+
+                    var necRole = win1.User.Roles.Where(w => w.RoleId == nec.RoleId).FirstOrDefault();
+                    var knightRole = win1.User.Roles.Where(w => w.RoleId == knight.RoleId).FirstOrDefault();
+                    await e1.AutoEquips(win1, necRole, emSkillMode.自动);
+                    await c1.AddSkillPoints(necRole);
+                    await c1.AddSkillPoints(knightRole);
+                    win1.Close();
+
+                }
             }
         }
 
@@ -978,8 +1026,8 @@ namespace IdleAuto.Scripts.Controller
             //当前队伍的目标骑士检查有没有飞龙
             var targetKnight = win.User.Roles[teamIndex * 3];
             var targetDk = win.User.Roles[(teamIndex * 3) + 2];
-            var isTargetKnightHasFeilong = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == targetKnight.RoleId && p.EquipName == "飞龙").First() == null;
-            var isTargetDkHasYongheng = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == targetKnight.RoleId && p.EquipName.Contains("永恒")).First() == null;
+            var isTargetKnightHasFeilong = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == targetKnight.RoleId && p.EquipName == "飞龙").First() != null;
+            var isTargetDkHasYongheng = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == targetKnight.RoleId && p.EquipName.Contains("永恒")).First() != null;
             var e = new EquipController(win);
             if (feilong.RoleID > 0 && feilong.RoleID != targetKnight.RoleId && !isTargetKnightHasFeilong)
             {

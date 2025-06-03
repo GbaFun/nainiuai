@@ -11,7 +11,7 @@
           "conditionContent": "50"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "太古"
@@ -3814,9 +3814,9 @@
         {
           "matchType": "必需",
 
-          "operate": "大于等于",
-          "attributeType": "物品掉率",
-          "conditionContent": "1"
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "秘境"
         }
       ]
 

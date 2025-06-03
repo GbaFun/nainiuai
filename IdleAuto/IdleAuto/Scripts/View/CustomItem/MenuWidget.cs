@@ -134,7 +134,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
+            string[] MapSwitchAccounts = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).ToArray();
 
             FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
@@ -153,11 +153,11 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
                     FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.MakeLunhui();
+                    //await FlowController.MakeLunhui();
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
@@ -234,7 +234,7 @@ namespace IdleAuto.Scripts.View
         {
 
 
-            // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(10));
+             refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(8));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -281,9 +281,9 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-            await FlowController.PassDungeon(71, 70);
+            await FlowController.PassDungeon(81, 80, 76);
             // FlowController.TestSpeed();
-           // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
+            // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
 
 
         }

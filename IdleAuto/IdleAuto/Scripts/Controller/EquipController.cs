@@ -436,10 +436,11 @@ public class EquipController : BaseController
         var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
         {
-            if (targetSkillMode != emSkillMode.自动)
+            if (role.Job == emJob.死灵 && targetSkillMode != emSkillMode.自动)
             {
                 targetEquips.EquipSuit.RemoveAll(p => p.SkillMode != targetSkillMode);
             }
+
             P.Log("获取{role.Level}级{role.Job}配置的装备成功");
             for (int i = 0; i < targetEquips.EquipSuit.Count; i++)
             {
@@ -944,8 +945,11 @@ public class EquipController : BaseController
                 r.Add(equip);
                 break;
             }
-            if (equip == null && equipConfig.IsTrade)
+            //暂时不给献祭队永恒
+            var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
+            if (equip == null && equipConfig.IsTrade && !isXianji)
             {
+
                 //整套装备能凑齐才乞讨交易 然后index较大的不会被后续乞讨覆盖 可以直接查库跳过index更大的交易请求
                 var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
                 var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);

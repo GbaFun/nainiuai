@@ -774,7 +774,7 @@ namespace IdleAuto.Scripts.Controller
             var isNeedAdd = r.Item2;
             var isNeedSetGroup = r.Item3;
 
-
+            await SetKnightSpecialSkill(role, skillConfig);
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
             if (isNeedRest) await _win.SignalCallback("charReload", async () =>
                {
@@ -807,10 +807,10 @@ namespace IdleAuto.Scripts.Controller
             var s = await _browser.EvaluateScriptAsync("_char.hasKey()");
             var hasKey = s.Result.ToObject<bool>();
 
-            if (!hasKey) await _win.SignalCallback("charReload", async () =>
-            {
-                await SkillKeySave(skillConfig.KeySkillId);
-            });
+            if (!hasKey && skillConfig.KeySkillId > 0) await _win.SignalCallback("charReload", async () =>
+                {
+                    await SkillKeySave(skillConfig.KeySkillId);
+                });
 
         }
 
@@ -863,6 +863,26 @@ namespace IdleAuto.Scripts.Controller
 
             targetSkillPoint["支配骷髅"] += lvDiff;
             targetSkillPoint["生生不息"] -= lvDiff;
+
+
+        }
+
+        /// <summary>
+        ///骑士特殊加点
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task SetKnightSpecialSkill(RoleModel role, SkillPoint skillConfig)
+        {
+            if (role.Job != emJob.骑士) return;
+            var hasMori = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "末日" && p.RoleID == role.RoleId).First() != null;
+            if (hasMori)
+            {
+                skillConfig.GroupSkill.Remove("奉献");
+                skillConfig.GroupSkill.Remove("忏悔");
+                skillConfig.GroupSkill.Remove("祝福之锤");
+                skillConfig.KeySkillId = 0;
+            }
 
 
         }
@@ -1055,6 +1075,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         private async Task SkillKeySave(int skillId)
         {
+
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
                 var d = await _browser.EvaluateScriptAsync($@"_char.skillKeySave({skillId});");
@@ -1082,6 +1103,7 @@ namespace IdleAuto.Scripts.Controller
             }).ToList(); ;
 
             DbUtil.InsertOrUpdate<GroupModel>(groupList);
+
             arr.ForEach(p =>
             {
                 int mapLv;
@@ -1100,6 +1122,7 @@ namespace IdleAuto.Scripts.Controller
 
 
             });
+
 
             //查询未完成的任务
             for (int i = 0; i < user.Roles.Count; i++)
@@ -1129,6 +1152,11 @@ namespace IdleAuto.Scripts.Controller
             var r = await _win.CallJs("_map.canSwitch()");
             var canSwitch = r.Result.ToObject<bool>();
             if (!canSwitch) return;
+            if (targetLv > 80)
+            {
+                var groupInfo = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+                if (groupInfo.DungeonPassedLv < 80) return;
+            }
             await _win.SignalRaceCallBack(new string[] { "charReload" }, async () =>
            {
                await SwitchTo(targetLv);
