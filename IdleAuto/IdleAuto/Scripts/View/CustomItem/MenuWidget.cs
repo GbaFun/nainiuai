@@ -161,8 +161,8 @@ namespace IdleAuto.Scripts.View
                    // await FlowController.GroupWork(3, 1, FlowController.UpgradeBaseEq);
                     //RepairManager.IsCollectEquip = false;
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)

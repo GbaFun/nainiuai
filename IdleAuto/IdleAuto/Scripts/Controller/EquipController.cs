@@ -433,6 +433,7 @@ public class EquipController : BaseController
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
         var targetEquips = GetEquipConfig(role.Job, role.Level);
+        int idealFcr = 0;
         var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
         {
@@ -451,6 +452,7 @@ public class EquipController : BaseController
 
                 if (suitEquips.IsSuccess)
                 {
+                    idealFcr = suit.IdealFcr;
                     if (suitEquips.MatchSuitName == emSkillMode.献祭.ToString())
                     {
                         curSkillMode = emSkillMode.献祭;
@@ -515,7 +517,11 @@ public class EquipController : BaseController
             }
 
         }
+        var r1 = await win.CallJs($@"getCurEquips()");
 
+        var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        //将即将穿戴的装备和现有的装备整合 计算速度 算上永恒加成 然后增加技能戒指携带数量
+        AdjustRings(role, curEquip, towearEquips, idealFcr);
         if (towearEquips.Count > 0)
         {
             List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
@@ -551,9 +557,9 @@ public class EquipController : BaseController
         }
 
 
-        var r1 = await win.CallJs($@"getCurEquips()");
+        r1 = await win.CallJs($@"getCurEquips()");
         await UpdateCurEquips(win, role);
-        var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
         if (role.Job == emJob.死灵 && role.GetRoleSkillMode() == emSkillMode.献祭)
         {
 
@@ -565,6 +571,57 @@ public class EquipController : BaseController
             RecordDkYongheng(role, curEquip);
         }
         return curEquip;
+    }
+
+    private void AdjustRings(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, EquipModel> toWearEquips, int idealFcr)
+    {
+        return;
+         if (idealFcr == 0) return;
+        var baseFcr = 5M;
+
+        foreach (var to in toWearEquips)
+        {
+            curEquips[to.Key] = to.Value;
+        }
+        foreach (var cur in curEquips)
+        {
+            var s = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, cur.Value.Content).Item2;
+            baseFcr += s;
+        }
+        var group = role.GetGroup();
+        var dk = group.Where(p => p.Job == emJob.死骑).First();
+        baseFcr += dk.YonghengSpeed;
+        var val = (baseFcr - idealFcr);
+        if (val < 10) return;
+        var count = Math.Floor(val / 10);
+        var rings = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipStatus == emEquipStatus.Repo && p.AccountName == _win.User.AccountName && p.Content.Contains("所有技能") && p.Category == "戒指").ToList();
+        rings = rings.Where(p => p.CanWear(role)).ToList();
+        var quanNengList = rings.Where(p => p.EquipName == "全能法戒").ToList();
+        var otherRings = rings.Where(p => p.EquipName != "全能法戒").ToList();
+        if (quanNengList.Count > 0 && curEquips[emEquipSort.戒指1].EquipName != "全能法戒")
+        {
+            toWearEquips[emEquipSort.戒指1] = quanNengList[0];
+            quanNengList.Remove(quanNengList[0]);
+        }
+        else if (otherRings.Count > 0 && !curEquips[emEquipSort.戒指1].Content.Contains("所有技能"))
+        {
+            toWearEquips[emEquipSort.戒指1] = otherRings[0];
+            otherRings.Remove(otherRings[0]);
+        }
+        if (count >= 2)
+        {
+            if (quanNengList.Count > 0 && curEquips[emEquipSort.戒指2].EquipName != "全能法戒")
+            {
+                toWearEquips[emEquipSort.戒指2] = quanNengList[0];
+                quanNengList.Remove(quanNengList[0]);
+            }
+            else if (otherRings.Count > 0 && !curEquips[emEquipSort.戒指2].Content.Contains("所有技能"))
+            {
+                toWearEquips[emEquipSort.戒指2] = otherRings[0];
+                otherRings.Remove(otherRings[0]);
+            }
+        }
+
     }
 
     /// <summary>
@@ -601,7 +658,7 @@ public class EquipController : BaseController
             var baseVal = 15;
             var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.唤醒光环, eq.Content).Item2;
             var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
-            g.YonghengSpeed = int.Parse((baseVal + (val-6)).ToString());
+            g.YonghengSpeed = int.Parse((baseVal + (val - 6)).ToString());
             DbUtil.InsertOrUpdate<GroupModel>(g);
 
         }
@@ -735,6 +792,9 @@ public class EquipController : BaseController
 
         return result;
     }
+
+
+
 
 
     /// <summary>

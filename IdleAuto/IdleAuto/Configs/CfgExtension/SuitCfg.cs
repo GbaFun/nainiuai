@@ -83,6 +83,8 @@ public class EquipSuit
     /// </summary>
     public emSkillMode SkillMode { get; set; }
 
+    public int IdealFcr { get; set; }
+
 
 
     public SuitInfo 主手 { get; set; }

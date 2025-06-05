@@ -1884,6 +1884,14 @@
           "attributeType": "施法速度",
           "seq": 5000,
           "conditionContent": "10"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "手套",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "seq": 5000,
+          "conditionContent": "猩红"
         }
       ]
     }

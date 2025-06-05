@@ -777,7 +777,7 @@ namespace IdleAuto.Scripts.Controller
                         skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.法师石魔);
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                     }
-                    else if (hasQuanNeng)
+                     if (hasQuanNeng)
                     {
                         skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.全能法师);
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);

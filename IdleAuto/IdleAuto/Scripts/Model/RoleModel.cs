@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class RoleModel: IModel
+public class RoleModel : IModel
 {
     [Column(IsPrimary = true)]
     public int RoleId { get; set; }
@@ -70,6 +70,18 @@ public class RoleModel: IModel
             throw new Exception("请先初始化组队表");
         }
         return role.SkillMode;
+    }
+
+    public List<GroupModel> GetGroup()
+    {
+
+        var role = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == RoleId).First();
+        if (role == null)
+        {
+            throw new Exception("请先初始化组队表");
+        }
+        var list = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.AccountName == role.AccountName && p.TeamIndex == role.TeamIndex).ToList();
+        return list;
     }
 
 
