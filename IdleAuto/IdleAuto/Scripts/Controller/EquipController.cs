@@ -550,11 +550,7 @@ public class EquipController : BaseController
             P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
         }
 
-        if (curSkillMode == emSkillMode.献祭)
-        {
-            await Task.Delay(2000);
 
-        }
         var r1 = await win.CallJs($@"getCurEquips()");
         await UpdateCurEquips(win, role);
         var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
@@ -564,7 +560,10 @@ public class EquipController : BaseController
             await FlowController.InsertColdConversion(curEquip, win, role);
             CalNecFcrSpeed(win.User, role, curEquip, role.GetRoleSkillMode());
         }
-
+        if (role.Job == emJob.死骑)
+        {
+            RecordDkYongheng(role, curEquip);
+        }
         return curEquip;
     }
 
@@ -585,6 +584,29 @@ public class EquipController : BaseController
         {
             P.Log($"{user.AccountName} {role.RoleName}施法速度不够", emLogType.FcrLog);
         }
+        else if (skillMode == emSkillMode.法师)
+        {
+            if (curEquip[emEquipSort.主手].EquipName == "自杀支系")
+            {
+                P.Log($"{user.AccountName} {role.RoleName}献祭BUG", emLogType.FcrLog);
+            }
+        }
+    }
+
+    public void RecordDkYongheng(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquip)
+    {
+        var eq = curEquip[emEquipSort.副手];
+        if (eq.EquipName.Contains("永恒"))
+        {
+            var baseVal = 15;
+            var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.唤醒光环, eq.Content).Item2;
+            var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+            g.YonghengSpeed = int.Parse((baseVal + (val-6)).ToString());
+            DbUtil.InsertOrUpdate<GroupModel>(g);
+
+        }
+
+
     }
 
     /// <summary>

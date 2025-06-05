@@ -57,6 +57,10 @@ public class SkillPointCfg
     public SkillPoint GetSkillPoint(emJob job, int level, emSkillMode mode = emSkillMode.法师)
     {
         //理论就一个命中的
+        if (job == emJob.死骑)
+        {
+            mode = emSkillMode.法师;
+        }
         var config = Data.Where(p => p.Job == job && p.Lv.AdaptLevel(level) && p.SkillMode == mode).FirstOrDefault();
         if (config == null) throw new Exception($"没有配置{job.ToString()},{level}级的配置");
         return config;

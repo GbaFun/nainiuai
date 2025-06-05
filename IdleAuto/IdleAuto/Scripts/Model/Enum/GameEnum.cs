@@ -75,6 +75,7 @@ public enum emAttrType
     更佳魔法装备,
     额外金币取得,
     施法速度,
+    唤醒光环,
     攻击速度,
     所有技能,
     技能等级,
@@ -327,6 +328,8 @@ public enum emSkillMode
     献祭,
     boss,
     自动,
+    法师石魔,
+    全能法师
 
 }
 

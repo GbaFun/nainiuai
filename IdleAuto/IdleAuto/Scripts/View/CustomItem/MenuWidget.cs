@@ -153,11 +153,15 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.ClearEquips);
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     //await FlowController.MakeLunhui();
+                   // await FlowController.GroupWork(3, 1, FlowController.UpgradeBaseEq);
+                    //RepairManager.IsCollectEquip = false;
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
@@ -234,7 +238,7 @@ namespace IdleAuto.Scripts.View
         {
 
 
-             refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(8));
+            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(5));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -281,7 +285,7 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-            await FlowController.PassDungeon(81, 80, 76);
+           // await FlowController.PassDungeon(81, 80, 76);
             // FlowController.TestSpeed();
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
 
@@ -355,7 +359,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnReform_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void btnCookie_Click(object sender, EventArgs e)

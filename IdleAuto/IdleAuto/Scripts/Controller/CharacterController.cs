@@ -762,9 +762,26 @@ namespace IdleAuto.Scripts.Controller
 
             if (role.Job == emJob.死灵)
             {
+                var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == role.RoleId).ToList();
+                var hasQuanNeng = eqList.Where(p => p.EquipName == "全能法戒").Count() > 0;
                 if (nec.SkillMode == emSkillMode.法师)
                 {
-                    await SetNecSpecialSkill(role, targetSkillPoint);
+                    if (role.Level < 74)
+                    {
+                        await SetNecSpecialSkill(role, targetSkillPoint);
+                    }
+
+
+                    else if (role.Level >= 74 && !hasQuanNeng)
+                    {
+                        skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.法师石魔);
+                        targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+                    }
+                    else if (hasQuanNeng)
+                    {
+                        skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.全能法师);
+                        targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+                    }
                 }
 
             }
@@ -1103,25 +1120,31 @@ namespace IdleAuto.Scripts.Controller
             }).ToList(); ;
 
             DbUtil.InsertOrUpdate<GroupModel>(groupList);
-
-            arr.ForEach(p =>
+            foreach (var item in arr)
             {
                 int mapLv;
-                if (int.TryParse(p.MapLv, out mapLv))
+                if (int.TryParse(item.MapLv, out mapLv))
                 {
-                    var role = user.Roles.Find(w => w.RoleId == p.Roleid);
+                    var role = user.Roles.Find(w => w.RoleId == item.Roleid);
 
 
                     var setting = MapSettingCfg.Instance.GetSetting(role);
-                    var needSwitch = setting.CanSwitch(p.Lv, mapLv);
+                    if (setting.MapLv > 80)
+                    {
+                        var groupInfo = FreeDb.Sqlite.Select<GroupModel>().Where(w => w.RoleId == role.RoleId).First();
+                        if (groupInfo.DungeonPassedLv < 80) continue;
+                    }
+                    var needSwitch = setting.CanSwitch(item.Lv, mapLv);
                     if (needSwitch)
                     {
-                        roleNameList.Add(p.RoleName);
+                        roleNameList.Add(item.RoleName);
                     }
                 }
+            }
 
 
-            });
+
+
 
 
             //查询未完成的任务
@@ -1152,11 +1175,7 @@ namespace IdleAuto.Scripts.Controller
             var r = await _win.CallJs("_map.canSwitch()");
             var canSwitch = r.Result.ToObject<bool>();
             if (!canSwitch) return;
-            if (targetLv > 80)
-            {
-                var groupInfo = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
-                if (groupInfo.DungeonPassedLv < 80) return;
-            }
+
             await _win.SignalRaceCallBack(new string[] { "charReload" }, async () =>
            {
                await SwitchTo(targetLv);

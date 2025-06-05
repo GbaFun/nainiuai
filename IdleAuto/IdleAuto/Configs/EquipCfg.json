@@ -105,7 +105,7 @@
     "description": "骑士副手，优先堆冥想和审判光环",
 
     "equipment": {
-      "category": "盾|骑士盾牌",
+      "category": "盾",
       "quality": "全部",
       "isTrade": true,
       "conditions": [
@@ -115,6 +115,22 @@
           "attributeType": "指定职业单系技能",
           "seq": 1,
           "conditionContent": "骑士,光环,3"
+        },
+        {
+          "matchGroupName": "盾牌",
+          "matchType": "任一",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+
+          "conditionContent": "中型"
+        },
+        {
+          "matchGroupName": "盾牌",
+          "matchType": "任一",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "seq": 10,
+          "conditionContent": "重型"
         }
       ]
     }
@@ -945,6 +961,18 @@
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "10"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "全能法戒"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
         }
 
       ]
@@ -1496,7 +1524,23 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "骑士,光环,2",
-          "seq": 100
+          "seq": 50
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "中型",
+          "seq": 30
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "重型",
+          "seq": 1000
         }
 
       ]
@@ -3412,6 +3456,13 @@
           "conditionContent": "20"
         },
 
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
         {
           "matchType": "必需",
           "operate": "不等于",
@@ -3510,6 +3561,7 @@
     "equipment": {
       "category": "护符",
       "quality": "传奇",
+      "isTrade": true,
       "conditions": [
 
 

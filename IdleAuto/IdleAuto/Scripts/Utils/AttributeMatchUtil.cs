@@ -380,6 +380,9 @@ namespace AttributeMatch
                 case emAttrType.施法速度:
                     regexAttr = $@"施法速度提升 (?<v>\d+)%";
                     break;
+                case emAttrType.唤醒光环:
+                    regexAttr = $@"Lv(?<v>\d+)唤醒";
+                    break;
                 case emAttrType.攻击速度:
                     regexAttr = $@"攻击速度提升 (?<v>\d+)%";
                     break;

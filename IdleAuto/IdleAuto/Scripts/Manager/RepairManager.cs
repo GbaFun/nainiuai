@@ -26,6 +26,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public static long PublicYonghengId = long.Parse(ConfigUtil.GetAppSetting("yongheng"));
     public static readonly string RepoAcc = ConfigUtil.GetAppSetting("repoAcc");
     public static readonly string RepoRole = ConfigUtil.GetAppSetting("repoRole");
+
+    public static bool IsCollectEquip = bool.Parse(ConfigUtil.GetAppSetting("isCollectEquip"));
     /// <summary>
     /// 一键修车（单账号）
     /// 盘库、技能加点、自动更换装备、剩余属性点分配
@@ -230,7 +232,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public async Task UpdateEquips(BroWindow win)
     {
-        bool isCollect = bool.Parse(ConfigUtil.GetAppSetting("isCollectEquip"));
+        bool isCollect = RepairManager.IsCollectEquip;
         var equipController = new EquipController(win);
         var account = win.User;
         if (isCollect)

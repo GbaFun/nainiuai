@@ -927,7 +927,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2521,6 +2521,42 @@
   },
   {
     "equip": {
+      "category": "盾",
+      "quality": "魔法",
+      "necessary": 0,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+
+          "conditionContent": "骑士,光环,3"
+        },
+        {
+          "matchGroupName": "盾牌",
+          "matchType": "任一",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+
+          "conditionContent": "中型"
+        },
+        {
+          "matchGroupName": "盾牌",
+          "matchType": "任一",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+
+          "conditionContent": "重型"
+        }
+
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
       "category": "骑士盾牌|盾",
       "quality": "魔法|稀有|传奇|套装|神器",
       "necessary": 0,
@@ -2533,6 +2569,7 @@
           "seq": 6,
           "conditionContent": "骑士,光环,3"
         },
+
         {
 
           "matchType": "可选",
