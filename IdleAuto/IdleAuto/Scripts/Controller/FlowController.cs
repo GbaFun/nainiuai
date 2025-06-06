@@ -185,7 +185,7 @@ namespace IdleAuto.Scripts.Controller
             var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 } };
             foreach (var job in sendDic)
             {
-                await SendRune(job.Key, job.Value);
+              //  await SendRune(job.Key, job.Value);
             }
 
 

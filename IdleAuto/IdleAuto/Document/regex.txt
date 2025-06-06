@@ -1,0 +1,1 @@
+﻿(?<=施法戒指")[\s\r\n]*,[\s\r\n]*"isNecessery": true[\s\r\n]*

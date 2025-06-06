@@ -305,7 +305,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon);
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon,RepairManager.NainiuAccounts);
 
         }
 

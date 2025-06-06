@@ -449,10 +449,16 @@ public class EquipController : BaseController
 
                 tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
                 var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
+                idealFcr = suit.IdealFcr;
+                //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
+                if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess)
+                {
+                    suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, idealFcr);
+                }
 
                 if (suitEquips.IsSuccess)
                 {
-                    idealFcr = suit.IdealFcr;
+
                     if (suitEquips.MatchSuitName == emSkillMode.献祭.ToString())
                     {
                         curSkillMode = emSkillMode.献祭;
@@ -573,55 +579,172 @@ public class EquipController : BaseController
         return curEquip;
     }
 
-    private void AdjustRings(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, EquipModel> toWearEquips, int idealFcr)
+    private bool AdjustRings(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips,
+     Dictionary<emEquipSort, EquipModel> toWearEquips, int idealFcr)
     {
-        return;
-         if (idealFcr == 0) return;
+        // 1. 计算基础施法速度（不含戒指）
         var baseFcr = 5M;
+        var group = role.GetGroup();
+        var dk = group.FirstOrDefault(p => p.Job == emJob.死骑);
+        if (dk != null) baseFcr += dk.YonghengSpeed;
 
-        foreach (var to in toWearEquips)
+        var curFcr = baseFcr;
+
+        // 2. 更新非戒指装备
+        foreach (var to in toWearEquips.Where(p => p.Key != emEquipSort.戒指1 && p.Key != emEquipSort.戒指2))
         {
             curEquips[to.Key] = to.Value;
         }
-        foreach (var cur in curEquips)
+
+        // 3. 计算非戒指装备提供的FCR
+        foreach (var cur in curEquips.Where(p => p.Key != emEquipSort.戒指1 && p.Key != emEquipSort.戒指2))
         {
-            var s = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, cur.Value.Content).Item2;
-            baseFcr += s;
+            var s = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, cur.Value?.Content).Item2;
+            curFcr += s;
         }
-        var group = role.GetGroup();
-        var dk = group.Where(p => p.Job == emJob.死骑).First();
-        baseFcr += dk.YonghengSpeed;
-        var val = (baseFcr - idealFcr);
-        if (val < 10) return;
-        var count = Math.Floor(val / 10);
-        var rings = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipStatus == emEquipStatus.Repo && p.AccountName == _win.User.AccountName && p.Content.Contains("所有技能") && p.Category == "戒指").ToList();
-        rings = rings.Where(p => p.CanWear(role)).ToList();
-        var quanNengList = rings.Where(p => p.EquipName == "全能法戒").ToList();
-        var otherRings = rings.Where(p => p.EquipName != "全能法戒").ToList();
-        if (quanNengList.Count > 0 && curEquips[emEquipSort.戒指1].EquipName != "全能法戒")
+
+        // 4. 获取所有候选戒指（包括当前佩戴的）
+        var allRings = FreeDb.Sqlite.Select<EquipModel>()
+            .Where(p => p.AccountName == _win.User.AccountName
+                    && p.RoleID == 0
+                    && p.Category == "戒指")
+            .ToList();
+
+        allRings.Add(curEquips[emEquipSort.戒指1]);
+        allRings.Add(curEquips[emEquipSort.戒指2]);
+        // 5. 找出所有可能的戒指组合（最多2个戒指）
+        var allCombinations = GenerateAllRingCombinations(allRings);
+
+        // 6. 评估并选择最佳组合
+        var (bestCombination, finalFcr) = SelectBestRingCombination(allCombinations, curFcr, idealFcr);
+        var currentRing1 = curEquips[emEquipSort.戒指1];
+        var currentRing2 = curEquips[emEquipSort.戒指2];
+
+        // 7. 处理待穿戴戒指
+        ProcessToWearEquips(toWearEquips, bestCombination, currentRing1, currentRing2);
+
+        // 8. 返回是否满足FCR要求
+        return finalFcr >= idealFcr;
+    }
+
+    private List<List<EquipModel>> GenerateAllRingCombinations(List<EquipModel> allRings)
+    {
+        var combinations = new List<List<EquipModel>>();
+
+
+
+        // 双戒指组合
+        for (int i = 0; i < allRings.Count; i++)
         {
-            toWearEquips[emEquipSort.戒指1] = quanNengList[0];
-            quanNengList.Remove(quanNengList[0]);
-        }
-        else if (otherRings.Count > 0 && !curEquips[emEquipSort.戒指1].Content.Contains("所有技能"))
-        {
-            toWearEquips[emEquipSort.戒指1] = otherRings[0];
-            otherRings.Remove(otherRings[0]);
-        }
-        if (count >= 2)
-        {
-            if (quanNengList.Count > 0 && curEquips[emEquipSort.戒指2].EquipName != "全能法戒")
+            for (int j = i + 1; j < allRings.Count; j++)
             {
-                toWearEquips[emEquipSort.戒指2] = quanNengList[0];
-                quanNengList.Remove(quanNengList[0]);
-            }
-            else if (otherRings.Count > 0 && !curEquips[emEquipSort.戒指2].Content.Contains("所有技能"))
-            {
-                toWearEquips[emEquipSort.戒指2] = otherRings[0];
-                otherRings.Remove(otherRings[0]);
+                combinations.Add(new List<EquipModel> { allRings[i], allRings[j] });
             }
         }
 
+        return combinations;
+    }
+
+    private (List<EquipModel> bestCombo, decimal finalFcr) SelectBestRingCombination(
+        List<List<EquipModel>> allCombinations, decimal curFcr, int idealFcr)
+    {
+        List<EquipModel> bestCombo = new List<EquipModel>();
+        decimal bestFcr = curFcr;
+        int bestQuanNengCount = 0;
+        int bestSkillCount = 0;
+        bool hasMetFcrRequirement = false;
+
+        foreach (var combo in allCombinations)
+        {
+            var (comboFcr, quanNengCount, skillCount) = EvaluateRingCombination(combo, curFcr);
+
+            bool meetsFcr = comboFcr >= idealFcr;
+            bool isBetter = false;
+
+            if (!hasMetFcrRequirement)
+            {
+                if (meetsFcr)
+                {
+                    hasMetFcrRequirement = true;
+                    isBetter = true;
+                }
+                else
+                {
+                    isBetter = comboFcr > bestFcr ||
+                              (comboFcr == bestFcr && quanNengCount > bestQuanNengCount) ||
+                              (comboFcr == bestFcr && quanNengCount == bestQuanNengCount && skillCount > bestSkillCount);
+                }
+            }
+            else
+            {
+                isBetter = meetsFcr &&
+                          (quanNengCount > bestQuanNengCount ||
+                           (quanNengCount == bestQuanNengCount && skillCount > bestSkillCount));
+            }
+
+            if (isBetter)
+            {
+                bestCombo = combo;
+                bestFcr = comboFcr;
+                bestQuanNengCount = quanNengCount;
+                bestSkillCount = skillCount;
+            }
+        }
+
+        return (bestCombo, bestFcr);
+    }
+
+    private (decimal fcr, int quanNengCount, int skillCount) EvaluateRingCombination(
+        List<EquipModel> combo, decimal baseFcr)
+    {
+        decimal comboFcr = baseFcr;
+        int quanNengCount = 0;
+        int skillCount = 0;
+
+        foreach (var ring in combo)
+        {
+            if (ring.Content.Contains("施法速度"))
+            {
+                comboFcr += AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, ring.Content).Item2;
+            }
+
+            if (ring.EquipName == "全能法戒")
+            {
+                quanNengCount++;
+                skillCount++;
+            }
+            else if (ring.Content.Contains("所有技能"))
+            {
+                skillCount++;
+            }
+        }
+
+        return (comboFcr, quanNengCount, skillCount);
+    }
+
+    private void ProcessToWearEquips(Dictionary<emEquipSort, EquipModel> toWearEquips,
+        List<EquipModel> bestCombination, EquipModel currentRing1, EquipModel currentRing2)
+    {
+        // 清空现有的待穿戴戒指
+        toWearEquips.Remove(emEquipSort.戒指1);
+        toWearEquips.Remove(emEquipSort.戒指2);
+
+        if (bestCombination.Count == 0)
+            return;
+
+        // 检查是否需要更换戒指1
+        if (bestCombination.Count > 0 &&
+            (currentRing1 == null || !bestCombination.Contains(currentRing1)))
+        {
+            toWearEquips[emEquipSort.戒指1] = bestCombination[0];
+        }
+
+        // 检查是否需要更换戒指2
+        if (bestCombination.Count > 1 &&
+            (currentRing2 == null || !bestCombination.Contains(currentRing2)))
+        {
+            toWearEquips[emEquipSort.戒指2] = bestCombination[1];
+        }
     }
 
     /// <summary>
