@@ -325,7 +325,7 @@
 
       ]
     },
-    "maxCount": 20
+    "maxCount": 200
   },
   {
     "equip": {
@@ -1855,7 +1855,7 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "冥神之力"
+          "conditionContent": "冥神"
         }
       ]
     },
@@ -2079,14 +2079,8 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "要塞"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "传奇",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "conditionContent": "猎手,陷阱,3"
         }
+       
 
 
       ]
@@ -2200,7 +2194,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   //白热或血红珠宝
   {

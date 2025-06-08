@@ -1014,7 +1014,7 @@
 
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "1"
@@ -1031,15 +1031,22 @@
         {
           "matchType": "必需",
           "operate": "不等于",
-          "attributeType": "自定义",
-          "conditionContent": "全能"
+          "attributeType": "名称",
+          "conditionContent": "全能法戒"
         },
         {
           "matchType": "必需",
-          "operate": "不等于",
-          "attributeType": "自定义",
-          "conditionContent": "希望之翼"
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
         }
+        
 
       ]
     }
@@ -3385,6 +3392,18 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "无形"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凹槽"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "冰冷转换"
         }
       ]
     }

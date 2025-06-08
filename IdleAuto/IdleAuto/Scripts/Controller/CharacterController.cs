@@ -777,7 +777,7 @@ namespace IdleAuto.Scripts.Controller
                         skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.法师石魔);
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                     }
-                     if (hasQuanNeng)
+                    if (hasQuanNeng)
                     {
                         skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.全能法师);
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
@@ -893,7 +893,8 @@ namespace IdleAuto.Scripts.Controller
         {
             if (role.Job != emJob.骑士) return;
             var hasMori = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "末日" && p.RoleID == role.RoleId).First() != null;
-            if (hasMori)
+            var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
+            if (hasMori|| hasYongheng)
             {
                 skillConfig.GroupSkill.Remove("奉献");
                 skillConfig.GroupSkill.Remove("忏悔");

@@ -453,7 +453,7 @@ public class EquipController : BaseController
                 //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
                 if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess)
                 {
-                    suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, idealFcr);
+                    suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
 
                 if (suitEquips.IsSuccess)
@@ -526,8 +526,7 @@ public class EquipController : BaseController
         var r1 = await win.CallJs($@"getCurEquips()");
 
         var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-        //将即将穿戴的装备和现有的装备整合 计算速度 算上永恒加成 然后增加技能戒指携带数量
-        AdjustRings(role, curEquip, towearEquips, idealFcr);
+
         if (towearEquips.Count > 0)
         {
             List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
@@ -580,10 +579,12 @@ public class EquipController : BaseController
     }
 
     private bool AdjustRings(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips,
-     Dictionary<emEquipSort, EquipModel> toWearEquips, int idealFcr)
+     Dictionary<emEquipSort, EquipModel> toWearEquips, EquipSuit suit)
     {
         // 1. 计算基础施法速度（不含戒指）
         var baseFcr = 5M;
+        var idealFcr = suit.IdealFcr;
+
         var group = role.GetGroup();
         var dk = group.FirstOrDefault(p => p.Job == emJob.死骑);
         if (dk != null) baseFcr += dk.YonghengSpeed;
@@ -607,11 +608,15 @@ public class EquipController : BaseController
         var allRings = FreeDb.Sqlite.Select<EquipModel>()
             .Where(p => p.AccountName == _win.User.AccountName
                     && p.RoleID == 0
-                    && p.Category == "戒指")
+                    && p.Category == "戒指" && p.Content.Contains("所有技能"))
             .ToList();
 
-        allRings.Add(curEquips[emEquipSort.戒指1]);
-        allRings.Add(curEquips[emEquipSort.戒指2]);
+        if (curEquips.ContainsKey(emEquipSort.戒指1)) allRings.Add(curEquips[emEquipSort.戒指1]);
+        if (curEquips.ContainsKey(emEquipSort.戒指2)) allRings.Add(curEquips[emEquipSort.戒指2]);
+
+        if (toWearEquips.ContainsKey(emEquipSort.戒指1)) allRings.Add(toWearEquips[emEquipSort.戒指1]);
+        if (toWearEquips.ContainsKey(emEquipSort.戒指2)) allRings.Add(toWearEquips[emEquipSort.戒指2]);
+        allRings = allRings.Where(p => p.CanWear(role) && p != null).Distinct().ToList();
         // 5. 找出所有可能的戒指组合（最多2个戒指）
         var allCombinations = GenerateAllRingCombinations(allRings);
 
@@ -732,19 +737,30 @@ public class EquipController : BaseController
         if (bestCombination.Count == 0)
             return;
 
-        // 检查是否需要更换戒指1
-        if (bestCombination.Count > 0 &&
-            (currentRing1 == null || !bestCombination.Contains(currentRing1)))
+        var index1 = bestCombination.FindIndex(f => f.EquipID == currentRing1.EquipID);
+
+        if (index1 > -1)
+        {
+            currentRing1 = bestCombination[index1];
+            bestCombination.RemoveAt(index1);
+        }
+        var index2 = bestCombination.FindIndex(f => f.EquipID == currentRing2.EquipID);
+        if (index2 > -1)
+        {
+            currentRing2 = bestCombination[index2];
+            bestCombination.RemoveAt(index2);
+        }
+        if (index1 == -1 && bestCombination.Count > 0)
         {
             toWearEquips[emEquipSort.戒指1] = bestCombination[0];
+            bestCombination.RemoveAt(0);
+        }
+        if (index2 == -1 && bestCombination.Count > 0)
+        {
+            toWearEquips[emEquipSort.戒指2] = bestCombination[0];
         }
 
-        // 检查是否需要更换戒指2
-        if (bestCombination.Count > 1 &&
-            (currentRing2 == null || !bestCombination.Contains(currentRing2)))
-        {
-            toWearEquips[emEquipSort.戒指2] = bestCombination[1];
-        }
+
     }
 
     /// <summary>
@@ -784,6 +800,12 @@ public class EquipController : BaseController
             g.YonghengSpeed = int.Parse((baseVal + (val - 6)).ToString());
             DbUtil.InsertOrUpdate<GroupModel>(g);
 
+        }
+        else
+        {
+            var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+            g.YonghengSpeed = 0;
+            DbUtil.InsertOrUpdate<GroupModel>(g);
         }
 
 
@@ -1234,7 +1256,7 @@ public class EquipController : BaseController
         //这边有性能问题 应该先把装备按category和quality分类 手套&&稀有 手套&&全部
         foreach (var item in __equips)
         {
-            if (AttributeMatchUtil.MatchCategory(item, targetConfig.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Quality))
+            if (AttributeMatchUtil.MatchCategory(item, targetConfig.Category) && AttributeMatchUtil.MatchQuallity(item, targetConfig.Quality) && item.CanWear(dto.Role))
             {
                 findEquips.Add(item);
             }

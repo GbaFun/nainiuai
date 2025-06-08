@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.DevTools.FedCm;
 using CefSharp;
+using System.Text.RegularExpressions;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -182,10 +183,10 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             await SaveRuneMap();
-            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 },{ 32,1} };
             foreach (var job in sendDic)
             {
-              //  await SendRune(job.Key, job.Value);
+               await SendRune(job.Key, job.Value);
             }
 
 
@@ -1127,36 +1128,84 @@ namespace IdleAuto.Scripts.Controller
         {
             await Task.Delay(1500);
             var bro = win.GetBro();
-            var head = curEquips[emEquipSort.头盔];
-            var cloth = curEquips[emEquipSort.衣服];
-            int headCount = RegexUtil.MatchCount(head.Content, "冰冷转换");
-            int clothCount = RegexUtil.MatchCount(cloth.Content, "冰冷转换");
-            if (headCount > 0 || clothCount > 0) return;//插一个冰转就够了
-            var targetEquip = head;
-            if (head.EquipName != "教化")
-            {
-                //如果不是教化头需要往尸爆衣服上插冰转
-                targetEquip = cloth;
-                var r = new ReformController(win);
-                bool hasSlot = RegexUtil.MatchCount(targetEquip.Content, "凹槽") > 0;
-                if (!hasSlot) await r.ReformEquip(targetEquip, role.RoleId, emReformType.Direct);
 
+            // 解析凹槽数量的方法（按照您提供的格式）
+            int ParseSocketCount(string content)
+            {
+                var match = Regex.Match(content, @"凹槽\((\d+)/(\d+)\)");
+                return match.Success ? int.Parse(match.Groups[2].Value) : 0;
             }
 
-            var url = IdleUrlHelper.InlayUrl(role.RoleId, targetEquip.EquipID);
-            if (bro.Address != url) await win.LoadUrlWaitJsInit(url, "inlay");
-            await Task.Delay(1000);
-            var r1 = await win.CallJs("_inlay.isEnd()");
-            var isEnd = r1.Result.ToObject<bool>();
-            var e = new EquipController(win);
-            var list = e.GetMatchEquips(win.User.Id, EmEquipCfg.Instance.GetEquipCondition(emEquip.冰转珠宝), role, out _);
-            if (!isEnd)
+            // 获取装备
+            var head = curEquips[emEquipSort.头盔];
+            var cloth = curEquips[emEquipSort.衣服];
+            var weapon = curEquips[emEquipSort.主手];
+
+            // 计算各装备的孔数和已插入冰冷转换数量
+            int headSocketCount = ParseSocketCount(head.Content);
+            int headColdCount = RegexUtil.MatchCount(head.Content, "冰冷转换");
+            int clothSocketCount = ParseSocketCount(cloth.Content);
+            int clothColdCount = RegexUtil.MatchCount(cloth.Content, "冰冷转换");
+            int weaponSocketCount = ParseSocketCount(weapon.Content);
+            int weaponColdCount = RegexUtil.MatchCount(weapon.Content, "冰冷转换");
+
+            // 1. 计算需要的冰冷珠宝数量
+            int requiredJewels = 0;
+            EquipModel targetEquip = null;
+
+            // 武器优先处理（自杀支系）
+            if (weapon.EquipName == "自杀支系" && weaponColdCount == 0)
             {
-                if (list.Count == 0)
+                if (weaponSocketCount == 0)
                 {
-                    var coldList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "珠宝" && p.EquipName.Contains("冰冷转换") && !p.Content.Contains("增强伤害")).Take(4).ToList();
-                    //登记一个冰转需求
-                    var inserList = coldList.Select(s => new TradeModel()
+                    var r = new ReformController(win);
+                    await r.ReformEquip(weapon, role.RoleId, emReformType.Direct);
+                    await Task.Delay(1000);
+                    weaponSocketCount = 1; // 打孔后默认1个孔
+                }
+                targetEquip = weapon;
+                requiredJewels = 1;
+            }
+            // 衣服处理
+            else if (clothColdCount == 0)
+            {
+                if (clothSocketCount == 0)
+                {
+                    var r = new ReformController(win);
+                    await r.ReformEquip(cloth, role.RoleId, emReformType.Direct);
+                    await Task.Delay(1000);
+                    clothSocketCount = 1; // 打孔后默认1个孔
+                }
+                targetEquip = cloth;
+                requiredJewels = 1;
+            }
+            // 教化头盔特殊处理
+            else if (head.EquipName == "教化" && headColdCount < Math.Min(2, headSocketCount))
+            {
+                targetEquip = head;
+                requiredJewels = Math.Min(2, headSocketCount) - headColdCount;
+            }
+
+            // 如果没有需要插入的装备则返回
+            if (targetEquip == null || requiredJewels == 0) return;
+
+            // 2. 获取足够数量的冰冷珠宝
+            var e = new EquipController(win);
+            var jewelList = e.GetMatchEquips(win.User.Id, EmEquipCfg.Instance.GetEquipCondition(emEquip.冰转珠宝), role, out _);
+
+            if (jewelList.Count < requiredJewels)
+            {
+                var coldList = FreeDb.Sqlite.Select<EquipModel>()
+                    .Where(p => p.Category == "珠宝" &&
+                           p.EquipName.Contains("冰冷转换") &&
+                           !p.Content.Contains("增强伤害")&&p.AccountName!=win.User.AccountName)
+                    .Take(requiredJewels * 2)
+                    .ToList();
+
+                if (coldList.Count + jewelList.Count < requiredJewels)
+                {
+                    // 登记需求
+                    var insertList = coldList.Select(s => new TradeModel()
                     {
                         EquipId = s.EquipID,
                         EquipName = s.EquipName,
@@ -1166,19 +1215,44 @@ namespace IdleAuto.Scripts.Controller
                         DemandRoleName = role.RoleName,
                         OwnerAccountName = s.AccountName,
                         TradeStatus = emTradeStatus.Register
-                    });
-                    DbUtil.InsertOrUpdate<TradeModel>(inserList);
-                    throw new Exception("冰转不够");
+                    }).ToList();
+
+                    DbUtil.InsertOrUpdate<TradeModel>(insertList);
+                    throw new Exception($"需要{requiredJewels}个冰冷转换珠宝，但只有{jewelList.Count + coldList.Count}个可用");
                 }
-                await win.CallJsWaitReload($"_inlay.equipInlay({list[0].EquipID})", "inlay");
-                await Task.Delay(1500);
-                list[0].SetAccountInfo(win.User, role);
-                list[0].EquipStatus = emEquipStatus.Equipped;
-                DbUtil.InsertOrUpdate<EquipModel>(list[0]);
-                //插一个冰转就够了
-                //await InsertColdConversion(curEquips, win, role);
+                jewelList.AddRange(coldList);
+                throw new Exception("珠宝不够跳过修车,等待交易");
             }
 
+            // 3. 执行镶嵌操作
+            var url = IdleUrlHelper.InlayUrl(role.RoleId, targetEquip.EquipID);
+            if (bro.Address != url)
+            {
+                await win.LoadUrlWaitJsInit(url, "inlay");
+                await Task.Delay(1000);
+            }
+
+            // 对于教化头盔，使用isEnd判断是否可以继续插入
+            int insertedCount = 0;
+            while (insertedCount < requiredJewels)
+            {
+                var endCheck = await win.CallJs("_inlay.isEnd()");
+                if (endCheck.Result.ToObject<bool>()) break;
+
+                await win.CallJsWaitReload($"_inlay.equipInlay({jewelList[insertedCount].EquipID})", "inlay");
+                await Task.Delay(1500);
+
+                // 更新装备状态
+                jewelList[insertedCount].SetAccountInfo(win.User, role);
+                jewelList[insertedCount].EquipStatus = emEquipStatus.Equipped;
+                targetEquip.Content += "|冰冷转换";
+                DbUtil.InsertOrUpdate<EquipModel>(jewelList[insertedCount]);
+
+                insertedCount++;
+            }
+
+            // 递归处理其他装备
+            await InsertColdConversion(curEquips, win, role);
         }
 
         public static void SetSkillMode(RoleModel role, UserModel user, emSkillMode matchSkillMode)
