@@ -125,10 +125,10 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
                 //自动更换装备
-                // var curEquips = await equipController.AutoEquips(window, role);
+                 var curEquips = await equipController.AutoEquips(window, role);
 
                 //技能加点
-                await AddSkillPoint(window, role, null); ;
+                await AddSkillPoint(window, role, curEquips); ;
 
                 //角色剩余属性点分配
                 if (role.Job == emJob.死灵) await AddAttrPoint(window, role);

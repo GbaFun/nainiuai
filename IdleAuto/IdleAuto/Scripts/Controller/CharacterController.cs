@@ -784,16 +784,17 @@ namespace IdleAuto.Scripts.Controller
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                     }
                 }
-                else if (emSkillMode.献祭 == nec.SkillMode)
-                {
-                    var r1 = await _win.CallJs("_char.getEquipAttachSkill();");
-                    var attachSkill = r1.Result.ToObject<List<string>>();
-                    if (!attachSkill.Contains("冰冷转换"))
-                    {
-                        skillConfig.GroupSkill.Remove("冰冷转换");
-                    }
-                }
+               
 
+            }
+             if (emSkillMode.献祭 == nec.SkillMode)
+            {
+                var r1 = await _win.CallJs("_char.getEquipAttachSkill();");
+                var attachSkill = r1.Result.ToObject<List<string>>();
+                if (!attachSkill.Contains("冰冷转换"))
+                {
+                    skillConfig.GroupSkill.Remove("冰冷转换");
+                }
             }
 
             var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill, skillConfig.GroupSkill);
