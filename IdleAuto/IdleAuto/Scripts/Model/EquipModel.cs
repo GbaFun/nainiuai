@@ -99,6 +99,13 @@ public class EquipModel : IModel
     /// </summary>
     public emEquipStatus EquipStatus { get; set; }
 
+    /// <summary>
+    /// 是否有配装
+    /// </summary>
+    public bool IsInSuit { get; set; }
+
+
+
     private AttrV4 m_requareAttr;
     public AttrV4 RequareAttr
     {

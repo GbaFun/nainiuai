@@ -71,6 +71,8 @@ public class EquipSuits
 {
     public string JobName;
     public emJob Job => (emJob)Enum.Parse(typeof(emJob), JobName);
+
+    public emSuitType SuitType { get; set; } = emSuitType.效率;
     public LevelRange Lv { get; set; }
     public List<EquipSuit> EquipSuit { get; set; }
 }
@@ -181,14 +183,14 @@ public class SuitCfg
         SuitList = json.ToUpperCamelCase<List<EquipSuits>>();
     }
 
-    public EquipSuits GetEquipmentByJobAndLevel(emJob job, int level)
+    public EquipSuits GetEquipmentByJobAndLevel(emJob job, int level,emSuitType suitType=emSuitType.效率)
     {
         try
         {
             if (_equipMap == null)
             {
                 _equipMap = new Dictionary<emJob, List<EquipSuits>>();
-                foreach (var equipment in SuitList)
+                foreach (var equipment in SuitList.Where(p=>p.SuitType==suitType))
                 {
                     if (!_equipMap.ContainsKey(equipment.Job))
                     {

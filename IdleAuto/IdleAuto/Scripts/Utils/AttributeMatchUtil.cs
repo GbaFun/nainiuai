@@ -372,7 +372,7 @@ namespace AttributeMatch
                     regexAttr = $@"物品掉率：\+(?<v>\d+)%";
                     break;
                 case emAttrType.更佳魔法装备:
-                    regexAttr = $@"\+(?<v>\d+)% 更佳的机会取得魔法装备";
+                    regexAttr = $@"(\+|~)(?<v>\d+\.?\d*)% 更佳的机会取得魔法装备";
                     break;
                 case emAttrType.额外金币取得:
                     regexAttr = $@"\+(?<v>\d+)% 额外金币从怪物身上取得";
@@ -674,6 +674,7 @@ namespace AttributeMatch
         {
             try
             {
+                decimal _weight = 0;
                 bool ismatch = false;
                 weight = 0;
                 int[] condition = Array.ConvertAll(_condition.Split('-'), int.Parse);
@@ -682,22 +683,22 @@ namespace AttributeMatch
                     case emOperateType.大于:
                         ismatch = _value > condition[0];
                         if (ismatch)
-                            weight = int.Parse((_value - condition[0] + 1).ToString());
+                            _weight = decimal.Parse((_value - condition[0] + 1).ToString());
                         break;
                     case emOperateType.大于等于:
                         ismatch = _value >= condition[0];
                         if (ismatch)
-                            weight = int.Parse((_value - condition[0] + 1).ToString());
+                            _weight = decimal.Parse((_value - condition[0] + 1).ToString());
                         break;
                     case emOperateType.小于:
                         ismatch = _value < condition[0];
                         if (ismatch)
-                            weight = int.Parse((-_value + condition[0] + 1).ToString());
+                            _weight = decimal.Parse((-_value + condition[0] + 1).ToString());
                         break;
                     case emOperateType.小于等于:
                         ismatch = _value <= condition[0];
                         if (ismatch)
-                            weight = int.Parse((-_value + condition[0] + 1).ToString());
+                            _weight = decimal.Parse((-_value + condition[0] + 1).ToString());
                         break;
                     case emOperateType.等于:
                         ismatch = _value == condition[0];
@@ -715,7 +716,7 @@ namespace AttributeMatch
                             weight = 1;
                         break;
                 }
-
+                weight = int.Parse(Math.Floor(_weight).ToString());
                 return ismatch;
             }
             catch (Exception e)
@@ -724,6 +725,7 @@ namespace AttributeMatch
             }
 
         }
+
     }
     /// <summary>
     /// 属性匹配条件(单条，可配置)

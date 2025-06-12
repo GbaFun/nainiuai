@@ -411,7 +411,7 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动)
+    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动,emSuitType targetSuitType=emSuitType.效率)
     {
         var account = win.User;
         //   if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
@@ -432,7 +432,7 @@ public class EquipController : BaseController
         P.Log($"获取{role.RoleName}当前穿戴的装备成功", emLogType.AutoEquip);
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
-        var targetEquips = GetEquipConfig(role.Job, role.Level);
+        var targetEquips = GetEquipConfig(role.Job, role.Level,targetSuitType);
         int idealFcr = 0;
         var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
@@ -486,7 +486,10 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                if (toTradeSuit.Count == 0 || toTradeSuit.Values.Contains(null)) continue;
+                if (toTradeSuit.Count == 0 || toTradeSuit.Values.Contains(null))
+                {
+                    continue;
+                }
                 EquipTradeQueue.Enqueue(toTradeSuit.Values.ToList());
                 break;
             }
@@ -1173,8 +1176,8 @@ public class EquipController : BaseController
                 break;
             }
             //暂时不给献祭队永恒
-            var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
-            if (equip == null && equipConfig.IsTrade && !isXianji)
+            //var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
+            if (equip == null && equipConfig.IsTrade)
             {
 
                 //整套装备能凑齐才乞讨交易 然后index较大的不会被后续乞讨覆盖 可以直接查库跳过index更大的交易请求
@@ -1392,9 +1395,9 @@ public class EquipController : BaseController
         return matchEquips;
     }
 
-    private EquipSuits GetEquipConfig(emJob job, int level)
+    private EquipSuits GetEquipConfig(emJob job, int level,emSuitType suitType)
     {
-        return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level);
+        return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level,suitType);
     }
 
     public List<EquipModel> MergeEquips(Dictionary<emEquipSort, EquipModel> toWear, Dictionary<emEquipSort, EquipModel> curWear)

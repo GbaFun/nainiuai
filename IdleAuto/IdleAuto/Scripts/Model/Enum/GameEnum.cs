@@ -333,13 +333,28 @@ public enum emSkillMode
 
 }
 
+public enum emSuitType
+{
+    效率,
+    MF
+}
+
 public enum emReformType
 {
     /// <summary>
     /// 施法者
     /// </summary>
     Mage,
-    Direct
+    Direct,
+    /// <summary>
+    /// 魔法
+    /// </summary>
+    UpgradeMagical,
+    /// <summary>
+    /// 稀有
+    /// </summary>
+    UpgradeRare,
+
 }
 
 public enum emGem

@@ -740,7 +740,7 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
-        public async Task AddSkillPoints(RoleModel role)
+        public async Task AddSkillPoints(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips = null)
         {
             //if (role.GetRoleSkillMode() == emSkillMode.献祭) return;
             _browser = _win.GetBro();
@@ -760,10 +760,11 @@ namespace IdleAuto.Scripts.Controller
             var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
 
-            if (role.Job == emJob.死灵)
+            if (role.Job == emJob.死灵 && curEquips != null)
             {
-                var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == role.RoleId).ToList();
+                var eqList = curEquips.Values.ToList();
                 var hasQuanNeng = eqList.Where(p => p.EquipName == "全能法戒").Count() > 0;
+
                 if (nec.SkillMode == emSkillMode.法师)
                 {
                     if (role.Level < 74)
@@ -783,6 +784,15 @@ namespace IdleAuto.Scripts.Controller
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                     }
                 }
+                else if (emSkillMode.献祭 == nec.SkillMode)
+                {
+                    var r1 = await _win.CallJs("_char.getEquipAttachSkill();");
+                    var attachSkill = r1.Result.ToObject<List<string>>();
+                    if (!attachSkill.Contains("冰冷转换"))
+                    {
+                        skillConfig.GroupSkill.Remove("冰冷转换");
+                    }
+                }
 
             }
 
@@ -790,8 +800,10 @@ namespace IdleAuto.Scripts.Controller
             var isNeedRest = r.Item1;
             var isNeedAdd = r.Item2;
             var isNeedSetGroup = r.Item3;
-
-            await SetKnightSpecialSkill(role, skillConfig);
+            if (role.Job == emJob.骑士)
+            {
+                isNeedSetGroup = await SetKnightSpecialSkill(role, skillConfig, curEquips);
+            }
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
             if (isNeedRest) await _win.SignalCallback("charReload", async () =>
                {
@@ -889,19 +901,20 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
-        public async Task SetKnightSpecialSkill(RoleModel role, SkillPoint skillConfig)
+        public async Task<bool> SetKnightSpecialSkill(RoleModel role, SkillPoint skillConfig, Dictionary<emEquipSort, EquipModel> curEquips)
         {
-            if (role.Job != emJob.骑士) return;
-            var hasMori = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "末日" && p.RoleID == role.RoleId).First() != null;
+
+            var hasMori = curEquips.Values.Where(p => p.EquipName == "末日").First() != null;
             var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
-            if (hasMori|| hasYongheng)
+            if (hasMori || hasYongheng)
             {
                 skillConfig.GroupSkill.Remove("奉献");
                 skillConfig.GroupSkill.Remove("忏悔");
                 skillConfig.GroupSkill.Remove("祝福之锤");
                 skillConfig.KeySkillId = 0;
+                return true;
             }
-
+            return false;
 
         }
 

@@ -92,7 +92,7 @@ public class PageLoadHandler
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "inlay.js");
             await LoadGlobalJs(jsPath, browser);
         }
-        else if (ContainsUrl(url, Reform))
+        else if (ContainsUrl(url, Reform)|| ContainsUrl(url, EquipPage))
         {
             var jsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/js", "reform.js");
             await LoadGlobalJs(jsPath, browser);

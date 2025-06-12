@@ -153,16 +153,15 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                  //  await FlowController.GroupWork(8, 1, RepairManager.Instance.ClearEquips);
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                   // await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
-                    //await FlowController.MakeLunhui();
-                    //await FlowController.GroupWork(5, 1, FlowController.UpgradeBaseEq);
-                    RepairManager.IsCollectEquip = false;
+                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                   // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                   //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                    // RepairManager.IsCollectEquip = true;
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(5, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(5, 1, RepairManager.Instance.AutoRepair);
+                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                     await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -285,7 +284,7 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-          // await FlowController.PassDungeon(81, 80, 76);
+            // await FlowController.PassDungeon(81, 80, 76);
             // FlowController.TestSpeed();
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
 
@@ -305,7 +304,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon,RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
         }
 
@@ -359,7 +358,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnReform_Click(object sender, EventArgs e)
         {
-            
+            FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
         }
 
         private void btnCookie_Click(object sender, EventArgs e)

@@ -75,11 +75,13 @@
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
     <Compile Include="Scripts\Controller\ArtifactController.cs" />
     <Compile Include="Scripts\Controller\EfficiencyController.cs" />
+    <Compile Include="Scripts\Controller\EquipUtil.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Controller\ReformController.cs" />
     <Compile Include="Scripts\Controller\TradeController.cs" />
     <Compile Include="Scripts\Manager\TabManager.cs" />
     <Compile Include="Scripts\Model\Efficency.cs" />
+    <Compile Include="Scripts\Model\EquipSuitModel.cs" />
     <Compile Include="Scripts\Model\GroupModel.cs" />
     <Compile Include="Scripts\Model\IModel.cs" />
     <Compile Include="Scripts\Model\RuneMapModel.cs" />
@@ -347,6 +349,7 @@
   <ItemGroup>
     <Folder Include="Art\" />
     <Folder Include="Resource\" />
+    <Folder Include="Scripts\Model\View\" />
     <Folder Include="Scripts\ThirdPart\" />
   </ItemGroup>
   <ItemGroup>

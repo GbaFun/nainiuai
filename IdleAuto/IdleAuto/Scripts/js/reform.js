@@ -20,14 +20,17 @@
         random: $("td:contains('随机数量凹槽')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         direct: 50,
         mage: $("td:contains('合成施法者系列物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        upgradeRare: $("td:contains('升级为稀有物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        upgradeMagical: $("td:contains('升级为魔法物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
     }
 
     async function isMeterialEnough() {
         var canDirect = $("td:contains('最大数量凹槽')").parent().find('.label ').text() == "执行";
         var canRandom = $("td:contains('随机数量凹槽')").parent().find('.label ').text() == "执行";
         var canMage = $("td:contains('合成施法者系列物品')").parent().find('.label ').text() == "执行";
-
-        return { canDirect: canDirect, canRandom: canRandom, canMage: canMage }
+        var canUpgradeRare = $("td:contains('升级为稀有物品')").parent().find('.label ').text() == "执行";
+        var canUpgradeMagical = $("td:contains('升级为魔法物品')").parent().find('.label ').text() == "执行";
+        return { canDirect: canDirect, canRandom: canRandom, canMage: canMage, canUpgradeRare: canUpgradeRare, canUpgradeMagical: canUpgradeMagical }
     }
 
     async function reform(d) {

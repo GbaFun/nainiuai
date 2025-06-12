@@ -182,11 +182,11 @@ namespace IdleAuto.Scripts.Controller
         }
         public static async Task SendRune()
         {
-            await SaveRuneMap();
-            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 },{ 32,1} };
+           await SaveRuneMap();
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
             foreach (var job in sendDic)
             {
-               await SendRune(job.Key, job.Value);
+                await SendRune(job.Key, job.Value);
             }
 
 
@@ -458,8 +458,8 @@ namespace IdleAuto.Scripts.Controller
 
                 var control = new EquipController(win2);
                 var role = win2.User.Roles.Find(p => p.RoleId == demandRole.Key.DemandRoleId);
-                await control.AutoEquips(win2, role);
-                if (role.Job == emJob.死灵) await RepairManager.Instance.AddSkillPoint(win2, role);
+                var curEquips = await control.AutoEquips(win2, role);
+                if (role.Job == emJob.死灵) await RepairManager.Instance.AddSkillPoint(win2, role, curEquips);
 
                 win2.Close();
 
@@ -761,7 +761,7 @@ namespace IdleAuto.Scripts.Controller
             //按有轮回的号分组
             var lunhuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Lv >= 70 && p.Category == "死灵副手" &&
             (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 骷髅法师") &&
-            (p.Content.Contains("+3 生生不息") || p.Content.Contains("+3 支配骷髅")) && p.EquipStatus == emEquipStatus.Repo).ToList();
+            (p.Content.Contains("+3 支配骷髅")) && p.EquipStatus == emEquipStatus.Repo).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
             await CollectAndMakeArtifact(emArtifactBase.轮回法师, lunhuiList, RepairManager.RepoRole, RepairManager.RepoAcc);
             //发给装备了塔手的号
@@ -842,6 +842,15 @@ namespace IdleAuto.Scripts.Controller
             eqList = eqList.Where(p => p.IsMatch(con)).ToList();
 
             await ReformEq(emReformType.Mage, eqList, win);
+        }
+
+
+        public async static Task ReformDungeon(BroWindow win)
+        {
+            var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "秘境" && p.Quality == "base" && p.AccountName == win.User.AccountName && p.EquipStatus == emEquipStatus.Repo).ToList();
+            if (eqList.Count == 0) return;
+
+            await ReformEq(emReformType.UpgradeRare, eqList, win);
         }
         /// <summary>
         /// 改造装备
@@ -1195,35 +1204,35 @@ namespace IdleAuto.Scripts.Controller
 
             if (jewelList.Count < requiredJewels)
             {
+                int requiredCount = requiredJewels - jewelList.Count;
+                var tradeList = FreeDb.Sqlite.Select<TradeModel>()
+                    .Where(p => p.EquipSortName == "珠宝" &&
+                           p.EquipName.Contains("冰冷转换")).ToList();
+                var tradeIdList = tradeList.Select(p => p.EquipId).ToList();
+                tradeIdList.Add(-1);
                 var coldList = FreeDb.Sqlite.Select<EquipModel>()
-                    .Where(p => p.Category == "珠宝" &&
-                           p.EquipName.Contains("冰冷转换") &&
-                           !p.Content.Contains("增强伤害")&&p.AccountName!=win.User.AccountName)
-                    .Take(requiredJewels * 2)
-                    .ToList();
-
-                if (coldList.Count + jewelList.Count < requiredJewels)
+                   .Where(p => p.Category == "珠宝" &&
+                          p.EquipName.Contains("冰冷转换") &&
+                          !p.Content.Contains("增强伤害") && p.AccountName != win.User.AccountName && !tradeIdList.Contains(p.EquipID))
+                   .Take(requiredCount)
+                   .ToList();
+                // 登记需求
+                var insertList = coldList.Select(s => new TradeModel()
                 {
-                    // 登记需求
-                    var insertList = coldList.Select(s => new TradeModel()
-                    {
-                        EquipId = s.EquipID,
-                        EquipName = s.EquipName,
-                        EquipSortName = "珠宝",
-                        DemandAccountName = win.User.AccountName,
-                        DemandRoleId = role.RoleId,
-                        DemandRoleName = role.RoleName,
-                        OwnerAccountName = s.AccountName,
-                        TradeStatus = emTradeStatus.Register
-                    }).ToList();
+                    EquipId = s.EquipID,
+                    EquipName = s.EquipName,
+                    EquipSortName = "珠宝",
+                    DemandAccountName = win.User.AccountName,
+                    DemandRoleId = role.RoleId,
+                    DemandRoleName = role.RoleName,
+                    OwnerAccountName = s.AccountName,
+                    TradeStatus = emTradeStatus.Register
+                }).ToList();
 
-                    DbUtil.InsertOrUpdate<TradeModel>(insertList);
-                    throw new Exception($"需要{requiredJewels}个冰冷转换珠宝，但只有{jewelList.Count + coldList.Count}个可用");
-                }
-                jewelList.AddRange(coldList);
-                throw new Exception("珠宝不够跳过修车,等待交易");
+                DbUtil.InsertOrUpdate<TradeModel>(insertList);
+
             }
-
+            if (jewelList.Count == 0) return;
             // 3. 执行镶嵌操作
             var url = IdleUrlHelper.InlayUrl(role.RoleId, targetEquip.EquipID);
             if (bro.Address != url)
@@ -1270,8 +1279,14 @@ namespace IdleAuto.Scripts.Controller
 
         }
 
+        /// <summary>
+        /// 更新死骑的mf装备并且存储套装 记录 锁定装备在交易和自动换装中抹除 
+        /// </summary>
+        /// <returns></returns>
+        public static async Task UpdateMfEquip()
+        {
 
-
+        }
 
 
 

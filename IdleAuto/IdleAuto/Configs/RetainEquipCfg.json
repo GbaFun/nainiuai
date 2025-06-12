@@ -8,7 +8,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "掉落等级",
-          "conditionContent": "50"
+          "conditionContent": "49"
         },
         {
           "matchType": "必需",
@@ -127,7 +127,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "卡格斯11"
+          "conditionContent": "卡格斯的指轮"
         },
         {
           "matchType": "任一",
@@ -199,7 +199,7 @@
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "神目"
+          "conditionContent": "神目1"
         },
         {
           "matchType": "任一",
@@ -237,7 +237,7 @@
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "击头"
+          "conditionContent": "击头1"
         },
 
         {
@@ -252,7 +252,7 @@
           "matchGroupName": "传奇装备",
           "operate": "等于",
           "attributeType": "名称",
-          "conditionContent": "法师之拳"
+          "conditionContent": "法师之拳1"
         },
 
 
@@ -321,6 +321,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "塔格奥"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "套装",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "塔格奥之翼"
         }
 
       ]
@@ -376,6 +383,24 @@
   {
     "equip": {
       "description": "完美传奇",
+      "category": "法珠",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "镜光魔珠"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
       "category": "帽子",
       "quality": "传奇",
       "conditions": [
@@ -391,7 +416,7 @@
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "2"
+          "conditionContent": "1"
         }
 
       ]
@@ -482,7 +507,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 0
   },
   {
     "equip": {
@@ -1042,7 +1067,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "吉利安火盆"
         }
@@ -1136,6 +1161,23 @@
     },
     "maxCount": 10
   },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "头饰",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "三重叶"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
 
   {
     "equip": {
@@ -1155,24 +1197,7 @@
     },
     "maxCount": 10
   },
-  {
-    "equip": {
-      "description": "完美传奇",
-      "category": "戒指",
-      "quality": "传奇",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "matchGroupName": "传奇",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "利亚之戒"
-        }
 
-      ]
-    },
-    "maxCount": 10
-  },
   {
     "equip": {
       "description": "完美传奇",
@@ -1493,13 +1518,8 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "人品的展现"
-        },
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "所有技能",
-          "conditionContent": "1"
         }
+
 
       ]
     },
@@ -2080,7 +2100,7 @@
           "attributeType": "名称",
           "conditionContent": "要塞"
         }
-       
+
 
 
       ]
@@ -2322,19 +2342,30 @@
       "category": "珠宝",
       "quality": "魔法",
       "conditions": [
-        {
-          "matchType": "任一",
-          "matchGroupName": "蓝黄宝珠",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "转换"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "蓝黄宝珠",
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "璀璨"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "冰冷转换"
         }
 
       ]
@@ -2483,7 +2514,7 @@
   {
     "equip": {
       "category": "权杖",
-      "quality": "全部",
+      "quality": "魔法|稀有|传奇",
       "necessary": 0,
       "conditions": [
 
@@ -2527,14 +2558,7 @@
 
           "conditionContent": "骑士,光环,3"
         },
-        {
-          "matchGroupName": "盾牌",
-          "matchType": "任一",
-          "operate": "在范围内",
-          "attributeType": "自定义",
 
-          "conditionContent": "中型"
-        },
         {
           "matchGroupName": "盾牌",
           "matchType": "任一",
@@ -2547,7 +2571,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 2
   },
   {
     "equip": {
@@ -2579,6 +2603,7 @@
   },
   {
     "equip": {
+
       "category": "项链",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
@@ -2819,7 +2844,7 @@
         }
       ]
     },
-    "maxCount": 8
+    "maxCount": 2
   },
 
   {
@@ -2939,10 +2964,10 @@
           "matchGroupName": "头",
           "operate": "大于等于",
           "attributeType": "职业单系技能",
-          "conditionContent": "2"
+          "conditionContent": "3"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "matchGroupName": "头饰护符",
           "operate": "大于等于",
           "attributeType": "施法速度",
@@ -3314,6 +3339,32 @@
 
           "attributeType": "凹槽",
           "seq": 6,
+          "conditionContent": "5"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  //末日
+  {
+    "equip": {
+      "category": "斧",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "双头"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
           "conditionContent": "5"
         }
 
@@ -3853,7 +3904,158 @@
 
     },
     "maxCount": 100
-  }
+  },
+  //mf装备
 
+  {
+    "equip": {
+      "category": "匕首",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "海鸥"
+        }
+      ]
+
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "利亚之戒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "戒指",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "精灵之星"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "诗寇蒂的愤怒"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "靴子",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "战争旅者"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "奸商的标记"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手套",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "运气守护"
+        }
+
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "混沌"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "龙珠"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  }
 
 ]

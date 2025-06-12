@@ -116,14 +116,7 @@
           "seq": 1,
           "conditionContent": "骑士,光环,3"
         },
-        {
-          "matchGroupName": "盾牌",
-          "matchType": "任一",
-          "operate": "在范围内",
-          "attributeType": "自定义",
 
-          "conditionContent": "中型"
-        },
         {
           "matchGroupName": "盾牌",
           "matchType": "任一",
@@ -918,7 +911,6 @@
     "equipment": {
       "category": "戒指",
       "quality": "传奇|套装",
-      "isTrade": true,
       "conditions": [
         {
           "matchType": "任一",
@@ -940,44 +932,7 @@
     }
   },
 
-  {
-    "name": "mf戒指",
-    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
-    "equipment": {
-      "category": "戒指",
-      "quality": "传奇|套装",
 
-      "conditions": [
-        {
-          "matchType": "可选",
-          "operate": "等于",
-          "attributeType": "名称",
-          "seq": 800,
-          "conditionContent": "利亚之戒"
-        },
-
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "必需",
-          "operate": "不等于",
-          "attributeType": "名称",
-          "conditionContent": "全能法戒"
-        },
-        {
-          "matchType": "必需",
-          "operate": "小于等于",
-          "attributeType": "攻击速度",
-          "conditionContent": "1"
-        }
-
-      ]
-    }
-  },
   {
     "name": "全能",
     "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
@@ -1046,7 +1001,7 @@
           "attributeType": "施法速度",
           "conditionContent": "1"
         }
-        
+
 
       ]
     }
@@ -1134,6 +1089,24 @@
           "attributeType": "更佳魔法装备",
           "seq": 1,
           "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "冰原行者",
+    "description": "71用",
+    "equipment": {
+      "category": "靴子",
+      "quality": "全部",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 40,
+          "conditionContent": "冰原行者"
         }
       ]
     }
@@ -1493,6 +1466,64 @@
           "seq": 1,
           "conditionContent": "5"
         }
+      ]
+    }
+  },
+  {
+    "name": "重甲",
+    "description": "所有技能+1衣服，其他属性优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "攻击速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1",
+          "seq": 30
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2",
+          "seq": 50
+        },
+
+        {
+          "matchType": "可选",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "飞龙",
+          "seq": 5000
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "重型",
+          "seq": 1000
+        }
+
       ]
     }
   },
@@ -2089,6 +2120,14 @@
           "attributeType": "指定职业单系技能",
           "seq": 50,
           "conditionContent": "死灵,召唤,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骷髅法师护符",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "seq": 500,
+          "conditionContent": "印玺"
         },
         {
           "matchType": "可选",
@@ -2853,7 +2892,7 @@
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "等于",
+          "operate": "在范围内",
           "attributeType": "名称",
           "seq": 10,
           "conditionContent": "轮回"
@@ -2878,7 +2917,7 @@
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "等于",
+          "operate": "在范围内",
           "attributeType": "名称",
           "seq": 10,
           "conditionContent": "轮回"
@@ -3623,6 +3662,186 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "破碎之链",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "破碎之链"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  //mf装备
+  {
+    "name": "海鸥",
+
+    "equipment": {
+      "category": "匕首",
+      "quality": "传奇",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "海鸥"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf头",
+
+    "equipment": {
+      "category": "头饰|帽子",
+      "quality": "传奇|套装",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf衣服",
+
+    "equipment": {
+      "category": "衣服",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "诗寇蒂"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf腰带",
+
+    "equipment": {
+      "category": "腰带",
+      "quality": "传奇|稀有",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf靴子",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "传奇|稀有|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf手套",
+
+    "equipment": {
+      "category": "手套",
+      "quality": "传奇|稀有|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf项链",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇|稀有|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf戒指",
+
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇|稀有|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "全能法戒"
         }
       ]
     }

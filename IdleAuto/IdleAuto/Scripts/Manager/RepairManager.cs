@@ -63,9 +63,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (repairJob != "" && role.Job.ToString() != repairJob) continue;
                 //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
                 //自动更换装备
-                await equipController.AutoEquips(window, role);
+                var curEquips = await equipController.AutoEquips(window, role);
                 //技能加点
-                await AddSkillPoint(window, role);
+                await AddSkillPoint(window, role, curEquips);
 
                 //角色剩余属性点分配
                 await AddAttrPoint(window, role);
@@ -125,10 +125,10 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
                 //自动更换装备
-                var curEquips = await equipController.AutoEquips(window, role);
+                // var curEquips = await equipController.AutoEquips(window, role);
 
                 //技能加点
-                await AddSkillPoint(window, role);
+                await AddSkillPoint(window, role, null); ;
 
                 //角色剩余属性点分配
                 if (role.Job == emJob.死灵) await AddAttrPoint(window, role);
@@ -254,10 +254,10 @@ public class RepairManager : SingleManagerBase<RepairManager>
     {
         await controller.InventoryEquips(win, account, true);
     }
-    public async Task AddSkillPoint(BroWindow win, RoleModel role)
+    public async Task AddSkillPoint(BroWindow win, RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips)
     {
         var charControl = new CharacterController(win);
-        await charControl.AddSkillPoints(role);
+        await charControl.AddSkillPoints(role, curEquips);
     }
 
     public async Task AddAttrPoint(BroWindow win, RoleModel role)

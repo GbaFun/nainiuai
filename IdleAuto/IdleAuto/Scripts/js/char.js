@@ -160,7 +160,7 @@ class Character {
     //获取携带技能
     getSkillGroup() {
         //选中的技能
-        var groupSkillArr = $($(".panel")[2]).find(".skill-name").toArray();
+        var groupSkillArr = $(".panel .panel-heading:contains('技能组')").parent().find(".skill-name").toArray();
         var arr = [];
         for (var i = 0; i < groupSkillArr.length; i++) {
             var item = groupSkillArr[i];
@@ -168,6 +168,18 @@ class Character {
             arr.push(name);
         }
         return arr;
+    }
+
+    getEquipAttachSkill() {
+        var groupSkillArr = $(".panel .panel-heading:contains('装备附加技能')").parent().find(".skill-name").toArray();
+        var arr = [];
+        for (var i = 0; i < groupSkillArr.length; i++) {
+            var item = groupSkillArr[i];
+            var name = $(item).text().split(" ")[1];
+            arr.push(name);
+        }
+        return arr;
+        
     }
 
     //读取人物详细页的技能

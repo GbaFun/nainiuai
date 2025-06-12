@@ -83,7 +83,7 @@ namespace IdleAuto.Scripts.Controller
                 }
 
             }
-            var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "equip");
+            var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
             await Task.Delay(1000);
             await UpdateContent(equip, reformType);
             return true;
@@ -92,10 +92,24 @@ namespace IdleAuto.Scripts.Controller
         private async Task UpdateContent(EquipModel equip, emReformType reformType)
         {
             //打孔会直接跳到装备页不能更新装备内容
-            if (reformType != emReformType.Mage) return;
+            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare };
+            if (!updateTypeList.Contains(reformType)) return;
             var c = await _win.CallJs("_reform.getEquipContent()");
             var content = c.Result.ToObject<string>();
-            equip.Quality = "craft";
+            var quality = "";
+            switch (reformType)
+            {
+                case emReformType.UpgradeRare:
+                    quality = "rare";
+                    break;
+                case emReformType.UpgradeMagical:
+                    quality = "magical";
+                    break;
+                case emReformType.Mage:
+                    quality = "craft";
+                    break;
+            }
+            equip.Quality = quality;
             equip.Content = content;
             FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
         }
