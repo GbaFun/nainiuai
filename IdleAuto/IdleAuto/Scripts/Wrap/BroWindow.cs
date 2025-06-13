@@ -193,6 +193,7 @@ namespace IdleAuto.Scripts.Wrap
         }
         public async Task<JavascriptResponse> CallJsWaitReload(string jsFunc, string jsName)
         {
+            await Task.Delay(1200);
             var taskDic = new Dictionary<string, TaskCompletionSource<bool>>();
             var jsNameArr = jsName.Split(',');
             for (int i = 0; i < jsNameArr.Length; i++)

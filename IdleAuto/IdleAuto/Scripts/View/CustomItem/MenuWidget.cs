@@ -153,15 +153,15 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                   // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                   //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                   // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    // RepairManager.IsCollectEquip = true;
+                    await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                    //RepairManager.IsCollectEquip = false;
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                     await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -287,6 +287,7 @@ namespace IdleAuto.Scripts.View
             // await FlowController.PassDungeon(81, 80, 76);
             // FlowController.TestSpeed();
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
+            EquipUtil.QueryEquipInRepo(null);
 
 
         }
@@ -378,6 +379,11 @@ namespace IdleAuto.Scripts.View
             });
 
 
+        }
+
+        private void btnMf_Click(object sender, EventArgs e)
+        {
+            FlowController.GroupWork(1, 1, FlowController.UpdateMfEquip);
         }
     }
 }

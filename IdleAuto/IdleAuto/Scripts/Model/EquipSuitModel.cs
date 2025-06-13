@@ -12,7 +12,8 @@ namespace IdleAuto.Scripts.Model
          /// 配装ID
          /// </summary>
 
-        [Column(IsPrimary = true)]
+        [Column(IsPrimary = true, IsIdentity = true)]
+        public int Id { get; set; }
         public int SuitId { get; set; }
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace IdleAuto.Scripts.Model
             {
                 return this.SuitType.ToString();
             }
+            set { SuitName = value; }
         }
     }
 }

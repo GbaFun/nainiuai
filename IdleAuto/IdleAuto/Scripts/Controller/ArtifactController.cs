@@ -71,7 +71,7 @@ namespace IdleAuto.Scripts.Controller
                 {
                     await Task.Delay(1500);
                     await _win.LoadUrlWaitJsInit(IdleUrlHelper.InlayUrl(roleid, baseEq.EquipID), "inlay");
-                    await Task.Delay(1500);
+               
                 }
             }
             var data = new Dictionary<string, object>();
@@ -113,7 +113,6 @@ namespace IdleAuto.Scripts.Controller
                 var category = categoryArr[i];
                 var aa = await _win.CallJsWaitReload($"jumpToCategory('{category}')", "equip");
                 bool hasNextPage = true;
-                await Task.Delay(1500);
                 while (hasNextPage)
                 {
                     var r = await _win.CallJs("getRepositoryEquips()");

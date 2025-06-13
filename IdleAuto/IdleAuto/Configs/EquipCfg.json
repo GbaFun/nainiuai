@@ -3790,7 +3790,14 @@
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
         }
+
       ]
     }
   },
@@ -3799,6 +3806,23 @@
 
     "equipment": {
       "category": "项链",
+      "quality": "传奇|稀有|套装",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "mf护符",
+
+    "equipment": {
+      "category": "护符",
       "quality": "传奇|稀有|套装",
       "conditions": [
 

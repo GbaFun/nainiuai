@@ -164,7 +164,7 @@ public class TradeController : BaseController
         var r = await _win.CallJs($"readEquipInfo({json})");
         var eq = r.Result.ToObject<EquipModel>();
         eq.EquipStatus = eqStatus;
-        eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
+       // eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
         eq.SetAccountInfo(_win.User);
         var tradeInfo = FreeDb.Sqlite.Select<TradeModel>(new long[] { eq.EquipID }).First();
 

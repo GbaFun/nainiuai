@@ -20,17 +20,20 @@ namespace IdleAuto.Scripts.Controller
         {
             if (roleId > 0)
             {
-                var q = FreeDb.Sqlite.Select<EquipSuitModel, EquipModel>()
-                   .LeftJoin((a, b) => a.EquipId == b.EquipID);
-                var list = q.Where((a, b) => a.RoleId == roleId).ToList().Select(s => s.EquipId).Distinct();
-                exp.And(a => a.IsInSuit == false || list.Contains(a.EquipID));
+                var q = FreeDb.Sqlite.Select<EquipModel, EquipSuitModel>()
+                   .LeftJoin((a, b) => a.EquipID == b.EquipId);
+                var list = q.Where((a, b) => a.RoleID == roleId || b.SuitName == null).ToList().Select(s => s).ToList();
+                 
 
             }
             else
             {
-                exp.And(a => a.IsInSuit == false);
+                var q = FreeDb.Sqlite.Select<EquipModel, EquipSuitModel>()
+                    .LeftJoin((a, b) => a.EquipID == b.EquipId);
+                var list = q.Where((a, b) => b.SuitName == null).ToList().Select(s => s).ToList();
+                return list;
             }
-            return FreeDb.Sqlite.Select<EquipModel>().Where(exp).ToList();
+
         }
 
 

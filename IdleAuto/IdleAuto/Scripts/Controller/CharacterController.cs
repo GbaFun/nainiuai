@@ -757,7 +757,7 @@ namespace IdleAuto.Scripts.Controller
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode).DeepCopy();
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
 
             if (role.Job == emJob.死灵 && curEquips != null)
@@ -784,10 +784,10 @@ namespace IdleAuto.Scripts.Controller
                         targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                     }
                 }
-               
+
 
             }
-             if (emSkillMode.献祭 == nec.SkillMode)
+            if (role.Job == emJob.死灵 && emSkillMode.献祭 == nec.SkillMode)
             {
                 var r1 = await _win.CallJs("_char.getEquipAttachSkill();");
                 var attachSkill = r1.Result.ToObject<List<string>>();

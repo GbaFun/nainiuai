@@ -84,7 +84,6 @@ namespace IdleAuto.Scripts.Controller
 
             }
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
-            await Task.Delay(1000);
             await UpdateContent(equip, reformType);
             return true;
         }
@@ -120,7 +119,6 @@ namespace IdleAuto.Scripts.Controller
         {
             await Task.Delay(1500);
             var aa = await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}", "reform");
-            await Task.Delay(1500);
             var d = new Dictionary<string, object>();
             var a = await _win.CallJsWaitReload($"_reform.removeRune()", "equip");
             equip.Quality = "slot";
@@ -140,7 +138,7 @@ namespace IdleAuto.Scripts.Controller
             //https://www.idleinfinity.cn/Equipment/EquipUpgradeBoxAll
             //eidsbox: 拼接
             var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-            await Task.Delay(1000);
+            
             var edis = string.Join(",", eqList.Select(p => p.EquipID));
             var data = new Dictionary<string, object> { { "eidsbox", edis } };
             var r = await _win.CallJsWaitReload($"upgradeAllInRepo({data.ToLowerCamelCase()})", "equip");

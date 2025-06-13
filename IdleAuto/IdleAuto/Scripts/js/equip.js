@@ -384,3 +384,49 @@ function upgradeAllInRepo(data) {
             console.log(r);
         });
 }
+
+function saveEquipSuit(d) {
+    var data = MERGE_Form({
+        cid: _char.cid,
+        cfname: d.cfname,
+
+    });
+    debugger
+    if (d.isReplace) {
+        data.replace = true;
+        data.cfid = d.cfid;
+        data.cfname = "";
+    }
+    console.log(data);
+    POST_Message("EquipConfigSave", data, "post", 1000)
+        .then(r => {
+            console.log("EquipAuction success");
+        })
+        .catch(r => {
+            console.log("保存配装失败");
+            console.log(r);
+        });
+}
+
+function loadSuit(d) {
+    var data = MERGE_Form({
+        cid: _char.cid,
+        cfid: d.cfid,
+
+    });
+    POST_Message("EquipConfigLoad", data, "post", 1000)
+        .then(r => {
+            console.log("EquipAuction success");
+        })
+        .catch(r => {
+            console.log("换配装失败");
+            console.log(r);
+        });
+}
+
+//获取指定名称的配装id
+function getEquipSuitId(suitName) {
+    var filter = `#configId option:contains('${suitName}')`;
+    var val = $(filter).attr("value");
+    return val == undefined ? -1 : val * 1;
+}

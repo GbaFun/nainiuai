@@ -182,7 +182,7 @@ namespace IdleAuto.Scripts.Controller
         }
         public static async Task SendRune()
         {
-           await SaveRuneMap();
+            await SaveRuneMap();
             var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
             foreach (var job in sendDic)
             {
@@ -1283,9 +1283,31 @@ namespace IdleAuto.Scripts.Controller
         /// 更新死骑的mf装备并且存储套装 记录 锁定装备在交易和自动换装中抹除 
         /// </summary>
         /// <returns></returns>
-        public static async Task UpdateMfEquip()
+        public static async Task UpdateMfEquip(BroWindow win)
         {
-
+            var e = new EquipController(win);
+            foreach (var role in win.User.Roles)
+            {
+                if (role.Job != emJob.死骑)
+                {
+                    continue;
+                }
+                var curEquips = e.GetCurEquips();
+                //先保存当前装备为效率
+                var effSuitId = await e.GetSuitId(emSuitType.效率, role);
+                if (effSuitId <= 0)
+                {
+                    await e.SaveEquipSuit(emSuitType.效率, role);
+                }
+                else
+                {
+                    await e.SaveEquipSuitModel(emSuitType.效率, role, effSuitId);
+                }
+                await e.AutoEquips(win, role, targetSuitType: emSuitType.MF);
+                await e.SaveEquipSuit(emSuitType.MF, role);
+                await e.LoadSuit(emSuitType.效率, role);
+                break;
+            }
         }
 
 

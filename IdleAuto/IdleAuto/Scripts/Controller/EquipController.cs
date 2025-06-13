@@ -92,7 +92,6 @@ public class EquipController : BaseController
                         }
                     }
 
-                    await Task.Delay(1000);
                     P.Log($"{role.RoleName}的背包仍有物品，现将当前页所有物品存储到仓库", emLogType.AutoEquip);
                     var result2 = await win.CallJsWaitReload($@"equipStorage({role.RoleId})", "equip");
                     if (result2.Success)
@@ -196,7 +195,7 @@ public class EquipController : BaseController
                         foreach (var item in equips)
                         {
                             EquipModel equip = item.Value;
-                            equip.Category = CategoryUtil.GetCategory(equip.EquipBaseName);
+                           // equip.Category = CategoryUtil.GetCategory(equip.EquipBaseName);
                             equip.SetAccountInfo(account);
                             if (!repositoryEquips.ContainsKey(item.Key))
                             {
@@ -208,7 +207,6 @@ public class EquipController : BaseController
 
                         P.Log($"缓存仓库第{page}页装备完成,当前缓存装备数量:{repositoryEquips.Count}", emLogType.AutoEquip);
                         P.Log("开始跳转仓库下一页", emLogType.AutoEquip);
-                        await Task.Delay(1000);
                         var response2 = await win.CallJsWaitReload($@"repositoryNext()", "equip");
                         if (response2.Success && (bool)response2.Result)
                         {
@@ -318,7 +316,7 @@ public class EquipController : BaseController
                                             {
                                                 P.Log("获取到白戒指");
                                             }
-                                            item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
+                                           // item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
                                             if (item.Value.emItemQuality == emItemQuality.神器)
                                                 continue;
                                             if (!RetainEquipCfg.Instance.IsRetain(item.Value))
@@ -388,7 +386,7 @@ public class EquipController : BaseController
     private void WrapEquip(EquipModel eq, UserModel user, RoleModel role, emEquipStatus status)
     {
         eq.EquipStatus = status;
-        eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
+       // eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
         eq.SetAccountInfo(user, role);
     }
 
@@ -405,13 +403,110 @@ public class EquipController : BaseController
         return sb.ToString();
     }
 
+    public async Task SaveEquipSuit(emSuitType suitType, RoleModel role)
+    {
+        await Task.Delay(1500);
+        //跳转装备详情页面
+        var url = IdleUrlHelper.EquipUrl(role.RoleId);
+        if (_win.GetBro().Address != url) await _win.LoadUrlWaitJsInit(url, "equip");
+        var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
+        var suitId = await GetSuitId(suitType, role);
+
+        var isReplace = suitId > 0 ? true : false;
+
+        var dic = new Dictionary<string, object>();
+        dic.Add("cfname", suitType.ToString());
+        if (isReplace)
+        {
+            dic.Add("isReplace", true);
+            dic.Add("cfid", suitId);
+        }
+
+        await _win.CallJsWaitReload($"saveEquipSuit({dic.ToLowerCamelCase()})", "equip");
+        await Task.Delay(1500);
+        var r1 = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
+        suitId = r1.Result.ToObject<int>();
+        if (suitId > 0)
+        {
+            await SaveEquipSuitModel(suitType,role,suitId);
+        }
+    }
+
+    public async Task SaveEquipSuitModel(emSuitType suitType, RoleModel role, int suitId)
+    {
+        //更新当前用户的对应配装表
+        var curEquips = await GetCurEquips();
+        FreeDb.Sqlite.Delete<EquipSuitModel>().Where(p => p.SuitType == suitType && p.RoleId == role.RoleId).ExecuteAffrows();
+        var data = curEquips.Values.Select(s => new EquipSuitModel()
+        {
+            SuitId = suitId,
+            AccountName = _win.User.AccountName,
+            EquipId = s.EquipID,
+            RoleId = role.RoleId,
+            RoleName = role.RoleName,
+            SuitType = suitType
+        }).ToList();
+        DbUtil.InsertOrUpdate<EquipSuitModel>(data);
+    }
+
+    public async Task LoadSuit(emSuitType suitType, RoleModel role)
+    {
+        await Task.Delay(1500);
+        //跳转装备详情页面
+        var url = IdleUrlHelper.EquipUrl(role.RoleId);
+        if (_win.GetBro().Address != url) await _win.LoadUrlWaitJsInit(url, "equip");
+        var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
+        var suitId = await GetSuitId(suitType, role);
+        var curEquips = await GetCurEquips();
+        var toSetInRepoList = curEquips.Values.ToList();
+        toSetInRepoList.ForEach(p => { p.SetAccountInfo(_win.User); p.EquipStatus = emEquipStatus.Repo; });
+        var isReplace = suitId > 0 ? true : false;
+        var dic = new Dictionary<string, object>();
+        dic.Add("cfid", suitId);
+        await _win.CallJsWaitReload($"loadSuit({dic.ToLowerCamelCase()})", "equip");
+        var curEquips2 = await GetCurEquips();
+        var toSetEquippedList = curEquips2.Values.ToList();
+        toSetEquippedList.ForEach(p => { p.SetAccountInfo(_win.User, role); p.EquipStatus = emEquipStatus.Equipped; });
+        DbUtil.InsertOrUpdate<EquipModel>(toSetEquippedList);
+        DbUtil.InsertOrUpdate<EquipModel>(toSetInRepoList);
+
+    }
+
+
+    public async Task<int> GetSuitId(emSuitType suitType, RoleModel role)
+    {
+        //跳转装备详情页面
+        var url = IdleUrlHelper.EquipUrl(role.RoleId);
+        if (_win.GetBro().Address != url) await _win.LoadUrlWaitJsInit(url, "equip");
+        var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
+        var suitId = r.Result.ToObject<int>();
+        return suitId;
+    }
+
+
+
+    /// <summary>
+    /// 获取当前页穿戴的装备
+    /// </summary>
+    /// <returns></returns>
+    public async Task<Dictionary<emEquipSort, EquipModel>> GetCurEquips(RoleModel role = null)
+    {
+        if (role != null)
+        {
+            var result = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        }
+        var response = await _win.CallJs($@"getCurEquips()");
+        var curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        return curEquips;
+    }
+
     /// <summary>
     /// 自动更换装备
     /// </summary>
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动,emSuitType targetSuitType=emSuitType.效率)
+    public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动, emSuitType targetSuitType = emSuitType.效率)
     {
         var account = win.User;
         //   if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
@@ -424,15 +519,12 @@ public class EquipController : BaseController
 
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-        if (!result.Success) throw new Exception($"跳转{IdleUrlHelper.EquipUrl(role.RoleId)}失败");
         P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         var response = await win.CallJs($@"getCurEquips()");
-
-        P.Log($"获取{role.RoleName}当前穿戴的装备成功", emLogType.AutoEquip);
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
-        var targetEquips = GetEquipConfig(role.Job, role.Level,targetSuitType);
+        var targetEquips = GetEquipConfig(role.Job, role.Level, targetSuitType);
         int idealFcr = 0;
         var tradeSuitMap = new List<Dictionary<emEquipSort, TradeModel>>();
         if (targetEquips != null)
@@ -825,7 +917,7 @@ public class EquipController : BaseController
         {
             if (replaceResult.ReplacedEquip != null)
             {
-                replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
+               // replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
                 replaceResult.ReplacedEquip.EquipStatus = emEquipStatus.Repo;
                 //如果有替换下来的装备，加入到仓库装备中
                 FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
@@ -1001,7 +1093,6 @@ public class EquipController : BaseController
                     ((role.Job == emJob.死骑 && sortEm == emEquipSort.副手) || sortEm == emEquipSort.戒指2))
                 {
                     P.Log($"{(emEquipSort)sort}部位当前已穿戴装备，为防止穿戴时部位冲突导致换装失败，优先卸下当前部位装备", emLogType.AutoEquip);
-                    await Task.Delay(1000);
                     var response3 = await win.CallJsWaitReload($@"equipOff({role.RoleId},{sort})", "equip");
                     if (response3.Success)
                     {
@@ -1015,7 +1106,6 @@ public class EquipController : BaseController
 
 
             P.Log($"{role.RoleName}现在更换{(emEquipSort)sort}位置的装备{equip.EquipName}", emLogType.AutoEquip);
-            await Task.Delay(1000);
             var response2 = await win.CallJsWaitReload($@"equipOn({role.RoleId},{equip.EquipID})", "equip");
             if (response2.Success)
             {
@@ -1071,7 +1161,7 @@ public class EquipController : BaseController
                         P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
                         if (baseAttr.AddPoint(requareV4, jobAttr))
                         {
-                            await Task.Delay(1000);
+
                             P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
                             var response4 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
                             if (response4.Success)
@@ -1094,7 +1184,6 @@ public class EquipController : BaseController
                         break;
                     case emMeetType.MeetAfterReset:
                         P.Log($"{role.RoleName}的属性不满足穿戴条件，但重置后重新加点可以满足", emLogType.AutoEquip);
-                        await Task.Delay(1000);
                         P.Log($"开始{role.RoleName}的重置加点", emLogType.AutoEquip);
                         var response5 = await win.CallJsWaitReload($@"_char.attributeReset({role.RoleId});", "char");
                         if (response5.Success)
@@ -1109,7 +1198,6 @@ public class EquipController : BaseController
                                 P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
                                 if (baseAttr.AddPoint(requareV4, jobAttr))
                                 {
-                                    await Task.Delay(1000);
                                     var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
                                     if (response7.Success)
                                     {
@@ -1395,9 +1483,9 @@ public class EquipController : BaseController
         return matchEquips;
     }
 
-    private EquipSuits GetEquipConfig(emJob job, int level,emSuitType suitType)
+    private EquipSuits GetEquipConfig(emJob job, int level, emSuitType suitType)
     {
-        return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level,suitType);
+        return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level, suitType);
     }
 
     public List<EquipModel> MergeEquips(Dictionary<emEquipSort, EquipModel> toWear, Dictionary<emEquipSort, EquipModel> curWear)
@@ -1501,4 +1589,5 @@ public class AutoEquipMatchDto
         get; set;
     }
 }
+
 

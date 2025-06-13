@@ -78,10 +78,21 @@ public class EquipModel : IModel
     /// </summary>
     public emArtifactBase ArtifactBase { get; set; }
 
-    /// <summary>
-    /// 物品类型
-    /// </summary>
-    public string Category { get; set; }
+ 
+  
+    public string Category
+    {
+        get
+        {
+            if (this == null || string.IsNullOrWhiteSpace(this.EquipBaseName)) return null;
+            return CategoryUtil.GetCategory(this.EquipBaseName);
+        }
+
+        set
+        {
+            return;
+        }
+    }
 
     /// <summary>
     /// 是否是太古
@@ -99,10 +110,7 @@ public class EquipModel : IModel
     /// </summary>
     public emEquipStatus EquipStatus { get; set; }
 
-    /// <summary>
-    /// 是否有配装
-    /// </summary>
-    public bool IsInSuit { get; set; }
+
 
 
 
@@ -165,6 +173,11 @@ public class EquipModel : IModel
         {
             RoleID = role.RoleId;
             RoleName = role.RoleName;
+        }
+        else
+        {
+            RoleID = 0;
+            RoleName = "";
         }
     }
 

@@ -66,6 +66,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnMf = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -98,6 +99,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnMf);
             this.HomeGroup.Controls.Add(this.btnGem);
             this.HomeGroup.Controls.Add(this.btnCookie);
             this.HomeGroup.Controls.Add(this.btnNec);
@@ -482,6 +484,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnMf
+            // 
+            this.btnMf.Location = new System.Drawing.Point(18, 380);
+            this.btnMf.Name = "btnMf";
+            this.btnMf.Size = new System.Drawing.Size(98, 23);
+            this.btnMf.TabIndex = 19;
+            this.btnMf.Text = "更新Mf";
+            this.btnMf.UseVisualStyleBackColor = true;
+            this.btnMf.Click += new System.EventHandler(this.btnMf_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -539,5 +551,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnNec;
         private System.Windows.Forms.Button btnCookie;
         private System.Windows.Forms.Button btnGem;
+        private System.Windows.Forms.Button btnMf;
     }
 }
