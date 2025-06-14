@@ -23,7 +23,7 @@ namespace IdleAuto.Scripts.Controller
                 var q = FreeDb.Sqlite.Select<EquipModel, EquipSuitModel>()
                    .LeftJoin((a, b) => a.EquipID == b.EquipId);
                 var list = q.Where((a, b) => a.RoleID == roleId || b.SuitName == null).ToList().Select(s => s).ToList();
-                 
+                return list;
 
             }
             else
