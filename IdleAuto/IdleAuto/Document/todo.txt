@@ -17,3 +17,7 @@
 https://www.idleinfinity.cn/Equipment/EquipConfigSave
 cid   cfname 配置名
 
+
+丢装备要过滤掉在配装表里面的
+自动修车要过滤掉配装表里的 除了自己roleid下的装备
+

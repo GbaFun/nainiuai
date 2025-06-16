@@ -35,7 +35,10 @@ namespace IdleAuto.Scripts.Model
             {
                 return this.SuitType.ToString();
             }
-            set { SuitName = value; }
+            set
+            {
+                return;
+            }
         }
     }
 }

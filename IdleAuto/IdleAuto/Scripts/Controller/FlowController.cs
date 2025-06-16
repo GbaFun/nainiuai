@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CefSharp.DevTools.FedCm;
 using CefSharp;
 using System.Text.RegularExpressions;
+using System.Linq.Expressions;
 
 namespace IdleAuto.Scripts.Controller
 {
@@ -268,9 +269,8 @@ namespace IdleAuto.Scripts.Controller
             var role = FreeDb.Sqlite.Select<CharAttributeModel>().Where(p => p.AccountName == reciverUser).First();
             var w = curWin;
             var t = new TradeController(w);
-            await Task.Delay(2000);
+            await Task.Delay(1000);
             await t.AcceptAll(curWin.User);
-            await Task.Delay(2000);
 
             await t.TradeRune(sendDic, role.RoleName, true);
 
@@ -278,8 +278,8 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && (p.EquipName == "萤火虫") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false && p.IsPerfect == true).ToList();
-            list = list.Take(2).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName.Contains("水晶剑") && p.Content.Contains("0/5") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            list = list.Take(10).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -291,7 +291,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "奶牛");
+                    await tradeControl.StartTrade(e, RepairManager.RepoRole);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -1107,13 +1107,13 @@ namespace IdleAuto.Scripts.Controller
 
                     var e = new EquipController(win);
                     var necRole = win.User.Roles.Find(p => p.RoleId == nec.RoleId);
-                    var curEquips = await e.AutoEquips(win, necRole);
+                    var curEquips = await e.AutoEquips(win, necRole,emSkillMode.献祭);
                     if (necRole.GetRoleSkillMode() != emSkillMode.献祭)
                     {
                         //先执行自动换装 如果不能切换到献祭模式则尝试发送装备过来
 
                         await SendXianji(user.AccountName, nec.RoleName);
-                        curEquips = await e.AutoEquips(win, necRole);
+                        curEquips = await e.AutoEquips(win, necRole, emSkillMode.献祭);
                     }
                     // await InsertColdConversion(curEquips, win, necRole);
                     //给死灵洗点 打宝珠 切换骑士拯救光环 监控永恒速度
@@ -1295,19 +1295,56 @@ namespace IdleAuto.Scripts.Controller
                 var curEquips = e.GetCurEquips();
                 //先保存当前装备为效率
                 var effSuitId = await e.GetSuitId(emSuitType.效率, role);
+                var mfSuitId = await e.GetSuitId(emSuitType.MF, role);
                 if (effSuitId <= 0)
                 {
                     await e.SaveEquipSuit(emSuitType.效率, role);
                 }
                 else
                 {
+                    await e.LoadSuit(emSuitType.效率, role);
                     await e.SaveEquipSuitModel(emSuitType.效率, role, effSuitId);
+                }
+                if (mfSuitId > 0)
+                {
+                    await e.LoadSuit(emSuitType.MF, role);
                 }
                 await e.AutoEquips(win, role, targetSuitType: emSuitType.MF);
                 await e.SaveEquipSuit(emSuitType.MF, role);
-                await e.LoadSuit(emSuitType.效率, role);
+               await e.LoadSuit(emSuitType.效率, role);
                 break;
             }
+        }
+
+        public static async Task RegisterYongheng()
+        {
+            var toSendRole = FreeDb.Sqlite.Select<EquipModel, GroupModel>()
+                .InnerJoin<GroupModel>((a, b) => a.RoleID == b.RoleId)
+                .Where((a, b) => b.Job == emJob.死骑 && a.emEquipSort == emEquipSort.副手 && !a.EquipName.Contains("永恒"))
+                .ToList((a, b) => b);
+            Expression<Func<EquipModel,EquipSuitModel, bool>> exp = (a,b) => a.EquipName.Contains("永恒")&&a.RoleID==0;
+            var yonghengInRepo = EquipUtil.QueryEquipInRepo(exp);
+            int index = 0;
+            foreach (var item in yonghengInRepo)
+            {
+                var demandRole = toSendRole[index];
+                var t = new TradeModel()
+                {
+                    DemandAccountName = demandRole.AccountName,
+                    DemandRoleId = demandRole.RoleId,
+                    DemandRoleName = demandRole.RoleName,
+                    EquipId = item.EquipID,
+                    EquipName = item.EquipName,
+                    EquipSortName = "副手",
+                    OwnerAccountName = item.AccountName,
+                    TradeStatus = emTradeStatus.Register,
+
+
+                };
+                DbUtil.InsertOrUpdate<TradeModel>(t);
+                index++;
+            }
+
         }
 
 

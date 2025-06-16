@@ -16,6 +16,7 @@ using IdleAuto.Scripts.Wrap;
 using System.Security.Principal;
 using IdleAuto.Scripts.Utils;
 using FreeSql.Internal;
+using System.Linq.Expressions;
 
 public class EquipController : BaseController
 {
@@ -195,7 +196,7 @@ public class EquipController : BaseController
                         foreach (var item in equips)
                         {
                             EquipModel equip = item.Value;
-                           // equip.Category = CategoryUtil.GetCategory(equip.EquipBaseName);
+                            // equip.Category = CategoryUtil.GetCategory(equip.EquipBaseName);
                             equip.SetAccountInfo(account);
                             if (!repositoryEquips.ContainsKey(item.Key))
                             {
@@ -258,6 +259,14 @@ public class EquipController : BaseController
     public async Task ClearRepository(BroWindow win)
     {
         var account = win.User;
+        var equipInSuit = FreeDb.Sqlite.Select<EquipSuitModel>()
+        .Where(p => p.AccountName == account.AccountName)
+        .ToList()
+        .Distinct() // 如果 EquipSuitModel 实现了 IEquatable<EquipSuitModel> 或者你需要自定义比较器
+        .ToDictionary(
+            d => d.EquipId, // 键选择器
+            d => d          // 值选择器
+        );
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
         RetainEquipCfg.Instance.ResetCount();
 
@@ -312,12 +321,9 @@ public class EquipController : BaseController
                                         P.Log($"获取仓库第{page}页装备成功，装备总数：{equips.Count}", emLogType.AutoEquip);
                                         foreach (var item in equips)
                                         {
-                                            if (item.Value.Quality == "base" && item.Value.Content.Contains("海蛇"))
-                                            {
-                                                P.Log("获取到白戒指");
-                                            }
-                                           // item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
-                                            if (item.Value.emItemQuality == emItemQuality.神器)
+
+                                            // item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
+                                            if (item.Value.emItemQuality == emItemQuality.神器 && equipInSuit.ContainsKey(item.Value.EquipID))
                                                 continue;
                                             if (!RetainEquipCfg.Instance.IsRetain(item.Value))
                                                 toClear.Add(item.Key, item.Value);
@@ -386,7 +392,7 @@ public class EquipController : BaseController
     private void WrapEquip(EquipModel eq, UserModel user, RoleModel role, emEquipStatus status)
     {
         eq.EquipStatus = status;
-       // eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
+        // eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
         eq.SetAccountInfo(user, role);
     }
 
@@ -428,7 +434,7 @@ public class EquipController : BaseController
         suitId = r1.Result.ToObject<int>();
         if (suitId > 0)
         {
-            await SaveEquipSuitModel(suitType,role,suitId);
+            await SaveEquipSuitModel(suitType, role, suitId);
         }
     }
 
@@ -451,6 +457,8 @@ public class EquipController : BaseController
 
     public async Task LoadSuit(emSuitType suitType, RoleModel role)
     {
+        var hasSuit = FreeDb.Sqlite.Select<EquipSuitModel>().Where(p => p.RoleId == role.RoleId && p.SuitType == suitType).First()!=null;
+        if (!hasSuit) return;
         await Task.Delay(1500);
         //跳转装备详情页面
         var url = IdleUrlHelper.EquipUrl(role.RoleId);
@@ -509,20 +517,26 @@ public class EquipController : BaseController
     public async Task<Dictionary<emEquipSort, EquipModel>> AutoEquips(BroWindow win, RoleModel role, emSkillMode targetSkillMode = emSkillMode.自动, emSuitType targetSuitType = emSuitType.效率)
     {
         var account = win.User;
-        //   if (role.GetRoleSkillMode() == emSkillMode.献祭) return null;
-        var curSkillMode = emSkillMode.自动;
         P.Log("开始自动修车", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> towearEquips = new Dictionary<emEquipSort, EquipModel>();
         Dictionary<emEquipSort, List<ArtifactMakeStruct>> toMakeEquips = new Dictionary<emEquipSort, List<ArtifactMakeStruct>>();
 
         await Task.Delay(1500);
-
+        var curSkillMode = targetSkillMode;
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         var response = await win.CallJs($@"getCurEquips()");
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        if (targetSuitType == emSuitType.效率&&role.Job==emJob.死骑)
+        {
+            var curEquipSuitType = EquipUtil.GetEquipSuitType(curEquips, role);
+            if (curEquipSuitType == emSuitType.MF)
+            {
+                return curEquips;
+            }
+        }
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
         var targetEquips = GetEquipConfig(role.Job, role.Level, targetSuitType);
         int idealFcr = 0;
@@ -543,7 +557,7 @@ public class EquipController : BaseController
                 var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
                 idealFcr = suit.IdealFcr;
                 //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
-                if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess)
+                if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess&&targetSkillMode==emSkillMode.自动)
                 {
                     suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
@@ -670,6 +684,10 @@ public class EquipController : BaseController
         {
             RecordDkYongheng(role, curEquip);
         }
+        if (targetEquips.SuitType == emSuitType.效率 && role.Job == emJob.死骑 && _win.User.Roles.FindIndex(p => p.RoleId == role.RoleId) == 2)
+        {
+            await SaveEquipSuit(emSuitType.效率, role);
+        }
         return curEquip;
     }
 
@@ -745,61 +763,112 @@ public class EquipController : BaseController
         return combinations;
     }
 
+    //private (List<EquipModel> bestCombo, decimal finalFcr) SelectBestRingCombination(
+    //    List<List<EquipModel>> allCombinations, decimal curFcr, int idealFcr)
+    //{
+    //    List<EquipModel> bestCombo = new List<EquipModel>();
+    //    //施法速度
+    //    decimal bestFcr = curFcr;
+    //    //最佳的全能数量
+    //    int bestQuanNengCount = 0;
+    //    //最佳的技能戒指数量
+    //    int bestSkillCount = 0;
+    //    //最佳的绑定戒指数量
+    //    int bestBindingCount = 0;
+    //    //是否满足fcr最低要求
+    //    bool hasMetFcrRequirement = false;
+
+    //    foreach (var combo in allCombinations)
+    //    {
+    //        var (comboFcr, quanNengCount, skillCount, bindingCount) = EvaluateRingCombination(combo, curFcr);
+
+    //        bool meetsFcr = comboFcr >= idealFcr;
+    //        bool isBetter = false;
+
+    //        if (!hasMetFcrRequirement)
+    //        {
+    //            if (meetsFcr)
+    //            {
+    //                hasMetFcrRequirement = true;
+    //                isBetter = true;
+    //            }
+    //            else
+    //            {
+    //                isBetter = comboFcr > bestFcr ||
+    //                          (comboFcr == bestFcr && quanNengCount > bestQuanNengCount) ||
+    //                          (comboFcr == bestFcr && quanNengCount == bestQuanNengCount && skillCount > bestSkillCount) ||
+    //                          (comboFcr == bestFcr && quanNengCount == bestQuanNengCount && skillCount > bestSkillCount) && bindingCount > bestBindingCount;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            isBetter = meetsFcr &&
+    //                      (quanNengCount > bestQuanNengCount ||
+    //                       (quanNengCount == bestQuanNengCount && skillCount > bestSkillCount) ||
+    //                         (quanNengCount == bestQuanNengCount && skillCount > bestSkillCount) && bindingCount > bestBindingCount);
+    //        }
+
+    //        if (isBetter)
+    //        {
+    //            bestCombo = combo;
+    //            bestFcr = comboFcr;
+    //            bestQuanNengCount = quanNengCount;
+    //            bestSkillCount = skillCount;
+    //            bestBindingCount = bindingCount;
+    //        }
+    //    }
+
+    //    return (bestCombo, bestFcr);
+    //}
+
     private (List<EquipModel> bestCombo, decimal finalFcr) SelectBestRingCombination(
-        List<List<EquipModel>> allCombinations, decimal curFcr, int idealFcr)
+    List<List<EquipModel>> allCombinations, decimal curFcr, int idealFcr)
     {
-        List<EquipModel> bestCombo = new List<EquipModel>();
-        decimal bestFcr = curFcr;
-        int bestQuanNengCount = 0;
-        int bestSkillCount = 0;
-        bool hasMetFcrRequirement = false;
+        // 先评估所有组合
+        var evaluatedCombos = allCombinations
+            .Select(combo => {
+                var eval = EvaluateRingCombination(combo, curFcr);
+                return (combo, eval.comboFcr, eval.quanNengCount, eval.skillCount, eval.bindingCount);
+            })
+            .ToList();
 
-        foreach (var combo in allCombinations)
+        // 找出所有满足FCR最低要求的组合
+        var validCombos = evaluatedCombos
+            .Where(x => x.comboFcr >= idealFcr)
+            .ToList();
+
+        if (validCombos.Any())
         {
-            var (comboFcr, quanNengCount, skillCount) = EvaluateRingCombination(combo, curFcr);
+            // 在满足FCR的组合中，按优先级选择最优
+            var best = validCombos
+                .OrderByDescending(x => x.quanNengCount)  // 1. 最多全能
+                .ThenByDescending(x => x.skillCount)      // 2. 其次最多技能
+                .ThenByDescending(x => x.bindingCount)    // 3. 最后最多绑定
+                .First();
 
-            bool meetsFcr = comboFcr >= idealFcr;
-            bool isBetter = false;
-
-            if (!hasMetFcrRequirement)
-            {
-                if (meetsFcr)
-                {
-                    hasMetFcrRequirement = true;
-                    isBetter = true;
-                }
-                else
-                {
-                    isBetter = comboFcr > bestFcr ||
-                              (comboFcr == bestFcr && quanNengCount > bestQuanNengCount) ||
-                              (comboFcr == bestFcr && quanNengCount == bestQuanNengCount && skillCount > bestSkillCount);
-                }
-            }
-            else
-            {
-                isBetter = meetsFcr &&
-                          (quanNengCount > bestQuanNengCount ||
-                           (quanNengCount == bestQuanNengCount && skillCount > bestSkillCount));
-            }
-
-            if (isBetter)
-            {
-                bestCombo = combo;
-                bestFcr = comboFcr;
-                bestQuanNengCount = quanNengCount;
-                bestSkillCount = skillCount;
-            }
+            return (best.combo, best.comboFcr);
         }
+        else
+        {
+            // 没有满足FCR的组合时，选择最接近的组合（但不会达到idealFcr）
+            var closest = evaluatedCombos
+                .OrderByDescending(x => x.comboFcr)       // 最接近FCR要求
+                .ThenByDescending(x => x.quanNengCount)   // 然后最多全能
+                .ThenByDescending(x => x.skillCount)      // 然后最多技能
+                .ThenByDescending(x => x.bindingCount)    // 最后最多绑定
+                .First();
 
-        return (bestCombo, bestFcr);
+            return (closest.combo, closest.comboFcr);
+        }
     }
 
-    private (decimal fcr, int quanNengCount, int skillCount) EvaluateRingCombination(
+    private (decimal comboFcr, int quanNengCount, int skillCount, int bindingCount) EvaluateRingCombination(
         List<EquipModel> combo, decimal baseFcr)
     {
         decimal comboFcr = baseFcr;
         int quanNengCount = 0;
         int skillCount = 0;
+        int bindingCount = 0;
 
         foreach (var ring in combo)
         {
@@ -817,9 +886,13 @@ public class EquipController : BaseController
             {
                 skillCount++;
             }
+            if (ring.Content.Contains("已绑定"))
+            {
+                bindingCount++;
+            }
         }
 
-        return (comboFcr, quanNengCount, skillCount);
+        return (comboFcr, quanNengCount, skillCount, bindingCount);
     }
 
     private void ProcessToWearEquips(Dictionary<emEquipSort, EquipModel> toWearEquips,
@@ -865,7 +938,8 @@ public class EquipController : BaseController
     {
         //侏儒自带
         var basicSpeed = 5M;
-
+        var yonghengSpeed=role.GetGroup().Where(p => p.Job == emJob.死骑).FirstOrDefault().YonghengSpeed;
+        basicSpeed += yonghengSpeed;
         foreach (var item in curEquip)
         {
             var speed = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, item.Value.Content).Item2;
@@ -917,7 +991,7 @@ public class EquipController : BaseController
         {
             if (replaceResult.ReplacedEquip != null)
             {
-               // replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
+                // replaceResult.ReplacedEquip.Category = CategoryUtil.GetCategory(replaceResult.ReplacedEquip.EquipBaseName);
                 replaceResult.ReplacedEquip.EquipStatus = emEquipStatus.Repo;
                 //如果有替换下来的装备，加入到仓库装备中
                 FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(replaceResult.ReplacedEquip).ExecuteAffrows();
@@ -955,8 +1029,10 @@ public class EquipController : BaseController
     {
         //只查找仓库中的装备
         var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
-        var _equipsSelf = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID == accountId && p.EquipStatus == emEquipStatus.Repo).ToList();
-        var _equipsOthers = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountID != accountId && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+        Expression<Func<EquipModel, EquipSuitModel, bool>> exp = (a, b) => a.AccountID == accountId && a.EquipStatus == emEquipStatus.Repo;
+        var _equipsSelf = EquipUtil.QueryEquipInRepo(exp, role.RoleId);
+        Expression<Func<EquipModel, EquipSuitModel, bool>> exp2 = (a, b) => a.AccountID != accountId && a.EquipStatus == emEquipStatus.Repo && a.IsLocal == false;
+        var _equipsOthers = EquipUtil.QueryEquipInRepo(exp2);
         if (registeredEquips != null)
         {
             _equipsOthers = _equipsOthers.Where(p => !registeredEquips.Select(s => s.EquipId).Contains(p.EquipID)).ToList();

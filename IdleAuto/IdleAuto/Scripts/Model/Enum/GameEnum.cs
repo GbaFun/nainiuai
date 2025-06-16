@@ -336,7 +336,8 @@ public enum emSkillMode
 public enum emSuitType
 {
     效率,
-    MF
+    MF,
+    未知
 }
 
 public enum emReformType
