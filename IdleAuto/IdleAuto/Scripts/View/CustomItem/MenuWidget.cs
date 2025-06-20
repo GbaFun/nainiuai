@@ -109,16 +109,13 @@ namespace IdleAuto.Scripts.View
         public void BtnAutoAh_Click(object sender, EventArgs e)
         {
             //todo 自动拍卖
-            if (!AuctionController.Instance.IsStart)
+            Task.Run(async () =>
             {
-                AuctionController.Instance.StartScan();
-                this.BtnAutoAh.Text = "停止扫拍";
-            }
-            else
-            {
-                AuctionController.Instance.StopScan();
-                this.BtnAutoAh.Text = "开始扫拍";
-            }
+                var win = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+                var a = new AuctionController(win);
+                await a.StartScan(win.User.FirstRole);
+            });
+
         }
 
         private async void AccountCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -155,14 +152,12 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     //await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    // await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    //RepairManager.IsCollectEquip = false;
-                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    // RepairManager.IsCollectEquip = false;
+                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                     FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                     await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
@@ -238,8 +233,8 @@ namespace IdleAuto.Scripts.View
         private void SetDailyTimer()
         {
 
-
-            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(5));
+            //定时任务测试
+            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(60));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -286,13 +281,13 @@ namespace IdleAuto.Scripts.View
 
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
-            // await FlowController.PassDungeon(81, 80, 72);
+            //  await FlowController.PassDungeon(91, 90, 80);
             // FlowController.TestSpeed();
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
             //Expression<Func<EquipModel,EquipSuitModel, bool>> exp = (a,b) => a.EquipName.Contains("永恒");
             //EquipUtil.QueryEquipInRepo(exp, 2268);
-            //           FlowController.RegisterYongheng();
-
+            //FlowController.RegisterYongheng();
+            // FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
         }
 
@@ -309,7 +304,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
         }
 
@@ -387,7 +382,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMf_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.UpdateMfEquip);
+            FlowController.GroupWork(1, 1, FlowController.UpdateMfEquip, RepairManager.NainiuAccounts);
         }
     }
 }

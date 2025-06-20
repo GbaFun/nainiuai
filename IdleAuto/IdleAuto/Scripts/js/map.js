@@ -124,11 +124,12 @@ let _map = {};
         })
     }
 
+
     async function autoDungeonCancel() {
         var data = {
             __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
             cid: _char.cid,
-         
+
 
         };
 
@@ -143,7 +144,26 @@ let _map = {};
         })
     }
 
-     function canAuto() {
+
+    async function dungeonExit() {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            cid: _char.cid,
+
+
+        };
+
+        POST_Message("DungeonExit", data, false).then((r) => {
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'dungeonExit');
+
+        }).catch((e) => {
+            debugger;
+            Bridge.invokeEvent('OnSignal', 'bug');
+        })
+    }
+
+    function canAuto() {
         return $(".panel-heading").find("a:contains('自动秘境')") == 1
     }
 
@@ -415,6 +435,18 @@ let _map = {};
         }
     }
 
+    function isInDungeonForEquip() {
+        var href = $("a:contains('秘境')").attr("href")
+        if (href == undefined) return false;
+        if (href.indexOf("DungeonForEquip") > -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
 
     _map.explore = explore;
     _map.startExplore = startExplore;
@@ -422,6 +454,8 @@ let _map = {};
     _map.autoDungeonCancel = autoDungeonCancel;
     _map.canAuto = canAuto;
     _map.canSwitch = canSwitch;
+    _map.isInDungeonForEquip = isInDungeonForEquip
+    _map.dungeonExit = dungeonExit;
 
     init().then(() => {
         Bridge.invokeEvent('OnJsInited', 'map');

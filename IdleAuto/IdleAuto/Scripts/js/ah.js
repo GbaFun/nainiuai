@@ -36,13 +36,17 @@ let ah = {};
         //页面显示的每个物品span标签
         var container = $(".equip-container .equip-name ");
         $.each(container, (index, item) => {
-            var dataid = $(item).attr("data-id");
+            var dataid = $(item).attr("data-id") * 1;
             auctionEquipMap[dataid] = item;//建立data-id和 随后会在item父标签加入符文后缀
         })
-        var equipContainer = $(".equip-content");
-        $.each(equipContainer, (index, item) => {
-            var dataid = $(item).attr("data-id");
-            var e = {};//装备对象
+        if (window.classMappings[undefined]) {
+            delete window.classMappings.undefined
+        }
+        for (var key in window.classMappings) {
+            let dataid = key;
+            var e = {};
+            var c = window.classMappings[dataid];
+            var item = $(`.${c}`);
             var priceContainer = $(item).find(".equip-price");
             var priceText = priceContainer.text();
             var canDirectBuy = priceText.indexOf("一口价") > -1;
@@ -72,18 +76,26 @@ let ah = {};
                 style: "color:#ff8281"
             }));
             //读取装备名称
-            var eTitle = $(item).find(".equip-title").text().match(/.*(?=\()/g)[0];
-            var lv = $(item).find(".equip-title").text().match(/\((\d+)\)/)[1];
-            var content = $(item).text();
-            e.eTitle = eTitle;
-            e.goldCoinPrice = goldCoinPrice ? goldCoinPrice * 1 : 0;
-            e.runePriceArr = runePriceArr;
-            e.runeCountArr = runeCountArr;
-            e.content = content;
-            e.lv = lv;
-            e.eid = dataid;
-            dataMap[dataid] = e;
-        });
+         
+            try {
+                var eTitle = $(item).find(".equip-title").text().match(/.*(?=\()/g)[0];
+                var lv = $(item).find(".equip-title").text().match(/\((\d+)\)/)[1];
+                var content = $(item).text();
+                e.eTitle = eTitle;
+                e.goldCoinPrice = goldCoinPrice ? goldCoinPrice * 1 : 0;
+                e.runePriceArr = runePriceArr;
+                e.runeCountArr = runeCountArr;
+                e.content = content;
+                e.lv = lv;
+                e.eid = dataid;
+                dataMap[dataid] = e;
+            }
+            catch (ex) {
+                debugger
+                throw ex;
+            }
+           
+        }
         //需要购买的装备
         //var equipToBuyArr = await Bridge.sendData(EquipToBuy, dataMap);
         //buyAuto(equipToBuyArr);
@@ -126,7 +138,7 @@ let ah = {};
         var curPart = $(".panel-heading button")[1].innerText.trim();
         var curBase = $(".panel-heading button")[2].innerText.trim();
         var ulList = $(".dropdown-menu:contains('全部')");
-     
+
         if (curQuality != quality) {
             $(ulList[0]).find("li a").each((index, item) => {
                 if (item.innerText == quality) {
@@ -148,13 +160,13 @@ let ah = {};
                 }
             });
         }
-  
-     
+
+
     }
 
 
     async function buy(eid) {
-        
+
         var data = MERGE_Form({
             eid: eid,
             cid: _char.cid

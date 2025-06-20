@@ -329,7 +329,8 @@ public enum emSkillMode
     boss,
     自动,
     法师石魔,
-    全能法师
+    全能法师,
+    献祭无尸爆
 
 }
 

@@ -43,7 +43,9 @@ async function FetchPost(_url, _data, needReload = true) {
                 if (response.status === 500) {
                     try {
                         const str = await getResponseText(response.body);
-                        Bridge.invokeEvent("OnPostFailed", { url: _url, data: _data, response: str });
+                        Bridge.invokeEvent("OnPostFailed", str);
+                        console.log("500error");
+                        console.log(str);
                         reject({ responseText: str });
                     } catch (error) {
                         reject(error);
@@ -55,7 +57,7 @@ async function FetchPost(_url, _data, needReload = true) {
                 }
             })
             .catch(err => {
-                console.error(err);
+                //console.error(err);
                 reject(err);
             });
     });
@@ -106,7 +108,7 @@ function sleep(ms) {
 }
 
 //异步
-async function POST_Message(url, data, needReload = true, timeout = 2000) {
+async function POST_Message(url, data, needReload = true, timeout = 1000) {
     console.log('Start POST Message');
     await sleep(timeout);
     console.log(timeout / 1000 + "秒后")

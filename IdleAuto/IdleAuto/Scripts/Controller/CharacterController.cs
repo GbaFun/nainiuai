@@ -158,7 +158,112 @@ namespace IdleAuto.Scripts.Controller
             CharNameSeed += 1;
         }
 
+        public async Task StartDailyDungeon(RoleModel role, int targetDungeonLv)
+        {
+            var bro = _win.GetBro();
+            if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+            });
+            var r = await _win.CallJs($"_char.getSan();");
+            var san = r.Result.ToObject<int>();
+            var r2 = await _win.CallJs("_map.isInDungeonForEquip()");
+            var isInDungeonForEquip = r2.Result.ToObject<bool>();
+            //结束秘境
+            var r1 = await _win.CallJs("_map.canSwitch()");
+            var canSwitch = r1.Result.ToObject<bool>();
+            if (san <= 15)
+            {
 
+                //不能切换说明还在秘境中去取消自动秘境 但不要结束
+                if (!canSwitch)
+                {
+                    await _win.SignalCallback("charReload", () =>
+                    {
+                        bro.LoadUrl($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}");
+                    });
+                    await AutoDungeonCancel();
+                }
+                await SwitchMap(bro, role);
+                var e = new EquipController(_win);
+                await e.LoadSuit(emSuitType.效率, role);
+                return;
+            }
+            else if (san >= 90)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
+            {
+                var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != emItemQuality.普通.ToString() && p.AccountName == _win.User.AccountName).ToList();
+                dList = dList.Where(p => p.CanWear(role)).ToList();
+                var dCount = dList.Count;
+                if (dCount >= 25)
+                {
+                    if (isInDungeonForEquip)
+                    {
+                        //已经在装备秘境中 直接进去
+
+
+                    }
+                    else
+                    {
+                        await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+                        var d = new Dictionary<string, object> { { "eid", dList[0].EquipID } };
+                        await _win.SignalCallback("EquipDungeon", () =>
+                        {
+                            //没有重定向的请求这样操作
+                            _win.CallJs($"dungeonForEquip({d.ToLowerCamelCase()})");
+                        });
+
+                    }
+                    await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/DungeonForEquip?id={role.RoleId}", "map");
+
+
+
+                }
+                else
+                {
+                    var curMapLv = await GetCurMapLv();
+                    if (targetDungeonLv != _curMapLv) await _win.SignalCallback("charReload", () =>
+                      {
+                          SwitchTo(targetDungeonLv);
+                      });
+                    if (isInDungeonForEquip)
+                    {
+                        await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}", "map");
+                        //结束当前装备秘境
+                        await AutoDungeonCancel();
+                        //                        await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}", "map");
+                        // await Task.Delay(1000);
+                        await _win.SignalCallback("dungeonExit", () =>
+                        {
+                            DungeonExit();
+                        });
+                    }
+
+                    await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Map/Dungeon?id={role.RoleId}", "map");
+
+                }
+
+                var r3 = await _win.CallJs("$(\"a:contains('取消自动')\").css(\"display\")=='none'");
+                var isNotAuto = r3.Result.ToObject<bool>();
+                if (isNotAuto) await AutoDungeon(true, false);
+
+                var e = new EquipController(_win);
+                await e.LoadSuit(emSuitType.MF, role);
+            }
+            else if (!canSwitch)
+            {
+
+                var e = new EquipController(_win);
+                await e.LoadSuit(emSuitType.MF, role);
+                return;
+            }
+            else
+            {
+                await SwitchMap(bro, role);
+                var e = new EquipController(_win);
+                await e.LoadSuit(emSuitType.效率, role);
+                return;
+            }
+        }
 
         /// <summary>
         /// 开始秘境
@@ -188,10 +293,7 @@ namespace IdleAuto.Scripts.Controller
                     });
                     await AutoDungeonCancel();
                 }
-                await SwitchMap(bro, role);
-                var e = new EquipController(_win);
-                await e.LoadSuit(emSuitType.效率, role);
-                return;
+
             }
             if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
              {
@@ -266,7 +368,12 @@ namespace IdleAuto.Scripts.Controller
             {
                 _win.CallJs($"_map.autoDungeonCancel();");
             });
-            await Task.Delay(2000);
+            await Task.Delay(1500);
+        }
+
+        private async Task DungeonExit()
+        {
+            await _win.CallJsWaitReload($"_map.dungeonExit();", "map");
         }
 
         /// <summary>
@@ -789,6 +896,16 @@ namespace IdleAuto.Scripts.Controller
 
 
             }
+            if (curEquips != null&& role.Job == emJob.死灵 && emSkillMode.献祭 == nec.SkillMode)
+            {
+                var eqList = curEquips.Values.ToList();
+                var hasBody = eqList.Where(p => p.EquipName == "尸体的哀伤").Count() > 0;
+                if (!hasBody)
+                {
+                    skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.献祭无尸爆);
+                    targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+                }
+            }
             if (role.Job == emJob.死灵 && emSkillMode.献祭 == nec.SkillMode)
             {
                 var r1 = await _win.CallJs("_char.getEquipAttachSkill();");
@@ -805,7 +922,7 @@ namespace IdleAuto.Scripts.Controller
             var isNeedSetGroup = r.Item3;
             if (role.Job == emJob.骑士)
             {
-                isNeedSetGroup = await SetKnightSpecialSkill(role, skillConfig, curEquips);
+                isNeedSetGroup = await SetKnightSpecialSkill(role, skillConfig, curEquips) == true ? true : isNeedSetGroup;
             }
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
             if (isNeedRest) await _win.SignalCallback("charReload", async () =>
@@ -906,10 +1023,11 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<bool> SetKnightSpecialSkill(RoleModel role, SkillPoint skillConfig, Dictionary<emEquipSort, EquipModel> curEquips)
         {
-
-            var hasMori = curEquips.Values.Where(p => p.EquipName == "末日").First() != null;
+            if (curEquips == null) return true;
+            var hasMori = curEquips.Values.Where(p => p.EquipName == "末日").FirstOrDefault() != null;
+            var hasBingdong = curEquips.Values.Where(p => p.EquipName == "无形冰冻").FirstOrDefault() != null;
             var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
-            if (hasMori || hasYongheng)
+            if ((hasMori || hasYongheng) && !hasBingdong)
             {
                 skillConfig.GroupSkill.Remove("奉献");
                 skillConfig.GroupSkill.Remove("忏悔");
@@ -1243,7 +1361,7 @@ namespace IdleAuto.Scripts.Controller
             {
                 g.DungeonPassedLv = targetDungeonLv;
                 DbUtil.InsertOrUpdate<GroupModel>(g);
-                await SwitchTo(curMapLv);
+                await SwitchMap(bro, role);
                 await Task.Delay(1000);
                 return true;
             }

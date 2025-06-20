@@ -259,14 +259,17 @@ public class EquipController : BaseController
     public async Task ClearRepository(BroWindow win)
     {
         var account = win.User;
-        var equipInSuit = FreeDb.Sqlite.Select<EquipSuitModel>()
+        var equipInSuitList = FreeDb.Sqlite.Select<EquipSuitModel>()
         .Where(p => p.AccountName == account.AccountName)
-        .ToList()
-        .Distinct() // 如果 EquipSuitModel 实现了 IEquatable<EquipSuitModel> 或者你需要自定义比较器
-        .ToDictionary(
-            d => d.EquipId, // 键选择器
-            d => d          // 值选择器
-        );
+        .ToList();
+        var equipInSuit = new Dictionary<long, long>();
+        foreach (var item in equipInSuitList)
+        {
+            if (!equipInSuit.ContainsKey(item.EquipId))
+            {
+                equipInSuit.Add(item.EquipId, item.EquipId);
+            }
+        }
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
         RetainEquipCfg.Instance.ResetCount();
 
@@ -323,7 +326,7 @@ public class EquipController : BaseController
                                         {
 
                                             // item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
-                                            if (item.Value.emItemQuality == emItemQuality.神器 && equipInSuit.ContainsKey(item.Value.EquipID))
+                                            if (item.Value.emItemQuality == emItemQuality.神器 || equipInSuit.ContainsKey(item.Value.EquipID))
                                                 continue;
                                             if (!RetainEquipCfg.Instance.IsRetain(item.Value))
                                                 toClear.Add(item.Key, item.Value);
@@ -417,7 +420,11 @@ public class EquipController : BaseController
         if (_win.GetBro().Address != url) await _win.LoadUrlWaitJsInit(url, "equip");
         var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
         var suitId = await GetSuitId(suitType, role);
-
+        var curEquips = await GetCurEquips();
+        if (curEquips[emEquipSort.副手].EquipID == RepairManager.PublicYonghengId)
+        {
+            return;
+        }
         var isReplace = suitId > 0 ? true : false;
 
         var dic = new Dictionary<string, object>();
@@ -457,7 +464,7 @@ public class EquipController : BaseController
 
     public async Task LoadSuit(emSuitType suitType, RoleModel role)
     {
-        var hasSuit = FreeDb.Sqlite.Select<EquipSuitModel>().Where(p => p.RoleId == role.RoleId && p.SuitType == suitType).First()!=null;
+        var hasSuit = FreeDb.Sqlite.Select<EquipSuitModel>().Where(p => p.RoleId == role.RoleId && p.SuitType == suitType).First() != null;
         if (!hasSuit) return;
         await Task.Delay(1500);
         //跳转装备详情页面
@@ -475,8 +482,9 @@ public class EquipController : BaseController
         var curEquips2 = await GetCurEquips();
         var toSetEquippedList = curEquips2.Values.ToList();
         toSetEquippedList.ForEach(p => { p.SetAccountInfo(_win.User, role); p.EquipStatus = emEquipStatus.Equipped; });
-        DbUtil.InsertOrUpdate<EquipModel>(toSetEquippedList);
         DbUtil.InsertOrUpdate<EquipModel>(toSetInRepoList);
+        DbUtil.InsertOrUpdate<EquipModel>(toSetEquippedList);
+
 
     }
 
@@ -529,7 +537,7 @@ public class EquipController : BaseController
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         var response = await win.CallJs($@"getCurEquips()");
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-        if (targetSuitType == emSuitType.效率&&role.Job==emJob.死骑)
+        if (targetSuitType == emSuitType.效率 && role.Job == emJob.死骑)
         {
             var curEquipSuitType = EquipUtil.GetEquipSuitType(curEquips, role);
             if (curEquipSuitType == emSuitType.MF)
@@ -557,7 +565,7 @@ public class EquipController : BaseController
                 var suitEquips = MatchEquipSuit(account.Id, role, suit, curEquips, tradeSuitMap[i]);
                 idealFcr = suit.IdealFcr;
                 //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
-                if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess&&targetSkillMode==emSkillMode.自动)
+                if (idealFcr != 0 && role.Job == emJob.死灵 && suitEquips.IsSuccess && targetSkillMode == emSkillMode.自动)
                 {
                     suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
@@ -717,12 +725,8 @@ public class EquipController : BaseController
             curFcr += s;
         }
 
-        // 4. 获取所有候选戒指（包括当前佩戴的）
-        var allRings = FreeDb.Sqlite.Select<EquipModel>()
-            .Where(p => p.AccountName == _win.User.AccountName
-                    && p.RoleID == 0
-                    && p.Category == "戒指" && p.Content.Contains("所有技能"))
-            .ToList();
+
+        var allRings = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName == _win.User.AccountName && a.RoleID == 0 && a.Category == "戒指" && a.Content.Contains("所有技能") && !a.EquipName.Contains("乔丹")).ToList();
 
         if (curEquips.ContainsKey(emEquipSort.戒指1)) allRings.Add(curEquips[emEquipSort.戒指1]);
         if (curEquips.ContainsKey(emEquipSort.戒指2)) allRings.Add(curEquips[emEquipSort.戒指2]);
@@ -826,7 +830,8 @@ public class EquipController : BaseController
     {
         // 先评估所有组合
         var evaluatedCombos = allCombinations
-            .Select(combo => {
+            .Select(combo =>
+            {
                 var eval = EvaluateRingCombination(combo, curFcr);
                 return (combo, eval.comboFcr, eval.quanNengCount, eval.skillCount, eval.bindingCount);
             })
@@ -938,7 +943,7 @@ public class EquipController : BaseController
     {
         //侏儒自带
         var basicSpeed = 5M;
-        var yonghengSpeed=role.GetGroup().Where(p => p.Job == emJob.死骑).FirstOrDefault().YonghengSpeed;
+        var yonghengSpeed = role.GetGroup().Where(p => p.Job == emJob.死骑).FirstOrDefault().YonghengSpeed;
         basicSpeed += yonghengSpeed;
         foreach (var item in curEquip)
         {
@@ -1029,10 +1034,9 @@ public class EquipController : BaseController
     {
         //只查找仓库中的装备
         var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
-        Expression<Func<EquipModel, EquipSuitModel, bool>> exp = (a, b) => a.AccountID == accountId && a.EquipStatus == emEquipStatus.Repo;
-        var _equipsSelf = EquipUtil.QueryEquipInRepo(exp, role.RoleId);
-        Expression<Func<EquipModel, EquipSuitModel, bool>> exp2 = (a, b) => a.AccountID != accountId && a.EquipStatus == emEquipStatus.Repo && a.IsLocal == false;
-        var _equipsOthers = EquipUtil.QueryEquipInRepo(exp2);
+
+        var _equipsSelf = EquipUtil.QueryEquipInRepo(role.RoleId).Where((a, b) => a.AccountID == accountId && a.EquipStatus == emEquipStatus.Repo).ToList();
+        var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountID != accountId && a.EquipStatus == emEquipStatus.Repo && a.IsLocal == false).ToList();
         if (registeredEquips != null)
         {
             _equipsOthers = _equipsOthers.Where(p => !registeredEquips.Select(s => s.EquipId).Contains(p.EquipID)).ToList();
@@ -1047,7 +1051,10 @@ public class EquipController : BaseController
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
         {
-
+            if (j == 4)
+            {
+                P.Log("调试腰带");
+            }
             P.Log($"开始匹配{role.RoleName}{(emEquipSort)j}位置的装备", emLogType.AutoEquip);
             EquipModel curEquip = null;
             if (curEquips != null)
@@ -1329,7 +1336,7 @@ public class EquipController : BaseController
             var equipConfig = dto.Equipment.GetEquipment(eqName);
             if (equipConfig == null)
             {
-                throw new Exception("配置为空");
+                throw new Exception($"{eqName}配置为空");
             }
             var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
 
@@ -1359,7 +1366,10 @@ public class EquipController : BaseController
                 }
                 else if (dto.Equipment.IsNecessery)
                 {//这个部位标记为null则表明这套装备找不齐 稍后会跳过
-                    tradeResult.Add(dto.EmEquipSort, null);
+                    if (!tradeResult.ContainsKey(dto.EmEquipSort))
+                    {
+                        tradeResult.Add(dto.EmEquipSort, null);
+                    }
                 }
             }
         }

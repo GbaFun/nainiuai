@@ -44,6 +44,10 @@ public class RetainEquipCfg
     
         foreach (var item in configs)
         {
+            if (equip.EquipName == "混沌碎片")
+            {
+                P.Log("测试混沌");
+            }
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {
                 return true;

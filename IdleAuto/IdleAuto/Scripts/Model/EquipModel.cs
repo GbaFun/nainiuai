@@ -40,7 +40,20 @@ public class EquipModel : IModel
     /// <summary>
     /// 网页上装备所有属性的文本内容
     /// </summary>
-    public string Content { get; set; }
+    private string _content; // 私有字段存储实际值
+    public string Content
+    {
+
+        get
+        {
+            if (_content == null) return null;
+
+            string[] result = Regex.Split(_content, "玩家锐评");
+            return result[0];
+        } // 假设取分割后的第一部分
+        set => _content = value;
+    }
+
 
     /// <summary>
     /// 物品类型
@@ -78,8 +91,8 @@ public class EquipModel : IModel
     /// </summary>
     public emArtifactBase ArtifactBase { get; set; }
 
- 
-  
+
+
     public string Category
     {
         get
@@ -153,17 +166,17 @@ public class EquipModel : IModel
     /// <summary>
     /// 装备所属账户ID
     /// </summary>
-    [JsonIgnore]
-    public int AccountID { get; private set; }
-    [JsonIgnore]
-    public string AccountName { get; private set; }
+
+    public int AccountID { get; set; }
+
+    public string AccountName { get; set; }
     /// <summary>
     /// 装备所属角色ID,可以为空
     /// </summary>
-    [JsonIgnore]
-    public int RoleID { get; private set; }
-    [JsonIgnore]
-    public string RoleName { get; private set; }
+
+    public int RoleID { get; set; }
+
+    public string RoleName { get; set; }
 
     public void SetAccountInfo(UserModel account, RoleModel role = null)
     {

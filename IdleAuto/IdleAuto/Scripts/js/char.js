@@ -111,7 +111,7 @@ class Character {
         POST_Message("AttributeReset", data, "post", 1500).then((r) => {
             //location.reload();
         }).catch((e) => {
-           // location.reload();
+            // location.reload();
         })
     }
     attributeSave(charid, data) {
@@ -125,9 +125,9 @@ class Character {
         });
         console.log(_data);
         POST_Message("AttributeSave", _data, "post", 1500).then((r) => {
-           // location.reload();
+            // location.reload();
         }).catch((e) => {
-           // location.reload();
+            // location.reload();
         })
     }
 
@@ -179,7 +179,7 @@ class Character {
             arr.push(name);
         }
         return arr;
-        
+
     }
 
     //读取人物详细页的技能
@@ -324,10 +324,14 @@ class Character {
         return $(".panel-heading")[0].innerText.match(/\d+/)[0]
     }
 
-      hasNotice() {
-    var num = $(".navbar-fixed-top a:contains('消息') .badge").text() * 1;
-    return num > 0;
-}
+    hasNotice() {
+        var num = $(".navbar-fixed-top a:contains('消息') .badge").text() * 1;
+        return num > 0;
+    }
+
+    getSan() {
+        return $("span:contains('SAN：')").next().text() * 1;
+    }
 }
 
 var _char = new Character();

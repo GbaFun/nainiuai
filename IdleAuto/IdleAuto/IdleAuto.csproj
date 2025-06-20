@@ -87,9 +87,11 @@
     <Compile Include="Scripts\Model\RuneMapModel.cs" />
     <Compile Include="Scripts\Model\TaskProgress.cs" />
     <Compile Include="Scripts\Model\TradeModel.cs" />
+    <Compile Include="Scripts\Model\UsefulEquip.cs" />
     <Compile Include="Scripts\Utils\DbUtil.cs" />
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
+    <Compile Include="Scripts\Utils\HtmlUtil.cs" />
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <Compile Include="Scripts\Wrap\EquipTradeQueue.cs" />
     <Compile Include="Scripts\Wrap\QueueTest.cs" />
@@ -258,6 +260,9 @@
     </PackageReference>
     <PackageReference Include="FreeSql.All">
       <Version>3.5.104</Version>
+    </PackageReference>
+    <PackageReference Include="HtmlAgilityPack">
+      <Version>1.12.1</Version>
     </PackageReference>
     <PackageReference Include="MSTest.TestFramework">
       <Version>3.7.1</Version>

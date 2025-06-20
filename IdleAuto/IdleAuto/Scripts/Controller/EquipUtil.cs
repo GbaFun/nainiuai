@@ -1,4 +1,5 @@
-﻿using IdleAuto.Db;
+﻿using FreeSql;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,12 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
-        public static List<EquipModel> QueryEquipInRepo(
-         Expression<Func<EquipModel, EquipSuitModel, bool>> exp,
+        public static ISelect<EquipModel, EquipSuitModel> QueryEquipInRepo(
          int roleId = 0)
         {
             // 1. 创建连接查询
             var q = FreeDb.Sqlite.Select<EquipModel, EquipSuitModel>()
-                .LeftJoin((a, b) => a.EquipID == b.EquipId)
-                .Where(exp);  // 2. 直接传入表达式树
+                .LeftJoin((a, b) => a.EquipID == b.EquipId);
 
             // 3. 追加角色条件
             if (roleId > 0)
@@ -31,7 +30,7 @@ namespace IdleAuto.Scripts.Controller
             else
                 q = q.Where((a, b) => b.SuitName == null);
 
-            return q.ToList().Distinct().ToList();
+            return q;
         }
 
         /// <summary>

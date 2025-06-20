@@ -91,7 +91,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "无形布尔凯索的"
+          "conditionContent": "无形布尔凯索的1"
         },
 
         {
@@ -162,7 +162,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "艾尔多的成长"
+          "conditionContent": "艾尔多的成长1"
         },
         {
           "matchType": "任一",
@@ -252,7 +252,7 @@
           "matchGroupName": "传奇装备",
           "operate": "等于",
           "attributeType": "名称",
-          "conditionContent": "法师之拳1"
+          "conditionContent": "法师之拳"
         },
 
 
@@ -364,9 +364,50 @@
           "matchType": "任一",
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "传奇"
+          "attributeType": "名称",
+          "conditionContent": "混沌"
         },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "太古"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "岁月"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "刻面"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "珠宝",
+      "category": "珠宝",
+      "quality": "全部",
+      "conditions": [
+
+       
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
@@ -376,7 +417,7 @@
         }
       ]
     },
-    "maxCount": 1200
+    "maxCount": 20
   },
 
 
@@ -475,7 +516,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "尸体的哀伤"
         },
@@ -500,7 +541,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "炫影之风"
         }
@@ -527,7 +568,7 @@
           "matchGroupName": "传奇",
           "operate": "等于",
           "attributeType": "所有技能",
-          "conditionContent": "2"
+          "conditionContent": "1"
         }
 
       ]
@@ -550,7 +591,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -579,14 +620,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "地狱刑长之壳"
         }
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 5
   },
   {
     "equip": {
@@ -597,14 +638,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "厌恶"
         }
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 3
   },
   {
     "equip": {
@@ -927,7 +968,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "刺客,格斗,3"
         }
@@ -988,7 +1029,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,3"
         }
@@ -1772,7 +1813,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "自杀支系"
         }
@@ -1790,7 +1831,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "李奥瑞克王的武器"
         },
@@ -1822,7 +1863,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "法老王的意志"
         },
@@ -1836,7 +1877,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1847,7 +1888,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "凯恩碎片"
         },
@@ -1890,7 +1931,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "冰霜节杖"
         }
@@ -1924,7 +1965,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "怨灵尖啸"
         },
@@ -2603,7 +2644,7 @@
   },
   {
     "equip": {
-
+      //盗墓元帅冰封
       "category": "项链",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
@@ -2682,6 +2723,7 @@
   },
   {
     "equip": {
+      "description": "元帅盗墓",
       "category": "头饰",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
@@ -2705,6 +2747,7 @@
   },
   {
     "equip": {
+      //元帅冰封
       "category": "护符",
       "quality": "魔法|稀有|传奇|神器|套装",
       "conditions": [
@@ -2714,14 +2757,14 @@
           "operate": "大于等于",
           "matchGroupName": "职业系列技能",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死骑,冰霜,1"
+          "conditionContent": "死骑,冰霜,2"
         },
         {
           "matchType": "任一",
           "operate": "大于等于",
           "matchGroupName": "职业系列技能",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "骑士,光环,1"
+          "conditionContent": "骑士,光环,2"
         }
       ]
     },
@@ -3014,7 +3057,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 50
   },
   {
     "equip": {
@@ -3532,18 +3575,18 @@
           "conditionContent": "骷髅法师,3"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "轮回",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "支配骷髅,3"
+          "conditionContent": "支配骷髅,2"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "轮回",
           "operate": "大于等于",
           "attributeType": "技能等级",
-          "conditionContent": "生生不息,3"
+          "conditionContent": "生生不息,2"
         }
       ]
     },
@@ -3574,14 +3617,14 @@
           "conditionContent": "生生不息,3"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "轮回",
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "重生,3"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "轮回",
           "operate": "大于等于",
           "attributeType": "技能等级",
@@ -3685,7 +3728,7 @@
         }
       ]
     },
-    "maxCount": 40
+    "maxCount": 1
   },
 
   {
@@ -3707,7 +3750,7 @@
         }
       ]
     },
-    "maxCount": 12
+    "maxCount": 1
   },
   /////-------神器底子------------/////
 

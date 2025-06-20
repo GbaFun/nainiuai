@@ -10,28 +10,19 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using CefSharp.WinForms;
+using IdleAuto.Scripts.Wrap;
 
-public class AuctionController:BaseController
+public class AuctionController : BaseController
 {
 
 
 
 
-    public AuctionController()
+    public AuctionController(BroWindow win) : base(win)
     {
     }
-    private static AuctionController instance;
-    public static AuctionController Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new AuctionController();
-            }
-            return instance;
-        }
-    }
+
+
 
     /// <summary>
     /// 是否开始扫货
@@ -49,10 +40,11 @@ public class AuctionController:BaseController
     /// <summary>
     /// 开始扫拍
     /// </summary>
-    public async void StartScan()
+    public async Task StartScan(RoleModel role)
     {
         IsStart = true;
-       // EventSystem.Instance.SubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+        await _win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Auction/Query?id={role.RoleId}", "ah");
+        await Task.Delay(1000);
         await StartAutoJob();
     }
 
@@ -61,8 +53,8 @@ public class AuctionController:BaseController
     /// </summary>
     private async Task StartAutoJob()
     {
-        _browser = await GetBrowserAsync();
-        await Task.Delay(5000);
+
+
         await AutoJump();
         await AutoNextPage();
         var isLastPage = await IsLastPage();
@@ -82,7 +74,7 @@ public class AuctionController:BaseController
     }
 
 
-  
+
 
     private async Task AutoBuy()
     {
@@ -92,7 +84,7 @@ public class AuctionController:BaseController
             if (CanBuy(item))
             {
                 await Buy(item.Eid);
-               
+
                 P.Log($@"购买到:【{item.ETitle}】,价格:{item.ToPriceStr()}", emLogType.AhScan);
             }
         }
@@ -137,7 +129,7 @@ public class AuctionController:BaseController
     public void StopScan()
     {
         IsStart = false;
-      //  EventSystem.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
+        //  EventSystem.Instance.UnsubscribeEvent(emEventType.OnJsInited, OnAhJsInited);
         Task.Run(() =>
         {
             Thread.Sleep(60000);
@@ -188,16 +180,12 @@ public class AuctionController:BaseController
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
-    public async Task<JavascriptResponse> JumpTo(ScanAhTreeNode node)
+    public async Task JumpTo(ScanAhTreeNode node)
     {
-        if (_browser.CanExecuteJavascriptInMainFrame)
-        {
-            var data = node.ToLowerCamelCase();
-            var d = await _browser.EvaluateScriptAsync($@"ah.jumpTo({data});");
-            await JsInit();
-            return d;
-        }
-        return new JavascriptResponse();
+
+        var data = node.ToLowerCamelCase();
+        var d = await _win.CallJsWaitReload($@"ah.jumpTo({data});", "ah");
+
 
     }
 
@@ -229,11 +217,10 @@ public class AuctionController:BaseController
 
     private async Task NextPage()
     {
-        if (_browser.CanExecuteJavascriptInMainFrame)
-        {
-            var d = await _browser.EvaluateScriptAsync($@"ah.nextPage();");
-            await JsInit();
-        }
+
+        var d = await _win.CallJsWaitReload($@"ah.nextPage();", "ah");
+
+
     }
     private async Task<Dictionary<int, AHItemModel>> getEqMap()
     {
@@ -245,26 +232,16 @@ public class AuctionController:BaseController
         return null;
     }
 
-    private async Task<JavascriptResponse> Buy(int eid)
+    private async Task Buy(int eid)
     {
 
-        if (_browser.CanExecuteJavascriptInMainFrame)
-        {
-            var d = await _browser.EvaluateScriptAsync($@"ah.buy({eid});");
-            await JsInit();
-            return d;
-        }
-        return null;
+
+        var d = await _win.CallJsWaitReload($@"ah.buy({eid});", "ah");
+
+
     }
 
-    protected async Task<ChromiumWebBrowser> GetBrowserAsync()
-    {
-        var roleid = AccountController.Instance.User.FirstRole.RoleId;
-        var accName = AccountController.Instance.User.AccountName;
-        var seed = await BroTabManager.Instance.TriggerAddTabPage(accName, $"https://www.idleinfinity.cn/Auction/Query?id={roleid}", "ah");
-        _broSeed = seed;
-        return BroTabManager.Instance.GetBro(seed);
-    }
+
 
 
 

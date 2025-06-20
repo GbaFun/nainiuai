@@ -404,7 +404,7 @@ function saveEquipSuit(d) {
         })
         .catch(r => {
             console.log("保存配装失败");
-            console.log(r);
+          
         });
 }
 
@@ -429,4 +429,25 @@ function getEquipSuitId(suitName) {
     var filter = `#configId option:contains('${suitName}')`;
     var val = $(filter).attr("value");
     return val == undefined ? -1 : val * 1;
+}
+
+//
+// https://www.idleinfinity.cn/Equipment/EquipDungeon
+//cid: 2268
+//eid: 24435646
+//'https://www.idleinfinity.cn/Map/DungeonForEquip?id=2268'
+
+function dungeonForEquip(data) {
+    var data = MERGE_Form({
+        cid: _char.cid,
+        eid: data.eid
+    });
+    POST_Message("EquipDungeon", data, false).then((r) => {
+        Bridge.invokeEvent('OnSignal', 'EquipDungeon');
+
+    }).catch((e) => {
+
+
+    })
+
 }

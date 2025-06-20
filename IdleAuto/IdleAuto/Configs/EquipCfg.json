@@ -305,6 +305,7 @@
     "equipment": {
       "category": "帽子|头饰",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -411,6 +412,24 @@
 
           "seq": 50,
           "conditionContent": "末日"
+        }
+      ]
+    }
+  },
+  {
+    "name": "冰冻",
+    "description": "",
+    "equipment": {
+      "category": "十字弓",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+
+          "seq": 50,
+          "conditionContent": "冰冻"
         }
       ]
     }
@@ -607,11 +626,55 @@
     }
   },
   {
+    "name": "3光环项链",
+    "description": "骑士光环项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "项链",
+      "quality": "全部",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "骑士光环",
+          "attributeType": "指定职业单系技能",
+          "seq": 2,
+          "conditionContent": "骑士,光环,3"
+        },
+
+
+        {
+          "matchType": "必需",
+          "operate": "小于",
+          "attributeType": "施法速度",
+          "seq": 1,
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "seq": 3,
+          "conditionContent": "10"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
     "name": "炽天使之韵",
     "description": "骑士光环项链，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
       "category": "项链",
       "quality": "全部",
+      "isTrade": true,
 
       "conditions": [
         {
@@ -993,13 +1056,13 @@
           "matchType": "必需",
           "operate": "小于等于",
           "attributeType": "攻击速度",
-          "conditionContent": "1"
+          "conditionContent": "5"
         },
         {
           "matchType": "必需",
           "operate": "小于等于",
           "attributeType": "施法速度",
-          "conditionContent": "1"
+          "conditionContent": "5"
         }
 
 
@@ -1496,7 +1559,7 @@
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "1",
-          "seq": 30
+          "seq": 500
         },
         {
           "matchType": "可选",
@@ -1504,11 +1567,11 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "骑士,光环,2",
-          "seq": 50
+          "seq": 600
         },
 
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "骑士技能衣服",
           "operate": "等于",
           "attributeType": "名称",
@@ -1516,12 +1579,20 @@
           "seq": 5000
         },
         {
-          "matchType": "必需",
+          "matchType": "任一",
           "matchGroupName": "骑士技能衣服",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "重型",
-          "seq": 1000
+          "seq": 499
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "骑士技能衣服",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "中型",
+          "seq": 500
         }
 
       ]
@@ -1696,6 +1767,31 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "绑定"
+        }
+      ]
+    }
+  },
+  {
+    "name": "大蛇皮",
+    "description": "优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "衣服",
+      "quality": "全部",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "吟唱者之袍"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
         }
       ]
     }
@@ -2062,6 +2158,31 @@
     }
   },
   {
+    "name": "元帅护符",
+    "description": "光环护符，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "护符",
+      "quality": "魔法|稀有|传奇",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 40,
+          "conditionContent": "骑士,光环,3"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "单项元素抗性之和",
+          "seq": 1,
+          "conditionContent": "20"
+        }
+      ]
+    }
+  },
+  {
     "name": "抗性护符",
     "description": "光环护符，有其他属性更好，优先考虑MF->金币掉落->元素抗性",
     "equipment": {
@@ -2190,24 +2311,7 @@
       ]
     }
   },
-  {
-    "name": "印玺",
-    "description": "",
-    "equipment": {
-      "category": "护符",
-      "quality": "传奇",
-      "isTrade": true,
-      "conditions": [
-        {
-          "matchType": "任一",
-          "matchGroupName": "骷髅法师护符",
-          "operate": "等于",
-          "attributeType": "名称",
-          "conditionContent": "李奥瑞克王的印玺"
-        }
-      ]
-    }
-  },
+
 
   {
     "name": "零速任意腰带",
@@ -2321,6 +2425,24 @@
           "attributeType": "单项元素抗性之和",
           "seq": 1,
           "conditionContent": "5"
+        }
+      ]
+    }
+  },
+  {
+    "name": "拉斯玛之网",
+    "description": "召唤等级腰带",
+    "equipment": {
+      "category": "腰带",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "seq": 15,
+          "attributeType": "名称",
+          "conditionContent": "拉斯玛之网"
         }
       ]
     }
@@ -3510,7 +3632,7 @@
 
     "equipment": {
       "category": "腰带",
-      "quality": "套装",
+      "quality": "套装|传奇",
 
       "conditions": [
 
@@ -3534,6 +3656,25 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "蜘蛛之网",
+
+    "equipment": {
+      "category": "腰带",
+      "quality": "传奇",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "蜘蛛之网"
         }
       ]
     }
@@ -3705,6 +3846,13 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "海鸥"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
         }
       ]
     }
@@ -3866,6 +4014,97 @@
           "operate": "不等于",
           "attributeType": "名称",
           "conditionContent": "全能法戒"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "希望之翼"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "溶冰"
+        }
+      ]
+    }
+  },
+  //死灵75以后法师
+  {
+    "name": "冥神",
+
+    "equipment": {
+      "category": "手杖",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "冥神"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "印玺",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "印玺"
+        }
+      ]
+    }
+  },
+  {
+    "name": "盗墓头",
+
+    "equipment": {
+      "category": "头饰",
+      "quality": "传奇|魔法",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "盗墓项链",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇|魔法",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
         }
       ]
     }

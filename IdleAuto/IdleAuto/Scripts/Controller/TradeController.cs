@@ -108,7 +108,11 @@ public class TradeController : BaseController
     }
     public async Task<bool> AcceptAll(UserModel account)
     {
-        if (_isSkipTrade) return false;
+        if (_isSkipTrade)
+        {
+            _isSkipTrade = false;
+            return false;
+        }
         await Task.Delay(1000);
         //跳转消息页面
         var role = account.FirstRole;
@@ -134,7 +138,7 @@ public class TradeController : BaseController
             {
                 throw new Exception("接收失败");
             }
-            if (type == "装备")
+            if (type == "装备"&& !_isSkipTrade)
             {
                 var content = anyObj["content"].ToString();
                 var eqid = anyObj["equipId"].ToString();

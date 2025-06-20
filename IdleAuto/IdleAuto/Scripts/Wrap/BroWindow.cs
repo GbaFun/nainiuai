@@ -2,6 +2,7 @@
 using CefSharp.Handler;
 using CefSharp.WinForms;
 using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -102,9 +103,10 @@ namespace IdleAuto.Scripts.Wrap
         }
         public void Close()
         {
-            EventMa.Dispose();
+
 
             TabManager.Instance.DisposePage(_seed);
+            EventMa.Dispose();
         }
 
         public ChromiumWebBrowser GetBro()
@@ -394,6 +396,31 @@ namespace IdleAuto.Scripts.Wrap
         {
             string errorMsg = args[0].ToString();
             P.Log(errorMsg, emLogType.Error);
+
+            if (IsCloseTheWindow(errorMsg))
+            {
+                this.Close();
+            }
+        }
+
+        /// <summary>
+        /// 部分异常信息属于正常提示 需要利用 比如秘境过图error 其余的直接关闭当前页把
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private bool IsCloseTheWindow(string content)
+        {
+            var nodes = HtmlUtil.GetNodesByXpath(content, "//*[@class='error']");
+            var errMsg = nodes[0].InnerHtml;
+            if (errMsg.Contains("请先击杀上一层秘境"))
+            {
+                return false;
+            }
+            if (errMsg.Contains("SAN值不足"))
+            {
+                return false;
+            }
+            return true;
         }
 
 

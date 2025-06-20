@@ -645,11 +645,11 @@
           "isNecessery": 0
         },
         "头盔": {
-          "name": "2级光环头盔,骑士40解毒头",
+          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
           "isNecessery": 0
         },
         "项链": {
-          "name": "炽天使之韵,2光环项链",
+          "name": "炽天使之韵,3光环项链,2光环项链",
           "isNecessery": 0
         },
         "戒指1": {
@@ -673,7 +673,54 @@
           "isNecessery": 0
         },
         "护符": {
-          "name": "光环护符,抗性护符",
+          "name": "元帅护符,光环护符,抗性护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "蜘蛛之网",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": "骑士40-50套装",
+        "主手": {
+          "name": "冰冻",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "炽天使之韵,3光环项链,2光环项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "冰原行者",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "飞龙衣服,零速技能衣服",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "抗性手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "元帅护符,光环护符,抗性护符",
           "isNecessery": 0
         },
         "腰带": {
@@ -2304,497 +2351,594 @@
     ]
   },
 
+  //{
+  //  //20级后主要堆骷髅法师，支配骷髅，生生不息，召唤技能等级，需要控制施法速度
+  //  "jobName": "死灵",
+  //  "lv": {
+  //    "min": 70,
+  //    "max": 79
+  //  },
+  //  "equipSuit": [
+  //    {
+  //      "suitName": "献祭",
+  //      "skillMode": "献祭",
+  //      "idealFcr": 180,
+  //      "主手": {
+  //        "name": "自杀支系",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "献祭轮回",
+  //        "isNecessery": true
+
+  //      },
+  //      "头盔": {
+  //        "name": "教化",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "阴影之环",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "施法戒指"
+  //      },
+  //      "戒指2": {
+  //        "name": "施法戒指"
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗寒电靴子"
+
+  //      },
+  //      "衣服": {
+  //        "name": "尸体的哀伤",
+  //        "isNecessery": true
+
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "巨魔人,重生护符",
+  //        "isNecessery": true
+  //      },
+  //      "腰带": {
+  //        "name": "20施法腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "献祭",
+  //      "skillMode": "献祭",
+  //      "idealFcr": 180,
+  //      "主手": {
+  //        "name": "自杀支系",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "献祭轮回",
+  //        "isNecessery": true
+
+  //      },
+  //      "头盔": {
+  //        "name": "20施法头",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "阴影之环",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "施法戒指"
+  //      },
+  //      "戒指2": {
+  //        "name": "施法戒指"
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗寒电靴子"
+
+  //      },
+  //      "衣服": {
+  //        "name": "尸体的哀伤",
+  //        "isNecessery": true
+
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "巨魔人,重生护符",
+  //        "isNecessery": true
+  //      },
+  //      "腰带": {
+  //        "name": "20施法腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产"
+  //      },
+  //      "副手": {
+  //        "name": "轮回",
+  //        "isNecessery": true
+
+  //      },
+  //      "头盔": {
+  //        "name": "教化",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链"
+  //      },
+  //      "戒指1": {
+  //        "name": "全能,死灵低级戒指"
+
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指"
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "塔格奥之鳞",
+  //        "isNecessery": true
+
+  //      },
+  //      "手套": {
+  //        "name": "塔格奥之手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符"
+
+  //      },
+  //      "腰带": {
+  //        "name": "塔格奥之束带,盗墓腰带"
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产"
+  //      },
+  //      "副手": {
+  //        "name": "轮回",
+  //        "isNecessery": true
+
+  //      },
+  //      "头盔": {
+  //        "name": "教化,冰晶",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链"
+  //      },
+  //      "戒指1": {
+  //        "name": "抗毒施法戒指"
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指"
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "塔格奥之鳞",
+  //        "isNecessery": true
+
+  //      },
+  //      "手套": {
+  //        "name": "塔格奥之手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符"
+
+  //      },
+  //      "腰带": {
+  //        "name": "塔格奥之束带,盗墓腰带"
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产"
+  //      },
+  //      "副手": {
+  //        "name": "轮回",
+  //        "isNecessery": true
+
+  //      },
+  //      "头盔": {
+  //        "name": "2召唤头,1级召唤头盔"
+
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链"
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮"
+
+  //      },
+  //      "手套": {
+  //        "name": "施法手"
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符"
+
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带"
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "32亡者遗产",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "33死灵副手,32死灵副手",
+  //        "isNecessery": true
+  //      },
+  //      "头盔": {
+  //        "name": "20施法头",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮",
+  //        "isNecessery": true
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符,死灵召唤护符",
+  //        "isNecessery": 0
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "232死灵副手",
+  //        "isNecessery": true
+  //      },
+  //      "头盔": {
+  //        "name": "20施法头",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮",
+  //        "isNecessery": true
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符,死灵召唤护符",
+  //        "isNecessery": 0
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "法老王的意志",
+  //        "isNecessery": true
+  //      },
+  //      "头盔": {
+  //        "name": "2召唤头",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮",
+  //        "isNecessery": true
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符,死灵召唤护符",
+  //        "isNecessery": 0
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "满足特殊修车的一套装备",
+  //      "idealFcr": 110,
+  //      "主手": {
+  //        "name": "3亡者遗产",
+  //        "isNecessery": true
+  //      },
+  //      "副手": {
+  //        "name": "133灿烂",
+  //        "isNecessery": true
+  //      },
+  //      "头盔": {
+  //        "name": "教化,冰晶",
+  //        "isNecessery": true
+  //      },
+  //      "项链": {
+  //        "name": "2召唤项链",
+  //        "isNecessery": true
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮",
+  //        "isNecessery": true
+  //      },
+  //      "手套": {
+  //        "name": "施法手",
+  //        "isNecessery": true
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符,死灵召唤护符",
+  //        "isNecessery": 0
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带",
+  //        "isNecessery": true
+  //      }
+  //    },
+  //    {
+  //      "suitName": "死灵19-45套装",
+  //      "主手": {
+  //        "name": "3亡者遗产,亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
+  //        "isNecessery": 0
+  //      },
+  //      "副手": {
+  //        "name": "33死灵副手,32死灵副手,法老王的意志,死灵灿烂,31副手,3副手",
+  //        "isNecessery": 0
+  //      },
+  //      "头盔": {
+  //        "name": "1级召唤头盔,知识",
+  //        "isNecessery": 0
+  //      },
+  //      "项链": {
+  //        "name": "施法召唤项链",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指1": {
+  //        "name": "死灵低级戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "戒指2": {
+  //        "name": "抗毒施法戒指",
+  //        "isNecessery": 0
+  //      },
+  //      "靴子": {
+  //        "name": "时光扭曲行者,抗毒靴子",
+  //        "isNecessery": 0
+  //      },
+  //      "衣服": {
+  //        "name": "蛇皮,魁黑刚的智慧,隐密",
+  //        "isNecessery": 0
+  //      },
+  //      "手套": {
+  //        "name": "施法手,施法抗寒手",
+  //        "isNecessery": 0
+  //      },
+  //      "护符": {
+  //        "name": "印玺,骷髅法师护符,死灵召唤护符",
+  //        "isNecessery": 0
+  //      },
+  //      "腰带": {
+  //        "name": "盗墓腰带,召唤腰带",
+  //        "isNecessery": 0
+  //      }
+  //    }
+  //  ]
+  //},
   {
     //20级后主要堆骷髅法师，支配骷髅，生生不息，召唤技能等级，需要控制施法速度
     "jobName": "死灵",
     "lv": {
       "min": 70,
-      "max": 79
-    },
-    "equipSuit": [
-      {
-        "suitName": "献祭",
-        "skillMode": "献祭",
-        "idealFcr": 180,
-        "主手": {
-          "name": "自杀支系",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "献祭轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "教化",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "阴影之环",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "施法戒指"
-        },
-        "戒指2": {
-          "name": "施法戒指"
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗寒电靴子"
-
-        },
-        "衣服": {
-          "name": "尸体的哀伤",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "巨魔人,重生护符",
-          "isNecessery": true
-        },
-        "腰带": {
-          "name": "20施法腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "献祭",
-        "skillMode": "献祭",
-        "idealFcr": 180,
-        "主手": {
-          "name": "自杀支系",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "献祭轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "20施法头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "阴影之环",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "施法戒指"
-        },
-        "戒指2": {
-          "name": "施法戒指"
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗寒电靴子"
-
-        },
-        "衣服": {
-          "name": "尸体的哀伤",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "巨魔人,重生护符",
-          "isNecessery": true
-        },
-        "腰带": {
-          "name": "20施法腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产"
-        },
-        "副手": {
-          "name": "轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "教化",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链"
-        },
-        "戒指1": {
-          "name": "全能,死灵低级戒指"
-
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指"
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "塔格奥之鳞",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "塔格奥之手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符"
-
-        },
-        "腰带": {
-          "name": "塔格奥之束带,盗墓腰带"
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产"
-        },
-        "副手": {
-          "name": "轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "教化,冰晶",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链"
-        },
-        "戒指1": {
-          "name": "抗毒施法戒指"
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指"
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "塔格奥之鳞",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "塔格奥之手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符"
-
-        },
-        "腰带": {
-          "name": "塔格奥之束带,盗墓腰带"
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产"
-        },
-        "副手": {
-          "name": "轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "2召唤头,1级召唤头盔"
-
-        },
-        "项链": {
-          "name": "2召唤项链"
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮"
-
-        },
-        "手套": {
-          "name": "施法手"
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符"
-
-        },
-        "腰带": {
-          "name": "盗墓腰带"
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "32亡者遗产",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "33死灵副手,32死灵副手",
-          "isNecessery": true
-        },
-        "头盔": {
-          "name": "20施法头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮",
-          "isNecessery": true
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符,死灵召唤护符",
-          "isNecessery": 0
-        },
-        "腰带": {
-          "name": "盗墓腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "232死灵副手",
-          "isNecessery": true
-        },
-        "头盔": {
-          "name": "20施法头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮",
-          "isNecessery": true
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符,死灵召唤护符",
-          "isNecessery": 0
-        },
-        "腰带": {
-          "name": "盗墓腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "法老王的意志",
-          "isNecessery": true
-        },
-        "头盔": {
-          "name": "2召唤头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮",
-          "isNecessery": true
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符,死灵召唤护符",
-          "isNecessery": 0
-        },
-        "腰带": {
-          "name": "盗墓腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "满足特殊修车的一套装备",
-        "idealFcr": 110,
-        "主手": {
-          "name": "3亡者遗产",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "133灿烂",
-          "isNecessery": true
-        },
-        "头盔": {
-          "name": "教化,冰晶",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "2召唤项链",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮",
-          "isNecessery": true
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符,死灵召唤护符",
-          "isNecessery": 0
-        },
-        "腰带": {
-          "name": "盗墓腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "死灵19-45套装",
-        "主手": {
-          "name": "3亡者遗产,亡者遗产,凯恩碎片,李奥瑞克王的武器,31施法手杖,3手杖",
-          "isNecessery": 0
-        },
-        "副手": {
-          "name": "33死灵副手,32死灵副手,法老王的意志,死灵灿烂,31副手,3副手",
-          "isNecessery": 0
-        },
-        "头盔": {
-          "name": "1级召唤头盔,知识",
-          "isNecessery": 0
-        },
-        "项链": {
-          "name": "施法召唤项链",
-          "isNecessery": 0
-        },
-        "戒指1": {
-          "name": "死灵低级戒指",
-          "isNecessery": 0
-        },
-        "戒指2": {
-          "name": "抗毒施法戒指",
-          "isNecessery": 0
-        },
-        "靴子": {
-          "name": "时光扭曲行者,抗毒靴子",
-          "isNecessery": 0
-        },
-        "衣服": {
-          "name": "蛇皮,魁黑刚的智慧,隐密",
-          "isNecessery": 0
-        },
-        "手套": {
-          "name": "施法手,施法抗寒手",
-          "isNecessery": 0
-        },
-        "护符": {
-          "name": "印玺,骷髅法师护符,死灵召唤护符",
-          "isNecessery": 0
-        },
-        "腰带": {
-          "name": "盗墓腰带,召唤腰带",
-          "isNecessery": 0
-        }
-      }
-    ]
-  },
-  {
-    //20级后主要堆骷髅法师，支配骷髅，生生不息，召唤技能等级，需要控制施法速度
-    "jobName": "死灵",
-    "lv": {
-      "min": 80,
       "max": 88
     },
     "equipSuit": [
+      {
+        "suitName": "法师",
+        "skillMode": "法师",
+        "主手": {
+          "name": "冥神",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "盗墓头",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "盗墓项链",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "全能,死灵低级戒指"
+        },
+        "戒指2": {
+          "name": "全能,死灵低级戒指"
+        },
+        "靴子": {
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗寒电靴子"
+
+        },
+        "衣服": {
+          "name": "塔格奥之鳞",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "塔格奥之手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "印玺,巨魔人",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "塔格奥之束带,盗墓腰带"
+
+        }
+      },
+      {
+        "suitName": "献祭",
+        "skillMode": "献祭",
+        "idealFcr": 180,
+        "主手": {
+          "name": "自杀支系",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "献祭轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "教化,20施法头",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "阴影之环",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "施法戒指"
+        },
+        "戒指2": {
+          "name": "施法戒指"
+        },
+        "靴子": {
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗寒电靴子"
+
+        },
+        "衣服": {
+          "name": "大蛇皮,蛇皮",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "施法手",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "巨魔人,重生护符",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "拉斯玛之网,盗墓腰带,20施法腰带",
+          "isNecessery": true
+        }
+      },
       {
         "suitName": "献祭",
         "skillMode": "献祭",
@@ -2964,7 +3108,7 @@
           "name": "抗毒施法戒指"
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3011,7 +3155,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3057,7 +3201,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3105,7 +3249,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3153,7 +3297,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3201,7 +3345,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3248,7 +3392,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "燃魂之焰,破碎之链,时光扭曲行者,抗毒靴子",
+          "name": "燃魂之焰,破碎之链,时光扭曲行者,冰原行者,抗毒靴子",
           "isNecessery": 0
         },
         "衣服": {
@@ -3747,7 +3891,7 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "mf戒指",
+          "name": "绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
@@ -3803,7 +3947,7 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "mf戒指",
+          "name": "绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
