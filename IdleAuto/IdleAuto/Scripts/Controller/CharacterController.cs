@@ -189,7 +189,7 @@ namespace IdleAuto.Scripts.Controller
                 await e.LoadSuit(emSuitType.效率, role);
                 return;
             }
-            else if (san >= 90)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
+            else if (san >= 85)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
                 var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != emItemQuality.普通.ToString() && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
@@ -276,7 +276,7 @@ namespace IdleAuto.Scripts.Controller
         {
             _browser = bro;
             var isDungeonBack = bool.Parse(ConfigUtil.GetAppSetting("IsDungeonBack"));
-            //秘境归来
+            //秘境归
             if (isDungeonBack)
             {
                 if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
@@ -902,7 +902,7 @@ namespace IdleAuto.Scripts.Controller
                 var hasBody = eqList.Where(p => p.EquipName == "尸体的哀伤").Count() > 0;
                 if (!hasBody)
                 {
-                    skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.献祭无尸爆);
+                    skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.献祭无尸爆).DeepCopy();
                     targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                 }
             }

@@ -154,10 +154,10 @@ namespace IdleAuto.Scripts.View
                 {
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     //await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    // RepairManager.IsCollectEquip = false;
-                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                     FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-                     await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    RepairManager.IsCollectEquip = false;
+                    // FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                   //  FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+              //    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
@@ -234,7 +234,7 @@ namespace IdleAuto.Scripts.View
         {
 
             //定时任务测试
-            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(60));
+            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(120));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -287,7 +287,7 @@ namespace IdleAuto.Scripts.View
             //Expression<Func<EquipModel,EquipSuitModel, bool>> exp = (a,b) => a.EquipName.Contains("永恒");
             //EquipUtil.QueryEquipInRepo(exp, 2268);
             //FlowController.RegisterYongheng();
-            // FlowController.GroupWork(4, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+             FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
         }
 
@@ -358,7 +358,8 @@ namespace IdleAuto.Scripts.View
 
         private void BtnReform_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
+           // FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
+             FlowController.GroupWork(3, 1, FlowController.UpgradeBaseEq);
         }
 
         private void btnCookie_Click(object sender, EventArgs e)
