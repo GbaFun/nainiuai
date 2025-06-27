@@ -79,6 +79,7 @@ public class AuctionController : BaseController
     private async Task AutoBuy()
     {
         var map = await getEqMap();
+        if (map == null) return;
         foreach (var item in map.Values)
         {
             if (CanBuy(item))

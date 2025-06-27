@@ -2,6 +2,7 @@
 using IdleAuto.Configs.CfgExtension;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using System.Linq;
 public class RetainEquipCfg
 {
     private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "RetainEquipCfg.json");
-    public static RetainEquipCfg Instance { get; } = new RetainEquipCfg();
 
     public List<RetainEquip> Equips { get; set; }
 
@@ -18,13 +18,7 @@ public class RetainEquipCfg
         LoadConfig();
     }
 
-    public void ResetCount()
-    {
-        foreach (var item in Equips)
-        {
-            item.ResetCount();
-        }
-    }
+
     public void LoadConfig()
     {
         if (File.Exists(ConfigFilePath))
@@ -38,15 +32,28 @@ public class RetainEquipCfg
         }
     }
 
+
+    public  ConcurrentDictionary<string, List<RetainEquip>> ConfigCache = new ConcurrentDictionary<string, List<RetainEquip>>();
+
     public bool IsRetain(EquipModel equip)
     {
-        var configs = Equips.Where(p=>(p.Equip.Category.Split('|').Contains(equip.Category)||p.Equip.Category=="全部")&&(p.Equip.Quality.Split('|').Contains(equip.emItemQuality.ToString()) || p.Equip.Quality == "全部")).ToList();
-    
+        List<RetainEquip> configs;
+        if (ConfigCache.ContainsKey(equip.EquipName))
+        {
+            configs = ConfigCache[equip.EquipName];
+        }
+        else
+        {
+            configs = Equips.Where(p => (p.Equip.Category.Split('|').Contains(equip.Category) || p.Equip.Category == "全部") && (p.Equip.Quality.Split('|').Contains(equip.emItemQuality.ToString()) || p.Equip.Quality == "全部")).ToList();
+            ConfigCache.TryAdd(equip.EquipName, configs);
+        }
+
+
         foreach (var item in configs)
         {
-            if (equip.EquipName == "混沌碎片")
+            if (equip.EquipName == "流云桥")
             {
-                P.Log("测试混沌");
+                P.Log("");
             }
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {

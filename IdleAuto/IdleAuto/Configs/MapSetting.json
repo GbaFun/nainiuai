@@ -131,7 +131,7 @@
   {
     "lv": {
       "min": 70,
-      "max": 77
+      "max": 74
     },
     "skillMode": "法师",
     "mapLv": 77
@@ -139,7 +139,7 @@
 
   {
     "lv": {
-      "min": 78,
+      "min": 75,
       "max": 79
     },
     "skillMode": "法师",
@@ -204,7 +204,7 @@
   {
     "lv": {
       "min": 80,
-      "max": 81
+      "max": 80
     },
     "skillMode": "献祭",
     "mapLv": 88
@@ -215,7 +215,7 @@
 
   {
     "lv": {
-      "min": 82,
+      "min": 81,
       "max": 88
     },
     "skillMode": "献祭",

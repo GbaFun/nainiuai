@@ -258,6 +258,7 @@ public class EquipController : BaseController
     /// <returns></returns>
     public async Task ClearRepository(BroWindow win)
     {
+        var config = new RetainEquipCfg();
         var account = win.User;
         var equipInSuitList = FreeDb.Sqlite.Select<EquipSuitModel>()
         .Where(p => p.AccountName == account.AccountName)
@@ -271,7 +272,7 @@ public class EquipController : BaseController
             }
         }
         P.Log("开始清理仓库装备", emLogType.AutoEquip);
-        RetainEquipCfg.Instance.ResetCount();
+
 
         await Task.Delay(1500);
         P.Log($"跳转仓库装备详情页面", emLogType.AutoEquip);
@@ -328,8 +329,14 @@ public class EquipController : BaseController
                                             // item.Value.Category = CategoryUtil.GetCategory(item.Value.EquipBaseName);
                                             if (item.Value.emItemQuality == emItemQuality.神器 || equipInSuit.ContainsKey(item.Value.EquipID))
                                                 continue;
-                                            if (!RetainEquipCfg.Instance.IsRetain(item.Value))
-                                                toClear.Add(item.Key, item.Value);
+                                            if (!config.IsRetain(item.Value))
+                                            {
+                                                // toClear.Add(item.Key, item.Value);
+                                                var delPre = item.Value.ToObject<DelPreviewEquipModel>();
+                                                delPre.SetAccountInfo(win.User);
+                                                DbUtil.InsertOrUpdate<DelPreviewEquipModel>(delPre);
+                                            }
+
                                         }
 
                                         string eids = string.Join(",", toClear.Keys);
@@ -390,6 +397,23 @@ public class EquipController : BaseController
                 }
             }
         }
+    }
+
+    public async Task ClearRepo()
+    {
+        var preList = FreeDb.Sqlite.Select<DelPreviewEquipModel>().Where(p => p.AccountName == _win.User.AccountName).ToList();
+        var idList = preList.Select(s => s.EquipID);
+        var eids = string.Join(",", idList);
+        await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(_win.User.FirstRole.RoleId), "equip");
+        await Task.Delay(1500);
+        var r = await _win.CallJsWaitReload($@"equipClear({_win.User.FirstRole.RoleId},""{eids}"")", "equip");
+        if (r.Success)
+        {
+            FreeDb.Sqlite.Delete<EquipModel>().Where(p => idList.Contains(p.EquipID)).ExecuteAffrows();
+            FreeDb.Sqlite.Delete<DelPreviewEquipModel>().Where(p => idList.Contains(p.EquipID)).ExecuteAffrows();
+        }
+
+
     }
 
     private void WrapEquip(EquipModel eq, UserModel user, RoleModel role, emEquipStatus status)
@@ -537,12 +561,12 @@ public class EquipController : BaseController
         Dictionary<emEquipSort, EquipModel> curEquips = null;
         var response = await win.CallJs($@"getCurEquips()");
         curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
+        var curEquipSuitType = EquipUtil.GetEquipSuitType(curEquips, role);
         if (targetSuitType == emSuitType.效率 && role.Job == emJob.死骑)
         {
-            var curEquipSuitType = EquipUtil.GetEquipSuitType(curEquips, role);
             if (curEquipSuitType == emSuitType.MF)
             {
-                return curEquips;
+                await LoadSuit(emSuitType.效率, role);
             }
         }
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
@@ -696,6 +720,10 @@ public class EquipController : BaseController
         {
             await SaveEquipSuit(emSuitType.效率, role);
         }
+        if (curEquipSuitType == emSuitType.MF)
+        {
+            await LoadSuit(emSuitType.MF, role);
+        }
         return curEquip;
     }
 
@@ -833,7 +861,7 @@ public class EquipController : BaseController
             .Select(combo =>
             {
                 var eval = EvaluateRingCombination(combo, curFcr);
-                return (combo, eval.comboFcr, eval.quanNengCount, eval.skillCount, eval.bindingCount);
+                return (combo, eval.comboFcr, eval.quanNengCount, eval.skillCount, eval.bindingCount, eval.weight);
             })
             .ToList();
 
@@ -848,7 +876,8 @@ public class EquipController : BaseController
             var best = validCombos
                 .OrderByDescending(x => x.quanNengCount)  // 1. 最多全能
                 .ThenByDescending(x => x.skillCount)      // 2. 其次最多技能
-                .ThenByDescending(x => x.bindingCount)    // 3. 最后最多绑定
+                .ThenByDescending(x => x.weight)            // 3.权重
+                .ThenByDescending(x => x.bindingCount)    // 4. 最后最多绑定
                 .First();
 
             return (best.combo, best.comboFcr);
@@ -860,20 +889,28 @@ public class EquipController : BaseController
                 .OrderByDescending(x => x.comboFcr)       // 最接近FCR要求
                 .ThenByDescending(x => x.quanNengCount)   // 然后最多全能
                 .ThenByDescending(x => x.skillCount)      // 然后最多技能
-                .ThenByDescending(x => x.bindingCount)    // 最后最多绑定
+                  .ThenByDescending(x => x.weight)            // 3.权重
+                .ThenByDescending(x => x.bindingCount)    // 4. 最后最多绑定
                 .First();
 
             return (closest.combo, closest.comboFcr);
         }
     }
 
-    private (decimal comboFcr, int quanNengCount, int skillCount, int bindingCount) EvaluateRingCombination(
+    /// <summary>
+    /// 评估戒指组合
+    /// </summary>
+    /// <param name="combo"></param>
+    /// <param name="baseFcr"></param>
+    /// <returns>返回一个元组 weight为权重</returns>
+    private (decimal comboFcr, int quanNengCount, int skillCount, int bindingCount, decimal weight) EvaluateRingCombination(
         List<EquipModel> combo, decimal baseFcr)
     {
         decimal comboFcr = baseFcr;
         int quanNengCount = 0;
         int skillCount = 0;
         int bindingCount = 0;
+        decimal weight = 0;
 
         foreach (var ring in combo)
         {
@@ -895,9 +932,31 @@ public class EquipController : BaseController
             {
                 bindingCount++;
             }
+            weight += CalRingWeight(ring);
         }
 
-        return (comboFcr, quanNengCount, skillCount, bindingCount);
+        return (comboFcr, quanNengCount, skillCount, bindingCount, weight);
+    }
+
+    private decimal CalRingWeight(EquipModel ring)
+    {
+        var name = ring.EquipName;
+        switch (name)
+        {
+            case "全能法戒":
+                return 1000;
+            case "希望之翼":
+                return 500;
+            case "天空之戒":
+                return 300;
+            case "萤火虫":
+                return 250;
+            case "布尔凯索之戒":
+                return 210;
+            case "部落徽记":
+                return 200;
+        }
+        return 1;
     }
 
     private void ProcessToWearEquips(Dictionary<emEquipSort, EquipModel> toWearEquips,
@@ -1193,9 +1252,17 @@ public class EquipController : BaseController
             if (response2.Success)
             {
                 equip.SetAccountInfo(account);
-                replaceEquipStruct.ReplacedEquip = curEquips[(emEquipSort)sort];
-                replaceEquipStruct.ReplacedEquip.SetAccountInfo(account);
-                replaceEquipStruct.IsSuccess = true;
+                if (curEquips.ContainsKey((emEquipSort)sort))
+                {
+                    replaceEquipStruct.ReplacedEquip = curEquips[(emEquipSort)sort];
+                    replaceEquipStruct.ReplacedEquip.SetAccountInfo(account);
+                    replaceEquipStruct.IsSuccess = true;
+                }
+                else
+                {
+                    replaceEquipStruct.IsSuccess = false;
+                }
+
                 return replaceEquipStruct;
             }
         }

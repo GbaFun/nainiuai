@@ -307,13 +307,7 @@
       "quality": "全部",
       "isTrade": true,
       "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "小于",
-          "attributeType": "施法速度",
-          "seq": 1,
-          "conditionContent": "1"
-        },
+
         {
           "matchType": "必需",
           "operate": "大于等于",
@@ -1182,9 +1176,9 @@
       "quality": "全部",
       "conditions": [
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "天启降临之靴"
         }
@@ -1603,7 +1597,7 @@
     "description": "所有技能+1衣服，其他属性优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
     "equipment": {
       "category": "衣服",
-      "quality": "魔法|稀有|传奇",
+      "quality": "普通|传奇|套装",
       "conditions": [
         {
           "matchType": "必需",
@@ -2328,6 +2322,14 @@
           "conditionContent": "1"
         },
 
+
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1",
+          "seq": 2000
+        },
         {
           "matchType": "可选",
           "operate": "大于等于",
@@ -2443,6 +2445,12 @@
           "seq": 15,
           "attributeType": "名称",
           "conditionContent": "拉斯玛之网"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
         }
       ]
     }
@@ -3025,6 +3033,72 @@
           "attributeType": "技能等级",
           "seq": 10,
           "conditionContent": "骷髅法师,3"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 10,
+          "conditionContent": "死灵,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "2轮回",
+    "description": "死灵副手",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "神器",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "seq": 10,
+          "conditionContent": "轮回"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "骷髅法师,3"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 10,
+          "conditionContent": "死灵,2"
+        }
+      ]
+    }
+  },
+  {
+    "name": "怨灵尖啸",
+    "description": "死灵副手",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "神器",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "怨灵尖啸"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 10,
+          "conditionContent": "死灵,3"
         }
       ]
     }
@@ -3105,7 +3179,7 @@
     "equipment": {
       "category": "头饰",
       "quality": "套装",
-
+      "isTrade": true,
       "conditions": [
 
 
@@ -3705,6 +3779,32 @@
       ]
     }
   },
+  {
+    "name": "野火",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "野火"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
 
   {
     "name": "施法戒指",
@@ -3739,6 +3839,27 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "溶冰",
+          "seq": 200
+        }
+      ]
+    }
+  },
+  {
+    "name": "希望之翼",
+
+    "equipment": {
+      "category": "戒指",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "希望之翼",
           "seq": 200
         }
       ]
@@ -3789,6 +3910,7 @@
     "equipment": {
       "category": "靴子",
       "quality": "套装",
+      "isTrade": true,
       "conditions": [
 
 
@@ -3813,6 +3935,7 @@
     "equipment": {
       "category": "靴子",
       "quality": "套装",
+      "isTrade": true,
       "conditions": [
 
 
@@ -3831,6 +3954,57 @@
       ]
     }
   },
+  {
+    "name": "圣洁之靴",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "圣洁之靴"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+  {
+    "name": "浴火重生",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "浴火重生"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        }
+      ]
+    }
+  },
+
   //mf装备
   {
     "name": "海鸥",
@@ -4047,10 +4221,10 @@
           "conditionContent": "冥神"
         },
         {
-          "matchType": "可选",
+          "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,2"
+          "conditionContent": "死灵,召唤,4"
         }
       ]
     }
@@ -4069,6 +4243,12 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "印玺"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
         }
       ]
     }
@@ -4092,6 +4272,31 @@
     }
   },
   {
+    "name": "三重叶",
+
+    "equipment": {
+      "category": "头饰",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "三重叶"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "3"
+        }
+      ]
+    }
+  },
+  {
     "name": "盗墓项链",
 
     "equipment": {
@@ -4105,6 +4310,30 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,3"
+        }
+      ]
+    }
+  },
+  {
+    "name": "人品",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "人品的展现"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "3"
         }
       ]
     }

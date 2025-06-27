@@ -393,13 +393,13 @@ namespace AttributeMatch
                     regexAttr = $@"\+(?<v>\d+) [\u4e00-\u9fa5]+转换";
                     break;
                 case emAttrType.需要力量:
-                    regexAttr = $@"需要力量：\n(?<v>\d+)";
+                    regexAttr = $@"需要力量：\s(?<v>\d+)";
                     break;
                 case emAttrType.需要敏捷:
-                    regexAttr = $@"需要敏捷：\n(?<v>\d+)";
+                    regexAttr = $@"需要敏捷：\s(?<v>\d+)";
                     break;
                 case emAttrType.掉落等级:
-                    regexAttr = $@"掉落等级：(?<v>\d+)";
+                    regexAttr = $@"掉落等级：\s(?<v>\d+)";
                     break;
             }
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);

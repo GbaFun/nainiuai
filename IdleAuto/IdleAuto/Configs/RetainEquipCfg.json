@@ -11,32 +11,25 @@
           "conditionContent": "49"
         },
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "太古",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "太古"
-        }
-      ]
-    },
-    "maxCount": 1200
-  },
-  {
-    "equip": {
-      "category": "全部",
-      "quality": "全部",
-      "conditions": [
-
-
+        },
         {
-          "matchType": "必需",
+          "matchType": "任一",
+          "matchGroupName": "太古",
           "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "圣衣"
+          "conditionContent": "★"
         }
+
       ]
     },
     "maxCount": 1200
   },
+
   {
     "equip": {
       "category": "全部",
@@ -170,13 +163,6 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "克己1"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "圣衣"
         }
       ]
     },
@@ -394,6 +380,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "刻面"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "精华"
         }
 
       ]
@@ -407,19 +400,37 @@
       "quality": "全部",
       "conditions": [
 
-       
+
         {
           "matchType": "任一",
           "matchGroupName": "传奇装备",
           "operate": "在范围内",
-          "attributeType": "自定义",
+          "attributeType": "名称",
           "conditionContent": "璀璨"
+        }
+      ]
+    },
+    "maxCount": 10
+  },
+  {
+    "equip": {
+      "description": "珠宝",
+      "category": "珠宝",
+      "quality": "全部",
+      "conditions": [
+
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇装备",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "璀璨之真理"
         }
       ]
     },
     "maxCount": 20
   },
-
 
   {
     "equip": {
@@ -609,7 +620,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -645,7 +656,7 @@
 
       ]
     },
-    "maxCount": 3
+    "maxCount": 1
   },
   {
     "equip": {
@@ -670,7 +681,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -695,7 +706,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -742,7 +753,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "时光扭曲行者"
         }
@@ -760,7 +771,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "战争旅者"
         }
@@ -778,7 +789,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "天谴之路"
         }
@@ -796,7 +807,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "蔑视之靴"
         },
@@ -821,7 +832,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "蚀肉骑士"
         }
@@ -839,7 +850,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "天启降临之靴"
         },
@@ -878,7 +889,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 0
   },
   {
     "equip": {
@@ -889,14 +900,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "阴影追猎者"
         }
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -914,7 +925,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -925,14 +936,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "骨髓行走"
         }
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -943,14 +954,14 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "冰原行者"
         }
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -961,7 +972,7 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "影舞者"
         },
@@ -1011,7 +1022,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1054,7 +1065,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1072,7 +1083,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1097,7 +1108,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1151,7 +1162,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -1176,7 +1187,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1200,7 +1211,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1236,7 +1247,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1000
   },
 
   {
@@ -1291,7 +1302,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -1309,7 +1320,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -1327,7 +1338,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -1345,7 +1356,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1503,7 +1514,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 200
   },
   {
     "equip": {
@@ -1666,7 +1677,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1683,7 +1694,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1717,7 +1728,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1734,7 +1745,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1751,7 +1762,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1768,7 +1779,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1785,7 +1796,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1802,7 +1813,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2017,7 +2028,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2100,7 +2111,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2126,7 +2137,7 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2172,7 +2183,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2198,7 +2209,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2217,7 +2228,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2236,7 +2247,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2255,7 +2266,7 @@
 
       ]
     },
-    "maxCount": 1
+    "maxCount": 4
   },
   //白热或血红珠宝
   {
@@ -2612,7 +2623,7 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 8
   },
   {
     "equip": {
@@ -2834,7 +2845,7 @@
         }
       ]
     },
-    "maxCount": 1
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2892,9 +2903,9 @@
 
   {
     "equip": {
-      "description": "死灵腰带",
+      "description": "盗墓腰带",
       "category": "腰带",
-      "quality": "传奇",
+      "quality": "传奇|魔法",
       "conditions": [
 
         {
@@ -2903,10 +2914,17 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,3"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 5
   },
   {
     "equip": {
@@ -3413,7 +3431,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -3449,6 +3467,36 @@
       ]
     },
     "maxCount": 10
+  },
+  {
+    "equip": {
+      "category": "剑",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+
+          "attributeType": "名称",
+          "seq": 6,
+          "conditionContent": "无形超强的秘仪之剑"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+
+          "attributeType": "凹槽",
+          "seq": 6,
+          "conditionContent": "3"
+        }
+
+      ]
+    },
+    "maxCount": 100
   },
   //复仇女神
   {
@@ -3662,7 +3710,36 @@
 
       ]
     },
-    "maxCount": 40
+    "maxCount": 1
+  },
+  {
+    "equip": {
+      "category": "剑",
+      "quality": "破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "5"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "物品等级",
+          "conditionContent": "70"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "永恒",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "水晶剑"
+        }
+
+      ]
+    },
+    "maxCount": 1
   },
 
   {
@@ -3857,7 +3934,7 @@
       ]
 
     },
-    "maxCount": 20
+    "maxCount": 1
   },
   {
     "equip": {
@@ -3873,6 +3950,30 @@
         },
         {
           "matchType": "可选",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,1"
+        }
+      ]
+
+    },
+    "maxCount": 8
+  },
+  {
+    "equip": {
+      "category": "护符",
+      "quality": "全部",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "召唤最大数量",
+          "conditionContent": "骷髅法师,1"
+        },
+        {
+          "matchType": "必需",
           "matchGroupName": "职业系列技能",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
@@ -3946,7 +4047,7 @@
       ]
 
     },
-    "maxCount": 100
+    "maxCount": 1000
   },
   //mf装备
 
@@ -3965,7 +4066,7 @@
       ]
 
     },
-    "maxCount": 100
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4001,7 +4102,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 2
   },
   {
     "equip": {
@@ -4019,7 +4120,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 8
   },
   {
     "equip": {
@@ -4093,12 +4194,701 @@
           "matchGroupName": "传奇",
           "operate": "在范围内",
           "attributeType": "名称",
+          "conditionContent": "封印"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "傀儡咒符"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "龙珠"
         }
 
       ]
     },
     "maxCount": 100
-  }
+  },
+  //免洗圣衣
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "太古",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "★"
+        }
 
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "飞马座"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "灭"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "定罪真言"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "天龙座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "定罪真言"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "飞龙在天"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "怒涛之心"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "处女座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "腐蚀"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "救赎"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "苦修"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "痛苦压制"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "飞鱼座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "飞鱼座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凋零光环"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凛风冲击"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "湮灭"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "枯萎"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "血液沸腾"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "自定义",
+          "conditionContent": "心脏打击"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "天琴座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "白骨之魂"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骨刺"
+        },
+
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "破碎之链"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "蛇夫座"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "水瓶座"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "冰封球"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "陨石"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "狮子座"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "巨蟹座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "腐蚀"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "白羊座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "元素之怒"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "山脊之踪"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "天蝎座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "毒素蒸馏"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "伺机"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "毒伤"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "射手座"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "强击"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "闪电之怒"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "天秤座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "旋风斩"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "狂乱"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "摩羯座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "祝福之锤"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "圣剑之掌"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "浴火重生"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "双子座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "武学"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "伺机"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "双鱼座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "风怒"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "嗜血"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "金牛座"
+        },
+        {
+          "matchType": "可选",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "生存本能"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "仙女座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "洞察"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "+1 龙卷风"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "+2 龙卷风"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "+3 龙卷风"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  },
+  {
+    "equip": {
+      "description": "免洗圣衣",
+      "category": "全部",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "天鹰座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "炮轰"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "亡者"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "森林狼"
+        }
+
+      ]
+    },
+    "maxCount": 100
+  }
 ]

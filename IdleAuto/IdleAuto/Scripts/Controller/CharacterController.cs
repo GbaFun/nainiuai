@@ -189,7 +189,7 @@ namespace IdleAuto.Scripts.Controller
                 await e.LoadSuit(emSuitType.效率, role);
                 return;
             }
-            else if (san >= 85)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
+            else if (san >= 80 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
                 var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != emItemQuality.普通.ToString() && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
@@ -248,6 +248,7 @@ namespace IdleAuto.Scripts.Controller
 
                 var e = new EquipController(_win);
                 await e.LoadSuit(emSuitType.MF, role);
+                return;
             }
             else if (!canSwitch)
             {
@@ -866,7 +867,7 @@ namespace IdleAuto.Scripts.Controller
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode).DeepCopy();
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
 
             if (role.Job == emJob.死灵 && curEquips != null)
@@ -896,13 +897,13 @@ namespace IdleAuto.Scripts.Controller
 
 
             }
-            if (curEquips != null&& role.Job == emJob.死灵 && emSkillMode.献祭 == nec.SkillMode)
+            if (curEquips != null && role.Job == emJob.死灵 && emSkillMode.献祭 == nec.SkillMode)
             {
                 var eqList = curEquips.Values.ToList();
                 var hasBody = eqList.Where(p => p.EquipName == "尸体的哀伤").Count() > 0;
                 if (!hasBody)
                 {
-                    skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.献祭无尸爆).DeepCopy();
+                    skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, emSkillMode.献祭无尸爆);
                     targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
                 }
             }

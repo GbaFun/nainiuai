@@ -9,6 +9,7 @@ class Character {
             if (this.cid > 0) Bridge.invokeEvent('OnCharLoaded', _char.cid);
             Bridge.invokeEvent('OnJsInited', 'char');
             Bridge.invokeEvent('OnSignal', 'charReload');
+            this.addCloseButton();
         });
     }
     async init() {
@@ -331,6 +332,21 @@ class Character {
 
     getSan() {
         return $("span:contains('SAN：')").next().text() * 1;
+    }
+
+    //添加关闭本页的按钮
+    addCloseButton() {
+        var container = $("#navbar");
+        var btn = $('<button>', {
+            'class': 'btn btn-danger btn-xs',
+            'text': '关闭当前页',
+            'style': "position:absolute;left:25%;top:15px;",
+
+            click: () => {
+                Bridge.closeWin()
+            }
+        });
+        container.append(btn);
     }
 }
 

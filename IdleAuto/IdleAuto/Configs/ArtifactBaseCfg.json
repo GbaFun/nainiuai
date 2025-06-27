@@ -120,7 +120,7 @@
         "matchType": "必需",
         "operate": "在范围内",
         "attributeType": "武器速度",
-        "conditionContent": "0-20"
+        "conditionContent": "0,20"
       },
       {
         "matchType": "必需",
@@ -150,7 +150,7 @@
         "matchType": "必需",
         "operate": "在范围内",
         "attributeType": "武器速度",
-        "conditionContent": "0-30"
+        "conditionContent": "0,30"
       },
       {
         "matchType": "必需",
@@ -454,13 +454,62 @@
         "matchType": "必需",
         "operate": "在范围内",
         "attributeType": "武器速度",
-        "conditionContent": "0-20"
+        "conditionContent": "0,20"
       },
       {
         "matchType": "必需",
         "operate": "不等于",
         "attributeType": "自定义",
         "conditionContent": "无形"
+      }
+    ]
+  },
+
+  "双头斧永恒": {
+    "category": "斧",
+    "quality": "破碎",
+    "isUpdateRune": false,
+    "slotRule": "else:direct",
+    "targetSlotCount": 5,
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "5"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "增强伤害",
+        "conditionContent": "15"
+      }
+    ]
+  },
+  "双头斧末日": {
+    "category": "斧",
+    "quality": "破碎|普通",
+    "isUpdateRune": false,
+    "slotRule": "else:direct",
+    "targetSlotCount": 5,
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "5"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "名称",
+        "conditionContent": "超强的双头斧"
+      },
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "增强伤害",
+        "conditionContent": "15"
       }
     ]
   }

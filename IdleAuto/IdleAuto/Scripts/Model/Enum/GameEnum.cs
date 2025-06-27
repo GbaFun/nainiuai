@@ -306,7 +306,11 @@ public enum emArtifactBase
     [Description("轮回")]
     轮回法师,
     [Description("轮回")]
-    轮回献祭
+    轮回献祭,
+    [Description("永恒")]
+    双头斧永恒,
+    [Description("末日")]
+    双头斧末日
 }
 
 /// <summary>

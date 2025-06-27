@@ -95,6 +95,7 @@ public class ArtifactBaseCfg
     public emSlotType MatchSlotType(EquipModel eq, emArtifactBase artifactBase)
     {
         var configs = this.SlotConfig[artifactBase];
+        if(configs.Count==0) return emSlotType.Direct;
         foreach (var item in configs)
         {
             var targetSlotCount = item.Config.TargetSlotCount;

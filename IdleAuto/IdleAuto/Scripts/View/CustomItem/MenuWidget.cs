@@ -152,13 +152,23 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+
                     //await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
-                    RepairManager.IsCollectEquip = false;
-                    // FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                   //  FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
-              //    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+
+                    //await FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
+                    //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
+                    //RepairManager.IsCollectEquip = false;
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    RepairManager.RepairJob = "死灵";
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    //RepairManager.RepairJob = "骑士";
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -275,10 +285,13 @@ namespace IdleAuto.Scripts.View
 
         private async void BtnTest_Click(object sender, EventArgs e)
         {
-            // await FlowController.MakeLunhui();
-            // //await FlowController.MoveTaGeAo();
-            // //await FlowController.UpgradeBaseEq();
+            //await FlowController.RegisterColdConversion();
+            await FlowController.MakeYongheng();
+            FlowController.RegisterYongheng();
 
+            //await FlowController.MakeMori();
+            //FlowController.RegisterMori();
+            // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
             //  await FlowController.PassDungeon(91, 90, 80);
@@ -286,8 +299,8 @@ namespace IdleAuto.Scripts.View
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
             //Expression<Func<EquipModel,EquipSuitModel, bool>> exp = (a,b) => a.EquipName.Contains("永恒");
             //EquipUtil.QueryEquipInRepo(exp, 2268);
-            //FlowController.RegisterYongheng();
-             FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+
+            //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
         }
 
@@ -304,7 +317,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon);
 
         }
 
@@ -358,8 +371,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnReform_Click(object sender, EventArgs e)
         {
-           // FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
-             FlowController.GroupWork(3, 1, FlowController.UpgradeBaseEq);
+            FlowController.ReformDungeonAndRings();
         }
 
         private void btnCookie_Click(object sender, EventArgs e)
@@ -383,7 +395,17 @@ namespace IdleAuto.Scripts.View
 
         private void btnMf_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.UpdateMfEquip, RepairManager.NainiuAccounts);
+            FlowController.GroupWork(4, 1, FlowController.UpdateMfEquip);
+        }
+
+        private void btnPreDel_Click(object sender, EventArgs e)
+        {
+            FlowController.ClearRepoPre();
+        }
+
+        private void btnConfirmDel_Click(object sender, EventArgs e)
+        {
+            FlowController.ConfirmDelEquip();
         }
     }
 }

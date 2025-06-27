@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -63,7 +64,7 @@ public class TabManager
         return _seed;
     }
 
-
+    private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
     /// <summary>
     /// 载入指定地址,因为浏览器在被添加进控件渲染时才真正初始化 所以将bro单独new意义不大
     /// </summary>
@@ -73,6 +74,7 @@ public class TabManager
     /// <returns></returns>
     public async Task<BroWindow> AddBroToTap(UserModel user, string url, bool isProxy = false)
     {
+        await _semaphore.WaitAsync();
         var seed = AddTabPage(user.AccountName);
         var tabPage = TabPageDic[seed];
 
@@ -83,11 +85,14 @@ public class TabManager
             if ("login" == result) { jsTask.SetResult(true); onJsInitCallBack = null; }
         };
         var window = new BroWindow(seed, user, url, isProxy);
+        var r = BroWindowDic.TryAdd(seed, window);
+        _semaphore.Release();
         window.SubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
         tabPage.Controls.Add(window.GetBro());
         await jsTask.Task;
         window.UnsubscribeEvent(emEventType.OnJsInited, OnJsinitCallBack);
-        BroWindowDic.TryAdd(seed, window);
+   
+        Console.WriteLine($"窗口种子{seed}:{r}");
         return window;
     }
     public async Task<BroWindow> TriggerAddBroToTap(UserModel user, bool isProxy = false)

@@ -63,6 +63,6 @@ public class SkillPointCfg
         }
         var config = Data.Where(p => p.Job == job && p.Lv.AdaptLevel(level) && p.SkillMode == mode).FirstOrDefault();
         if (config == null) throw new Exception($"没有配置{job.ToString()},{level}级的配置");
-        return config;
+        return config.DeepCopy();
     }
 }
