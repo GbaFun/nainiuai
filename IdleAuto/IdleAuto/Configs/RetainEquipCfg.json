@@ -4035,7 +4035,7 @@
   {
     "equip": {
       "category": "秘境",
-      "quality": "全部",
+      "quality": "稀有|魔法|传奇",
       "conditions": [
         {
           "matchType": "必需",

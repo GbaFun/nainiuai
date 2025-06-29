@@ -163,10 +163,10 @@ namespace IdleAuto.Scripts.View
                     //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
                     //RepairManager.IsCollectEquip = false;
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                   // await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     RepairManager.RepairJob = "死灵";
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                  await FlowController.GroupWork(1, 1, RepairManager.Instance.AutoRepair);
                     //RepairManager.RepairJob = "骑士";
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
 
@@ -395,7 +395,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMf_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.UpdateMfEquip);
+            FlowController.GroupWork(1, 28, FlowController.UpdateMfEquip);
         }
 
         private void btnPreDel_Click(object sender, EventArgs e)
