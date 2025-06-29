@@ -26,7 +26,7 @@ namespace IdleAuto.Scripts.Controller
 
             // 3. 追加角色条件
             if (roleId > 0)
-                q = q.Where((a, b) => a.RoleID == roleId || b.SuitName == null);
+                q = q.Where((a, b) => b.RoleId == roleId || b.SuitName == null);
             else
                 q = q.Where((a, b) => b.SuitName == null);
 

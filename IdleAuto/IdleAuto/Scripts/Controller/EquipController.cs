@@ -720,7 +720,7 @@ public class EquipController : BaseController
         {
             await SaveEquipSuit(emSuitType.效率, role);
         }
-        if (curEquipSuitType == emSuitType.MF)
+        if (curEquipSuitType == emSuitType.MF&&targetSuitType==emSuitType.效率)
         {
             await LoadSuit(emSuitType.MF, role);
         }
@@ -1110,7 +1110,7 @@ public class EquipController : BaseController
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
         {
-            if (j == 4)
+            if (j == 6)
             {
                 P.Log("调试腰带");
             }

@@ -191,7 +191,7 @@ namespace IdleAuto.Scripts.Controller
             }
             else if (san >= 80 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
-                var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != emItemQuality.普通.ToString() && p.AccountName == _win.User.AccountName).ToList();
+                var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality !="base"  && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
                 var dCount = dList.Count;
                 if (dCount >= 25)
