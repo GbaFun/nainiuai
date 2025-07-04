@@ -489,7 +489,8 @@ public class EquipController : BaseController
     public async Task LoadSuit(emSuitType suitType, RoleModel role)
     {
         var hasSuit = FreeDb.Sqlite.Select<EquipSuitModel>().Where(p => p.RoleId == role.RoleId && p.SuitType == suitType).First() != null;
-        if (!hasSuit) return;
+        var dkSuits = new emSuitType[] { emSuitType.MF, emSuitType.效率 };
+        if (!hasSuit && dkSuits.Contains(suitType)) return;
         await Task.Delay(1500);
         //跳转装备详情页面
         var url = IdleUrlHelper.EquipUrl(role.RoleId);
@@ -506,8 +507,11 @@ public class EquipController : BaseController
         var curEquips2 = await GetCurEquips();
         var toSetEquippedList = curEquips2.Values.ToList();
         toSetEquippedList.ForEach(p => { p.SetAccountInfo(_win.User, role); p.EquipStatus = emEquipStatus.Equipped; });
-        DbUtil.InsertOrUpdate<EquipModel>(toSetInRepoList);
-        DbUtil.InsertOrUpdate<EquipModel>(toSetEquippedList);
+        if (dkSuits.Contains(suitType))
+        {
+            DbUtil.InsertOrUpdate<EquipModel>(toSetInRepoList);
+            DbUtil.InsertOrUpdate<EquipModel>(toSetEquippedList);
+        }
 
 
     }
@@ -567,6 +571,8 @@ public class EquipController : BaseController
             if (curEquipSuitType == emSuitType.MF)
             {
                 await LoadSuit(emSuitType.效率, role);
+                response = await win.CallJs($@"getCurEquips()");
+                curEquips = response.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
             }
         }
         P.Log($"开始获取{role.Level}级{role.Job}配置的装备", emLogType.AutoEquip);
@@ -720,7 +726,7 @@ public class EquipController : BaseController
         {
             await SaveEquipSuit(emSuitType.效率, role);
         }
-        if (curEquipSuitType == emSuitType.MF&&targetSuitType==emSuitType.效率)
+        if (curEquipSuitType == emSuitType.MF)
         {
             await LoadSuit(emSuitType.MF, role);
         }
@@ -1110,7 +1116,7 @@ public class EquipController : BaseController
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
         {
-            if (j == 6)
+            if (j == 4)
             {
                 P.Log("调试腰带");
             }

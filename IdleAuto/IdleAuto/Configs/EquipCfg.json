@@ -1047,6 +1047,13 @@
           "conditionContent": "全能法戒"
         },
         {
+          "matchType": "可选",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "乔丹之石",
+            "seq": 1000
+        },
+        {
           "matchType": "必需",
           "operate": "小于等于",
           "attributeType": "攻击速度",
@@ -3850,7 +3857,6 @@
     "equipment": {
       "category": "戒指",
       "quality": "套装",
-      "isTrade": true,
       "conditions": [
 
 

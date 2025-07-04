@@ -7,6 +7,7 @@ class Character {
         this.init().then(() => {
             this.initCurrentChar();
             if (this.cid > 0) Bridge.invokeEvent('OnCharLoaded', _char.cid);
+            
             Bridge.invokeEvent('OnJsInited', 'char');
             Bridge.invokeEvent('OnSignal', 'charReload');
             this.addCloseButton();
@@ -347,6 +348,11 @@ class Character {
             }
         });
         container.append(btn);
+    }
+    isBossDone() {
+        const regex = /([0-9]|[1-9][0-9])%-\(([0-5])\/5\)/;
+        var str = $(".panel-heading").text().trim();
+        return regex.test(str);
     }
 }
 

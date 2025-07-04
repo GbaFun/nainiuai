@@ -42,6 +42,7 @@ public enum emCategory
     手弩,
     死骑面罩,
     道具,
+    卡片,
 
     //混合类型
     武器,
@@ -328,13 +329,14 @@ public enum emSkillMode
 
 
     法师,
-
     献祭,
     boss,
     自动,
     法师石魔,
     全能法师,
-    献祭无尸爆
+    献祭无尸爆,
+    稳固,
+    爆炸
 
 }
 
@@ -342,7 +344,8 @@ public enum emSuitType
 {
     效率,
     MF,
-    未知
+    未知,
+    boss
 }
 
 public enum emReformType

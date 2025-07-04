@@ -191,7 +191,7 @@ namespace IdleAuto.Scripts.Controller
             }
             else if (san >= 80 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
-                var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality !="base"  && p.AccountName == _win.User.AccountName).ToList();
+                var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != "base" && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
                 var dCount = dList.Count;
                 if (dCount >= 25)
@@ -412,11 +412,13 @@ namespace IdleAuto.Scripts.Controller
         }
 
 
-        private async Task GoToMakeGroup()
+        private async Task GoToMakeGroup(RoleModel role = null)
         {
-            if (_browser.Address.IndexOf("Character/Group") == -1)
+            await Task.Delay(1500);
+            int roleid = role == null ? _win.User.Roles[0].RoleId : role.RoleId;
+            if (_browser.Address != $@"https://www.idleinfinity.cn/Character/Group?id={roleid}")
             {
-                await _win.LoadUrlWaitJsInit($@"https://www.idleinfinity.cn/Character/Group?id={_win.User.Roles[0].RoleId}", "char");
+                await _win.LoadUrlWaitJsInit($@"https://www.idleinfinity.cn/Character/Group?id={roleid}", "char");
                 await Task.Delay(1500);
             }
 
@@ -432,7 +434,7 @@ namespace IdleAuto.Scripts.Controller
             if (nextIndex > 11) return;
             int roleId = _win.User.Roles[nextIndex].RoleId;
             await _win.LoadUrlWaitJsInit($@"https://www.idleinfinity.cn/Character/Group?id={roleId}", "init");
-
+            await Task.Delay(1500);
         }
 
 
@@ -557,9 +559,87 @@ namespace IdleAuto.Scripts.Controller
             data["gname"] = _win.CurRole.RoleName + "★";
             if (_browser.CanExecuteJavascriptInMainFrame)
             {
-                _win.CallJsWaitReload($@"_init.createGroup({data.ToLowerCamelCase()});", "init");
-                await Task.Delay(1500);
+                await _win.CallJsWaitReload($@"_init.createGroup({data.ToLowerCamelCase()});", "init");
             }
+
+        }
+
+        /// <summary>
+        /// 退队或者解散
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task ExitGroup(RoleModel role)
+        {
+            await GoToMakeGroup(role);
+            var hasGroup = await HasGroup();
+            var data = new Dictionary<string, object>();
+            var r = await _win.CallJs("_init.isGroupLeader()");
+            var isGroupLeader = r.Result.ToObject<bool>();
+            if (hasGroup && !isGroupLeader)
+            {
+                data["roleid"] = role.RoleId;
+
+                //解散或者退出
+                await _win.CallJsWaitReload($"_init.groupLeave({data.ToLowerCamelCase()})", "init");
+
+            }
+            else if (isGroupLeader)
+            {
+                data["roleid"] = role.RoleId;
+
+                //解散或者退出
+                await _win.CallJsWaitReload($"_init.groupCancel({data.ToLowerCamelCase()})", "init");
+            }
+        }
+        /// <summary>
+        /// 踢人
+        /// </summary>
+        /// <param name="leader"></param>
+        /// <param name="targetRole"></param>
+        /// <returns></returns>
+        public async Task RemoveGroupRole(RoleModel leader, RoleModel targetRole)
+        {
+            var data = new Dictionary<string, object>();
+            var r = await _win.CallJs("_init.isGroupLeader()");
+            var isGroupLeader = r.Result.ToObject<bool>();
+            if (!isGroupLeader)
+            {
+                throw new Exception("不是队长怎么能踢人呢");
+            }
+            data["roleid"] = leader.RoleId;
+            data["cid"] = targetRole.RoleId;
+
+            //解散或者退出
+            await _win.CallJsWaitReload($"_init.groupRemoveChar({data.ToLowerCamelCase()})", "init");
+        }
+
+        public async Task AddGroupMember(RoleModel teamLeader, RoleModel targetRole)
+        {
+            await GoToMakeGroup(teamLeader);
+            //加第三人
+            var data = new Dictionary<string, object>();
+            data["roleid"] = teamLeader.RoleId;
+            data["cname"] = targetRole.RoleName;
+            await _win.CallJsWaitReload($@"_init.addGroupMember({data.ToLowerCamelCase()})", "init");
+        }
+
+        public async Task MakeGroup(RoleModel role1, RoleModel role2, RoleModel role3)
+        {
+            await GoToMakeGroup(role1);
+            var hasGroup = await HasGroup();
+            var data = new Dictionary<string, object>();
+            if (!hasGroup)
+            {
+
+                data["roleid"] = role1.RoleId;
+                data["cname"] = role2.RoleName;
+                data["gname"] = role1.RoleName + "★";
+
+                await _win.CallJsWaitReload($@"_init.createGroup({data.ToLowerCamelCase()});", "init");
+
+            }
+            await AddGroupMember(role1, role3);
 
         }
 
@@ -862,11 +942,12 @@ namespace IdleAuto.Scripts.Controller
             {
                 _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={roleid}&e=1");
             });
-            var groupList = RepairManager.GetGroup(role);
-            var nec = groupList.Where(p => p.Job == emJob.死灵).First();
+
             //判断下当前技能合不合适 合适就跳过
             var curSkill = await GetSkillConfig();
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
+            var groupList = RepairManager.GetGroup(role);
+            var nec = groupList.Where(p => p.Job == emJob.死灵).First();
             var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
 
@@ -918,30 +999,55 @@ namespace IdleAuto.Scripts.Controller
             }
 
             var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill, skillConfig.GroupSkill);
-            var isNeedRest = r.Item1;
-            var isNeedAdd = r.Item2;
-            var isNeedSetGroup = r.Item3;
+            var isNeedReset = r.isNeedReset;
+            var isNeedAdd = r.isNeedAdd;
+            var isNeedSetGroup = r.isNeedSetGroup;
             if (role.Job == emJob.骑士)
             {
                 isNeedSetGroup = await SetKnightSpecialSkill(role, skillConfig, curEquips) == true ? true : isNeedSetGroup;
             }
+
+            await SaveSkillConfig(role, bro, isNeedReset, isNeedAdd, isNeedSetGroup, targetSkillPoint, skillConfig);
+        }
+
+        public async Task AddSkillPoints(RoleModel role, emSkillMode skillMode)
+        {
+            //不在详细页先去详细页读取属性
+            await _win.SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Skill/Config?id={role.RoleId}&e=1");
+            });
+            //判断下当前技能合不合适 合适就跳过
+            var curSkill = await GetSkillConfig();
+            List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, skillMode);
+            var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
+            var r = CheckRoleSkill(curSkill, targetSkillPoint, curGroupSkill, skillConfig.GroupSkill);
+            var isNeedReset = r.isNeedAdd;
+            var isNeedAdd = r.isNeedAdd;
+            var isNeedSetGroup = r.isNeedSetGroup;
+            await SaveSkillConfig(role, _browser, isNeedReset, isNeedAdd, isNeedSetGroup, targetSkillPoint, skillConfig);
+        }
+
+        private async Task SaveSkillConfig(RoleModel role, ChromiumWebBrowser bro, bool isNeedReset, bool isNeedAdd, bool isNeedSetGroup, Dictionary<string, int> targetSkillPoint, SkillPoint skillConfig)
+        {
             P.Log("开始重置技能加点！", emLogType.AutoEquip);
-            if (isNeedRest) await _win.SignalCallback("charReload", async () =>
-               {
-                   await SkillRest();
-               });
+            if (isNeedReset) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillRest();
+            });
 
             //重置一定加点
-            if (isNeedAdd || isNeedRest) await _win.SignalCallback("charReload", async () =>
-              {
-                  await SkillSave(targetSkillPoint, skillConfig.JobName);
-              });
+            if (isNeedAdd || isNeedReset) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillSave(targetSkillPoint, skillConfig.JobName);
+            });
 
             var groupid = GetSkillGroup(skillConfig);
-            if (isNeedSetGroup || isNeedRest) await _win.SignalCallback("charReload", async () =>
-              {
-                  await SkillGroupSave(groupid);
-              });
+            if (isNeedSetGroup || isNeedReset) await _win.SignalCallback("charReload", async () =>
+            {
+                await SkillGroupSave(groupid);
+            });
 
 
 
@@ -949,7 +1055,7 @@ namespace IdleAuto.Scripts.Controller
             {
                 await _win.SignalCallback("charReload", () =>
                 {
-                    _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={roleid}");
+                    _browser.LoadUrl($"https://www.idleinfinity.cn/Character/Detail?id={role.RoleId}");
 
                 });
 
@@ -958,10 +1064,9 @@ namespace IdleAuto.Scripts.Controller
             var hasKey = s.Result.ToObject<bool>();
 
             if (!hasKey && skillConfig.KeySkillId > 0) await _win.SignalCallback("charReload", async () =>
-                {
-                    await SkillKeySave(skillConfig.KeySkillId);
-                });
-
+            {
+                await SkillKeySave(skillConfig.KeySkillId);
+            });
         }
 
         /// <summary>
@@ -1030,10 +1135,8 @@ namespace IdleAuto.Scripts.Controller
             var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
             if ((hasMori || hasYongheng) && !hasBingdong)
             {
-                skillConfig.GroupSkill.Remove("奉献");
-                skillConfig.GroupSkill.Remove("忏悔");
                 skillConfig.GroupSkill.Remove("祝福之锤");
-                skillConfig.KeySkillId = 0;
+                //  skillConfig.KeySkillId = 0;
                 return true;
             }
             return false;
@@ -1174,16 +1277,16 @@ namespace IdleAuto.Scripts.Controller
         /// <param name="skills"></param>
         /// <param name="targetSkillDic"></param>
         /// <returns></returns>
-        private Tuple<bool, bool, bool> CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic, List<string> curGroupSkill, List<string> targetGroupSkill)
+        private (bool isNeedReset, bool isNeedAdd, bool isNeedSetGroup) CheckRoleSkill(Dictionary<string, SkillModel> skills, Dictionary<string, int> targetSkillDic, List<string> curGroupSkill, List<string> targetGroupSkill)
         {
             var noZeroSkill = skills.Where(p => p.Value.Lv > 0).ToDictionary(kv => kv.Key, kv => kv.Value);
             if (noZeroSkill.Count == 0)
             {
-                return new Tuple<bool, bool, bool>(false, true, true);
+                return (false, true, true);
             }
             if (noZeroSkill.Keys.Count != targetSkillDic.Keys.Count)
             {
-                return new Tuple<bool, bool, bool>(true, true, true);
+                return (true, true, true);
             }
             bool isNeedReset = false;//需要重置
             bool isNeedAdd = false;//需要加点
@@ -1217,7 +1320,7 @@ namespace IdleAuto.Scripts.Controller
                 }
 
             }
-            return new Tuple<bool, bool, bool>(isNeedReset, isNeedAdd, isNeedSetGroup);
+            return (isNeedReset, isNeedAdd, isNeedSetGroup);
         }
 
         /// <summary>

@@ -8,6 +8,23 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "掉落等级",
+          "conditionContent": "100"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+
+  {
+    "equip": {
+      "category": "全部",
+      "quality": "传奇|套装|神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "掉落等级",
           "conditionContent": "49"
         },
         {
@@ -127,7 +144,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "光之烙印"
+          "conditionContent": "光之烙印1"
         },
         {
           "matchType": "任一",
@@ -686,6 +703,37 @@
   {
     "equip": {
       "description": "完美传奇",
+      "category": "骑士盾牌",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "风暴英雄"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "骑士,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        }
+      ]
+    },
+    "maxCount": 1
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
       "category": "盾",
       "quality": "传奇",
       "conditions": [
@@ -821,7 +869,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 2
   },
   {
     "equip": {
@@ -839,7 +887,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -1249,6 +1297,42 @@
     },
     "maxCount": 1000
   },
+  {
+    "equip": {
+      "description": "",
+      "category": "戒指",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "希望之翼"
+        }
+
+      ]
+    },
+    "maxCount": 1000
+  },
+  {
+    "equip": {
+      "description": "",
+      "category": "头饰",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "教化"
+        }
+
+      ]
+    },
+    "maxCount": 1000
+  },
 
   {
     "equip": {
@@ -1643,7 +1727,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -2537,7 +2621,7 @@
   {
     "equip": {
       "category": "死骑面罩",
-      "quality": "全部",
+      "quality": "破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -2557,7 +2641,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "凹槽",
-          "conditionContent": "2"
+          "conditionContent": "3"
         }
       ]
     },
@@ -3393,6 +3477,14 @@
           "seq": 6,
           "conditionContent": "巨神"
         },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+
+          "attributeType": "名称",
+          "seq": 6,
+          "conditionContent": "无形"
+        },
 
         {
           "matchType": "必需",
@@ -3829,6 +3921,47 @@
     },
     "maxCount": 1
   },
+  {
+    "equip": {
+      "category": "死骑面罩",
+      "quality": "破碎|普通",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凛风冲击,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "湮灭,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        }
+      ]
+    },
+    "maxCount": 4
+  },
   /////-------神器底子------------/////
 
   //抗性防具
@@ -3848,7 +3981,7 @@
       ]
 
     },
-    "maxCount": 20
+    "maxCount": 10
   },
   {
     "equip": {
@@ -3870,7 +4003,7 @@
       ]
 
     },
-    "maxCount": 5
+    "maxCount": 2
   },
   {
     "equip": {
@@ -3910,7 +4043,7 @@
           "matchGroupName": "抗性",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "conditionContent": "70"
+          "conditionContent": "80"
         }
       ]
 
@@ -3958,7 +4091,7 @@
       ]
 
     },
-    "maxCount": 8
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4006,7 +4139,7 @@
       ]
 
     },
-    "maxCount": 10
+    "maxCount": 5
   },
   {
     "equip": {
@@ -4102,7 +4235,7 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 1
   },
   {
     "equip": {
@@ -4138,7 +4271,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4492,18 +4625,25 @@
           "conditionContent": "水瓶座"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "冰封球"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "陨石"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "熔岩之泉"
         }
 
       ]
@@ -4616,6 +4756,13 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "毒伤"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形瘟疫"
         }
 
       ]
@@ -4635,18 +4782,26 @@
           "conditionContent": "射手座"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "强击"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "闪电之怒"
+        },
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "无形聚神者之弓"
         }
 
       ]
@@ -4797,7 +4952,7 @@
           "conditionContent": "金牛座"
         },
         {
-          "matchType": "可选",
+          "matchType": "任一",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
@@ -4864,28 +5019,28 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "天鹰座"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "炮轰"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "亡者"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "森林狼"
-        }
+        } //,
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "炮轰"
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "亡者"
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "森林狼"
+        //}
 
       ]
     },

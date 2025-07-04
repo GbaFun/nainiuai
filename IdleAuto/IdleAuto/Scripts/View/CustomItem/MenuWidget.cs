@@ -161,14 +161,15 @@ namespace IdleAuto.Scripts.View
 
                     //await FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
                     //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
-                    RepairManager.IsCollectEquip = false;
-                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                   // RepairManager.IsCollectEquip = false;
+
+                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
                     await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    //  RepairManager.RepairJob = "死灵";
-                    //await FlowController.GroupWork(1, 1, RepairManager.Instance.AutoRepair);
-                    //RepairManager.RepairJob = "骑士";
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.AutoRepair);
+                   //RepairManager.RepairJob = "死灵";
+                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    RepairManager.RepairJob = "骑士";
+                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -286,8 +287,8 @@ namespace IdleAuto.Scripts.View
         private async void BtnTest_Click(object sender, EventArgs e)
         {
             //await FlowController.RegisterColdConversion();
-            await FlowController.MakeYongheng();
-            FlowController.RegisterYongheng();
+            //await FlowController.MakeYongheng();
+            //FlowController.RegisterYongheng();
 
             //await FlowController.MakeMori();
             //FlowController.RegisterMori();
@@ -301,6 +302,8 @@ namespace IdleAuto.Scripts.View
             //EquipUtil.QueryEquipInRepo(exp, 2268);
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
+
+            FlowController.FightWorldBoss();
 
         }
 
@@ -395,7 +398,15 @@ namespace IdleAuto.Scripts.View
 
         private void btnMf_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip);
+            if (AccountController.Instance.User != null)
+            {
+                Task.Run(async () =>
+                {
+                    var win = await TabManager.Instance.TriggerAddBroToTap(AccountController.Instance.User);
+                    await FlowController.UpdateMfEquip(win);
+                });
+            }
+            else FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip);
         }
 
         private void btnPreDel_Click(object sender, EventArgs e)
@@ -406,6 +417,11 @@ namespace IdleAuto.Scripts.View
         private void btnConfirmDel_Click(object sender, EventArgs e)
         {
             FlowController.ConfirmDelEquip();
+        }
+
+        private void btnSanBoss_Click(object sender, EventArgs e)
+        {
+            FlowController.GroupWork(1, 1, FlowController.StartSanBoss);
         }
     }
 }

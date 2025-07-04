@@ -155,17 +155,10 @@ namespace IdleAuto.Scripts.Wrap
             };
 
             var res = await _bro.LoadUrlAsync(url);
-            if (res.Success)
-            {
-                await Task.WhenAll(taskDic.Values.Select(p => p.Task));
-                onJsInitCallBack = null;
-                return res;
-            }
-            else
-            {
-                onJsInitCallBack = null;
-                throw new Exception($"载入页面{url}失败");
-            }
+            await Task.WhenAll(taskDic.Values.Select(p => p.Task));
+            onJsInitCallBack = null;
+            return res;
+
         }
         public async Task<JavascriptResponse> CallJs(string jsFunc)
         {
@@ -175,6 +168,15 @@ namespace IdleAuto.Scripts.Wrap
                 throw new Exception("CallJs执行失败" + aa.Result);
             }
             return aa;
+        }
+        public async Task<T> CallJs<T>(string jsFunc)
+        {
+            var result = await _bro.EvaluateScriptAsync(jsFunc);
+            if (!result.Success)
+            {
+                throw new Exception($"JS调用失败: {result.Result}");
+            }
+            return result.Result.ToObject<T>();
         }
 
         public async Task<JavascriptResponse> CallJsWithReload(string jsFunc, string jsName)
@@ -395,7 +397,10 @@ namespace IdleAuto.Scripts.Wrap
         private void OnPostFailed(params object[] args)
         {
             string errorMsg = args[0].ToString();
-            P.Log(errorMsg, emLogType.Error);
+            var formData = args[1].ToString();
+            var nodes = HtmlUtil.GetNodesByXpath(errorMsg, "//*[@class='error']");
+            var errMsg = nodes[0].InnerHtml;
+            P.Log(formData + "\n" + errMsg, emLogType.Error);
 
             if (IsCloseTheWindow(errorMsg))
             {
@@ -408,10 +413,9 @@ namespace IdleAuto.Scripts.Wrap
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        private bool IsCloseTheWindow(string content)
+        private bool IsCloseTheWindow(string errMsg)
         {
-            var nodes = HtmlUtil.GetNodesByXpath(content, "//*[@class='error']");
-            var errMsg = nodes[0].InnerHtml;
+
             if (errMsg.Contains("请先击杀上一层秘境"))
             {
                 return false;
@@ -420,6 +424,7 @@ namespace IdleAuto.Scripts.Wrap
             {
                 return false;
             }
+
             return true;
         }
 

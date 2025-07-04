@@ -33,6 +33,8 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnConfirmDel = new System.Windows.Forms.Button();
+            this.btnPreDel = new System.Windows.Forms.Button();
             this.btnMf = new System.Windows.Forms.Button();
             this.btnGem = new System.Windows.Forms.Button();
             this.btnCookie = new System.Windows.Forms.Button();
@@ -67,8 +69,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnPreDel = new System.Windows.Forms.Button();
-            this.btnConfirmDel = new System.Windows.Forms.Button();
+            this.btnSanBoss = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -101,6 +102,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnSanBoss);
             this.HomeGroup.Controls.Add(this.btnConfirmDel);
             this.HomeGroup.Controls.Add(this.btnPreDel);
             this.HomeGroup.Controls.Add(this.btnMf);
@@ -138,6 +140,26 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             this.HomeGroup.Enter += new System.EventHandler(this.HomeGroup_Enter);
+            // 
+            // btnConfirmDel
+            // 
+            this.btnConfirmDel.Location = new System.Drawing.Point(124, 412);
+            this.btnConfirmDel.Name = "btnConfirmDel";
+            this.btnConfirmDel.Size = new System.Drawing.Size(99, 23);
+            this.btnConfirmDel.TabIndex = 21;
+            this.btnConfirmDel.Text = "确认删除";
+            this.btnConfirmDel.UseVisualStyleBackColor = true;
+            this.btnConfirmDel.Click += new System.EventHandler(this.btnConfirmDel_Click);
+            // 
+            // btnPreDel
+            // 
+            this.btnPreDel.Location = new System.Drawing.Point(18, 412);
+            this.btnPreDel.Name = "btnPreDel";
+            this.btnPreDel.Size = new System.Drawing.Size(100, 23);
+            this.btnPreDel.TabIndex = 20;
+            this.btnPreDel.Text = "预删除";
+            this.btnPreDel.UseVisualStyleBackColor = true;
+            this.btnPreDel.Click += new System.EventHandler(this.btnPreDel_Click);
             // 
             // btnMf
             // 
@@ -498,25 +520,15 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnPreDel
+            // btnSanBoss
             // 
-            this.btnPreDel.Location = new System.Drawing.Point(18, 412);
-            this.btnPreDel.Name = "btnPreDel";
-            this.btnPreDel.Size = new System.Drawing.Size(100, 23);
-            this.btnPreDel.TabIndex = 20;
-            this.btnPreDel.Text = "预删除";
-            this.btnPreDel.UseVisualStyleBackColor = true;
-            this.btnPreDel.Click += new System.EventHandler(this.btnPreDel_Click);
-            // 
-            // btnConfirmDel
-            // 
-            this.btnConfirmDel.Location = new System.Drawing.Point(124, 412);
-            this.btnConfirmDel.Name = "btnConfirmDel";
-            this.btnConfirmDel.Size = new System.Drawing.Size(99, 23);
-            this.btnConfirmDel.TabIndex = 21;
-            this.btnConfirmDel.Text = "确认删除";
-            this.btnConfirmDel.UseVisualStyleBackColor = true;
-            this.btnConfirmDel.Click += new System.EventHandler(this.btnConfirmDel_Click);
+            this.btnSanBoss.Location = new System.Drawing.Point(124, 380);
+            this.btnSanBoss.Name = "btnSanBoss";
+            this.btnSanBoss.Size = new System.Drawing.Size(99, 23);
+            this.btnSanBoss.TabIndex = 22;
+            this.btnSanBoss.Text = "摸boss";
+            this.btnSanBoss.UseVisualStyleBackColor = true;
+            this.btnSanBoss.Click += new System.EventHandler(this.btnSanBoss_Click);
             // 
             // MenuWidget
             // 
@@ -578,5 +590,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnMf;
         private System.Windows.Forms.Button btnConfirmDel;
         private System.Windows.Forms.Button btnPreDel;
+        private System.Windows.Forms.Button btnSanBoss;
     }
 }

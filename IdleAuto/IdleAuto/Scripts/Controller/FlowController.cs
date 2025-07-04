@@ -180,7 +180,7 @@ namespace IdleAuto.Scripts.Controller
             var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
             foreach (var job in sendDic)
             {
-                //await SendRune(job.Key, job.Value);
+                await SendRune(job.Key, job.Value);
             }
 
 
@@ -271,10 +271,10 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != RepairManager.RepoAcc && p.EquipName.Contains("彩虹刻面") && p.Content.Contains("物理") && p.Content.Contains("+5%") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != RepairManager.RepoAcc && p.EquipName.Contains("彩虹刻面") && p.Content.Contains("魔法") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             //var usefulList = FreeDb.Sqlite.Select<UsefulEquip>().Where(p => p.EquipName.Contains("权杖")&&p.EquipStatus==emEquipStatus.Repo).ToList();
             //list=usefulList.ToObject<List<EquipModel>>();
-            list = list.Take(2).ToList();
+            list = list.Take(6).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -458,8 +458,20 @@ namespace IdleAuto.Scripts.Controller
 
                 var control = new EquipController(win2);
                 var role = win2.User.Roles.Find(p => p.RoleId == demandRole.Key.DemandRoleId);
-                var curEquips = await control.AutoEquips(win2, role);
-                if (role.Job == emJob.死灵) await RepairManager.Instance.AddSkillPoint(win2, role, curEquips);
+                var roleIndex = win2.User.Roles.FindIndex(p => p.RoleId == role.RoleId);
+                if (roleIndex == 2)
+                {
+                    var curEquips = await control.AutoEquips(win2, role);
+                    //第一个dk要注意同时换装mf和效率
+                    await UpdateMfEquip(win2);
+                }
+
+                else
+                {
+                    var curEquips = await control.AutoEquips(win2, role);
+                    if (role.Job == emJob.死灵) await RepairManager.Instance.AddSkillPoint(win2, role, curEquips);
+                }
+
 
                 win2.Close();
 
@@ -1290,7 +1302,7 @@ namespace IdleAuto.Scripts.Controller
                     TradeStatus = emTradeStatus.Register
                 }).ToList();
 
-                DbUtil.InsertOrUpdate<TradeModel>(insertList);
+                // DbUtil.InsertOrUpdate<TradeModel>(insertList);
 
             }
             if (jewelList.Count == 0) return;
@@ -1538,7 +1550,16 @@ namespace IdleAuto.Scripts.Controller
         public static async Task ReformDungeonAndRings()
         {
             await GroupWork(3, 1, ReformDungeon, RepairManager.DungeonAccounts);
-          //  await GroupWork(1, 1, UpgradeBaseEq);
+            await GroupWork(1, 1, UpgradeBaseEq);
+        }
+
+
+
+        public static async Task StartSanBoss(BroWindow win)
+        {
+            var role = win.User.FirstRole;
+            win.LoadUrl($"https://www.idleinfinity.cn/Battle/Boss?id={role.RoleId}");
+            await Task.Delay(5000);
         }
 
         public static async Task FightWorldBoss()
@@ -1550,11 +1571,91 @@ namespace IdleAuto.Scripts.Controller
             // 骑士开始roll 
             // 下一组
 
+            var user = AccountCfg.Instance.GetUserModel("铁矿石");
+            var win1 = await TabManager.Instance.TriggerAddBroToTap(user);
+            var e1 = new EquipController(win1);
+            var pastor = win1.User.Roles[4];
+            var hunter = win1.User.Roles[7];
+            var knight1 = win1.User.Roles[1];
+            var ass = win1.User.Roles[0];
+            //牧师换装
+            // await e1.LoadSuit(emSuitType.boss, win1.User.Roles[4]);
+
+            //猎手切技能
+            var c1 = new CharacterController(win1);
+            //await c1.ExitGroup(hunter);
+            //await c1.ExitGroup(pastor);
+            //await c1.AddSkillPoints(hunter, emSkillMode.稳固);
+         
+            foreach (var a in AccountCfg.Instance.Accounts)
+            {
+                if (a.AccountName == "铁矿石") continue;
+                var r1=FreeDb.Sqlite.Select<BossProgress>().Where(p => p.AccountName == a.AccountName).First();
+                if (r1!=null&&r1.IsPassDailyBoss) continue;
+                var u = AccountCfg.Instance.GetUserModel(a.AccountName);
+                var win2 = await TabManager.Instance.TriggerAddBroToTap(u);
+                var t = new TradeController(win2);
+
+
+                var c2 = new CharacterController(win2);
+                var role1 = win2.User.Roles[0];
+                var role2 = win2.User.Roles[1];
+                var role3 = win2.User.Roles[2];
+                //苦工解散
+                await c2.ExitGroup(role1);
+                //加入骑士
+                await c1.MakeGroup(hunter, pastor, role1);
+                await t.AcceptAll(u);
+                // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
+                // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
+                await DailyBoss(role1, win2);
+                //踢骑士
+                await c1.RemoveGroupRole(hunter, role1);
+                await c2.MakeGroup(role1, role2, role3);
+                win2.Close();
+            }
+            
+            await c1.ExitGroup(hunter);
+            await c1.MakeGroup(knight1, null, hunter);
+            await c1.MakeGroup(ass, null, pastor);
+
+
+            await Task.Delay(2000);
+            await c1.AddSkillPoints(hunter, emSkillMode.爆炸);
 
         }
 
+        /// <summary>
+        /// 每日boss只有一次机会 不需要roll
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="win"></param>
+        /// <returns></returns>
+        private async static Task DailyBoss(RoleModel role, BroWindow win)
+        {
+            await win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Battle/Boss?id={role.RoleId}", "char");
+            var bossProgress = new BossProgress() { AccountName = win.User.AccountName, IsPassDailyBoss = true };
+            DbUtil.InsertOrUpdate<BossProgress>(bossProgress);
+            await Task.Delay(2000);
+        }
 
+        /// <summary>
+        /// 每日boss只有一次机会 不需要roll
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="win"></param>
+        /// <returns></returns>
+        private async static Task WorldBoss(RoleModel role, BroWindow win)
+        {
 
+            await win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role.RoleId}", "char");
+            var isBossDone = await win.CallJs<bool>("_char.isBossDone()");
+            await Task.Delay(2000);
+            if (!isBossDone)
+            {
+                await WorldBoss(role, win);
+            }
+        }
 
     }
 }

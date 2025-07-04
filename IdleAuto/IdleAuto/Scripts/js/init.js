@@ -33,15 +33,15 @@ let _init = {};
         POST_Message("Create", data, false).then((r) => {
             var txt = r.html;
             debugger
-            if (txt&&txt.indexOf('角色名称已经存在') > -1) {
+            if (txt && txt.indexOf('角色名称已经存在') > -1) {
                 Bridge.invokeEvent('OnCharNameConflict');
             }
-            Bridge.invokeEvent("OnSignal","roleSuccess");
-            
+            Bridge.invokeEvent("OnSignal", "roleSuccess");
+
         }).catch((e) => {
             debugger
-         
-          
+
+
         })
     }
     async function getRoleInfo() {
@@ -59,7 +59,7 @@ let _init = {};
         return roles;
     }
     async function hasUnion(data) {
-        var hasUnion = $("span:contains('公会')").next().text().indexOf("创建并邀请") >-1;
+        var hasUnion = $("span:contains('公会')").next().text().indexOf("创建并邀请") > -1;
         return !hasUnion;
     }
 
@@ -78,9 +78,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
-            
+
         }).catch((e) => {
-            
+
         })
     }
     async function createGroup(data) {
@@ -93,9 +93,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupCreate", data, "post", 1500).then((r) => {
-            
+
         }).catch((e) => {
-            
+
         })
     }
 
@@ -108,9 +108,9 @@ let _init = {};
         };
         //debugger;
         POST_Message("GroupAddChar", data, "post", 1500).then((r) => {
-            
+
         }).catch((e) => {
-            
+
         })
     }
 
@@ -121,15 +121,66 @@ let _init = {};
             cname: data.cname,
             gid: $($($(".panel-inverse")[0]).find("a[data-gid]")[0]).attr("data-gid")
         };
-      
+
         POST_Message("GroupAddChar", data, "post", 1500).then((r) => {
-           
-            
+
+
         }).catch((e) => {
-            
-            
+
+
         })
     }
+
+
+    async function groupRemoveChar(data) {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            id: data.roleid,
+            cid:data.cid,
+            gid: $($($(".panel-inverse")[0]).find("a[data-gid]")[0]).attr("data-gid")
+        };
+
+        POST_Message("GroupRemoveChar", data, "post", 1500).then((r) => {
+
+
+        }).catch((e) => {
+
+
+        })
+    }
+
+    function groupLeave(data) {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            id: data.roleid,
+            gid: $($($(".panel-inverse")[0]).find("a[data-gid]")[0]).attr("data-gid")
+        };
+
+        POST_Message("GroupLeave", data, "post", 1500).then((r) => {
+
+
+        }).catch((e) => {
+
+
+        })
+    }
+
+    function groupCancel(data) {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            id: data.roleid,
+            gid: $($($(".panel-inverse")[0]).find("a[data-gid]")[0]).attr("data-gid")
+        };
+
+        POST_Message("GroupCancel", data, "post", 1500).then((r) => {
+
+
+        }).catch((e) => {
+
+
+        })
+    }
+
 
     async function getExistUnionMember() {
         return $($(".panel-body")[2]).find('span.name').map((index, item) => {
@@ -143,11 +194,15 @@ let _init = {};
         }).get();
     }
 
-     function getAccountName() {
+    function getAccountName() {
         var name = $(".panel-heading")[0].innerText.match(/^(.*?) 已验证/);
         return name[1];
     }
 
+    function isGroupLeader() {
+        var txt = $($($(".panel-inverse")[0]).find("a[data-gid]")[0]).text();
+        return txt == "解散" || txt=="邀请";
+    }
 
 
 
@@ -161,4 +216,8 @@ let _init = {};
     _init.createGroup = createGroup;
     _init.addGroupMember = addGroupMember;
     _init.getExistGroupMember = getExistGroupMember;
+    _init.groupLeave = groupLeave;
+    _init.groupCancel = groupCancel;
+    _init.isGroupLeader = isGroupLeader;
+    _init.groupRemoveChar = groupRemoveChar;
 })();
