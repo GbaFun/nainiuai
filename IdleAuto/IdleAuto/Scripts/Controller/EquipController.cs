@@ -441,7 +441,7 @@ public class EquipController : BaseController
         await Task.Delay(1500);
         //跳转装备详情页面
         var url = IdleUrlHelper.EquipUrl(role.RoleId);
-        if (_win.GetBro().Address != url) await _win.LoadUrlWaitJsInit(url, "equip");
+        if (_win.GetBro().Address.IndexOf(url)>-1) await _win.LoadUrlWaitJsInit(url, "equip");
         var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
         var suitId = await GetSuitId(suitType, role);
         var curEquips = await GetCurEquips();
@@ -728,7 +728,7 @@ public class EquipController : BaseController
         }
         if (curEquipSuitType == emSuitType.MF)
         {
-            await LoadSuit(emSuitType.MF, role);
+         //   await LoadSuit(emSuitType.MF, role);
         }
         return curEquip;
     }
