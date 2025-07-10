@@ -96,6 +96,13 @@
           "attributeType": "指定职业全系技能",
           "seq": 40,
           "conditionContent": "骑士,1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "seq": 60,
+          "conditionContent": "攻击速度"
         }
       ]
     }
@@ -341,7 +348,7 @@
     "description": "骑士40带解毒",
     "equipment": {
       "category": "帽子|头饰",
-      "quality": "全部",
+      "quality": "神器",
       "conditions": [
 
         {
@@ -349,6 +356,25 @@
           "operate": "等于",
           "attributeType": "名称",
           "artifactBase": "解毒",
+          "seq": 100,
+          "conditionContent": "解毒"
+        }
+      ]
+    }
+  },
+  {
+    "name": "死骑凋零解毒",
+    "description": "骑士40带解毒",
+    "equipment": {
+      "category": "死骑面罩",
+      "quality": "神器",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "artifactBase": "死骑凋零解毒",
           "seq": 100,
           "conditionContent": "解毒"
         }
@@ -1051,7 +1077,7 @@
           "operate": "不等于",
           "attributeType": "名称",
           "conditionContent": "乔丹之石",
-            "seq": 1000
+          "seq": 1000
         },
         {
           "matchType": "必需",
@@ -2323,12 +2349,18 @@
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "小于",
-          "attributeType": "施法速度",
+          "operate": "不等于",
+          "attributeType": "自定义",
           "seq": 1,
-          "conditionContent": "1"
+          "conditionContent": "施法速度"
         },
-
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "seq": 1,
+          "conditionContent": "攻击速度"
+        },
 
         {
           "matchType": "可选",
@@ -2343,6 +2375,36 @@
           "attributeType": "单项元素抗性之和",
           "seq": 1,
           "conditionContent": "5"
+        }
+      ]
+    }
+  },
+
+  {
+    "name": "技能腰带",
+    "description": "前期没有技能腰带，优先考虑MF->金币掉落->元素抗性，但不能有施法和攻速",
+    "equipment": {
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "技能腰带",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 100,
+          "conditionContent": "吉利安火盆"
+        },
+
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "技能腰带",
+          "operate": "等于",
+          "attributeType": "名称",
+          "seq": 100,
+          "conditionContent": "蜘蛛之网"
         }
       ]
     }
@@ -3911,10 +3973,125 @@
 
   //死灵圣衣
   {
+    "name": "燃魂之焰绑定",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "isReformBase": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "燃魂之焰"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "已绑定"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骷髅法师"
+        }
+      ]
+    }
+  },
+  {
     "name": "燃魂之焰",
 
     "equipment": {
       "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "isReformBase": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "燃魂之焰"
+        },
+       
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骷髅法师"
+        }
+      ]
+    }
+  },
+  {
+    "name": "燃魂之焰绑定",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "isReformBase": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "燃魂之焰"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "已绑定"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骷髅法师"
+        }
+      ]
+    }
+  },
+  {
+    "name": "灵魂监狱",
+
+    "equipment": {
+      "category": "帽子",
+      "quality": "套装",
+      "isTrade": true,
+
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "灵魂监狱"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骷髅法师"
+        }
+      ]
+    }
+  },
+  {
+    "name": "黑暗余孽",
+
+    "equipment": {
+      "category": "衣服",
       "quality": "套装",
       "isTrade": true,
       "conditions": [
@@ -3922,15 +4099,15 @@
 
         {
           "matchType": "必需",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
-          "conditionContent": "燃魂之焰"
+          "conditionContent": "黑暗余孽"
         },
         {
-          "matchType": "必需",
-          "operate": "不等于",
+          "matchType": "可选",
+          "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "无形"
+          "conditionContent": "骷髅法师"
         }
       ]
     }

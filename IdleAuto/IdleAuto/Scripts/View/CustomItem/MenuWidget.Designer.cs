@@ -33,6 +33,9 @@ namespace IdleAuto.Scripts.View
             this.menuPanel = new System.Windows.Forms.Panel();
             this.AccountCombo = new System.Windows.Forms.ComboBox();
             this.HomeGroup = new System.Windows.Forms.GroupBox();
+            this.btnRecovery = new System.Windows.Forms.Button();
+            this.btnHunterSkill = new System.Windows.Forms.Button();
+            this.btnSanBoss = new System.Windows.Forms.Button();
             this.btnConfirmDel = new System.Windows.Forms.Button();
             this.btnPreDel = new System.Windows.Forms.Button();
             this.btnMf = new System.Windows.Forms.Button();
@@ -69,7 +72,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
-            this.btnSanBoss = new System.Windows.Forms.Button();
+            this.btnShengyi = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -102,6 +105,9 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnShengyi);
+            this.HomeGroup.Controls.Add(this.btnRecovery);
+            this.HomeGroup.Controls.Add(this.btnHunterSkill);
             this.HomeGroup.Controls.Add(this.btnSanBoss);
             this.HomeGroup.Controls.Add(this.btnConfirmDel);
             this.HomeGroup.Controls.Add(this.btnPreDel);
@@ -140,6 +146,36 @@ namespace IdleAuto.Scripts.View
             this.HomeGroup.TabStop = false;
             this.HomeGroup.Text = "主页菜单";
             this.HomeGroup.Enter += new System.EventHandler(this.HomeGroup_Enter);
+            // 
+            // btnRecovery
+            // 
+            this.btnRecovery.Location = new System.Drawing.Point(125, 441);
+            this.btnRecovery.Name = "btnRecovery";
+            this.btnRecovery.Size = new System.Drawing.Size(98, 23);
+            this.btnRecovery.TabIndex = 24;
+            this.btnRecovery.Text = "还原牧猎";
+            this.btnRecovery.UseVisualStyleBackColor = true;
+            this.btnRecovery.Click += new System.EventHandler(this.btnRecovery_Click);
+            // 
+            // btnHunterSkill
+            // 
+            this.btnHunterSkill.Location = new System.Drawing.Point(18, 443);
+            this.btnHunterSkill.Name = "btnHunterSkill";
+            this.btnHunterSkill.Size = new System.Drawing.Size(98, 23);
+            this.btnHunterSkill.TabIndex = 23;
+            this.btnHunterSkill.Text = "猎牧洗点";
+            this.btnHunterSkill.UseVisualStyleBackColor = true;
+            this.btnHunterSkill.Click += new System.EventHandler(this.btnHunterSkill_Click);
+            // 
+            // btnSanBoss
+            // 
+            this.btnSanBoss.Location = new System.Drawing.Point(124, 380);
+            this.btnSanBoss.Name = "btnSanBoss";
+            this.btnSanBoss.Size = new System.Drawing.Size(99, 23);
+            this.btnSanBoss.TabIndex = 22;
+            this.btnSanBoss.Text = "摸boss";
+            this.btnSanBoss.UseVisualStyleBackColor = true;
+            this.btnSanBoss.Click += new System.EventHandler(this.btnSanBoss_Click);
             // 
             // btnConfirmDel
             // 
@@ -183,7 +219,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnCookie
             // 
-            this.btnCookie.Location = new System.Drawing.Point(14, 472);
+            this.btnCookie.Location = new System.Drawing.Point(18, 518);
             this.btnCookie.Name = "btnCookie";
             this.btnCookie.Size = new System.Drawing.Size(102, 30);
             this.btnCookie.TabIndex = 1;
@@ -203,7 +239,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnRollArtifact
             // 
-            this.btnRollArtifact.Location = new System.Drawing.Point(124, 313);
+            this.btnRollArtifact.Location = new System.Drawing.Point(125, 313);
             this.btnRollArtifact.Name = "btnRollArtifact";
             this.btnRollArtifact.Size = new System.Drawing.Size(99, 29);
             this.btnRollArtifact.TabIndex = 16;
@@ -431,7 +467,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnAutoRune
             // 
-            this.BtnAutoRune.Location = new System.Drawing.Point(18, 247);
+            this.BtnAutoRune.Location = new System.Drawing.Point(18, 245);
             this.BtnAutoRune.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.BtnAutoRune.Name = "BtnAutoRune";
             this.BtnAutoRune.Size = new System.Drawing.Size(100, 28);
@@ -520,15 +556,15 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
-            // btnSanBoss
+            // btnShengyi
             // 
-            this.btnSanBoss.Location = new System.Drawing.Point(124, 380);
-            this.btnSanBoss.Name = "btnSanBoss";
-            this.btnSanBoss.Size = new System.Drawing.Size(99, 23);
-            this.btnSanBoss.TabIndex = 22;
-            this.btnSanBoss.Text = "摸boss";
-            this.btnSanBoss.UseVisualStyleBackColor = true;
-            this.btnSanBoss.Click += new System.EventHandler(this.btnSanBoss_Click);
+            this.btnShengyi.Location = new System.Drawing.Point(18, 472);
+            this.btnShengyi.Name = "btnShengyi";
+            this.btnShengyi.Size = new System.Drawing.Size(98, 23);
+            this.btnShengyi.TabIndex = 25;
+            this.btnShengyi.Text = "洗圣衣";
+            this.btnShengyi.UseVisualStyleBackColor = true;
+            this.btnShengyi.Click += new System.EventHandler(this.btnShengyi_Click);
             // 
             // MenuWidget
             // 
@@ -591,5 +627,8 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnConfirmDel;
         private System.Windows.Forms.Button btnPreDel;
         private System.Windows.Forms.Button btnSanBoss;
+        private System.Windows.Forms.Button btnRecovery;
+        private System.Windows.Forms.Button btnHunterSkill;
+        private System.Windows.Forms.Button btnShengyi;
     }
 }

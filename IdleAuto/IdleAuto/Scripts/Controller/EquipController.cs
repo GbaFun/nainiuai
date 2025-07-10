@@ -997,6 +997,14 @@ public class EquipController : BaseController
         {
             toWearEquips[emEquipSort.戒指2] = bestCombination[0];
         }
+        if (toWearEquips[emEquipSort.戒指1].EquipName == currentRing1.EquipName)
+        {
+            toWearEquips.Remove(emEquipSort.戒指1);
+        }
+        if (toWearEquips[emEquipSort.戒指2].EquipName == currentRing2.EquipName)
+        {
+            toWearEquips.Remove(emEquipSort.戒指2);
+        }
 
 
     }
@@ -1435,6 +1443,10 @@ public class EquipController : BaseController
                     if (!tradeResult.ContainsKey(dto.EmEquipSort))
                     {
                         tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName));
+                    }
+                    else if( tradeResult[dto.EmEquipSort] == null)
+                    {
+                        tradeResult[dto.EmEquipSort]= GetTradeMode(dto, demandEquip, eqName);
                     }
                 }
                 else if (dto.Equipment.IsNecessery)

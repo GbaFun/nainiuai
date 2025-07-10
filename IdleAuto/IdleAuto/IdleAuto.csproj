@@ -75,7 +75,8 @@
     <Compile Include="Configs\CfgExtension\IdleSkillCfg.cs" />
     <Compile Include="Scripts\Controller\ArtifactController.cs" />
     <Compile Include="Scripts\Controller\EfficiencyController.cs" />
-    <Compile Include="Scripts\Controller\EquipUtil.cs" />
+    <Compile Include="Scripts\Model\DelView.cs" />
+    <Compile Include="Scripts\Utils\EquipUtil.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Controller\ReformController.cs" />
     <Compile Include="Scripts\Controller\TradeController.cs" />
@@ -294,6 +295,7 @@
     <Content Include="Document\48过滤.txt" />
     <Content Include="Document\60+过滤.txt" />
     <Content Include="Document\regex.txt" />
+    <Content Include="Document\中后期宝珠过滤.txt" />
     <Content Include="Document\献祭.png" />
     <Content Include="Document\todo.txt" />
     <Content Include="Document\挂56过滤.txt" />

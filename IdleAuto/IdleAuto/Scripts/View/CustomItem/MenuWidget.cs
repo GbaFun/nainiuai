@@ -157,19 +157,19 @@ namespace IdleAuto.Scripts.View
 
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    //FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                   // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
 
                     //await FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
                     //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    // FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
                    // RepairManager.IsCollectEquip = false;
 
-                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                   //RepairManager.RepairJob = "死灵";
-                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    RepairManager.RepairJob = "死灵";
+                   await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
                     RepairManager.RepairJob = "骑士";
-                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -287,11 +287,11 @@ namespace IdleAuto.Scripts.View
         private async void BtnTest_Click(object sender, EventArgs e)
         {
             //await FlowController.RegisterColdConversion();
-            //await FlowController.MakeYongheng();
-            //FlowController.RegisterYongheng();
+            await FlowController.MakeYongheng();
+            FlowController.RegisterYongheng();
 
-            //await FlowController.MakeMori();
-            //FlowController.RegisterMori();
+            //   await FlowController.MakeMori();
+            //   FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
@@ -303,7 +303,7 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-            FlowController.FightWorldBoss();
+            // FlowController.FightWorldBoss();
 
         }
 
@@ -422,6 +422,21 @@ namespace IdleAuto.Scripts.View
         private void btnSanBoss_Click(object sender, EventArgs e)
         {
             FlowController.GroupWork(1, 1, FlowController.StartSanBoss);
+        }
+
+        private void btnHunterSkill_Click(object sender, EventArgs e)
+        {
+            FlowController.SetHunterAndPastor();
+        }
+
+        private void btnRecovery_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnShengyi_Click(object sender, EventArgs e)
+        {
+            FlowController.RepairShengyi();
         }
     }
 }

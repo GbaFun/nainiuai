@@ -137,7 +137,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "卡格斯的指轮"
+          "conditionContent": "卡格斯的指轮1"
         },
         {
           "matchType": "任一",
@@ -311,7 +311,7 @@
         }
       ]
     },
-    "maxCount": 20
+    "maxCount": 200
   },
   {
     "equip": {
@@ -1676,7 +1676,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -2222,6 +2222,25 @@
       ]
     },
     "maxCount": 1
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "手弩",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "无形灾劫"
+        }
+
+
+      ]
+    },
+    "maxCount": 10
   },
   {
     "equip": {
@@ -3527,6 +3546,31 @@
   },
   {
     "equip": {
+      "category": "斧",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "双头"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "4"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
       "category": "十字弓",
       "quality": "破碎",
 
@@ -3558,7 +3602,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -3775,64 +3819,8 @@
     "maxCount": 40
   },
 
-  {
-    "equip": {
-      "category": "剑",
-      "quality": "破碎",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "凹槽",
-          "conditionContent": "5"
-        },
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "物品等级",
-          "conditionContent": "70"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "永恒",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "水晶剑"
-        }
 
-      ]
-    },
-    "maxCount": 1
-  },
-  {
-    "equip": {
-      "category": "剑",
-      "quality": "破碎",
-      "conditions": [
-        {
-          "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "凹槽",
-          "conditionContent": "5"
-        },
-        {
-          "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "物品等级",
-          "conditionContent": "70"
-        },
-        {
-          "matchType": "必需",
-          "matchGroupName": "永恒",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "水晶剑"
-        }
 
-      ]
-    },
-    "maxCount": 1
-  },
 
   {
     "equip": {
@@ -4168,7 +4156,7 @@
   {
     "equip": {
       "category": "秘境",
-      "quality": "稀有|魔法|传奇",
+      "quality": "稀有|魔法",
       "conditions": [
         {
           "matchType": "必需",
@@ -4180,7 +4168,24 @@
       ]
 
     },
-    "maxCount": 1000
+    "maxCount": 50
+  },
+  {
+    "equip": {
+      "category": "秘境",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "秘境"
+        }
+      ]
+
+    },
+    "maxCount": 500
   },
   //mf装备
 
@@ -4347,6 +4352,25 @@
       ]
     },
     "maxCount": 100
+  },
+  //圣衣底子
+  {
+    "equip": {
+      "description": "圣衣底子",
+      "category": "靴子",
+      "quality": "普通",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "圣衣底子",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "轻型金属靴"
+        }
+
+      ]
+    },
+    "maxCount": 2
   },
   //免洗圣衣
   {
@@ -4957,6 +4981,13 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "生存本能"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "神击"
         }
 
       ]

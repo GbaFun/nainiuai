@@ -616,6 +616,7 @@ namespace IdleAuto.Scripts.Controller
 
         public async Task AddGroupMember(RoleModel teamLeader, RoleModel targetRole)
         {
+            if (targetRole == null) return;
             await GoToMakeGroup(teamLeader);
             //加第三人
             var data = new Dictionary<string, object>();

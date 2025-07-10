@@ -292,6 +292,8 @@ public enum emArtifactBase
     单手复苏,
     [Description("解毒")]
     解毒,
+    [Description("解毒")]
+    死骑凋零解毒,
     [Description("天灾")]
     天灾,
     [Description("灿烂")]
