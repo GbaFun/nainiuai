@@ -176,11 +176,11 @@ namespace IdleAuto.Scripts.Controller
         }
         public static async Task SendRune()
         {
-            // await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
+            await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
             var sendDic = new Dictionary<int, int>() { /*{ 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }*/ { 22, 1 }, { 23, 1 } };
             foreach (var job in sendDic)
             {
-                await SendRune(job.Key, job.Value);
+              //  await SendRune(job.Key, job.Value);
             }
 
 
@@ -1562,7 +1562,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task ReformDungeonAndRings()
         {
             await GroupWork(3, 1, ReformDungeon, RepairManager.DungeonAccounts);
-            await GroupWork(3, 1, UpgradeBaseEq);
+           // await GroupWork(3, 1, UpgradeBaseEq);
         }
 
 

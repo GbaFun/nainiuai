@@ -157,17 +157,17 @@ namespace IdleAuto.Scripts.View
 
                     //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
                     //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                   // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                    // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
 
                     //await FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
                     //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
-                    // FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                  FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
                    // RepairManager.IsCollectEquip = false;
 
-                   // FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     RepairManager.RepairJob = "死灵";
-                   await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                  // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
                     RepairManager.RepairJob = "骑士";
                    // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
@@ -306,6 +306,15 @@ namespace IdleAuto.Scripts.View
             // FlowController.FightWorldBoss();
 
         }
+
+        /// <summary>
+        /// 将11环永恒扣到35速轮回队伍
+        /// </summary>
+        private async void SwitchYongheng()
+        {
+
+        }
+        
 
 
 

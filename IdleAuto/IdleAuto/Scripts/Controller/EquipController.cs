@@ -441,7 +441,7 @@ public class EquipController : BaseController
         await Task.Delay(1500);
         //跳转装备详情页面
         var url = IdleUrlHelper.EquipUrl(role.RoleId);
-        if (_win.GetBro().Address.IndexOf(url)>-1) await _win.LoadUrlWaitJsInit(url, "equip");
+        if (_win.GetBro().Address.IndexOf(url) > -1) await _win.LoadUrlWaitJsInit(url, "equip");
         var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
         var suitId = await GetSuitId(suitType, role);
         var curEquips = await GetCurEquips();
@@ -728,9 +728,57 @@ public class EquipController : BaseController
         }
         if (curEquipSuitType == emSuitType.MF)
         {
-         //   await LoadSuit(emSuitType.MF, role);
+            //   await LoadSuit(emSuitType.MF, role);
         }
         return curEquip;
+    }
+
+    /// <summary>
+    /// 死灵圣衣阶段装备调整策略 满足180施法
+    /// </summary>
+    /// <returns></returns>
+    private async Task AdjustNecFinalEquip(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, EquipModel> toWearEquips)
+    {
+        //先洗圣衣 圣衣洗完再触发 精修
+        //1.本体+圣衣+冥神提供的施法  剩下需要计算 轮回 项链 腰带
+        var baseFcr = 5 + 80 + 50M;
+        var idealFcr = 180M;
+        baseFcr += GetYonghengSpeed(role);
+        var curFcr = baseFcr;
+        // 2.计算 轮回 项链 腰带 戒指提供的施法
+        var targetSort = new List<emEquipSort>() { emEquipSort.副手, emEquipSort.项链, emEquipSort.腰带, emEquipSort.戒指1, emEquipSort.戒指2 };
+        foreach (var sort in targetSort)
+        {
+            var content = curEquips[sort].Content;
+            var s = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, content).Item2;
+            curFcr += s;
+        }
+        //速度缺口
+        var differenceFcr = idealFcr - baseFcr;
+        if (differenceFcr <= 10)
+        {
+            
+            //换野火 尝试交易 登记交易
+            //没有野火则换蛛网
+        }
+        else if(differenceFcr<=20)
+        {
+            //换蛛网
+        }
+        else
+        {
+           //换蛛网 戒指位如果双全能则换一个希望
+        }
+        return;
+    }
+
+    private decimal GetYonghengSpeed(RoleModel nec)
+    {
+        var group = nec.GetGroup();
+        var dk = group.FirstOrDefault(p => p.Job == emJob.死骑);
+        if (dk != null) return dk.YonghengSpeed;
+        else return 0;
+
     }
 
     private bool AdjustRings(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips,
@@ -740,9 +788,7 @@ public class EquipController : BaseController
         var baseFcr = 5M;
         var idealFcr = suit.IdealFcr;
 
-        var group = role.GetGroup();
-        var dk = group.FirstOrDefault(p => p.Job == emJob.死骑);
-        if (dk != null) baseFcr += dk.YonghengSpeed;
+        baseFcr += GetYonghengSpeed(role);
 
         var curFcr = baseFcr;
 
@@ -1444,9 +1490,9 @@ public class EquipController : BaseController
                     {
                         tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName));
                     }
-                    else if( tradeResult[dto.EmEquipSort] == null)
+                    else if (tradeResult[dto.EmEquipSort] == null)
                     {
-                        tradeResult[dto.EmEquipSort]= GetTradeMode(dto, demandEquip, eqName);
+                        tradeResult[dto.EmEquipSort] = GetTradeMode(dto, demandEquip, eqName);
                     }
                 }
                 else if (dto.Equipment.IsNecessery)

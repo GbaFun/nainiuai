@@ -4021,7 +4021,7 @@
           "attributeType": "名称",
           "conditionContent": "燃魂之焰"
         },
-       
+
         {
           "matchType": "可选",
           "operate": "在范围内",
@@ -4102,6 +4102,31 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "黑暗余孽"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "骷髅法师"
+        }
+      ]
+    }
+  },
+  {
+    "name": "亡灵哀嚎",
+
+    "equipment": {
+      "category": "手套",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "亡灵哀嚎"
         },
         {
           "matchType": "可选",
@@ -4493,6 +4518,13 @@
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "conditionContent": "死灵,召唤,3"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
         }
       ]
     }

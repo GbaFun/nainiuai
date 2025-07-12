@@ -587,16 +587,23 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
-          "conditionContent": "吟唱"
+          "conditionContent": "吟唱者之袍"
         },
         {
-          "matchType": "必需",
+          "matchType": "任一",
           "matchGroupName": "传奇",
-          "operate": "等于",
+          "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "1"
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "conditionContent": "25"
         }
 
       ]
@@ -786,11 +793,19 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "血肉切割者"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
+
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 200
   },
   {
     "equip": {
@@ -2503,12 +2518,30 @@
           "matchGroupName": "蓝黄宝珠",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "璀璨"
+          "conditionContent": "璀璨之真理"
         }
 
       ]
     },
     "maxCount": 10
+  },
+  {
+    "equip": {
+      "category": "珠宝",
+      "quality": "魔法",
+      "conditions": [
+
+        {
+          "matchType": "任一",
+          "matchGroupName": "蓝黄宝珠",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "璀璨"
+        }
+
+      ]
+    },
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2726,7 +2759,7 @@
 
       ]
     },
-    "maxCount": 8
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2785,7 +2818,38 @@
         }
       ]
     },
-    "maxCount": 100
+    "maxCount": 20
+  },
+  {
+    "equip": {
+      //盗墓元帅冰封
+      "category": "项链",
+      "quality": "魔法|稀有|传奇|神器|套装",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "职业系列技能",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
+        },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,3"
+        },
+        {
+          "matchType": "任一",
+          "operate": "大于等于",
+          "matchGroupName": "职业系列技能",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,3"
+        }
+      ]
+    },
+    "maxCount": 200
   },
   {
     "equip": {
