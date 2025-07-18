@@ -25,7 +25,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "掉落等级",
-          "conditionContent": "49"
+          "conditionContent": "70"
         },
         {
           "matchType": "任一",
@@ -485,7 +485,7 @@
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "1"
+          "conditionContent": "2"
         }
 
       ]
@@ -757,6 +757,13 @@
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]
@@ -1207,7 +1214,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -1547,20 +1554,6 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "炽天使"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "conditionContent": "骑士,光环,2"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "传奇",
-          "operate": "大于等于",
-          "attributeType": "所有技能",
-          "conditionContent": "2"
         }
 
       ]
@@ -1589,7 +1582,7 @@
 
       ]
     },
-    "maxCount": 5
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2296,6 +2289,13 @@
           "operate": "大于等于",
           "attributeType": "指定职业全系技能",
           "conditionContent": "死骑,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
 
@@ -3050,7 +3050,7 @@
         }
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -3242,7 +3242,7 @@
         }
       ]
     },
-    "maxCount": 50
+    "maxCount": 30
   },
   {
     "equip": {
@@ -4028,7 +4028,7 @@
           "matchGroupName": "抗性",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "conditionContent": "60"
+          "conditionContent": "70"
         }
       ]
 
@@ -4074,28 +4074,28 @@
           "matchGroupName": "抗性防具",
           "operate": "大于等于",
           "attributeType": "抗火",
-          "conditionContent": "35"
+          "conditionContent": "45"
         },
         {
           "matchType": "任一",
           "matchGroupName": "抗性防具",
           "operate": "大于等于",
           "attributeType": "抗电",
-          "conditionContent": "35"
+          "conditionContent": "45"
         },
         {
           "matchType": "任一",
           "matchGroupName": "抗性防具",
           "operate": "大于等于",
           "attributeType": "抗毒",
-          "conditionContent": "35"
+          "conditionContent": "45"
         },
         {
           "matchType": "必需",
           "matchGroupName": "抗性",
           "operate": "大于等于",
           "attributeType": "单项元素抗性之和",
-          "conditionContent": "80"
+          "conditionContent": "90"
         }
       ]
 
@@ -4191,7 +4191,7 @@
       ]
 
     },
-    "maxCount": 5
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4268,7 +4268,7 @@
       ]
 
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -4286,7 +4286,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4322,7 +4322,7 @@
 
       ]
     },
-    "maxCount": 8
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4340,7 +4340,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -4358,7 +4358,43 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 2
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "项链|护符",
+      "quality": "魔法",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "偶然之好运"
+        }
+
+      ]
+    },
+    "maxCount": 1
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "吉黑得的运气"
+        }
+
+      ]
+    },
+    "maxCount": 2
   },
   {
     "equip": {
@@ -4376,7 +4412,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 1
   },
   {
     "equip": {
@@ -4394,7 +4430,7 @@
         {
           "matchType": "任一",
           "matchGroupName": "传奇",
-          "operate": "在范围内",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "封印"
         },
@@ -4434,7 +4470,7 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 1
   },
   //免洗圣衣
   {
@@ -4443,6 +4479,24 @@
       "category": "全部",
       "quality": "套装",
       "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "座"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "毁灭的王座"
+        },
+        {
+          "matchType": "必需",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "无形毁灭的王座"
+        },
         {
           "matchType": "任一",
           "matchGroupName": "传奇",

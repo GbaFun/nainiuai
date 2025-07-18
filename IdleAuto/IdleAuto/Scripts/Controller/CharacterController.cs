@@ -1133,8 +1133,9 @@ namespace IdleAuto.Scripts.Controller
             if (curEquips == null) return true;
             var hasMori = curEquips.Values.Where(p => p.EquipName == "末日").FirstOrDefault() != null;
             var hasBingdong = curEquips.Values.Where(p => p.EquipName == "无形冰冻").FirstOrDefault() != null;
+            var hasZhengyi = curEquips.Values.Where(p => p.EquipName .Contains("正义之手")).FirstOrDefault() != null;
             var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
-            if ((hasMori || hasYongheng) && !hasBingdong)
+            if ((hasMori || hasYongheng) && !hasBingdong &&!hasZhengyi)
             {
                 skillConfig.GroupSkill.Remove("祝福之锤");
                 //  skillConfig.KeySkillId = 0;

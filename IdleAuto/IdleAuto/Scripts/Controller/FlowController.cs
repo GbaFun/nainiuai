@@ -177,10 +177,10 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
-            var sendDic = new Dictionary<int, int>() { /*{ 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }*/ { 22, 1 }, { 23, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
             foreach (var job in sendDic)
             {
-              //  await SendRune(job.Key, job.Value);
+                await SendRune(job.Key, job.Value);
             }
 
 
@@ -395,7 +395,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public static async Task SellEquipToAuction()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName.Contains("要塞弩机") && p.Category == "手弩" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "铁矿石" && p.EquipName.Contains("无形磨骨") && p.Category == "剑" && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -407,7 +407,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.PutToAuction(e, 21, 1);
+                    await tradeControl.PutToAuction(e, 23, 10);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Auction;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -778,7 +778,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task MakeYongheng()
         {
             Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "斧" &&
-         (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/5)")) && p.EquipName.Contains("双头斧") && p.EquipStatus == emEquipStatus.Repo;
+         (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/5)")) && p.EquipName.Contains("双头斧") && !p.Content.Contains("+15") && p.EquipStatus == emEquipStatus.Repo;
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
             await CollectAndMakeArtifact(emArtifactBase.双头斧永恒, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
@@ -787,7 +787,7 @@ namespace IdleAuto.Scripts.Controller
         {
             Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "斧" &&
          (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/5)") || p.Content.Contains("最大凹槽：5")) && p.EquipName == "超强的双头斧" && p.Content.Contains("+15") && p.EquipStatus == emEquipStatus.Repo;
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(5).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
             await CollectAndMakeArtifact(emArtifactBase.双头斧末日, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
         }
@@ -831,7 +831,7 @@ namespace IdleAuto.Scripts.Controller
 
             exp.And(p => p.AccountName == win2.User.AccountName);
             baseList = FreeDb.Sqlite.Select<EquipModel>().Where(exp).ToList();
-
+            baseList = baseList.Take(10).ToList();
             foreach (var item in baseList)
             {
                 var con = ArtifactBaseCfg.Instance.GetEquipCondition(emBase);
@@ -1354,7 +1354,7 @@ namespace IdleAuto.Scripts.Controller
         public static async Task AutoUpgradeGem(BroWindow window)
         {
             var r = new RuneController(window);
-            await r.UpgradeGem(emGem.紫宝石, 4);
+            await r.UpgradeGem(emGem.黄宝石, 4);
 
         }
 
@@ -1495,7 +1495,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task ClearRepoPre()
         {
-            var equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipStatus == emEquipStatus.Repo).ToList();
+            var equips = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipStatus == emEquipStatus.Repo && p.AccountName != "铁矿石").ToList();
             var equipInSuitList = FreeDb.Sqlite.Select<EquipSuitModel>()
 
            .ToList();
@@ -1509,21 +1509,16 @@ namespace IdleAuto.Scripts.Controller
             }
             List<DelPreviewEquipModel> list = new List<DelPreviewEquipModel>();
             var group = equips.GroupBy(g => g.AccountName);
-            var dungeonAcc = ConfigUtil.GetAppSetting("改造秘境").Split(',') ;
             foreach (var g in group)
             {
                 var config = new RetainEquipCfg();
                 var equipList = g.ToList();
                 foreach (var item in equipList)
                 {
-                    var isNDungeon = false;
-                    if (item.EquipName == "秘境" && !dungeonAcc.Contains(item.AccountName))
-                    {
-                        isNDungeon = true;
-                    }
-                    if (item.emItemQuality == emItemQuality.神器 || equipInSuit.ContainsKey(item.EquipID) )
+
+                    if (item.emItemQuality == emItemQuality.神器 || equipInSuit.ContainsKey(item.EquipID))
                         continue;
-                    if (!config.IsRetain(item)|| isNDungeon)
+                    if (!config.IsRetain(item))
                     {
 
                         var delPre = item.ToObject<DelPreviewEquipModel>();
@@ -1561,8 +1556,15 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task ReformDungeonAndRings()
         {
-            await GroupWork(3, 1, ReformDungeon, RepairManager.DungeonAccounts);
-           // await GroupWork(3, 1, UpgradeBaseEq);
+            var dungeonList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "秘境" && p.EquipName != "秘境").ToList();
+            var dic = dungeonList.GroupBy(g => g.AccountName).ToDictionary(
+         group => group.Key,
+         group => group.ToList()
+     );
+            var targetAcc = dic.Where(p => p.Value.Count <= 40).Select(s => s.Key).ToArray();
+
+            await GroupWork(3, 1, ReformDungeon, targetAcc);
+            await GroupWork(3, 1, UpgradeBaseEq);
         }
 
 
@@ -1582,10 +1584,9 @@ namespace IdleAuto.Scripts.Controller
             var e1 = new EquipController(win1);
             var pastor = win1.User.Roles[4];
             var hunter = win1.User.Roles[7];
-            var knight1 = win1.User.Roles[1];
-            var ass = win1.User.Roles[0];
+      
             //牧师换装
-            // await e1.LoadSuit(emSuitType.boss, win1.User.Roles[4]);
+             await e1.LoadSuit(emSuitType.boss, pastor);
 
             //猎手切技能
             var c1 = new CharacterController(win1);
@@ -1596,6 +1597,33 @@ namespace IdleAuto.Scripts.Controller
             //await c1.ExitGroup(hunter);
             //await c1.MakeGroup(knight1, null, hunter);
             //await c1.MakeGroup(ass, null, pastor);
+
+
+            //await Task.Delay(2000);
+            //await c1.AddSkillPoints(hunter, emSkillMode.爆炸);
+        }
+
+
+        public static async Task RecoverHunterAndPastor()
+        {
+            var user = AccountCfg.Instance.GetUserModel("铁矿石");
+            var win1 = await TabManager.Instance.TriggerAddBroToTap(user);
+            var e1 = new EquipController(win1);
+            var pastor = win1.User.Roles[4];
+            var hunter = win1.User.Roles[7];
+            //游侠
+            var ke = win1.User.Roles[5];
+            var knight = win1.User.Roles[10];
+            //牧师换装
+            await e1.LoadSuit(emSuitType.腐蚀, pastor);
+
+            //猎手切技能
+            var c1 = new CharacterController(win1);
+            await c1.ExitGroup(hunter);
+            await c1.AddSkillPoints(hunter, emSkillMode.爆炸);
+      
+            await c1.MakeGroup(knight, null, hunter);
+            await c1.MakeGroup(ke, null, pastor);
 
 
             //await Task.Delay(2000);
@@ -1617,26 +1645,14 @@ namespace IdleAuto.Scripts.Controller
             var hunter = win1.User.Roles[7];
             var knight1 = win1.User.Roles[1];
             var ass = win1.User.Roles[0];
-            //牧师换装
-            // await e1.LoadSuit(emSuitType.boss, win1.User.Roles[4]);
 
             //猎手切技能
             var c1 = new CharacterController(win1);
-            //    await c1.ExitGroup(hunter);
-            //  await c1.ExitGroup(pastor);
-            // await c1.AddSkillPoints(hunter, emSkillMode.稳固);
-            //await c1.ExitGroup(hunter);
-            //await c1.MakeGroup(knight1, null, hunter);
-            //await c1.MakeGroup(ass, null, pastor);
-
-
-            //await Task.Delay(2000);
-            //await c1.AddSkillPoints(hunter, emSkillMode.爆炸);
             foreach (var a in AccountCfg.Instance.Accounts)
             {
                 if (a.AccountName == "铁矿石") continue;
                 var r1 = FreeDb.Sqlite.Select<BossProgress>().Where(p => p.AccountName == a.AccountName).First();
-                if (r1 != null && r1.IsPassDailyBoss) continue;
+                if (r1 != null && r1.IsPassWorldBoss) continue;
                 var u = AccountCfg.Instance.GetUserModel(a.AccountName);
                 var win2 = await TabManager.Instance.TriggerAddBroToTap(u);
                 var t = new TradeController(win2);
@@ -1646,6 +1662,14 @@ namespace IdleAuto.Scripts.Controller
                 var role1 = win2.User.Roles[0];
                 var role2 = win2.User.Roles[1];
                 var role3 = win2.User.Roles[2];
+                if (role1.Level < 88)
+                {
+                    var bossProgress = new BossProgress() { AccountName = win2.User.AccountName, IsPassWorldBoss = true };
+                    DbUtil.InsertOrUpdate<BossProgress>(bossProgress);
+                    win2.Close();
+                    continue;
+
+                }
                 //苦工解散
                 await c2.ExitGroup(role1);
                 //加入骑士
@@ -1653,20 +1677,14 @@ namespace IdleAuto.Scripts.Controller
                 await t.AcceptAll(u);
                 // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
                 // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
-                await DailyBoss(role1, win2);
+                await WorldBoss(role1, win2);
                 //踢骑士
                 await c1.RemoveGroupRole(hunter, role1);
                 await c2.MakeGroup(role1, role2, role3);
                 win2.Close();
             }
 
-            await c1.ExitGroup(hunter);
-            await c1.MakeGroup(knight1, null, hunter);
-            await c1.MakeGroup(ass, null, pastor);
-
-
-            await Task.Delay(2000);
-            await c1.AddSkillPoints(hunter, emSkillMode.爆炸);
+          
 
         }
 
@@ -1695,11 +1713,13 @@ namespace IdleAuto.Scripts.Controller
 
             await win.LoadUrlWaitJsInit($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role.RoleId}", "char");
             var isBossDone = await win.CallJs<bool>("_char.isBossDone()");
-            await Task.Delay(2000);
+            await Task.Delay(5000);
             if (!isBossDone)
             {
                 await WorldBoss(role, win);
             }
+            var bossProgress = new BossProgress() { AccountName = win.User.AccountName, IsPassWorldBoss = true };
+            DbUtil.InsertOrUpdate<BossProgress>(bossProgress);
         }
 
         public async static Task RepairShengyi()
@@ -1754,9 +1774,9 @@ namespace IdleAuto.Scripts.Controller
         /// </summary>
         /// <param name="eqName"></param>
         /// <returns></returns>
-        public static bool IsLocalContainsEquip(string eqName,string accName)
+        public static bool IsLocalContainsEquip(string eqName, string accName)
         {
-            return FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == eqName &&p.AccountName==accName && p.EquipStatus == emEquipStatus.Repo).First() == null;
+            return FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == eqName && p.AccountName == accName && p.EquipStatus == emEquipStatus.Repo).First() == null;
         }
 
 
@@ -1770,6 +1790,172 @@ namespace IdleAuto.Scripts.Controller
             }
             return dic;
         }
+
+        /// <summary>
+        /// 将11环永恒转移到35速轮回那
+        /// </summary>
+        /// <returns></returns>
+        public static async Task SwitchYongheng()
+        {
+            var groupList = FreeDb.Sqlite.Select<GroupModel>().ToList();
+            var targetYonghengDkList = groupList.Where(p => p.YonghengSpeed == 20).ToList();
+            var lunhui35 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("轮回") && p.RoleID > 0).ToList();
+            var targetLunhui35RoleList = new List<int>();
+            var dic = lunhui35.ToDictionary(
+                d => d.RoleID,
+                d => AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, d.Content).Item2);
+
+            foreach (var r in dic)
+            {
+                var nec = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == r.Key).First();
+                var dk = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.AccountName == nec.AccountName && p.TeamIndex == nec.TeamIndex && p.Job == emJob.死骑).First();
+                if (r.Value == 35 && dk.YonghengSpeed == 20)
+                {
+                    //完美搭配不要动了剔除这批永恒
+                    targetYonghengDkList.Remove(dk);
+                }
+                else if (r.Value == 35)
+                {
+                    targetLunhui35RoleList.Add(r.Key);
+                }
+            }
+
+            foreach (var user in AccountCfg.Instance.Users)
+            {
+                if (user.AccountName == "铁矿石") continue;
+                BroWindow win = null;
+                var lunhuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName == user.AccountName && p.EquipName.Contains("轮回") && p.RoleID > 0).ToList();
+                if (lunhuiList.Count != 4)
+                {
+                    throw new Exception("轮回数量有异常");
+                }
+                if (lunhuiList.Select(s => s.RoleID).Intersect(targetLunhui35RoleList).Count() == 0)
+                {
+                    continue;
+                }
+                foreach (var item in lunhuiList)
+                {
+                    var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.施法速度, item.Content).Item2;
+                    var curWin = win == null ? await TabManager.Instance.TriggerAddBroToTap(user) : win;
+                    win = curWin;
+                    var roleId = item.RoleID;
+                    var nec = curWin.User.Roles.Find(p => p.RoleId == roleId);
+                    var dkGroup = nec.GetGroup().Where(p => p.Job == emJob.死骑).First();
+                    var yonghengSpeed1 = dkGroup.YonghengSpeed;
+                    var curDkList = curWin.User.Roles.Where(p => p.Job == emJob.死骑).ToList();
+                    if (val == 35 && dkGroup.YonghengSpeed != 20)
+                    {
+                        //尝试交易一个20速永恒
+                        var g2 = targetYonghengDkList.Where(p => !curDkList.Select(s => s.RoleId).Contains(p.RoleId)).First();
+                        var targetAcc = AccountCfg.Instance.GetUserModel(g2.AccountName);
+                        var win2 = await TabManager.Instance.TriggerAddBroToTap(targetAcc);
+                        var dk2 = win2.User.Roles.Find(p => p.RoleId == g2.RoleId);
+                        var e2 = new EquipController(win2);
+                        var mfId = await e2.GetSuitId(emSuitType.MF, dk2);
+                        var effId = await e2.GetSuitId(emSuitType.效率, dk2);
+                        if (mfId > 0)
+                        {
+                            await e2.DeleteEquipSuit(emSuitType.MF, dk2);
+
+                        }
+                        if (effId > 0)
+                        {
+                            await e2.DeleteEquipSuit(emSuitType.效率, dk2);
+                        }
+                        var yongheng20 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == dk2.RoleId && p.EquipName.Contains("永恒") && p.Quality == "artifact" && p.EquipStatus == emEquipStatus.Equipped).First();
+                        await e2.EquipOff(win2, dk2, (int)emEquipSort.副手, yongheng20);
+                        var t2 = new TradeController(win2);
+                        if (yongheng20 != null)
+                        {
+                            await t2.StartTrade(yongheng20, nec.RoleName);
+                            yongheng20.SetEquipStatus(emEquipStatus.Trading);
+                        }
+
+                        var t1 = new TradeController(win);
+                        await t1.AcceptAll(win.User);
+                        //下掉需求dk的永恒并删除配装
+
+                        var dk1 = win.User.Roles.Where(p => p.RoleId == dkGroup.RoleId).FirstOrDefault();
+                        var yongheng = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == dk1.RoleId && p.EquipName.Contains("永恒") && p.Quality == "artifact" && p.EquipStatus == emEquipStatus.Equipped).First();
+                        var e1 = new EquipController(win);
+                        var mfId1 = await e1.GetSuitId(emSuitType.MF, dk1);
+                        var effId1 = await e1.GetSuitId(emSuitType.效率, dk1);
+                        if (mfId1 > 0)
+                        {
+                            await e1.DeleteEquipSuit(emSuitType.MF, dk1);
+
+                        }
+                        if (effId1 > 0)
+                        {
+                            await e1.DeleteEquipSuit(emSuitType.效率, dk1);
+                        }
+                        await e1.EquipOff(win, dk1, (int)emEquipSort.副手);
+                        await e1.AutoAttributeSave(curWin, dk1, new List<EquipModel> { yongheng20 });
+                        await e1.EquipOn(win, dk1, yongheng20);
+                        yongheng20.RoleID = dk1.RoleId;
+                        DbUtil.InsertOrUpdate<EquipModel>(yongheng20);
+                        dkGroup.YonghengSpeed = 20;
+                        DbUtil.InsertOrUpdate<GroupModel>(dkGroup);
+                        if (yongheng != null)
+                        {
+                            await t1.StartTrade(yongheng, dk2.RoleName);
+                            yongheng.SetEquipStatus(emEquipStatus.Trading);
+                        }
+
+                        await t2.AcceptAll(win2.User);
+                        await e1.AutoAttributeSave(win2, dk2, new List<EquipModel> { yongheng });
+                        await e2.EquipOn(win2, dk2, yongheng);
+                        yongheng.RoleID = dk2.RoleId;
+                        DbUtil.InsertOrUpdate<EquipModel>(yongheng);
+                        var dkGroup2 = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == dk2.RoleId).First();
+                        dkGroup2.YonghengSpeed = yonghengSpeed1;
+
+                        DbUtil.InsertOrUpdate<GroupModel>(dkGroup2);
+
+                        win2.Close();
+                        targetYonghengDkList.Remove(g2);
+                    }
+
+                }
+                win.Close();
+
+            }
+        }
+
+        public static async Task RollJewelry()
+        {
+            var con = EmEquipCfg.Instance.Data[emEquip.刺客毒素黄珠宝];
+
+            var testEq = new EquipModel() { Category = "珠宝", Quality = "rare", EquipID = 24590727 };
+
+            var u = AccountCfg.Instance.GetUserModel("铁矿石");
+            var win = await TabManager.Instance.TriggerAddBroToTap(u);
+            var r = new ReformController(win);
+            await ReformLoop(testEq, win, r, con);
+
+        }
+        private static async Task ReformLoop(EquipModel eq, BroWindow win, ReformController r, Equipment con)
+        {
+            var url = $"https://www.idleinfinity.cn/Equipment/Reform?id={392}&eid={eq.EquipID}";
+            if (win.GetBro().Address != url)
+            {
+                await win.LoadUrlWaitJsInit(url, "reform");
+            }
+            await Task.Delay(5000);
+            var c = await win.CallJs<string>("_reform.getEquipContent()");
+            eq.Content = c;
+            if (AttributeMatchUtil.Match(eq, con, out _))
+            {
+                Console.WriteLine("命中");
+                return;
+            }
+
+            await r.ReformEquip(eq, 392, emReformType.Rare19);
+          
+            await ReformLoop(eq, win, r, con);
+        }
+
+
 
     }
 }

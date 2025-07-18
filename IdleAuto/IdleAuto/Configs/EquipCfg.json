@@ -437,6 +437,24 @@
     }
   },
   {
+    "name": "正义之手",
+    "description": "",
+    "equipment": {
+      "category": "权杖",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+
+          "seq": 50,
+          "conditionContent": "正义之手"
+        }
+      ]
+    }
+  },
+  {
     "name": "冰冻",
     "description": "",
     "equipment": {
@@ -2472,31 +2490,10 @@
         {
           "matchType": "可选",
           "operate": "大于等于",
-          "attributeType": "施法速度",
-          "seq": 4,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "更佳魔法装备",
-          "seq": 3,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "额外金币取得",
-          "seq": 2,
-          "conditionContent": "10"
-        },
-        {
-          "matchType": "可选",
-          "operate": "大于等于",
-          "attributeType": "单项元素抗性之和",
-          "seq": 1,
-          "conditionContent": "5"
+          "attributeType": "生命",
+          "conditionContent": "1"
         }
+
       ]
     }
   },
@@ -3978,8 +3975,6 @@
     "equipment": {
       "category": "靴子",
       "quality": "套装",
-      "isTrade": true,
-      "isReformBase": true,
       "conditions": [
 
 
@@ -4031,38 +4026,7 @@
       ]
     }
   },
-  {
-    "name": "燃魂之焰绑定",
 
-    "equipment": {
-      "category": "靴子",
-      "quality": "套装",
-      "isTrade": true,
-      "isReformBase": true,
-      "conditions": [
-
-
-        {
-          "matchType": "必需",
-          "operate": "等于",
-          "attributeType": "名称",
-          "conditionContent": "燃魂之焰"
-        },
-        {
-          "matchType": "必需",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "已绑定"
-        },
-        {
-          "matchType": "可选",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "骷髅法师"
-        }
-      ]
-    }
-  },
   {
     "name": "灵魂监狱",
 
@@ -4412,6 +4376,24 @@
       ]
     }
   },
+  {
+    "name": "龙珠",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
+
+      
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "龙珠"
+        }
+      ]
+    }
+  },
   //死灵75以后法师
   {
     "name": "冥神",
@@ -4451,6 +4433,30 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "印玺"
+        },
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        }
+      ]
+    }
+  },
+  {
+    "name": "傀儡",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "傀儡"
         },
         {
           "matchType": "可选",
@@ -4522,6 +4528,56 @@
 
         {
           "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "盗墓之学徒项链",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇|魔法",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死灵,召唤,3"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "施法速度",
+          "conditionContent": "10"
+        }
+      ]
+    }
+  },
+  {
+    "name": "所罗门",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
+
+        {
+          "matchType": "必需",
           "operate": "等于",
           "attributeType": "施法速度",
           "conditionContent": "10"

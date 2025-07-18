@@ -153,23 +153,27 @@ namespace IdleAuto.Scripts.View
                 try
                 {
 
-                    //await FlowController.GroupWork(4, 1, RepairManager.Instance.ClearEquips);
+                   // var isSecondScan = false;
+                    var isdelAll = false;
+                    var isSecondScan = false;
+                    if (isSecondScan)
+                    {
+                        RepairManager.IsCollectEquip = false;
 
-                    //FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                    //await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    // FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
+                        await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                        return;
+                    }
+                    else if (isdelAll)
+                    {
+                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+                        await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    }
 
-                    //await FlowController.GroupWork(3, 1, FlowController.ReformDungeon);
-                    //await FlowController.GroupWork(1, 1, FlowController.UpgradeBaseEq);
-                  FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                   // RepairManager.IsCollectEquip = false;
-
-                    FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
                     RepairManager.RepairJob = "死灵";
                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
-                    RepairManager.RepairJob = "骑士";
-                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    RepairManager.RepairJob = "死骑";
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -245,7 +249,7 @@ namespace IdleAuto.Scripts.View
         {
 
             //定时任务测试
-            refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(120));
+           // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(120));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -287,25 +291,27 @@ namespace IdleAuto.Scripts.View
         private async void BtnTest_Click(object sender, EventArgs e)
         {
             //await FlowController.RegisterColdConversion();
-            await FlowController.MakeYongheng();
-            FlowController.RegisterYongheng();
+            //await FlowController.MakeYongheng();
+            //FlowController.RegisterYongheng();
 
-            //   await FlowController.MakeMori();
-            //   FlowController.RegisterMori();
+          //  await FlowController.MakeMori();
+          //  FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
             //  await FlowController.PassDungeon(91, 90, 80);
-            // FlowController.TestSpeed();
             // FlowController.GroupWork(3, 1, FlowController.ReformMageNecklace);
             //Expression<Func<EquipModel,EquipSuitModel, bool>> exp = (a,b) => a.EquipName.Contains("永恒");
             //EquipUtil.QueryEquipInRepo(exp, 2268);
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-            // FlowController.FightWorldBoss();
+           // FlowController.FightWorldBoss();
 
+            // FlowController.SwitchYongheng();
+           FlowController.RollJewelry();
         }
+
 
         /// <summary>
         /// 将11环永恒扣到35速轮回队伍
@@ -314,7 +320,7 @@ namespace IdleAuto.Scripts.View
         {
 
         }
-        
+
 
 
 
@@ -440,7 +446,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnRecovery_Click(object sender, EventArgs e)
         {
-
+            FlowController.RecoverHunterAndPastor();
         }
 
         private void btnShengyi_Click(object sender, EventArgs e)

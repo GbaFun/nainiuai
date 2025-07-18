@@ -404,7 +404,30 @@ function saveEquipSuit(d) {
         })
         .catch(r => {
             console.log("保存配装失败");
-          
+
+        });
+}
+
+
+function deleteEquipSuit(d) {
+    var data = MERGE_Form({
+        cid: _char.cid,
+        cfname: d.cfname,
+
+    });
+
+
+    data.cfid = d.cfid;
+
+
+    console.log(data);
+    POST_Message("EquipConfigDelete", data, "post", 1000)
+        .then(r => {
+            console.log("EquipAuction success");
+        })
+        .catch(r => {
+            console.log("删除配装失败");
+
         });
 }
 

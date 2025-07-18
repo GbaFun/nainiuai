@@ -184,6 +184,8 @@ namespace AttributeMatch
                     case emAttrType.增强伤害:
                     case emAttrType.物理伤害:
                     case emAttrType.魔法伤害:
+                    case emAttrType.毒伤:
+                    case emAttrType.减毒:
                     case emAttrType.元素抗性:
                     case emAttrType.抗电:
                     case emAttrType.抗火:
@@ -321,31 +323,37 @@ namespace AttributeMatch
             switch (attributeType)
             {
                 case emAttrType.力量:
-                    regexAttr = $@"\+(?<v>\d+) 力量";
+                    regexAttr = $@"\+(?<v>\d+)\s+力量";
                     break;
                 case emAttrType.敏捷:
-                    regexAttr = $@"\+(?<v>\d+) 敏捷";
+                    regexAttr = $@"\+(?<v>\d+)\s+敏捷";
                     break;
                 case emAttrType.体力:
-                    regexAttr = $@"\+(?<v>\d+) 体力";
+                    regexAttr = $@"\+(?<v>\d+)\s+体力";
                     break;
                 case emAttrType.精力:
-                    regexAttr = $@"\+(?<v>\d+) 精力";
+                    regexAttr = $@"\+(?<v>\d+)\s+精力";
                     break;
                 case emAttrType.生命:
-                    regexAttr = $@"\+(?<v>\d+) 生命";
+                    regexAttr = $@"\+(?<v>\d+)\s+生命";
                     break;
                 case emAttrType.法力:
-                    regexAttr = $@"\+(?<v>\d+) 法力";
+                    regexAttr = $@"\+(?<v>\d+)\s+法力";
                     break;
                 case emAttrType.增强伤害:
-                    regexAttr = $@"\+(?<v>\d+)\% 增强伤害";
+                    regexAttr = $@"\+(?<v>\d+)\%\s+增强伤害";
                     break;
                 case emAttrType.物理伤害:
-                    regexAttr = $@"\+(?<v>\d+)\% 物理伤害";
+                    regexAttr = $@"\+(?<v>\d+)\%\s+物理伤害";
                     break;
                 case emAttrType.魔法伤害:
-                    regexAttr = $@"\+(?<v>\d+)\% 魔法伤害";
+                    regexAttr = $@"\+(?<v>\d+)\%\s+魔法伤害";
+                    break;
+                case emAttrType.毒伤:
+                    regexAttr = $@"\+(?<v>\d+)\%\s+毒素伤害";
+                    break;
+                case emAttrType.减毒:
+                    regexAttr = $@"\-(?<v>\d+)\%\s+目标毒素抗性";
                     break;
                 case emAttrType.元素抗性:
                     regexAttr = $@"元素抗性 \+(?<v>\d+)\%";
@@ -418,7 +426,7 @@ namespace AttributeMatch
         {
             bool ismatch = false;
             weight = 0;
-            string regexAttr = $@"{_equip.EquipName}\((?<v1>\d+)\)";
+            string regexAttr = $@"{_equip.EquipName}\S*\((?<v1>\d+)\)";
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
             var match = regex.Match(_equip.Content);
             if (match.Success)

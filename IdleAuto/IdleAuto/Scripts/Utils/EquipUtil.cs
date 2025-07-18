@@ -31,6 +31,20 @@ public class EquipUtil
 
         return q;
     }
+    /// <summary>
+    /// 查询可交易的装备 不能被登记在交易表中
+    /// </summary>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    public static ISelect<EquipModel, TradeModel> QueryEquipTradeable()
+    {
+        // 1. 创建连接查询
+        var q = FreeDb.Sqlite.Select<EquipModel, TradeModel>()
+            .LeftJoin((a, b) => a.EquipID == b.EquipId);
+            q = q.Where((a, b) => b.DemandAccountName == null);
+
+        return q;
+    }
 
     /// <summary>
     /// 获取当前装备的套装类型 全命中才算命中
@@ -60,6 +74,8 @@ public class EquipUtil
     {
         return FreeDb.Sqlite.Select<EquipModel>().Where(exp).First();
     }
+
+   
 
 
 }

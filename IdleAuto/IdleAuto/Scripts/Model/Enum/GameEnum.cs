@@ -72,6 +72,8 @@ public enum emAttrType
     最大伤害,
     最小伤害,
     毒素伤害,
+    毒伤,
+    减毒,
     物品掉率,
     更佳魔法装备,
     额外金币取得,
@@ -274,7 +276,8 @@ public enum emEquip
     骑士技能衣服,
     死骑冰霜武器,
     冰转珠宝,
-    蓝项链
+    蓝项链,
+    刺客毒素黄珠宝
 
 }
 public enum emArtifactBase
@@ -347,7 +350,8 @@ public enum emSuitType
     效率,
     MF,
     未知,
-    boss
+    boss,
+    腐蚀
 }
 
 public enum emReformType
@@ -365,6 +369,10 @@ public enum emReformType
     /// 稀有
     /// </summary>
     UpgradeRare,
+    /// <summary>
+    /// 稀有19洗数值
+    /// </summary>
+    Rare19,
 
 }
 
@@ -377,5 +385,11 @@ public enum emGem
     红宝石,
     紫宝石,
     钻石
+
+}
+
+public enum emSuitName
+{
+    死灵召唤最终配装,
 
 }

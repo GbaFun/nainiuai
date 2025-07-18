@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AttributeMatch;
 using FreeSql.DataAnnotations;
 using IdleAuto.Scripts.Model;
+using IdleAuto.Scripts.Utils;
 
 public class EquipModel : IModel
 {
@@ -192,6 +193,12 @@ public class EquipModel : IModel
             RoleID = 0;
             RoleName = "";
         }
+    }
+
+    public void SetEquipStatus(emEquipStatus status)
+    {
+        this.EquipStatus = status;
+        DbUtil.InsertOrUpdate<EquipModel>(this);
     }
 
     public bool CanWear(RoleModel role)

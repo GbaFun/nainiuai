@@ -67,7 +67,11 @@ namespace IdleAuto.Scripts.Controller
         {
 
             await Task.Delay(1500);
-            var aa = await _win.LoadUrlWaitJsInit($" https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}", "reform");
+            var url = $"https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}";
+            if (_win.GetBro().Address != url)
+            {
+                await _win.LoadUrlWaitJsInit(url, "reform");
+            }
             await Task.Delay(1500);
             var d = new Dictionary<string, object>();
 
@@ -93,8 +97,8 @@ namespace IdleAuto.Scripts.Controller
             //打孔会直接跳到装备页不能更新装备内容
             var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare };
             if (!updateTypeList.Contains(reformType)) return;
-            var c = await _win.CallJs("_reform.getEquipContent()");
-            var content = c.Result.ToObject<string>();
+            var c = await _win.CallJs<string>("_reform.getEquipContent()");
+            var content = c;
             var quality = "";
             switch (reformType)
             {
@@ -138,7 +142,7 @@ namespace IdleAuto.Scripts.Controller
             //https://www.idleinfinity.cn/Equipment/EquipUpgradeBoxAll
             //eidsbox: 拼接
             var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-            
+
             var edis = string.Join(",", eqList.Select(p => p.EquipID));
             var data = new Dictionary<string, object> { { "eidsbox", edis } };
             var r = await _win.CallJsWaitReload($"upgradeAllInRepo({data.ToLowerCamelCase()})", "equip");

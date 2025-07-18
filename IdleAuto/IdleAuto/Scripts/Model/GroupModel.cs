@@ -45,5 +45,21 @@ namespace IdleAuto.Scripts.Model
         /// 献祭是否修完
         /// </summary>
         public bool IsRepairSacrificeDone { get; set; } = false;
+
+        /// <summary>
+        /// 主属性类型
+        /// </summary>
+        public emAttrType AttType { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var t = obj as GroupModel;
+            if (t == null) return false;
+            else return t.RoleId == this.RoleId;
+        }
+        public override int GetHashCode()
+        {
+            return this.RoleId;
+        }
     }
 }

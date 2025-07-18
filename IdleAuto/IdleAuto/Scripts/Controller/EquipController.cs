@@ -469,6 +469,29 @@ public class EquipController : BaseController
         }
     }
 
+    public async Task DeleteEquipSuit(emSuitType suitType, RoleModel role)
+    {
+        await Task.Delay(1500);
+        //跳转装备详情页面
+        var url = IdleUrlHelper.EquipUrl(role.RoleId);
+        if (_win.GetBro().Address.IndexOf(url) > -1) await _win.LoadUrlWaitJsInit(url, "equip");
+        var r = await _win.CallJs($"getEquipSuitId(\"{suitType.ToString()}\")");
+        var suitId = await GetSuitId(suitType, role);
+        var curEquips = await GetCurEquips();
+
+        var isReplace = suitId > 0 ? true : false;
+
+        var dic = new Dictionary<string, object>();
+        dic.Add("cfname", suitType.ToString());
+
+        dic.Add("cfid", suitId);
+
+
+        await _win.CallJsWaitReload($"deleteEquipSuit({dic.ToLowerCamelCase()})", "equip");
+        await Task.Delay(1500);
+
+    }
+
     public async Task SaveEquipSuitModel(emSuitType suitType, RoleModel role, int suitId)
     {
         //更新当前用户的对应配装表
@@ -559,6 +582,7 @@ public class EquipController : BaseController
 
         await Task.Delay(1500);
         var curSkillMode = targetSkillMode;
+        string necEquipSuitName = "";
         //跳转装备详情页面
         var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
         P.Log($"开始获取{role.RoleName}当前穿戴的装备", emLogType.AutoEquip);
@@ -599,7 +623,11 @@ public class EquipController : BaseController
                 {
                     suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
-
+                if (role.Job == emJob.死灵 && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
+                {
+                    necEquipSuitName = emSuitName.死灵召唤最终配装.ToString();
+                    await AdjustNecFinalEquip(role, curEquips, towearEquips);
+                }
                 if (suitEquips.IsSuccess)
                 {
 
@@ -670,14 +698,28 @@ public class EquipController : BaseController
             }
 
         }
+        if (_browser.Address != IdleUrlHelper.EquipUrl(role.RoleId))
+        {
+            await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        }
         var r1 = await win.CallJs($@"getCurEquips()");
 
         var curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
-
+        List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
+        bool canWear = false;
+        var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+        if (role.Job == emJob.死灵 && necEquipSuitName == emSuitName.死灵召唤最终配装.ToString()&&g.AttType!=emAttrType.精力)
+        {
+            canWear= await AutoAttributeSave(win, role, equipModels, emAttrType.精力);
+         
+            g.AttType = emAttrType.精力;
+            DbUtil.InsertOrUpdate<GroupModel>(g);
+        }
         if (towearEquips.Count > 0)
         {
-            List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
-            bool canWear = await AutoAttributeSave(win, role, equipModels);
+         
+            canWear = canWear?canWear: await AutoAttributeSave(win, role, equipModels);
+            
             if (canWear)
             {
                 await Task.Delay(1000);
@@ -708,7 +750,10 @@ public class EquipController : BaseController
             P.Log($"未找到更换装备，跳过更换装备流程", emLogType.AutoEquip);
         }
 
-
+        if(_browser.Address != IdleUrlHelper.EquipUrl(role.RoleId))
+        {
+            await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        }
         r1 = await win.CallJs($@"getCurEquips()");
         await UpdateCurEquips(win, role);
         curEquip = r1.Result.ToObject<Dictionary<emEquipSort, EquipModel>>();
@@ -718,6 +763,7 @@ public class EquipController : BaseController
             await FlowController.InsertColdConversion(curEquip, win, role);
             CalNecFcrSpeed(win.User, role, curEquip, role.GetRoleSkillMode());
         }
+
         if (role.Job == emJob.死骑)
         {
             RecordDkYongheng(role, curEquip);
@@ -739,9 +785,16 @@ public class EquipController : BaseController
     /// <returns></returns>
     private async Task AdjustNecFinalEquip(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, EquipModel> toWearEquips)
     {
+        foreach (var item in curEquips)
+        {
+            if (toWearEquips.ContainsKey(item.Key) && toWearEquips[item.Key] != null)
+            {
+                curEquips[item.Key] = toWearEquips[item.Key];
+            }
+        }
         //先洗圣衣 圣衣洗完再触发 精修
         //1.本体+圣衣+冥神提供的施法  剩下需要计算 轮回 项链 腰带
-        var baseFcr = 5 + 80 + 50M;
+        var baseFcr = 5 + 30 + 20 + 10 + 10 + 10 + 30M;
         var idealFcr = 180M;
         baseFcr += GetYonghengSpeed(role);
         var curFcr = baseFcr;
@@ -754,20 +807,42 @@ public class EquipController : BaseController
             curFcr += s;
         }
         //速度缺口
-        var differenceFcr = idealFcr - baseFcr;
+        var differenceFcr = idealFcr - curFcr;
+        if (differenceFcr <= 0) return;
         if (differenceFcr <= 10)
         {
-            
             //换野火 尝试交易 登记交易
             //没有野火则换蛛网
+            var necklace = EquipUtil.QueryEquipTradeable().Where((a, b) => a.EquipName == "野火" && a.Content.Contains("+2 所有技能") && a.EquipStatus == emEquipStatus.Repo).ToList();
+            var localYehuo = necklace.Find(p => p.AccountName == _win.User.AccountName);
+            if (localYehuo != null)
+            {
+                toWearEquips[emEquipSort.项链] = localYehuo;
+            }
+            else
+            {
+                var otherYehuo = necklace[0];
+                var tradeInfo = new TradeModel()
+                {
+                    EquipId = otherYehuo.EquipID,
+                    DemandAccountName = _win.User.AccountName,
+                    DemandRoleId = role.RoleId,
+                    DemandRoleName = role.RoleName,
+                    EquipName = otherYehuo.EquipName,
+                    EquipSortName = "项链",
+                    OwnerAccountName = otherYehuo.AccountName,
+                    TradeStatus = emTradeStatus.Register,
+
+                };
+            }
         }
-        else if(differenceFcr<=20)
+        else if (differenceFcr <= 20)
         {
             //换蛛网
         }
         else
         {
-           //换蛛网 戒指位如果双全能则换一个希望
+            //换蛛网 戒指位如果双全能则换一个希望
         }
         return;
     }
@@ -1043,11 +1118,11 @@ public class EquipController : BaseController
         {
             toWearEquips[emEquipSort.戒指2] = bestCombination[0];
         }
-        if (toWearEquips[emEquipSort.戒指1].EquipName == currentRing1.EquipName)
+        if (toWearEquips.ContainsKey(emEquipSort.戒指1)&& toWearEquips[emEquipSort.戒指1].EquipName == currentRing1.EquipName)
         {
             toWearEquips.Remove(emEquipSort.戒指1);
         }
-        if (toWearEquips[emEquipSort.戒指2].EquipName == currentRing2.EquipName)
+        if (toWearEquips.ContainsKey(emEquipSort.戒指2) && toWearEquips[emEquipSort.戒指2].EquipName == currentRing2.EquipName)
         {
             toWearEquips.Remove(emEquipSort.戒指2);
         }
@@ -1329,6 +1404,34 @@ public class EquipController : BaseController
         return replaceEquipStruct;
     }
 
+    public async Task EquipOff(BroWindow win, RoleModel role, int sort, EquipModel eq = null)
+    {
+        if (win.GetBro().Address != IdleUrlHelper.EquipUrl(role.RoleId))
+        {
+            var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        }
+        await win.CallJsWaitReload($@"equipOff({role.RoleId},{sort})", "equip");
+        if (eq != null)
+        {
+            eq.EquipStatus = emEquipStatus.Repo;
+            DbUtil.InsertOrUpdate<EquipModel>(eq);
+        }
+
+    }
+    public async Task EquipOn(BroWindow win, RoleModel role, EquipModel equip)
+    {
+        if (win.GetBro().Address != IdleUrlHelper.EquipUrl(role.RoleId))
+        {
+            var result = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+        }
+        await win.CallJsWaitReload($@"equipOn({role.RoleId},{equip.EquipID})", "equip");
+        if (equip != null)
+        {
+            equip.EquipStatus = emEquipStatus.Equipped;
+            DbUtil.InsertOrUpdate<EquipModel>(equip);
+        }
+    }
+
     /// <summary>
     /// 根据需要替换的装备列表，自动加点满足装备需求
     /// </summary>
@@ -1336,15 +1439,16 @@ public class EquipController : BaseController
     /// <param name="role">执行逻辑的角色</param>
     /// <param name="towearEquips">要穿戴的装备列表</param>
     /// <returns>是否能满足条件</returns>
-    public async Task<bool> AutoAttributeSave(BroWindow win, RoleModel role, List<EquipModel> towearEquips)
+    public async Task<bool> AutoAttributeSave(BroWindow win, RoleModel role, List<EquipModel> towearEquips, emAttrType attType = emAttrType.体力)
     {
+        await Task.Delay(1000);
         P.Log($"开始检查待穿戴装备的属性需求", emLogType.AutoEquip);
-        AttrV4 requareV4 = AttrV4.Default;
+        AttrV4 requireV4 = AttrV4.Default;
         foreach (var item in towearEquips)
         {
-            requareV4 = AttrV4.Max(requareV4, item.RequareAttr);
+            requireV4 = AttrV4.Max(requireV4, item.RequareAttr);
         }
-        P.Log($"检查待穿戴装备的属性需求成功，需要（力-{requareV4.Str}，敏-{requareV4.Dex}，体-{requareV4.Vit}，精-{requareV4.Eng}）", emLogType.AutoEquip);
+        P.Log($"检查待穿戴装备的属性需求成功，需要（力-{requireV4.Str}，敏-{requireV4.Dex}，体-{requireV4.Vit}，精-{requireV4.Eng}）", emLogType.AutoEquip);
 
         P.Log($"开始检查角色{role.RoleName}的属性是否满足穿戴条件", emLogType.AutoEquip);
         bool canWear = false;
@@ -1360,7 +1464,7 @@ public class EquipController : BaseController
                 var baseAttr = response3.Result.ToObject<CharBaseAttributeModel>();
                 P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
                 AttrV4 jobAttr = JobBaseAttributeUtil.JobBaseAttr(role.Job);
-                emMeetType meetType = baseAttr.Meets(requareV4, jobAttr);
+                emMeetType meetType = baseAttr.Meets(requireV4, jobAttr,attType);
                 switch (meetType)
                 {
                     case emMeetType.AlreadyMeet:
@@ -1369,7 +1473,7 @@ public class EquipController : BaseController
                         break;
                     case emMeetType.MeetAfterAdd:
                         P.Log($"{role.RoleName}的属性不满足穿戴条件，但是剩余属性点足够", emLogType.AutoEquip);
-                        if (baseAttr.AddPoint(requareV4, jobAttr))
+                        if (baseAttr.AddPoint(requireV4, jobAttr,attType))
                         {
 
                             P.Log($"开始{role.RoleName}的属性加点", emLogType.AutoEquip);
@@ -1406,7 +1510,7 @@ public class EquipController : BaseController
                             {
                                 baseAttr = response6.Result.ToObject<CharBaseAttributeModel>();
                                 P.Log($"获取角色{role.RoleName}四维属性成功（力-{baseAttr.Str}，敏-{baseAttr.Dex}，体-{baseAttr.Vit}，精-{baseAttr.Eng}）", emLogType.AutoEquip);
-                                if (baseAttr.AddPoint(requareV4, jobAttr))
+                                if (baseAttr.AddPoint(requireV4, jobAttr, attType))
                                 {
                                     var response7 = await win.CallJsWaitReload($@"_char.attributeSave({role.RoleId},{baseAttr.ToLowerCamelCase()});", "char");
                                     if (response7.Success)
@@ -1471,6 +1575,11 @@ public class EquipController : BaseController
             if (equip != null)
             {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
                 r.Add(equip);
+                //将之前登记为null的交易项目移除 代表这个位置有匹配位置
+                if (tradeResult.ContainsKey(dto.EmEquipSort)&&tradeResult[dto.EmEquipSort]==null)
+                {
+                    tradeResult.Remove(dto.EmEquipSort);
+                }
                 break;
             }
             //暂时不给献祭队永恒

@@ -22,6 +22,8 @@
         mage: $("td:contains('合成施法者系列物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         upgradeRare: $("td:contains('升级为稀有物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         upgradeMagical: $("td:contains('升级为魔法物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        rare19: $("td:contains('重置所有词缀数值')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        
     }
 
     async function isMeterialEnough() {
@@ -30,7 +32,8 @@
         var canMage = $("td:contains('合成施法者系列物品')").parent().find('.label ').text() == "执行";
         var canUpgradeRare = $("td:contains('升级为稀有物品')").parent().find('.label ').text() == "执行";
         var canUpgradeMagical = $("td:contains('升级为魔法物品')").parent().find('.label ').text() == "执行";
-        return { canDirect: canDirect, canRandom: canRandom, canMage: canMage, canUpgradeRare: canUpgradeRare, canUpgradeMagical: canUpgradeMagical }
+        var canRare19 = $("td:contains('重置所有词缀数值')").parent().find('.label ').text() == "执行";
+        return { canDirect: canDirect, canRandom: canRandom, canMage: canMage, canUpgradeRare: canUpgradeRare, canUpgradeMagical: canUpgradeMagical, canRare19: canRare19 }
     }
 
     async function reform(d) {
@@ -42,10 +45,8 @@
         debugger
         await POST_Message("EquipReform", MERGE_Form(data)).then((r) => {
             debugger
-            Bridge.invokeEvent('OnJsInited', 'reform');
         }).catch((r, status, xhr) => {
             debugger
-            Bridge.invokeEvent('OnJsInited', 'reform');
         });
     }
 

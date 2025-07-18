@@ -30,10 +30,10 @@ namespace IdleAuto.Scripts.Model
     }
     public class CharAttributeModel : IModel
     {
-      
+
 
         public string AccountName { get; set; }
-        [Column( IsPrimary = true)]
+        [Column(IsPrimary = true)]
         [Navigate(nameof(RoleModel.RoleId))]
         public int RoleId { get; set; }
 
@@ -100,7 +100,7 @@ namespace IdleAuto.Scripts.Model
         [Description("精力加点")]
         public int EngAdd { get; set; }
 
-        public emMeetType Meets(AttrV4 requare, AttrV4 baseAttr)
+        public emMeetType Meets(AttrV4 require, AttrV4 baseAttr, emAttrType attType = emAttrType.体力)
         {
             int absoluteStr, absoluteDex, absoluteVit, absoluteEng;
             absoluteStr = baseAttr.Str + StrAdd;
@@ -108,29 +108,37 @@ namespace IdleAuto.Scripts.Model
             absoluteVit = baseAttr.Vit + VitAdd;
             absoluteEng = baseAttr.Eng + EngAdd;
 
-            if (absoluteStr >= requare.Str && absoluteDex >= requare.Dex && absoluteVit >= requare.Vit && absoluteEng >= requare.Eng)
+
+            if (absoluteStr >= require.Str && absoluteDex >= require.Dex && absoluteVit >= require.Vit && absoluteEng >= require.Eng)
+            {
+                //精力优先触发重置
+                if (attType == emAttrType.精力 && absoluteVit >= absoluteEng)
+                {
+                    return emMeetType.MeetAfterReset;
+                }
                 return emMeetType.AlreadyMeet;
+            }
             int v1 = 0;
-            if (absoluteStr < requare.Str)
+            if (absoluteStr < require.Str)
             {
-                v1 += requare.Str - absoluteStr;
+                v1 += require.Str - absoluteStr;
             }
-            if (absoluteDex < requare.Dex)
+            if (absoluteDex < require.Dex)
             {
-                v1 += requare.Dex - absoluteDex;
+                v1 += require.Dex - absoluteDex;
             }
-            if (absoluteVit < requare.Vit)
+            if (absoluteVit < require.Vit)
             {
-                v1 += requare.Vit - absoluteVit;
+                v1 += require.Vit - absoluteVit;
             }
-            if (absoluteEng < requare.Eng)
+            if (absoluteEng < require.Eng)
             {
-                v1 += requare.Eng - absoluteEng;
+                v1 += require.Eng - absoluteEng;
             }
             if (v1 <= Point)
                 return emMeetType.MeetAfterAdd;
 
-            int v2 = baseAttr.Str - requare.Str + baseAttr.Dex - requare.Dex + baseAttr.Vit - requare.Vit + baseAttr.Eng - requare.Eng;
+            int v2 = baseAttr.Str - require.Str + baseAttr.Dex - require.Dex + baseAttr.Vit - require.Vit + baseAttr.Eng - require.Eng;
             int totalAdd = StrAdd + DexAdd + VitAdd + EngAdd + Point;
             if (v2 + totalAdd >= 0)
             {
@@ -139,7 +147,7 @@ namespace IdleAuto.Scripts.Model
             return emMeetType.CanNotMeet;
         }
 
-        public bool AddPoint(AttrV4 requare, AttrV4 baseAttr)
+        public bool AddPoint(AttrV4 require, AttrV4 baseAttr, emAttrType attType = emAttrType.体力)
         {
             int absoluteStr, absoluteDex, absoluteVit, absoluteEng;
             absoluteStr = baseAttr.Str + StrAdd;
@@ -148,14 +156,14 @@ namespace IdleAuto.Scripts.Model
             absoluteEng = baseAttr.Eng + EngAdd;
 
             int csa = 0, cda = 0, cva = 0, cea = 0;
-            if (absoluteStr < requare.Str)
-                csa = requare.Str - absoluteStr;
-            if (absoluteDex < requare.Dex)
-                cda = requare.Dex - absoluteDex;
-            if (absoluteVit < requare.Vit)
-                cva = requare.Vit - absoluteVit;
-            if (absoluteEng < requare.Eng)
-                cea = requare.Eng - absoluteEng;
+            if (absoluteStr < require.Str)
+                csa = require.Str - absoluteStr;
+            if (absoluteDex < require.Dex)
+                cda = require.Dex - absoluteDex;
+            if (absoluteVit < require.Vit)
+                cva = require.Vit - absoluteVit;
+            if (absoluteEng < require.Eng)
+                cea = require.Eng - absoluteEng;
             if (Point >= csa + cda + cva + cea)
             {
                 StrAdd += csa;
@@ -163,7 +171,14 @@ namespace IdleAuto.Scripts.Model
                 VitAdd += cva;
                 EngAdd += cea;
                 Point -= csa + cda + cva + cea;
-                VitAdd += Point;
+                if (attType == emAttrType.体力)
+                {
+                    VitAdd += Point;
+                }
+                else if (attType == emAttrType.精力)
+                {
+                    EngAdd += Point;
+                }
                 return true;
             }
 

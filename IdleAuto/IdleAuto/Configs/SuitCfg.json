@@ -637,7 +637,7 @@
       {
         "suitName": "骑士40-50套装",
         "主手": {
-          "name": "末日",
+          "name": "正义之手,末日",
           "isNecessery": true
         },
         "副手": {
@@ -3677,7 +3677,7 @@
     },
     "equipSuit": [
       {
-        "suitName": "法师",
+        "suitName": "死灵召唤最终配装",
         "skillMode": "法师",
         "主手": {
           "name": "冥神",
@@ -3693,7 +3693,7 @@
           "isNecessery": true
         },
         "项链": {
-          "name": "人品,盗墓项链",
+          "name": "所罗门,盗墓之学徒项链,人品,盗墓项链",
           "isNecessery": true
         },
         "戒指1": {
@@ -3716,11 +3716,11 @@
           "isNecessery": true
         },
         "护符": {
-          "name": "印玺,巨魔人",
+          "name": "傀儡,印玺,巨魔人",
           "isNecessery": true
         },
         "腰带": {
-          "name": "盗墓腰带",
+          "name": "拉斯玛之网,盗墓腰带",
           "isNecessery": true
 
         }
@@ -4532,7 +4532,7 @@
           "isNecessery": 0
         },
         "护符": {
-          "name": "冰霜护符",
+          "name": "龙珠,冰霜护符",
           "isNecessery": 0
         },
         "腰带": {
