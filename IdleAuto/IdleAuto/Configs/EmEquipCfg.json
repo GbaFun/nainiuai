@@ -290,6 +290,7 @@
       }
     ]
   },
+ 
   "刺客毒素黄珠宝": {
     "category": "珠宝",
     "quality": "稀有",
@@ -311,7 +312,7 @@
         "matchType": "必需",
         "operate": "大于等于",
         "attributeType": "增强伤害",
-        "conditionContent": "29"
+        "conditionContent": "28"
       },
 
       {

@@ -177,7 +177,8 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
-            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+           // var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 18,1} };
             foreach (var job in sendDic)
             {
                 await SendRune(job.Key, job.Value);
@@ -271,9 +272,10 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != RepairManager.RepoAcc && p.EquipName.Contains("维特之脚") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
-            //var usefulList = FreeDb.Sqlite.Select<UsefulEquip>().Where(p => p.EquipName.Contains("权杖")&&p.EquipStatus==emEquipStatus.Repo).ToList();
-            //list=usefulList.ToObject<List<EquipModel>>();
+          //  var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != RepairManager.RepoAcc && p.EquipName.Contains("维特之脚") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var usefulList = FreeDb.Sqlite.Select<UsefulEquip>().Where(p => p.EquipName.Contains("权杖")&&p.Content.Contains("+3 狂热")&&p.Content.Contains("+3 审判")
+            &&(p.Quality=="base"||p.Quality=="slot")&&p.EquipStatus==emEquipStatus.Repo&&p.AccountName!=RepairManager.RepoAcc).ToList();
+            var list=usefulList.ToObject<List<EquipModel>>();
             var group = list.GroupBy(g => g.AccountName).ToList();
             foreach (var item in group)
             {
@@ -285,7 +287,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "奶牛");
+                    await tradeControl.StartTrade(e, RepairManager.RepoRole);
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -877,6 +879,27 @@ namespace IdleAuto.Scripts.Controller
             eqList = eqList.Where(p => p.IsMatch(con)).ToList();
 
             await ReformEq(emReformType.Mage, eqList, win);
+        }
+
+        public async static Task ReformMace()
+        {
+            var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "权杖" && p.Quality == "base"  && p.EquipStatus == emEquipStatus.Repo && p.Lv >= 70).ToList();
+            var con = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.正义改造底子);
+            eqList = eqList.Where(p => p.IsMatch(con)).ToList();
+
+            var list=eqList.GroupBy(g => g.AccountName);
+            foreach(var item in list)
+            {
+                var user =AccountCfg.Instance.GetUserModel(item.Key);
+                var win = await TabManager.Instance.TriggerAddBroToTap(user);
+                var r = new ReformController(win);
+                foreach(var eq in item)
+                {
+                    await r.SlotReform(eq, win.User.FirstRole.RoleId, con, emArtifactBase.正义改造底子);
+                }
+            
+            }
+       
         }
 
 
@@ -1926,7 +1949,7 @@ namespace IdleAuto.Scripts.Controller
         {
             var con = EmEquipCfg.Instance.Data[emEquip.刺客毒素黄珠宝];
 
-            var testEq = new EquipModel() { Category = "珠宝", Quality = "rare", EquipID = 24590727 };
+            var testEq = new EquipModel() { Category = "珠宝", Quality = "rare", EquipID = 28749366 };
 
             var u = AccountCfg.Instance.GetUserModel("铁矿石");
             var win = await TabManager.Instance.TriggerAddBroToTap(u);
@@ -1941,7 +1964,9 @@ namespace IdleAuto.Scripts.Controller
             {
                 await win.LoadUrlWaitJsInit(url, "reform");
             }
-            await Task.Delay(5000);
+            Random random = new Random();
+            int randomNumber = random.Next(2, 8); // 6是上限但不包含
+            await Task.Delay(6);
             var c = await win.CallJs<string>("_reform.getEquipContent()");
             eq.Content = c;
             if (AttributeMatchUtil.Match(eq, con, out _))
@@ -1953,6 +1978,12 @@ namespace IdleAuto.Scripts.Controller
             await r.ReformEquip(eq, 392, emReformType.Rare19);
           
             await ReformLoop(eq, win, r, con);
+        }
+
+        public static async Task RuneUpgrade(BroWindow win)
+        {
+            var r = new RuneController(win);
+          await  r.AutoUpgradeRune(win, win.User);
         }
 
 

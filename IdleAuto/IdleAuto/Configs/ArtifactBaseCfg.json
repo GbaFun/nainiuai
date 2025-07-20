@@ -466,7 +466,35 @@
       }
     ]
   },
+  "正义改造底子": {
+    "targetSlotCount": 4,
+    "slotRule": "33:direct,else:random",
+    "category": "权杖",
+    "quality": "普通",
 
+    "conditions": [
+
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "seq": 6,
+        "conditionContent": "审判光环,3"
+      },
+  
+      {
+        "matchType": "任一",
+        "matchGroupName": "权杖",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "seq": 6,
+        "conditionContent": "狂热光环,3"
+      }
+
+    ]
+
+
+  },
   "执法者": {
     "category": "锤",
     "quality": "破碎",

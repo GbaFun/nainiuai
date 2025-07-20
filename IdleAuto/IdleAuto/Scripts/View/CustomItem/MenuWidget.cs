@@ -153,8 +153,8 @@ namespace IdleAuto.Scripts.View
                 try
                 {
 
-                   // var isSecondScan = false;
-                    var isdelAll = false;
+                    // var isSecondScan = false;
+                    var isdelAll = true;
                     var isSecondScan = false;
                     if (isSecondScan)
                     {
@@ -171,9 +171,9 @@ namespace IdleAuto.Scripts.View
                     }
 
                     RepairManager.RepairJob = "死灵";
-                  // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
                     RepairManager.RepairJob = "死骑";
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    //  await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
 
                 }
                 catch (Exception ex)
@@ -249,7 +249,7 @@ namespace IdleAuto.Scripts.View
         {
 
             //定时任务测试
-           // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(120));
+            // refreshTimer = new System.Threading.Timer(AutoMonitorElapsed, null, TimeSpan.FromMinutes(60), TimeSpan.FromMinutes(120));
         }
         private void AutoMonitorElapsed(object state)
         {
@@ -294,8 +294,8 @@ namespace IdleAuto.Scripts.View
             //await FlowController.MakeYongheng();
             //FlowController.RegisterYongheng();
 
-          //  await FlowController.MakeMori();
-          //  FlowController.RegisterMori();
+            //  await FlowController.MakeMori();
+            //  FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
@@ -306,20 +306,15 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-           // FlowController.FightWorldBoss();
+             FlowController.FightWorldBoss();
 
-            // FlowController.SwitchYongheng();
-           FlowController.RollJewelry();
+            //FlowController.SwitchYongheng();
+            //  FlowController.RollJewelry();
+            //  FlowController.ReformMace();
         }
 
 
-        /// <summary>
-        /// 将11环永恒扣到35速轮回队伍
-        /// </summary>
-        private async void SwitchYongheng()
-        {
 
-        }
 
 
 
@@ -347,8 +342,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoRune_Click(object sender, EventArgs e)
         {
-            RuneConfigForm runeForm = new RuneConfigForm();
-            runeForm.ShowDialog();
+            FlowController.GroupWork(3, 0, FlowController.RuneUpgrade);
         }
 
         private void HomeGroup_Enter(object sender, EventArgs e)

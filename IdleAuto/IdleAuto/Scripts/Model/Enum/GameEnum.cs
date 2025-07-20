@@ -277,7 +277,8 @@ public enum emEquip
     死骑冰霜武器,
     冰转珠宝,
     蓝项链,
-    刺客毒素黄珠宝
+    刺客毒素黄珠宝,
+    正义改造底子
 
 }
 public enum emArtifactBase
@@ -316,7 +317,9 @@ public enum emArtifactBase
     [Description("永恒")]
     双头斧永恒,
     [Description("末日")]
-    双头斧末日
+    双头斧末日,
+    [Description("正义之手")]
+    正义改造底子
 }
 
 /// <summary>
@@ -373,6 +376,10 @@ public enum emReformType
     /// 稀有19洗数值
     /// </summary>
     Rare19,
+    /// <summary>
+    /// 随机打孔
+    /// </summary>
+    SlotRandom,
 
 }
 

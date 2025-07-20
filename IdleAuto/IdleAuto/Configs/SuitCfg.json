@@ -637,7 +637,54 @@
       {
         "suitName": "骑士40-50套装",
         "主手": {
-          "name": "正义之手,末日",
+          "name": "正义之手",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "梦境盾,元帅盾牌",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "炽天使之韵,3光环项链,2光环项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "圣洁之靴,冰原行者",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "飞龙衣服,重甲",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "抗性手",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "元帅护符,光环护符,抗性护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": "骑士40-50套装",
+        "主手": {
+          "name": "末日",
           "isNecessery": true
         },
         "副手": {
