@@ -95,10 +95,19 @@
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Utils\HtmlUtil.cs" />
+    <Compile Include="Scripts\View\SecondMenuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Scripts\View\SecondMenuForm.Designer.cs">
+      <DependentUpon>SecondMenuForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\Wrap\BroWindow.cs" />
     <Compile Include="Scripts\Wrap\EquipTradeQueue.cs" />
     <Compile Include="Scripts\Wrap\QueueTest.cs" />
     <Compile Include="Scripts\Wrap\RateControlledQueue.cs" />
+    <EmbeddedResource Include="Scripts\View\SecondMenuForm.resx">
+      <DependentUpon>SecondMenuForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="BackUp\Cookies\RasdGch.json" />
     <None Include="BackUp\Cookies\RasdSky.json" />
     <None Include="BackUp\Cookies\史蒂夫.json" />
@@ -294,6 +303,7 @@
     <Content Include="Document\30过滤.txt" />
     <Content Include="Document\48过滤.txt" />
     <Content Include="Document\60+过滤.txt" />
+    <Content Include="Document\P3U%29]UACATFF[VMDO{65NLR.png" />
     <Content Include="Document\regex.txt" />
     <Content Include="Document\中后期宝珠过滤.txt" />
     <Content Include="Document\献祭.png" />

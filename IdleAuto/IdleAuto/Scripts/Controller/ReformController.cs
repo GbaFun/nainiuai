@@ -63,6 +63,8 @@ namespace IdleAuto.Scripts.Controller
             else return false;
         }
 
+
+
         public async Task<bool> ReformEquip(EquipModel equip, int roleId, emReformType reformType)
         {
 
@@ -95,11 +97,11 @@ namespace IdleAuto.Scripts.Controller
         private async Task UpdateContent(EquipModel equip, emReformType reformType)
         {
             //打孔会直接跳到装备页不能更新装备内容
-            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare };
+            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19 };
             if (!updateTypeList.Contains(reformType)) return;
             var c = await _win.CallJs<string>("_reform.getEquipContent()");
             var content = c;
-            var quality = "";
+            var quality = equip.Quality;
             switch (reformType)
             {
                 case emReformType.UpgradeRare:
@@ -115,6 +117,12 @@ namespace IdleAuto.Scripts.Controller
             equip.Quality = quality;
             equip.Content = content;
             FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(equip).ExecuteAffrows();
+        }
+
+        public async Task<string> GetEquipContent()
+        {
+            var c = await _win.CallJs<string>("_reform.getEquipContent()");
+            return c;
         }
 
 

@@ -34,6 +34,7 @@ namespace IdleAuto.Scripts.View
             InitializeComponent();
             ShowAccountCombo();
             SetDailyTimer();
+            LoadComBoxData();
         }
 
         private void MenuWidget_Load(object sender, EventArgs e)
@@ -104,7 +105,9 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoEquip_Click(object sender, EventArgs e)
         {
-            RepairManager.Instance.AutoRepair(AccountController.Instance.User);
+            
+            
+            RepairManager.Instance.AutoRepair(null);
         }
         public void BtnAutoAh_Click(object sender, EventArgs e)
         {
@@ -152,28 +155,9 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
-
-                    // var isSecondScan = false;
-                    var isdelAll = true;
-                    var isSecondScan = false;
-                    if (isSecondScan)
-                    {
-                        RepairManager.IsCollectEquip = false;
-
-                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => p.RoleID == 0).ExecuteAffrows();
-                        await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                        return;
-                    }
-                    else if (isdelAll)
-                    {
-                        FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                        await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
-                    }
-
-                    RepairManager.RepairJob = "死灵";
-                   // await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
-                    RepairManager.RepairJob = "死骑";
-                    //  await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                 
+                   await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+              
 
                 }
                 catch (Exception ex)
@@ -245,6 +229,11 @@ namespace IdleAuto.Scripts.View
 
         #endregion
 
+        public void LoadComBoxData()
+        {
+            comboJob.DataSource = RepairManager.Jobs;
+        }
+
         private void SetDailyTimer()
         {
 
@@ -294,8 +283,8 @@ namespace IdleAuto.Scripts.View
             //await FlowController.MakeYongheng();
             //FlowController.RegisterYongheng();
 
-            //  await FlowController.MakeMori();
-            //  FlowController.RegisterMori();
+            // await FlowController.MakeMori();
+            // FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
@@ -306,9 +295,10 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-             FlowController.FightWorldBoss();
+            FlowController.FightWorldBoss();
 
             //FlowController.SwitchYongheng();
+           // FlowController.ReformShengyi();
             //  FlowController.RollJewelry();
             //  FlowController.ReformMace();
         }
@@ -446,6 +436,23 @@ namespace IdleAuto.Scripts.View
         private void btnShengyi_Click(object sender, EventArgs e)
         {
             FlowController.RepairShengyi();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SecondMenuForm form = new SecondMenuForm();
+            form.ShowDialog();
+        }
+
+        private void comboJob_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // 获取当前选中项的值
+            string selectedValue = comboJob.SelectedItem?.ToString();
+            // 获取当前选中项的索引
+            int selectedIndex = comboJob.SelectedIndex;
+
+            // 执行相关操作，如更新其他控件数据
+            RepairManager.RepairJob = selectedValue;
         }
     }
 }

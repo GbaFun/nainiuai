@@ -75,7 +75,17 @@ public class EquipUtil
         return FreeDb.Sqlite.Select<EquipModel>().Where(exp).First();
     }
 
-   
+    public static Dictionary<emEquipSort, EquipModel> GetEquipMap(List<EquipModel> eqList)
+    {
+        var dic = new Dictionary<emEquipSort, EquipModel>();
+        foreach (var e in eqList)
+        {
+            dic.Add(e.emEquipSort, e);
+        }
+        return dic;
+    }
+
+
 
 
 }

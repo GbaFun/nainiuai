@@ -43,6 +43,7 @@ public enum emCategory
     死骑面罩,
     道具,
     卡片,
+    宝箱,
 
     //混合类型
     武器,
@@ -278,7 +279,8 @@ public enum emEquip
     冰转珠宝,
     蓝项链,
     刺客毒素黄珠宝,
-    正义改造底子
+    死灵圣衣洗点21,
+    死灵圣衣洗点25
 
 }
 public enum emArtifactBase
@@ -380,6 +382,16 @@ public enum emReformType
     /// 随机打孔
     /// </summary>
     SlotRandom,
+
+    /// <summary>
+    /// 套装21
+    /// </summary>
+    Set21,
+
+    /// <summary>
+    /// 套装25
+    /// </summary>
+    Set25,
 
 }
 

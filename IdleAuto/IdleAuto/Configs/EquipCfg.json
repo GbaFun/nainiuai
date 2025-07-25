@@ -3079,6 +3079,31 @@
     }
   },
   {
+    "name": "满速轮回",
+    "description": "死灵副手",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "神器",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 10,
+          "conditionContent": "35"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    }
+  },
+  {
     "name": "轮回",
     "description": "死灵副手",
     "equipment": {
@@ -3967,7 +3992,34 @@
       ]
     }
   },
-
+  //骑士圣衣
+  {
+    "name": "敏锐之眼",
+    "equipment": {
+      "category": "帽子",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "敏锐之眼"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "骑士,光环,2"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "审判光环,2"
+        }
+      ]
+    }
+  },
   //死灵圣衣
   {
     "name": "燃魂之焰绑定",
@@ -3999,6 +4051,7 @@
       ]
     }
   },
+
   {
     "name": "燃魂之焰",
 
@@ -4107,7 +4160,6 @@
     "equipment": {
       "category": "靴子",
       "quality": "套装",
-      "isTrade": true,
       "conditions": [
 
 
@@ -4157,7 +4209,6 @@
     "equipment": {
       "category": "靴子",
       "quality": "套装",
-      "isTrade": true,
       "conditions": [
 
 
@@ -4384,7 +4435,7 @@
       "quality": "传奇",
       "conditions": [
 
-      
+
         {
           "matchType": "必需",
           "operate": "等于",
@@ -4568,7 +4619,12 @@
       "quality": "传奇",
       "isTrade": true,
       "conditions": [
-
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "所罗门"
+        },
         {
           "matchType": "必需",
           "operate": "大于等于",

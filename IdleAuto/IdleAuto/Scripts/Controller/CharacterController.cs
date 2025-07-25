@@ -720,12 +720,30 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task<CharAttributeModel> GetCharAtt(RoleModel role)
         {
+            var url = IdleUrlHelper.RoleUrl(role.RoleId);
+            if (_browser.Address != url)
+            {
+                await _win.LoadUrlWaitJsInit(url, "char");
+            }
 
-            await _win.LoadUrlWaitJsInit($"{IdleUrlHelper.Idle}/{IdleUrlHelper.Role}?id={role.RoleId}", "char");
 
             var d = await _win.CallJs($@"_char.getAttribute();");
             return d.Result?.ToObject<CharAttributeModel>();
 
+
+        }
+
+        /// <summary>
+        /// 保存人物相关信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task SaveRoleInfo(RoleModel role)
+        {
+            var info=await GetCharAtt(role);
+            var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
+            g.SkeletonMageFcr = info.SkeletonMageFcr;
+            DbUtil.InsertOrUpdate<GroupModel>(g);
+            DbUtil.InsertOrUpdate<CharAttributeModel>(info);
 
         }
 
@@ -1133,9 +1151,9 @@ namespace IdleAuto.Scripts.Controller
             if (curEquips == null) return true;
             var hasMori = curEquips.Values.Where(p => p.EquipName == "末日").FirstOrDefault() != null;
             var hasBingdong = curEquips.Values.Where(p => p.EquipName == "无形冰冻").FirstOrDefault() != null;
-            var hasZhengyi = curEquips.Values.Where(p => p.EquipName .Contains("正义之手")).FirstOrDefault() != null;
+            var hasZhengyi = curEquips.Values.Where(p => p.EquipName.Contains("正义之手")).FirstOrDefault() != null;
             var hasYongheng = role.GetGroup().Where(p => p.Job == emJob.死骑).First().YonghengSpeed > 0;
-            if ((hasMori || hasYongheng) && !hasBingdong &&!hasZhengyi)
+            if ((hasMori || hasYongheng) && !hasBingdong && !hasZhengyi)
             {
                 skillConfig.GroupSkill.Remove("祝福之锤");
                 //  skillConfig.KeySkillId = 0;

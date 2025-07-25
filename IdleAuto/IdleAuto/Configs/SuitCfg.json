@@ -631,7 +631,7 @@
     "jobName": "骑士",
     "lv": {
       "min": 65,
-      "max": 90
+      "max": 100
     },
     "equipSuit": [
       {
@@ -645,7 +645,7 @@
           "isNecessery": 0
         },
         "头盔": {
-          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
+          "name": "敏锐之眼,3级光环头盔,2级光环头盔,骑士40解毒头",
           "isNecessery": 0
         },
         "项链": {
@@ -3731,7 +3731,7 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,2轮回",
+          "name": "满速轮回",
           "isNecessery": true
 
         },
@@ -3741,6 +3741,55 @@
         },
         "项链": {
           "name": "所罗门,盗墓之学徒项链,人品,盗墓项链",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "全能,死灵低级戒指"
+        },
+        "戒指2": {
+          "name": "全能,死灵低级戒指"
+        },
+        "靴子": {
+          "name": "燃魂之焰",
+          "isNecessery": true
+        },
+        "衣服": {
+          "name": "黑暗余孽",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "亡灵哀嚎",
+          "isNecessery": true
+        },
+        "护符": {
+          "name": "傀儡,印玺,巨魔人",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "拉斯玛之网,盗墓腰带",
+          "isNecessery": true
+
+        }
+      },
+      {
+        "suitName": "死灵召唤最终配装",
+        "skillMode": "法师",
+        "主手": {
+          "name": "冥神",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "轮回,2轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "灵魂监狱",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "盗墓之学徒项链,人品,盗墓项链",
           "isNecessery": true
         },
         "戒指1": {

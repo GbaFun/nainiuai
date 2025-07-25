@@ -38,4 +38,7 @@ public partial class MainForm : Form
         _tabManager = new TabManager(BroTabControl);
         this.Controls.Add(new MenuWidget());
     }
+
+   
+
 }

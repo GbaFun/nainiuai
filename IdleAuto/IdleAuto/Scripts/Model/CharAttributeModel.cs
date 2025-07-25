@@ -78,6 +78,8 @@ namespace IdleAuto.Scripts.Model
 
         [Description("是否无视防御")]
         public bool IsIgnoreDef { get; set; }
+        [Description("骷髅法施法速度")]
+        public int SkeletonMageFcr { get; set; }
     }
     public class CharBaseAttributeModel
     {

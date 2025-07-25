@@ -1667,7 +1667,7 @@
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   {
     "equip": {
@@ -3242,7 +3242,7 @@
         }
       ]
     },
-    "maxCount": 30
+    "maxCount": 1
   },
   {
     "equip": {
@@ -4470,7 +4470,25 @@
 
       ]
     },
-    "maxCount": 1
+    "maxCount": 2
+  },
+  {
+    "equip": {
+      "description": "圣衣底子",
+      "category": "手套",
+      "quality": "普通",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "圣衣底子",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "重型手镯"
+        }
+
+      ]
+    },
+    "maxCount": 2
   },
   //免洗圣衣
   {

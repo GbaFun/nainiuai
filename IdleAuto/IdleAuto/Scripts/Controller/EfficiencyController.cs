@@ -1,5 +1,6 @@
 ﻿using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
+using IdleAuto.Scripts.Utils;
 using IdleAuto.Scripts.Wrap;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,11 @@ namespace IdleAuto.Scripts.Controller
                     await Task.Delay(2000);
                     var a = await charControl.GetCharAtt(item);
                     a.AccountName = user.AccountName;
+                    
                     var aa=FreeDb.Sqlite.InsertOrUpdate<CharAttributeModel>().SetSource(a).ExecuteAffrows();
+                    var g=FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == item.RoleId).First();
+                    g.SkeletonMageFcr = a.SkeletonMageFcr;
+                    DbUtil.InsertOrUpdate<GroupModel>(g);
                     Console.WriteLine("保存行数:" + aa);
                 }
             }

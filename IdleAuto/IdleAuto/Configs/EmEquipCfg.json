@@ -290,7 +290,56 @@
       }
     ]
   },
- 
+  "死灵圣衣洗点25": {
+    "category": "帽子|衣服|手套|靴子",
+    "quality": "套装",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "自定义",
+        "conditionContent": "蛇夫座"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "指定职业单系技能",
+        "conditionContent": "死灵,召唤,2"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,2"
+      }
+
+
+    ]
+  },
+  "死灵圣衣洗点21": {
+    "category": "帽子|衣服|手套|靴子",
+    "quality": "套装",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "自定义",
+        "conditionContent": "蛇夫座"
+      },
+
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,1"
+      }
+
+
+    ]
+  },
+
   "刺客毒素黄珠宝": {
     "category": "珠宝",
     "quality": "稀有",

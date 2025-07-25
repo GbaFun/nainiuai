@@ -55,6 +55,7 @@ class Character {
         var openWound = $(attPanel).find("p span:contains('撕开')").next().text().match(/\d+/)[0];
         var reduceDef = $(attPanel).find("p span:contains('减目标防御')").next().text().match(/\d+/)[0];
         var isIgnoreDef = $(attPanel).find("p span:contains('无视目标防御')").next().text();
+   
         var obj = {
             roleId: this.cid,
             roleName: $($(".panel-heading")[0]).find(".name").text(),
@@ -72,6 +73,16 @@ class Character {
             openWound: openWound,
             reduceDef: reduceDef,
             isIgnoreDef: isIgnoreDef
+        }
+        if (job == "死灵") {
+            //计算骷髅法速度 
+            var skillInfo = this.getSkillInfo();
+            var skeletonMage = skillInfo["骷髅法师"];
+            var skeletonMageLv = skeletonMage == undefined ? 0 : skeletonMage.lv;
+            var skeletonMastery = skillInfo["支配骷髅"];
+            var skeletonMasteryLv = skeletonMastery == undefined ? 0 : skeletonMastery.lv;
+            var skeletonFcr = skeletonMageLv * 2 + skeletonMasteryLv*1;
+            obj["skeletonMageFcr"] = skeletonFcr;
         }
         return obj;
     }

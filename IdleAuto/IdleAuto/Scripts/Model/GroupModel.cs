@@ -51,6 +51,11 @@ namespace IdleAuto.Scripts.Model
         /// </summary>
         public emAttrType AttType { get; set; }
 
+        /// <summary>
+        /// 骷髅法速度
+        /// </summary>
+        public int SkeletonMageFcr { get; set; }
+
         public override bool Equals(object obj)
         {
             var t = obj as GroupModel;

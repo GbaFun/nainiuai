@@ -164,11 +164,7 @@ public class EquipModel : IModel
         return AttributeMatchUtil.Match(this, con, out _);
     }
 
-    /// <summary>
-    /// 装备所属账户ID
-    /// </summary>
-
-    public int AccountID { get; set; }
+ 
 
     public string AccountName { get; set; }
     /// <summary>
@@ -181,7 +177,6 @@ public class EquipModel : IModel
 
     public void SetAccountInfo(UserModel account, RoleModel role = null)
     {
-        AccountID = account.Id;
         AccountName = account.AccountName;
         if (role != null)
         {

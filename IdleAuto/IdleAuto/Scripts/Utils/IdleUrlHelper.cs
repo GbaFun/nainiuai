@@ -14,10 +14,17 @@ public class IdleUrlHelper
     public const string Inlay = "Equipment/Inlay";
     public const string Material = "Equipment/Material";
     public const string Notice = "Notice/Query";
+    public const string Reform = "Equipment/Reform";
     private const string m_roleArg = "id=";
     public static string HomeUrl()
     {
         return $"{Idle}/{Home}";
+    }
+
+    public static string ReformUrl(int roleId, long equipId)
+    {
+        return $"{Idle}/{Reform}?{m_roleArg}{roleId}&eid={equipId}";
+
     }
     public static string RoleUrl(int roleId)
     {

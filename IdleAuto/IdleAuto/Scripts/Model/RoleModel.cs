@@ -84,5 +84,14 @@ public class RoleModel : IModel
         return list;
     }
 
+    public RoleModel GetTeamMember(emJob job, List<RoleModel> roles)
+    {
+        var group = GetGroup();
+        var m = group.Find(p => p.Job == job);
+        int roleId = m.RoleId;
+        return roles.Find(p => p.RoleId == roleId);
+
+    }
+
 
 }
