@@ -184,8 +184,8 @@ namespace IdleAuto.Scripts.Controller
                     });
                     await AutoDungeonCancel();
                 }
-                await SwitchMap(bro, role);
-                var e = new EquipController(_win);
+               await SwitchMap(bro, role);
+               var e = new EquipController(_win);
                 await e.LoadSuit(emSuitType.效率, role);
                 return;
             }

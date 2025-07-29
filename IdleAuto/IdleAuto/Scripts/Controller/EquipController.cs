@@ -662,7 +662,8 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                if (toTradeSuit.Count == 0 || toTradeSuit.Values.Contains(null))
+                var registerList = toTradeSuit.Where(p => p.Value.TradeStatus == emTradeStatus.Register);
+                if (registerList.Count() == 0 || toTradeSuit.Values.Contains(null))
                 {
                     continue;
                 }
@@ -872,7 +873,8 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                if (toTradeSuit.Count == 0 || toTradeSuit.Values.Contains(null))
+                var registerList = toTradeSuit.Where(p=>p.Value!=null).Where(p => p.Value.TradeStatus == emTradeStatus.Register);
+                if (registerList.Count() == 0 || toTradeSuit.Values.Contains(null))
                 {
                     continue;
                 }
@@ -1726,7 +1728,9 @@ public class EquipController : BaseController
                 {
                     tradeResult.Remove(dto.EmEquipSort);
                 }
+                tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, equip, eqName, emTradeStatus.Locked));
                 break;
+                
             }
             //暂时不给献祭队永恒
             //var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
@@ -1743,11 +1747,11 @@ public class EquipController : BaseController
                 {
                     if (!tradeResult.ContainsKey(dto.EmEquipSort))
                     {
-                        tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName));
+                        tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName,emTradeStatus.Register));
                     }
                     else if (tradeResult[dto.EmEquipSort] == null)
                     {
-                        tradeResult[dto.EmEquipSort] = GetTradeMode(dto, demandEquip, eqName);
+                        tradeResult[dto.EmEquipSort] = GetTradeMode(dto, demandEquip, eqName,emTradeStatus.Register);
                     }
                 }
                 else if (dto.Equipment.IsNecessery)
@@ -1763,7 +1767,7 @@ public class EquipController : BaseController
         return r;
     }
 
-    public TradeModel GetTradeMode(AutoEquipMatchDto dto, EquipModel demandEquip, string eqName)
+    public TradeModel GetTradeMode(AutoEquipMatchDto dto, EquipModel demandEquip, string eqName,emTradeStatus status)
     {
 
         var eq = new TradeModel
@@ -1775,7 +1779,7 @@ public class EquipController : BaseController
             DemandRoleName = dto.Role.RoleName,
             OwnerAccountName = demandEquip.AccountName,
             DemandAccountName = _win.User.AccountName,
-            TradeStatus = emTradeStatus.Register,
+            TradeStatus = status,
 
 
         };

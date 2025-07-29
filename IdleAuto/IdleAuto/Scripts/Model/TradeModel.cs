@@ -73,6 +73,8 @@ public enum emTradeStatus
     /// <summary>
     /// 拒绝
     /// </summary>
-    Rejected = 3
+    Rejected = 3,
+
+    Locked=4
 
 }

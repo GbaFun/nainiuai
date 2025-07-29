@@ -4232,7 +4232,7 @@
       ]
 
     },
-    "maxCount": 50
+    "maxCount": 500
   },
   {
     "equip": {
@@ -4249,7 +4249,7 @@
       ]
 
     },
-    "maxCount": 500
+    "maxCount": 5000
   },
   //mf装备
 

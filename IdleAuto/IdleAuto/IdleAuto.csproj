@@ -76,6 +76,7 @@
     <Compile Include="Scripts\Controller\ArtifactController.cs" />
     <Compile Include="Scripts\Controller\EfficiencyController.cs" />
     <Compile Include="Scripts\Model\DelView.cs" />
+    <Compile Include="Scripts\Model\LockEquipModel.cs" />
     <Compile Include="Scripts\Utils\EquipUtil.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Controller\ReformController.cs" />

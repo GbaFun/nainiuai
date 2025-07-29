@@ -150,6 +150,8 @@ namespace IdleAuto.Scripts.View
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
             string[] accounts = null;
+            FreeDb.Sqlite.Delete<TradeModel>().Where(p=>1 == 1).ExecuteAffrows();
+            FreeDb.Sqlite.Delete<LockEquipModel>().Where(p => 1 == 1).ExecuteAffrows();
             //accounts = new string[] {"南方工具人7" };
             Task.Run(async () =>
             {
@@ -283,8 +285,8 @@ namespace IdleAuto.Scripts.View
             //await FlowController.MakeYongheng();
             //FlowController.RegisterYongheng();
 
-            // await FlowController.MakeMori();
-            // FlowController.RegisterMori();
+             //await FlowController.MakeMori();
+             //FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
@@ -295,7 +297,7 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-            FlowController.FightWorldBoss();
+          // FlowController.FightWorldBoss();
 
             //FlowController.SwitchYongheng();
            // FlowController.ReformShengyi();
@@ -435,7 +437,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnShengyi_Click(object sender, EventArgs e)
         {
-            FlowController.RepairShengyi();
+            FlowController.ReformShengyi();
         }
 
         private void button1_Click(object sender, EventArgs e)
