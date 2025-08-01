@@ -630,7 +630,7 @@ public class EquipController : BaseController
                 if (role.Job == emJob.死灵 && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
                 {
                     necEquipSuitName = emSuitName.死灵召唤最终配装.ToString();
-                     AdjustNecFinalEquip(role, curEquips, suitEquips.ToWearEquips);
+                    AdjustNecFinalEquip(role, curEquips, suitEquips.ToWearEquips);
                 }
                 if (suitEquips.IsSuccess)
                 {
@@ -662,7 +662,7 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                var registerList = toTradeSuit.Where(p => p.Value.TradeStatus == emTradeStatus.Register);
+                var registerList = toTradeSuit.Where(p =>p.Value!=null&& p.Value.TradeStatus == emTradeStatus.Register);
                 if (registerList.Count() == 0 || toTradeSuit.Values.Contains(null))
                 {
                     continue;
@@ -790,7 +790,7 @@ public class EquipController : BaseController
     /// <param name="broSeed">执行逻辑的浏览器页签编号</param>
     /// <param name="account">执行逻辑的账号</param>
     /// <returns></returns>
-    public  bool AutoEquipOffline(RoleModel role, UserModel account, emSkillMode targetSkillMode = emSkillMode.自动, emSuitType targetSuitType = emSuitType.效率)
+    public bool AutoEquipOffline(RoleModel role, UserModel account, emSkillMode targetSkillMode = emSkillMode.自动, emSuitType targetSuitType = emSuitType.效率)
     {
 
         bool isTrrigerEquip = false;//是否触发修车
@@ -873,7 +873,7 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                var registerList = toTradeSuit.Where(p=>p.Value!=null).Where(p => p.Value.TradeStatus == emTradeStatus.Register);
+                var registerList = toTradeSuit.Where(p => p.Value != null).Where(p => p.Value.TradeStatus == emTradeStatus.Register);
                 if (registerList.Count() == 0 || toTradeSuit.Values.Contains(null))
                 {
                     continue;
@@ -919,7 +919,7 @@ public class EquipController : BaseController
 
         //先洗圣衣 圣衣洗完再触发 精修
         //1.本体+圣衣+冥神提供的施法  剩下需要计算 轮回 项链 腰带
-        var baseFcr = 5 + 30 + 20 + 10 + 10 + 10 + 30M;
+         var baseFcr = 5 + 30 + 20 + 10 + 10 + 10 + 30M;
         var idealFcr = 180M;
         baseFcr += GetYonghengSpeed(role);
         var curFcr = baseFcr;
@@ -1393,7 +1393,7 @@ public class EquipController : BaseController
         List<long> toWearEquipIds = new List<long>();
         for (int j = 0; j < 11; j++)
         {
-            if (j == 4)
+            if (j == 7)
             {
                 P.Log("调试腰带");
             }
@@ -1708,66 +1708,83 @@ public class EquipController : BaseController
     /// <returns></returns>
     public List<EquipModel> GetMatchEquip(AutoEquipMatchDto dto, Dictionary<emEquipSort, TradeModel> tradeResult)
     {
-        List<EquipModel> r = new List<EquipModel>();
-        for (int i = 0; i < dto.Equipment.EquipNameArr.Count; i++)
+        try
         {
-            var eqName = dto.Equipment.EquipNameArr[i];
-            var equipConfig = dto.Equipment.GetEquipment(eqName);
-            if (equipConfig == null)
+
+
+            List<EquipModel> r = new List<EquipModel>();
+            for (int i = 0; i < dto.Equipment.EquipNameArr.Count; i++)
             {
-                throw new Exception($"{eqName}配置为空");
-            }
-            var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
-
-
-            if (equip != null)
-            {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
-                r.Add(equip);
-                //将之前登记为null的交易项目移除 代表这个位置有匹配位置
-                if (tradeResult.ContainsKey(dto.EmEquipSort) && tradeResult[dto.EmEquipSort] == null)
+                var eqName = dto.Equipment.EquipNameArr[i];
+                var equipConfig = dto.Equipment.GetEquipment(eqName);
+                if (equipConfig == null)
                 {
-                    tradeResult.Remove(dto.EmEquipSort);
+                    throw new Exception($"{eqName}配置为空");
                 }
-                tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, equip, eqName, emTradeStatus.Locked));
-                break;
-                
-            }
-            //暂时不给献祭队永恒
-            //var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
-            if (equip == null && equipConfig.IsTrade)
-            {
-
-                //整套装备能凑齐才乞讨交易 然后index较大的不会被后续乞讨覆盖 可以直接查库跳过index更大的交易请求
-                var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
-                var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
+                var equip = GetMatchEquipBySort(dto, equipConfig, dto.DbEquipsSelf);
 
 
-                //没有现成装备 且没有已经登记的需求装备则加入
-                if (demandEquip != null)
-                {
+                if (equip != null)
+                {//排序较高的配置找到了现成装备 只需要找到一件最高排序的
+                    r.Add(equip);
+                    //将之前登记为null的交易项目移除 代表这个位置有匹配位置
+                    if (tradeResult.ContainsKey(dto.EmEquipSort) && tradeResult[dto.EmEquipSort] == null)
+                    {
+                        tradeResult.Remove(dto.EmEquipSort);
+                    }
                     if (!tradeResult.ContainsKey(dto.EmEquipSort))
                     {
-                        tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName,emTradeStatus.Register));
+                        tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, equip, eqName, emTradeStatus.Locked));
                     }
                     else if (tradeResult[dto.EmEquipSort] == null)
                     {
-                        tradeResult[dto.EmEquipSort] = GetTradeMode(dto, demandEquip, eqName,emTradeStatus.Register);
+                        tradeResult[dto.EmEquipSort] = GetTradeMode(dto, equip, eqName, emTradeStatus.Locked);
                     }
+                    break;
+
                 }
-                else if (dto.Equipment.IsNecessery)
-                {//这个部位标记为null则表明这套装备找不齐 稍后会跳过
-                    if (!tradeResult.ContainsKey(dto.EmEquipSort))
+                //暂时不给献祭队永恒
+                //var isXianji = (dto.Role.Job == emJob.死骑) && (dto.Role.GetRoleSkillMode() == emSkillMode.献祭);
+                if (equip == null && equipConfig.IsTrade)
+                {
+
+                    //整套装备能凑齐才乞讨交易 然后index较大的不会被后续乞讨覆盖 可以直接查库跳过index更大的交易请求
+                    var filteredList = GetEquipInDic(dto.DbEquipDicOthers, equipConfig);
+                    var demandEquip = GetMatchEquipBySort(dto, equipConfig, filteredList);
+
+
+                    //没有现成装备 且没有已经登记的需求装备则加入
+                    if (demandEquip != null)
                     {
-                        tradeResult.Add(dto.EmEquipSort, null);
+                        if (!tradeResult.ContainsKey(dto.EmEquipSort))
+                        {
+                            tradeResult.Add(dto.EmEquipSort, GetTradeMode(dto, demandEquip, eqName, emTradeStatus.Register));
+                        }
+                        else if (tradeResult[dto.EmEquipSort] == null)
+                        {
+                            tradeResult[dto.EmEquipSort] = GetTradeMode(dto, demandEquip, eqName, emTradeStatus.Register);
+                        }
+                    }
+                    else if (dto.Equipment.IsNecessery)
+                    {//这个部位标记为null则表明这套装备找不齐 稍后会跳过
+                        if (!tradeResult.ContainsKey(dto.EmEquipSort))
+                        {
+                            tradeResult.Add(dto.EmEquipSort, null);
+                        }
                     }
                 }
             }
+            return r;
+        }
+        catch (Exception e)
+        {
+            throw e;
         }
 
-        return r;
+
     }
 
-    public TradeModel GetTradeMode(AutoEquipMatchDto dto, EquipModel demandEquip, string eqName,emTradeStatus status)
+    public TradeModel GetTradeMode(AutoEquipMatchDto dto, EquipModel demandEquip, string eqName, emTradeStatus status)
     {
 
         var eq = new TradeModel

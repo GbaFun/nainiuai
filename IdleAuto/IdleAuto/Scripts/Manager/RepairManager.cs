@@ -59,8 +59,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 var roleProgress = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).ToList();
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
-                var isTrriger = equipController.AutoEquipOffline(role, account);
-                if (!isTrriger) continue;
+                //var isTrriger = equipController.AutoEquipOffline(role, account);
+                //if (!isTrriger) continue;
                 //自动更换装备
                 var curEquips = await equipController.AutoEquips(window, role);
                 var c = new CharacterController(window);

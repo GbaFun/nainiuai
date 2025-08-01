@@ -302,10 +302,18 @@
         "conditionContent": "蛇夫座"
       },
       {
-        "matchType": "必需",
+        "matchType": "任一",
         "operate": "大于等于",
+        "matchGroupName": "条件",
         "attributeType": "指定职业单系技能",
         "conditionContent": "死灵,召唤,2"
+      },
+      {
+        "matchType": "任一",
+        "operate": "大于等于",
+        "matchGroupName": "条件",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,3"
       },
       {
         "matchType": "必需",
@@ -334,6 +342,69 @@
         "operate": "大于等于",
         "attributeType": "技能等级",
         "conditionContent": "骷髅法师,1"
+      }
+
+
+    ]
+  },
+  "太古珠装备名单": {
+    "category": "帽子|衣服|手套|靴子",
+    "quality": "套装",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "自定义",
+        "conditionContent": "蛇夫座"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "装备名",
+        "operate": "等于",
+        "attributeType": "名称",
+        "conditionContent": "灵魂监狱"
+      },
+      {
+        "matchType": "任一",
+        "matchGroupName": "装备名",
+        "operate": "等于",
+        "attributeType": "名称",
+        "conditionContent": "黑暗余孽"
+      }
+
+
+
+    ]
+  },
+  "死灵太古珠条件": {
+    "category": "帽子|衣服|手套|靴子",
+    "quality": "套装",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "自定义",
+        "conditionContent": "蛇夫座"
+      },
+      
+
+
+      {
+        "matchType": "任一",
+        "matchGroupName": "技能条件",
+        "operate": "小于等于",
+        "attributeType": "技能等级",
+        "conditionContent": "骷髅法师,2"
+      },
+
+      {
+        "matchType": "任一",
+        "matchGroupName": "技能条件",
+        "operate": "小于等于",
+        "attributeType": "指定职业单系技能",
+        "conditionContent": "死灵,召唤,1"
       }
 
 

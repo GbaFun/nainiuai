@@ -4272,6 +4272,23 @@
   },
   {
     "equip": {
+      "category": "匕首",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "阿里巴巴之刃"
+        }
+      ]
+
+    },
+    "maxCount": 2
+  },
+  {
+    "equip": {
       "description": "完美传奇",
       "category": "戒指",
       "quality": "传奇",

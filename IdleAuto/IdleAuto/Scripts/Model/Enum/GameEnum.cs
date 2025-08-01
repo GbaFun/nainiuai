@@ -280,7 +280,9 @@ public enum emEquip
     蓝项链,
     刺客毒素黄珠宝,
     死灵圣衣洗点21,
-    死灵圣衣洗点25
+    死灵圣衣洗点25,
+    太古珠装备名单,
+    死灵太古珠条件
 
 }
 public enum emArtifactBase

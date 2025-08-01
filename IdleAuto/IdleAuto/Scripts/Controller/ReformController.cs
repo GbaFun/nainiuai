@@ -86,6 +86,15 @@ namespace IdleAuto.Scripts.Controller
                 if (reformType == emReformType.Mage)
                 {
                     if (!r["canMage"]) return false;
+
+                }
+                else if (reformType == emReformType.Set21)
+                {
+                    if (!r["canSet21"]) return false;
+                }
+                else if (reformType == emReformType.Set25)
+                {
+                    if (!r["canSet25"]) return false;
                 }
 
             }

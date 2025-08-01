@@ -422,7 +422,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnSanBoss_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(1, 1, FlowController.StartSanBoss);
+            FlowController.FightWorldBoss();
         }
 
         private void btnHunterSkill_Click(object sender, EventArgs e)
