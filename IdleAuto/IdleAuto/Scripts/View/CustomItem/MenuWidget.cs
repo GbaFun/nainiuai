@@ -297,7 +297,7 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-          // FlowController.FightWorldBoss();
+          FlowController.FightWorldBoss();
 
             //FlowController.SwitchYongheng();
            // FlowController.ReformShengyi();
