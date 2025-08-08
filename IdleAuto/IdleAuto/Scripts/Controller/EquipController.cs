@@ -517,7 +517,7 @@ public class EquipController : BaseController
     {
         var hasSuit = FreeDb.Sqlite.Select<EquipSuitModel>().Where(p => p.RoleId == role.RoleId && p.SuitType == suitType).First() != null;
         var dkSuits = new emSuitType[] { emSuitType.MF, emSuitType.效率 };
-        if (!hasSuit && dkSuits.Contains(suitType)) return;
+        if (!hasSuit && dkSuits.Contains(suitType) && role.Job == emJob.死骑) return;
         await Task.Delay(1500);
         //跳转装备详情页面
         var url = IdleUrlHelper.EquipUrl(role.RoleId);
@@ -627,7 +627,7 @@ public class EquipController : BaseController
                 {
                     suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
-                if (role.Job == emJob.死灵 && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
+                if (role.Job == emJob.死灵 && suitEquips.IsSuccess && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
                 {
                     necEquipSuitName = emSuitName.死灵召唤最终配装.ToString();
                     AdjustNecFinalEquip(role, curEquips, suitEquips.ToWearEquips);
@@ -662,7 +662,7 @@ public class EquipController : BaseController
         {
             foreach (var toTradeSuit in tradeSuitMap)
             {
-                var registerList = toTradeSuit.Where(p =>p.Value!=null&& p.Value.TradeStatus == emTradeStatus.Register);
+                var registerList = toTradeSuit.Where(p => p.Value != null && p.Value.TradeStatus == emTradeStatus.Register);
                 if (registerList.Count() == 0 || toTradeSuit.Values.Contains(null))
                 {
                     continue;
@@ -715,38 +715,40 @@ public class EquipController : BaseController
         var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
         if (role.Job == emJob.死灵 && necEquipSuitName == emSuitName.死灵召唤最终配装.ToString() && g.AttType != emAttrType.精力)
         {
-            canNecWear = await AutoAttributeSave(win, role, equipModels, emAttrType.精力);
 
+            canNecWear = await AutoAttributeSave(win, role, equipModels, emAttrType.精力);
+            await Task.Delay(1000);
             g.AttType = emAttrType.精力;
             DbUtil.InsertOrUpdate<GroupModel>(g);
         }
-        if (towearEquips.Count > 0)
+        else if (g.AttType != emAttrType.精力)
         {
             bool canWear = false;
             canWear = canNecWear ? canNecWear : await AutoAttributeSave(win, role, equipModels);
+        }
 
-            if (canWear)
+        await Task.Delay(1000);
+        if (towearEquips.Count > 0)
+        {
+
+
+
+            await Task.Delay(1000);
+            var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
+            if (result3.Success)
             {
-                await Task.Delay(1000);
-                var result3 = await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
-                if (result3.Success)
+                for (int j = 0; j < 11; j++)
                 {
-                    for (int j = 0; j < 11; j++)
+                    if (towearEquips.ContainsKey((emEquipSort)j))
                     {
-                        if (towearEquips.ContainsKey((emEquipSort)j))
-                        {
-                            EquipModel equip = towearEquips[(emEquipSort)j];
-                            await WearEquipAndRecord(win, equip, j, account, role);
-                            P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
-                        }
+                        EquipModel equip = towearEquips[(emEquipSort)j];
+                        await WearEquipAndRecord(win, equip, j, account, role);
+                        P.Log($"{role.RoleName}更换装备{equip.EquipName}完成", emLogType.AutoEquip);
                     }
-                    P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
                 }
+                P.Log($"{role.RoleName}全部位置装备更换完成", emLogType.AutoEquip);
             }
-            else
-            {
-                P.Log($"{role.RoleName}的属性需求不满足，跳过更换装备流程", emLogType.AutoEquip);
-            }
+
 
             P.Log($"{role.RoleName}自动修车完成！", emLogType.AutoEquip);
         }
@@ -772,6 +774,10 @@ public class EquipController : BaseController
         if (role.Job == emJob.死骑)
         {
             RecordDkYongheng(role, curEquip);
+        }
+        if (role.Job == emJob.骑士)
+        {
+            RecordKnightSuit(role, curEquip);
         }
         if (targetEquips.SuitType == emSuitType.效率 && role.Job == emJob.死骑 && _win.User.Roles.FindIndex(p => p.RoleId == role.RoleId) == 2)
         {
@@ -838,7 +844,7 @@ public class EquipController : BaseController
                 {
                     suitEquips.IsSuccess = AdjustRings(role, curEquips, suitEquips.ToWearEquips, suit);
                 }
-                if (role.Job == emJob.死灵 && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
+                if (role.Job == emJob.死灵 && suitEquips.IsSuccess && suitEquips.MatchSuitName == emSuitName.死灵召唤最终配装.ToString())
                 {
                     necEquipSuitName = emSuitName.死灵召唤最终配装.ToString();
                     AdjustNecFinalEquip(role, curEquips, suitEquips.ToWearEquips);
@@ -862,6 +868,7 @@ public class EquipController : BaseController
 
                     break;
                 }
+
 
             }
         }
@@ -895,7 +902,10 @@ public class EquipController : BaseController
         List<EquipModel> equipModels = MergeEquips(towearEquips, curEquips);
         bool canNecWear = false;
         var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
-
+        if (role.Job == emJob.死灵 && necEquipSuitName == emSuitName.死灵召唤最终配装.ToString() && g.AttType != emAttrType.精力)
+        {
+            isTrrigerEquip = true;
+        }
         if (towearEquips.Count > 0)
         {
 
@@ -903,7 +913,14 @@ public class EquipController : BaseController
             isTrrigerEquip = true;
         }
 
-
+        if (role.Job == emJob.死骑)
+        {
+            RecordDkYongheng(role, curEquips);
+        }
+        if (role.Job == emJob.骑士)
+        {
+            RecordKnightSuit(role, curEquips);
+        }
 
         return isTrrigerEquip;
     }
@@ -919,7 +936,7 @@ public class EquipController : BaseController
 
         //先洗圣衣 圣衣洗完再触发 精修
         //1.本体+圣衣+冥神提供的施法  剩下需要计算 轮回 项链 腰带
-         var baseFcr = 5 + 30 + 20 + 10 + 10 + 10 + 30M;
+        var baseFcr = 5 + 30 + 20 + 10 + 10 + 10 + 30M;
         var idealFcr = 180M;
         baseFcr += GetYonghengSpeed(role);
         var curFcr = baseFcr;
@@ -950,9 +967,13 @@ public class EquipController : BaseController
             Expression<Func<EquipModel, TradeModel, bool>> exp = (a, b) => a.EquipName == "蜘蛛之网" && a.EquipStatus == emEquipStatus.Repo;
             AdjustOrRegisterEquip(role, emEquipSort.腰带, curEquips, toWearEquips, exp);
         }
-        else
+        else if (differenceFcr <= 30)
         {
-            //换蛛网 戒指位如果双全能则换一个希望
+            //
+            Expression<Func<EquipModel, TradeModel, bool>> exp = (a, b) => a.EquipName == "蜘蛛之网" && a.EquipStatus == emEquipStatus.Repo;
+            AdjustOrRegisterEquip(role, emEquipSort.腰带, curEquips, toWearEquips, exp);
+            Expression<Func<EquipModel, TradeModel, bool>> exp1 = (a, b) => a.EquipName == "怨灵尖啸" && a.Content.Contains("+3 死灵技能") && a.Content.Contains("+4 骷髅法师") && a.EquipStatus == emEquipStatus.Repo;
+            AdjustOrRegisterEquip(role, emEquipSort.副手, curEquips, toWearEquips, exp1);
         }
         return;
     }
@@ -1307,11 +1328,17 @@ public class EquipController : BaseController
 
     public void RecordDkYongheng(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquip)
     {
-        var eq = curEquip[emEquipSort.副手];
-        if (eq.EquipName.Contains("永恒"))
+        var targetEq = curEquip[emEquipSort.副手];
+        if (!targetEq.EquipName.Contains("永恒"))
+        {
+            targetEq = curEquip[emEquipSort.主手];
+        }
+
+
+        if (targetEq.EquipName.Contains("永恒"))
         {
             var baseVal = 15;
-            var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.唤醒光环, eq.Content).Item2;
+            var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.唤醒光环, targetEq.Content).Item2;
             var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
             g.YonghengSpeed = int.Parse((baseVal + (val - 6)).ToString());
             DbUtil.InsertOrUpdate<GroupModel>(g);
@@ -1323,6 +1350,46 @@ public class EquipController : BaseController
             g.YonghengSpeed = 0;
             DbUtil.InsertOrUpdate<GroupModel>(g);
         }
+
+
+    }
+
+
+    /// <summary>
+    /// 记录骑士的装备类型 然后骑士装备决定了dk装备
+    /// </summary>
+    /// <param name="role"></param>
+    /// <param name="curEquip"></param>
+    public void RecordKnightSuit(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquip)
+    {
+        var targetEq = curEquip[emEquipSort.主手];
+        var group = role.GetGroup();
+        var g = group.Find(p => p.Job == emJob.骑士);
+        var dk = group.Find(p => p.Job == emJob.死骑);
+        if (targetEq.EquipName.Contains("正义"))
+        {
+            g.SuitName = emSuitName.骑士正义;
+            DbUtil.InsertOrUpdate<GroupModel>(g);
+            dk.SuitName = emSuitName.DK双头永恒;
+            DbUtil.InsertOrUpdate<GroupModel>(dk);
+        }
+        else if (targetEq.EquipName == "末日")
+        {
+            g.SuitName = emSuitName.骑士末日;
+            dk.SuitName = emSuitName.DK剑永恒;
+            DbUtil.InsertOrUpdate<GroupModel>(dk);
+
+        }
+        else if (targetEq.EquipName.Contains("冰冻"))
+        {
+            g.SuitName = emSuitName.骑士冰冻;
+            dk.SuitName = emSuitName.DK剑永恒;
+            DbUtil.InsertOrUpdate<GroupModel>(dk);
+
+        }
+        DbUtil.InsertOrUpdate<GroupModel>(g);
+
+
 
 
     }

@@ -26,6 +26,7 @@
         rare19: $("td:contains('重置所有词缀数值')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         set21: $($("td:contains('重置所有词缀')")[1]).parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         set25: $("td:contains('重置所有词缀数值')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        unique22: $($("td:contains('重置所有词缀')")[1]).parent().find('.label-danger.equip-reform').attr("data-type") * 1,
 
     }
 
@@ -39,9 +40,10 @@
         var canRare19 = $("td:contains('重置所有词缀数值')").parent().find('.label ').text() == "执行";
         var canSet21 = $($("td:contains('重置所有词缀')")[1]).parent().find('.label ').text() == "执行";
         var canSet25 = $("td:contains('重置所有词缀数值')").parent().find('.label ').text() == "执行";
+        var canUnique22 = $($("td:contains('重置所有词缀')")[1]).parent().find('.label ').text() == "执行";
         return {
             canDirect: canDirect, canRandom: canRandom, canMage: canMage, canUpgradeRare: canUpgradeRare, canUpgradeMagical: canUpgradeMagical, canRare19: canRare19, canSlotRandom: canSlotRandom
-            ,canSet21: canSet21, canSet25: canSet25
+            , canSet21: canSet21, canSet25: canSet25, canUnique22: canUnique22
         }
     }
 

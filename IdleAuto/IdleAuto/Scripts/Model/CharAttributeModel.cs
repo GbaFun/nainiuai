@@ -118,6 +118,10 @@ namespace IdleAuto.Scripts.Model
                 {
                     return emMeetType.MeetAfterReset;
                 }
+                if (attType == emAttrType.体力 && absoluteVit <= absoluteEng)
+                {
+                    return emMeetType.MeetAfterReset;
+                }
                 return emMeetType.AlreadyMeet;
             }
             int v1 = 0;

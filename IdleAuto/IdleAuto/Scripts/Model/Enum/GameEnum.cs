@@ -75,6 +75,8 @@ public enum emAttrType
     毒素伤害,
     毒伤,
     减毒,
+    冰伤,
+    减冰,
     物品掉率,
     更佳魔法装备,
     额外金币取得,
@@ -279,10 +281,13 @@ public enum emEquip
     冰转珠宝,
     蓝项链,
     刺客毒素黄珠宝,
+    物理珠宝,
+    冰霜珠宝,
     死灵圣衣洗点21,
     死灵圣衣洗点25,
     太古珠装备名单,
-    死灵太古珠条件
+    死灵太古珠条件,
+    冥神条件
 
 }
 public enum emArtifactBase
@@ -358,7 +363,8 @@ public enum emSuitType
     MF,
     未知,
     boss,
-    腐蚀
+    腐蚀,
+    华莱士
 }
 
 public enum emReformType
@@ -395,6 +401,11 @@ public enum emReformType
     /// </summary>
     Set25,
 
+    /// <summary>
+    /// 传奇22
+    /// </summary>
+    Unique22,
+
 }
 
 public enum emGem
@@ -412,5 +423,9 @@ public enum emGem
 public enum emSuitName
 {
     死灵召唤最终配装,
-
+    骑士正义,
+    骑士末日,
+    DK双头永恒,
+    骑士冰冻,
+    DK剑永恒
 }

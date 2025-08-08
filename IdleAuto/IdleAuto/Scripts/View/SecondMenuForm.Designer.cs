@@ -31,6 +31,9 @@ namespace IdleAuto.Scripts.View
         {
             this.btnCollectDelAll = new System.Windows.Forms.Button();
             this.btnCollectNotDelAll = new System.Windows.Forms.Button();
+            this.btnRollMinshen = new System.Windows.Forms.Button();
+            this.btnBoss = new System.Windows.Forms.Button();
+            this.txtJordan = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -53,21 +56,55 @@ namespace IdleAuto.Scripts.View
             this.btnCollectNotDelAll.UseVisualStyleBackColor = true;
             this.btnCollectNotDelAll.Click += new System.EventHandler(this.btnCollectNotDelAll_Click);
             // 
+            // btnRollMinshen
+            // 
+            this.btnRollMinshen.Location = new System.Drawing.Point(3, 87);
+            this.btnRollMinshen.Name = "btnRollMinshen";
+            this.btnRollMinshen.Size = new System.Drawing.Size(75, 23);
+            this.btnRollMinshen.TabIndex = 3;
+            this.btnRollMinshen.Text = "洗冥神";
+            this.btnRollMinshen.UseVisualStyleBackColor = true;
+            this.btnRollMinshen.Click += new System.EventHandler(this.btnRollMinshen_Click);
+            // 
+            // btnBoss
+            // 
+            this.btnBoss.Location = new System.Drawing.Point(3, 116);
+            this.btnBoss.Name = "btnBoss";
+            this.btnBoss.Size = new System.Drawing.Size(75, 26);
+            this.btnBoss.TabIndex = 4;
+            this.btnBoss.Text = "开boss";
+            this.btnBoss.UseVisualStyleBackColor = true;
+            this.btnBoss.Click += new System.EventHandler(this.btnBoss_Click);
+            // 
+            // txtJordan
+            // 
+            this.txtJordan.Location = new System.Drawing.Point(84, 117);
+            this.txtJordan.Name = "txtJordan";
+            this.txtJordan.Size = new System.Drawing.Size(63, 25);
+            this.txtJordan.TabIndex = 5;
+            // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtJordan);
+            this.Controls.Add(this.btnBoss);
+            this.Controls.Add(this.btnRollMinshen);
             this.Controls.Add(this.btnCollectNotDelAll);
             this.Controls.Add(this.btnCollectDelAll);
             this.Name = "SecondMenuForm";
             this.Text = "SecondMenuForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.Button btnCollectDelAll;
         private System.Windows.Forms.Button btnCollectNotDelAll;
+        private System.Windows.Forms.Button btnRollMinshen;
+        private System.Windows.Forms.Button btnBoss;
+        private System.Windows.Forms.TextBox txtJordan;
     }
 }

@@ -419,6 +419,25 @@
     }
   },
   {
+    "name": "双头永恒",
+    "description": "",
+    "equipment": {
+      "category": "斧",
+      "quality": "神器",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+
+          "seq": 50,
+          "conditionContent": "永恒"
+        }
+      ]
+    }
+  },
+  {
     "name": "末日",
     "description": "",
     "equipment": {
@@ -1027,6 +1046,12 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "绑定"
+        },
+        {
+          "matchType": "可选",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "希望之翼"
         }
 
       ]
@@ -3132,7 +3157,6 @@
           "seq": 10,
           "conditionContent": "骷髅法师,3"
         },
-
         {
           "matchType": "必需",
           "operate": "大于等于",
@@ -3243,7 +3267,7 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 10,
-          "conditionContent": "骷髅法师,4"
+          "conditionContent": "骷髅法师,3"
         }
       ]
     }
@@ -4519,7 +4543,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死灵,召唤,2"
+          "conditionContent": "死灵,召唤,4"
         }
       ]
     }

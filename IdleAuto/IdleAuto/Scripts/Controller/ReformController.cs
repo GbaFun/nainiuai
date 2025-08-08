@@ -96,6 +96,10 @@ namespace IdleAuto.Scripts.Controller
                 {
                     if (!r["canSet25"]) return false;
                 }
+                else if (reformType == emReformType.Unique22)
+                {
+                    if (!r["canUnique22"]) return false;
+                }
 
             }
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
@@ -106,7 +110,7 @@ namespace IdleAuto.Scripts.Controller
         private async Task UpdateContent(EquipModel equip, emReformType reformType)
         {
             //打孔会直接跳到装备页不能更新装备内容
-            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19 };
+            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19,emReformType.Unique22 };
             if (!updateTypeList.Contains(reformType)) return;
             var c = await _win.CallJs<string>("_reform.getEquipContent()");
             var content = c;

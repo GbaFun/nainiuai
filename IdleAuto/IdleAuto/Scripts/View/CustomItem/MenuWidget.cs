@@ -105,8 +105,9 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoEquip_Click(object sender, EventArgs e)
         {
-            
-            
+
+            FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
+            FreeDb.Sqlite.Delete<LockEquipModel>().Where(p => 1 == 1).ExecuteAffrows();
             RepairManager.Instance.AutoRepair(null);
         }
         public void BtnAutoAh_Click(object sender, EventArgs e)
@@ -150,16 +151,16 @@ namespace IdleAuto.Scripts.View
         private void BtnRefresh_Click(object sender, EventArgs e)
         {
             string[] accounts = null;
-            FreeDb.Sqlite.Delete<TradeModel>().Where(p=>1 == 1).ExecuteAffrows();
+            FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
             FreeDb.Sqlite.Delete<LockEquipModel>().Where(p => 1 == 1).ExecuteAffrows();
             //accounts = new string[] {"南方工具人7" };
             Task.Run(async () =>
             {
                 try
                 {
-                 
-                   await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
-              
+
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+
 
                 }
                 catch (Exception ex)
@@ -285,8 +286,8 @@ namespace IdleAuto.Scripts.View
             //await FlowController.MakeYongheng();
             //FlowController.RegisterYongheng();
 
-             //await FlowController.MakeMori();
-             //FlowController.RegisterMori();
+            //await FlowController.MakeMori();
+            //FlowController.RegisterMori();
             // //await FlowController.MoveTaGeAo();
             ////  await FlowController.SendXianji();
             // // await FlowController.SaveRuneMap();
@@ -297,12 +298,12 @@ namespace IdleAuto.Scripts.View
 
             //  FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.NainiuAccounts);
 
-          FlowController.FightWorldBoss();
+            // FlowController.FightWorldBoss();
 
             //FlowController.SwitchYongheng();
-           // FlowController.ReformShengyi();
-            //  FlowController.RollJewelry();
-            //  FlowController.ReformMace();
+            // FlowController.ReformShengyi();
+            FlowController.RollJewelry();
+            // FlowController.ReformBaseEq();
         }
 
 
@@ -442,8 +443,9 @@ namespace IdleAuto.Scripts.View
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SecondMenuForm form = new SecondMenuForm();
-            form.ShowDialog();
+            MenuInstance.SecondForm = MenuInstance.SecondForm == null ? new SecondMenuForm() : MenuInstance.SecondForm;
+
+            MenuInstance.SecondForm.ShowDialog();
         }
 
         private void comboJob_SelectedIndexChanged(object sender, EventArgs e)
@@ -455,6 +457,11 @@ namespace IdleAuto.Scripts.View
 
             // 执行相关操作，如更新其他控件数据
             RepairManager.RepairJob = selectedValue;
+        }
+
+        private void btnGroupInit_Click(object sender, EventArgs e)
+        {
+            FlowController.InitGroup();
         }
     }
 }

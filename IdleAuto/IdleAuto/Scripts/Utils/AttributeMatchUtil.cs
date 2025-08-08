@@ -186,6 +186,8 @@ namespace AttributeMatch
                     case emAttrType.魔法伤害:
                     case emAttrType.毒伤:
                     case emAttrType.减毒:
+                    case emAttrType.冰伤:
+                    case emAttrType.减冰:
                     case emAttrType.元素抗性:
                     case emAttrType.抗电:
                     case emAttrType.抗火:
@@ -355,6 +357,12 @@ namespace AttributeMatch
                 case emAttrType.减毒:
                     regexAttr = $@"\-(?<v>\d+)\%\s+目标毒素抗性";
                     break;
+                case emAttrType.冰伤:
+                    regexAttr = $@"\+(?<v>\d+)\%\s+冰冷伤害";
+                    break;
+                case emAttrType.减冰:
+                    regexAttr = $@"\-(?<v>\d+)\%\s+目标冰冷抗性";
+                    break;
                 case emAttrType.元素抗性:
                     regexAttr = $@"元素抗性 \+(?<v>\d+)\%";
                     break;
@@ -413,6 +421,7 @@ namespace AttributeMatch
             Regex regex = new Regex(regexAttr, RegexOptions.Multiline);
             var match = regex.Match(content);
             var val = match.Success ? decimal.Parse(match.Groups["v"].Value) : 0;
+          //  P.Log(attributeType.ToString() +" "+ val);
             return new Tuple<bool, decimal>(match.Success, val);
         }
 

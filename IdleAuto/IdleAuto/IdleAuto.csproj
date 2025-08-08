@@ -97,6 +97,7 @@
     <Compile Include="Configs\CfgExtension\EquipCfg.cs" />
     <Compile Include="Scripts\Utils\ExtMethod.cs" />
     <Compile Include="Scripts\Utils\HtmlUtil.cs" />
+    <Compile Include="Scripts\View\MenuInstance.cs" />
     <Compile Include="Scripts\View\SecondMenuForm.cs">
       <SubType>Form</SubType>
     </Compile>

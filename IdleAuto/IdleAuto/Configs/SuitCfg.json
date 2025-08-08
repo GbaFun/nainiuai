@@ -635,7 +635,7 @@
     },
     "equipSuit": [
       {
-        "suitName": "骑士40-50套装",
+        "suitName": "骑士正义",
         "主手": {
           "name": "正义之手",
           "isNecessery": true
@@ -682,7 +682,7 @@
         }
       },
       {
-        "suitName": "骑士40-50套装",
+        "suitName": "骑士末日",
         "主手": {
           "name": "末日",
           "isNecessery": true
@@ -729,7 +729,7 @@
         }
       },
       {
-        "suitName": "骑士40-50套装",
+        "suitName": "骑士冰冻",
         "主手": {
           "name": "冰冻",
           "isNecessery": true
@@ -2897,7 +2897,7 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3091,7 +3091,7 @@
           "name": "3亡者遗产"
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3137,7 +3137,7 @@
           "name": "3亡者遗产"
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3182,7 +3182,7 @@
           "name": "3亡者遗产"
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3477,7 +3477,7 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3525,7 +3525,7 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3740,7 +3740,7 @@
           "isNecessery": true
         },
         "项链": {
-          "name": "所罗门,盗墓之学徒项链,人品,盗墓项链",
+          "name": "所罗门,盗墓之学徒项链",
           "isNecessery": true
         },
         "戒指1": {
@@ -3780,7 +3780,7 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3829,7 +3829,55 @@
           "isNecessery": true
         },
         "副手": {
-          "name": "轮回,230轮回,怨灵尖啸,2轮回",
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
+          "isNecessery": true
+
+        },
+        "头盔": {
+          "name": "灵魂监狱",
+          "isNecessery": true
+        },
+        "项链": {
+          "name": "人品,盗墓项链",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "全能,死灵低级戒指"
+        },
+        "戒指2": {
+          "name": "全能,死灵低级戒指"
+        },
+        "靴子": {
+          "name": "燃魂之焰",
+          "isNecessery": true
+        },
+        "衣服": {
+          "name": "黑暗余孽",
+          "isNecessery": true
+
+        },
+        "手套": {
+          "name": "施法手"
+        },
+        "护符": {
+          "name": "印玺,巨魔人",
+          "isNecessery": true
+        },
+        "腰带": {
+          "name": "盗墓腰带",
+          "isNecessery": true
+
+        }
+      },
+      {
+        "suitName": "法师",
+        "skillMode": "法师",
+        "主手": {
+          "name": "冥神",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "满速轮回,轮回,怨灵尖啸,230轮回,2轮回",
           "isNecessery": true
 
         },
@@ -3917,105 +3965,9 @@
           "name": "拉斯玛之网,盗墓腰带,20施法腰带",
           "isNecessery": true
         }
-      },
-      {
-        "suitName": "献祭",
-        "skillMode": "献祭",
-        "idealFcr": 180,
-        "主手": {
-          "name": "自杀支系",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "献祭轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "20施法头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "阴影之环",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "希望之翼,施法戒指"
-        },
-        "戒指2": {
-          "name": "希望之翼,施法戒指"
-        },
-        "靴子": {
-          "name": "燃魂之焰绑定,破碎之链,浴火重生,时光扭曲行者,冰原行者,抗寒电靴子"
-
-        },
-        "衣服": {
-          "name": "尸体的哀伤",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "巨魔人,重生护符",
-          "isNecessery": true
-        },
-        "腰带": {
-          "name": "20施法腰带",
-          "isNecessery": true
-        }
-      },
-      {
-        "suitName": "献祭",
-        "skillMode": "献祭",
-        "idealFcr": 180,
-        "主手": {
-          "name": "自杀支系",
-          "isNecessery": true
-        },
-        "副手": {
-          "name": "献祭轮回",
-          "isNecessery": true
-
-        },
-        "头盔": {
-          "name": "教化,20施法头",
-          "isNecessery": true
-        },
-        "项链": {
-          "name": "阴影之环",
-          "isNecessery": true
-        },
-        "戒指1": {
-          "name": "希望之翼,施法戒指"
-        },
-        "戒指2": {
-          "name": "希望之翼,施法戒指"
-        },
-        "靴子": {
-          "name": "燃魂之焰绑定,破碎之链,浴火重生,时光扭曲行者,冰原行者,抗寒电靴子"
-
-        },
-        "衣服": {
-          "name": "尸体的哀伤",
-          "isNecessery": true
-
-        },
-        "手套": {
-          "name": "施法手",
-          "isNecessery": true
-        },
-        "护符": {
-          "name": "巨魔人,重生护符",
-          "isNecessery": true
-        },
-        "腰带": {
-          "name": "20施法腰带",
-          "isNecessery": true
-        }
       }
+   
+  
 
     ]
   },
@@ -4590,7 +4542,7 @@
     },
     "equipSuit": [
       {
-        "suitName": "死骑套装",
+        "suitName": " DK剑永恒",
         "主手": {
           "name": "执法者",
           "isNecessery": 0
@@ -4633,6 +4585,53 @@
         },
         "腰带": {
           "name": "mf腰带,零速任意腰带",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": " DK双头永恒",
+        "主手": {
+          "name": "双头永恒",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "末日",
+          "isNecessery": true
+        },
+        "头盔": {
+          "name": "死骑凋零解毒",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "零速冰霜项链",
+          "isNecessery": 0
+        },
+        "戒指1": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "抗性手",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "抗火毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "飞龙,天灾",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "龙珠,冰霜护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "零速任意腰带",
           "isNecessery": 0
         }
       }

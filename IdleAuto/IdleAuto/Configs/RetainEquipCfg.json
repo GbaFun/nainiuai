@@ -349,7 +349,80 @@
           "operate": "不等于",
           "attributeType": "名称",
           "conditionContent": "幸运小符"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "亡者印记"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "复仇之雨"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "明镜澄心"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "灵兽低语"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "炫光石"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "翡翠之心"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "远古遗迹"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "铁血鉴证"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "飞矢之羽"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇装备",
+          "operate": "不等于",
+          "attributeType": "名称",
+          "conditionContent": "黑暗之瞳"
         }
+
+
+
 
 
       ]
@@ -3666,7 +3739,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 8
   },
   {
     "equip": {
@@ -4232,7 +4305,7 @@
       ]
 
     },
-    "maxCount": 500
+    "maxCount": 70
   },
   {
     "equip": {
@@ -4447,6 +4520,20 @@
         {
           "matchType": "任一",
           "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "印玺"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "巨魔"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "封印"
@@ -4487,7 +4574,25 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "圣衣底子",
+      "category": "帽子",
+      "quality": "普通",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "圣衣底子",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "巨皇冠"
+        }
+
+      ]
+    },
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4505,7 +4610,25 @@
 
       ]
     },
-    "maxCount": 2
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "description": "圣衣底子",
+      "category": "衣服",
+      "quality": "普通",
+      "conditions": [
+        {
+          "matchType": "任一",
+          "matchGroupName": "圣衣底子",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "绵羊毛皮甲"
+        }
+
+      ]
+    },
+    "maxCount": 4
   },
   //免洗圣衣
   {
@@ -4549,7 +4672,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 1000
   },
   {
     "equip": {
@@ -4638,27 +4761,6 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "腐蚀"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "救赎"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "等于",
-          "attributeType": "自定义",
-          "conditionContent": "苦修"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "等于",
-          "attributeType": "自定义",
-          "conditionContent": "痛苦压制"
         }
 
       ]
@@ -4743,20 +4845,6 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "天琴座"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "白骨之魂"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "骨刺"
         },
 
 
@@ -4912,27 +5000,6 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "天蝎座"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "毒素蒸馏"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "伺机"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "毒伤"
         },
         {
           "matchType": "任一",
@@ -5164,29 +5231,30 @@
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "洞察"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "+1 龙卷风"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "+2 龙卷风"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "+3 龙卷风"
+          "conditionContent": "太古"
         }
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "+1 龙卷风"
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "+2 龙卷风"
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "+3 龙卷风"
+        //}
 
       ]
     },
@@ -5203,28 +5271,22 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "天鹰座"
-        } //,
-        //{
-        //  "matchType": "任一",
-        //  "matchGroupName": "免洗",
-        //  "operate": "在范围内",
-        //  "attributeType": "自定义",
-        //  "conditionContent": "炮轰"
-        //},
-        //{
-        //  "matchType": "任一",
-        //  "matchGroupName": "免洗",
-        //  "operate": "在范围内",
-        //  "attributeType": "自定义",
-        //  "conditionContent": "亡者"
-        //},
-        //{
-        //  "matchType": "任一",
-        //  "matchGroupName": "免洗",
-        //  "operate": "在范围内",
-        //  "attributeType": "自定义",
-        //  "conditionContent": "森林狼"
-        //}
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "炮轰"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "亡者"
+        }
+
 
       ]
     },

@@ -103,8 +103,6 @@ namespace IdleAuto.Scripts.Wrap
         }
         public void Close()
         {
-
-
             TabManager.Instance.DisposePage(_seed);
             EventMa.Dispose();
         }
@@ -189,7 +187,6 @@ namespace IdleAuto.Scripts.Wrap
             var response = await _bro.EvaluateScriptAsync(jsFunc);
 
             await Task.Delay(2000);
-            P.Log("Start Reload With Js CallFunc Finished!");
             _bro.Reload();
 
             await jsTask.Task;
@@ -236,7 +233,6 @@ namespace IdleAuto.Scripts.Wrap
         private void OnJsInited(params object[] args)
         {
             string jsName = args[0] as string;
-            P.Log($"OnJsInited:{jsName}");
             onJsInitCallBack?.Invoke(jsName);
         }
 
@@ -338,7 +334,6 @@ namespace IdleAuto.Scripts.Wrap
             {
                 if (browser.IsBrowserInitialized)
                 {
-                    P.Log($"Start Load {name} CookieAndCache");
                     PageLoadHandler.LoadCookieAndCache(browser, name, url);
                 }
             };
@@ -387,10 +382,6 @@ namespace IdleAuto.Scripts.Wrap
         private void OnFrameLoadStart(object sender, FrameLoadStartEventArgs e, string name, string jumpToUrl)
         {
             var bro = sender as ChromiumWebBrowser;
-
-            P.Log($"On {name} FrameLoadStart");
-
-            P.Log($"On {name} FrameLoadStart");
             EventMa.InvokeEvent(emEventType.OnBrowserFrameLoadStart, bro.Address);
         }
 
@@ -448,7 +439,6 @@ namespace IdleAuto.Scripts.Wrap
 
             if (!PageLoadHandler.ContainsUrl(url, PageLoadHandler.LoginPage))
             {
-                P.Log($"Start Save {name} CookieAndCache");
                 PageLoadHandler.SaveCookieAndCache(bro, name);//暂时移除多于的保存cookie
                 if (!string.IsNullOrWhiteSpace(_proxy)) RemoveProxy(bro);
             }

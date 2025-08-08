@@ -18,8 +18,9 @@ namespace IdleAuto.Scripts.View
         {
             InitializeComponent();
         }
+        public TextBox TxtJordan => txtJordan;  // 使用属性封装
 
-     
+
 
 
         private void btnCollectDelAll_Click(object sender, EventArgs e)
@@ -58,6 +59,16 @@ namespace IdleAuto.Scripts.View
                     throw ex;
                 }
             });
+        }
+
+        private void btnRollMinshen_Click(object sender, EventArgs e)
+        {
+            FlowController.ReformMinshen();
+        }
+
+        private void btnBoss_Click(object sender, EventArgs e)
+        {
+            FlowController.ThrowJordan();
         }
     }
 }

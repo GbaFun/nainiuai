@@ -56,6 +56,11 @@ namespace IdleAuto.Scripts.Model
         /// </summary>
         public int SkeletonMageFcr { get; set; }
 
+        /// <summary>
+        /// 当前穿戴套装名称 维护在suitconfig
+        /// </summary>
+        public emSuitName SuitName { get; set; }
+
         public override bool Equals(object obj)
         {
             var t = obj as GroupModel;

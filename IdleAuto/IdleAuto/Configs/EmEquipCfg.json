@@ -388,7 +388,7 @@
         "attributeType": "自定义",
         "conditionContent": "蛇夫座"
       },
-      
+
 
 
       {
@@ -405,6 +405,30 @@
         "operate": "小于等于",
         "attributeType": "指定职业单系技能",
         "conditionContent": "死灵,召唤,1"
+      }
+
+
+    ]
+  },
+
+  "冥神条件": {
+    "category": "手杖",
+    "quality": "传奇",
+
+    "conditions": [
+
+
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "名称",
+        "conditionContent": "冥神之力"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "指定职业单系技能",
+        "conditionContent": "死灵,召唤,3"
       }
 
 
@@ -433,6 +457,80 @@
         "operate": "大于等于",
         "attributeType": "增强伤害",
         "conditionContent": "28"
+      },
+
+      {
+        "matchType": "必需",
+
+        "operate": "大于等于",
+        "attributeType": "力量",
+        "conditionContent": "9"
+      },
+
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "敏捷",
+        "conditionContent": "9"
+      }
+    ]
+  },
+  "冰霜珠宝": {
+    "category": "珠宝",
+    "quality": "稀有",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "冰伤",
+        "conditionContent": "3"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "减冰",
+        "conditionContent": "3"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "增强伤害",
+        "conditionContent": "28"
+      },
+
+      {
+        "matchType": "必需",
+
+        "operate": "大于等于",
+        "attributeType": "力量",
+        "conditionContent": "9"
+      },
+
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "敏捷",
+        "conditionContent": "9"
+      }
+    ]
+  },
+  "物理珠宝": {
+    "category": "珠宝",
+    "quality": "稀有",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "物理伤害",
+        "conditionContent": "3"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "增强伤害",
+        "conditionContent": "30"
       },
 
       {

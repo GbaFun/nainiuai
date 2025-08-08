@@ -75,6 +75,7 @@ namespace IdleAuto.Scripts.View
             this.label1 = new System.Windows.Forms.Label();
             this.CurLoginAccount = new System.Windows.Forms.Label();
             this.BtnLogin = new System.Windows.Forms.Button();
+            this.btnGroupInit = new System.Windows.Forms.Button();
             this.menuPanel.SuspendLayout();
             this.HomeGroup.SuspendLayout();
             this.LoginGroup.SuspendLayout();
@@ -108,6 +109,7 @@ namespace IdleAuto.Scripts.View
             // 
             // HomeGroup
             // 
+            this.HomeGroup.Controls.Add(this.btnGroupInit);
             this.HomeGroup.Controls.Add(this.button1);
             this.HomeGroup.Controls.Add(this.btnShengyi);
             this.HomeGroup.Controls.Add(this.btnRecovery);
@@ -245,7 +247,7 @@ namespace IdleAuto.Scripts.View
             // 
             this.btnCookie.Location = new System.Drawing.Point(18, 527);
             this.btnCookie.Name = "btnCookie";
-            this.btnCookie.Size = new System.Drawing.Size(102, 28);
+            this.btnCookie.Size = new System.Drawing.Size(98, 28);
             this.btnCookie.TabIndex = 1;
             this.btnCookie.Text = "cookie";
             this.btnCookie.UseVisualStyleBackColor = true;
@@ -313,7 +315,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnProxy
             // 
-            this.btnProxy.Location = new System.Drawing.Point(136, 527);
+            this.btnProxy.Location = new System.Drawing.Point(125, 527);
             this.btnProxy.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProxy.Name = "btnProxy";
             this.btnProxy.Size = new System.Drawing.Size(100, 28);
@@ -413,7 +415,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnSkillPoint
             // 
-            this.BtnSkillPoint.Location = new System.Drawing.Point(123, 138);
+            this.BtnSkillPoint.Location = new System.Drawing.Point(124, 500);
             this.BtnSkillPoint.Margin = new System.Windows.Forms.Padding(12, 5, 0, 5);
             this.BtnSkillPoint.Name = "BtnSkillPoint";
             this.BtnSkillPoint.Size = new System.Drawing.Size(100, 28);
@@ -469,7 +471,7 @@ namespace IdleAuto.Scripts.View
             // 
             // btnMonitor
             // 
-            this.btnMonitor.Location = new System.Drawing.Point(18, 565);
+            this.btnMonitor.Location = new System.Drawing.Point(16, 564);
             this.btnMonitor.Margin = new System.Windows.Forms.Padding(16, 7, 0, 7);
             this.btnMonitor.Name = "btnMonitor";
             this.btnMonitor.Size = new System.Drawing.Size(100, 25);
@@ -480,7 +482,7 @@ namespace IdleAuto.Scripts.View
             // 
             // BtnClear
             // 
-            this.BtnClear.Location = new System.Drawing.Point(136, 560);
+            this.BtnClear.Location = new System.Drawing.Point(125, 560);
             this.BtnClear.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.BtnClear.Name = "BtnClear";
             this.BtnClear.Size = new System.Drawing.Size(100, 32);
@@ -592,6 +594,16 @@ namespace IdleAuto.Scripts.View
             this.BtnLogin.Text = "登录";
             this.BtnLogin.UseVisualStyleBackColor = true;
             // 
+            // btnGroupInit
+            // 
+            this.btnGroupInit.Location = new System.Drawing.Point(126, 138);
+            this.btnGroupInit.Name = "btnGroupInit";
+            this.btnGroupInit.Size = new System.Drawing.Size(99, 28);
+            this.btnGroupInit.TabIndex = 27;
+            this.btnGroupInit.Text = "初始化组队信息";
+            this.btnGroupInit.UseVisualStyleBackColor = true;
+            this.btnGroupInit.Click += new System.EventHandler(this.btnGroupInit_Click);
+            // 
             // MenuWidget
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -658,5 +670,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnShengyi;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.ComboBox comboJob;
+        private System.Windows.Forms.Button btnGroupInit;
     }
 }
