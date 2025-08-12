@@ -328,7 +328,9 @@ public enum emArtifactBase
     [Description("末日")]
     双头斧末日,
     [Description("正义之手")]
-    正义改造底子
+    正义改造底子,
+    [Description("冰冻")]
+    巨神冰冻
 }
 
 /// <summary>

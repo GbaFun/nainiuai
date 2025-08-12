@@ -481,7 +481,7 @@
         "seq": 6,
         "conditionContent": "审判光环,3"
       },
-  
+
       {
         "matchType": "任一",
         "matchGroupName": "权杖",
@@ -548,6 +548,7 @@
     "quality": "破碎|普通",
     "isUpdateRune": false,
     "slotRule": "else:direct",
+    "method": "MakeMori",
     "targetSlotCount": 5,
     "conditions": [
       {
@@ -567,6 +568,28 @@
         "operate": "等于",
         "attributeType": "增强伤害",
         "conditionContent": "15"
+      }
+    ]
+  },
+  "巨神冰冻": {
+    "category": "十字弓",
+    "quality": "破碎|普通",
+    "isUpdateRune": false,
+    "slotRule": "else:direct",
+    "method": "MakeFrost",
+    "targetSlotCount": 4,
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "4"
+      },
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "名称",
+        "conditionContent": "巨神十字弓"
       }
     ]
   }

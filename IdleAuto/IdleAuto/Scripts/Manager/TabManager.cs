@@ -167,7 +167,7 @@ public class TabManager
 
     public void DisposePage(int seed)
     {
-
+        if (!TabPageDic.ContainsKey(seed)) return;
         var tabPage = TabPageDic[seed];
         if (Tab.InvokeRequired)
         {
@@ -199,15 +199,7 @@ public class TabManager
         TabPageDic.TryRemove(seed, out _);
 
     }
-    public void DisposePage()
-    {
-        List<int> seeds = BroWindowDic.Keys.ToList();
-        for (int i = 0; i < seeds.Count; i++)
-        {
-            DisposePage(seeds[i]);
-        }
-        seeds.Clear();
-    }
+ 
 
 }
 

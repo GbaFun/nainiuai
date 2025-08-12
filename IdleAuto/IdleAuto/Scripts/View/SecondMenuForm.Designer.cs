@@ -34,6 +34,9 @@ namespace IdleAuto.Scripts.View
             this.btnRollMinshen = new System.Windows.Forms.Button();
             this.btnBoss = new System.Windows.Forms.Button();
             this.txtJordan = new System.Windows.Forms.TextBox();
+            this.btnArtifact = new System.Windows.Forms.Button();
+            this.comArtifact = new System.Windows.Forms.ComboBox();
+            this.btnSwitchJustice = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -80,14 +83,45 @@ namespace IdleAuto.Scripts.View
             // 
             this.txtJordan.Location = new System.Drawing.Point(84, 117);
             this.txtJordan.Name = "txtJordan";
-            this.txtJordan.Size = new System.Drawing.Size(63, 25);
+            this.txtJordan.Size = new System.Drawing.Size(121, 25);
             this.txtJordan.TabIndex = 5;
+            // 
+            // btnArtifact
+            // 
+            this.btnArtifact.Location = new System.Drawing.Point(3, 148);
+            this.btnArtifact.Name = "btnArtifact";
+            this.btnArtifact.Size = new System.Drawing.Size(75, 28);
+            this.btnArtifact.TabIndex = 6;
+            this.btnArtifact.Text = "神器制作";
+            this.btnArtifact.UseVisualStyleBackColor = true;
+            this.btnArtifact.Click += new System.EventHandler(this.btnArtifact_Click);
+            // 
+            // comArtifact
+            // 
+            this.comArtifact.FormattingEnabled = true;
+            this.comArtifact.Location = new System.Drawing.Point(84, 153);
+            this.comArtifact.Name = "comArtifact";
+            this.comArtifact.Size = new System.Drawing.Size(121, 23);
+            this.comArtifact.TabIndex = 7;
+            // 
+            // btnSwitchJustice
+            // 
+            this.btnSwitchJustice.Location = new System.Drawing.Point(3, 0);
+            this.btnSwitchJustice.Name = "btnSwitchJustice";
+            this.btnSwitchJustice.Size = new System.Drawing.Size(75, 23);
+            this.btnSwitchJustice.TabIndex = 8;
+            this.btnSwitchJustice.Text = "交换正义";
+            this.btnSwitchJustice.UseVisualStyleBackColor = true;
+            this.btnSwitchJustice.Click += new System.EventHandler(this.btnSwitchJustice_Click);
             // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSwitchJustice);
+            this.Controls.Add(this.comArtifact);
+            this.Controls.Add(this.btnArtifact);
             this.Controls.Add(this.txtJordan);
             this.Controls.Add(this.btnBoss);
             this.Controls.Add(this.btnRollMinshen);
@@ -106,5 +140,8 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnRollMinshen;
         private System.Windows.Forms.Button btnBoss;
         private System.Windows.Forms.TextBox txtJordan;
+        private System.Windows.Forms.Button btnArtifact;
+        private System.Windows.Forms.ComboBox comArtifact;
+        private System.Windows.Forms.Button btnSwitchJustice;
     }
 }

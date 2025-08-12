@@ -244,6 +244,11 @@ public class EquipController : BaseController
 
 
             P.Log("写入仓库装备到数据库", emLogType.AutoEquip);
+            var specialCategory = new List<string> { "戒指", "护符", "秘境", "道具", "权杖", "项链", "斧", "珠宝", "爪" };
+            if (repositoryEquips.Values.Where(p => !specialCategory.Contains(p.Category) && p.Category == p.EquipName).Count() > 0)
+            {
+                throw new Exception("解析装备数据异常");
+            }
             FreeDb.Sqlite.InsertOrUpdate<EquipModel>().SetSource(repositoryEquips.Values.ToList()).ExecuteAffrows();
 
             P.Log("写入更新仓库时间到数据库", emLogType.AutoEquip);
@@ -614,12 +619,16 @@ public class EquipController : BaseController
                 targetEquips.EquipSuit.RemoveAll(p => p.SkillMode != targetSkillMode);
             }
 
-            P.Log("获取{role.Level}级{role.Job}配置的装备成功");
+            var roleSuitName = role.GetRoleSuitName();
             for (int i = 0; i < targetEquips.EquipSuit.Count; i++)
             {
-                var suit = targetEquips.EquipSuit[i];
-
                 tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
+                var suit = targetEquips.EquipSuit[i];
+                if (role.Job == emJob.死骑 && targetSuitType == emSuitType.效率 && roleSuitName.ToString() != suit.SuitName)
+                {
+                    continue;
+                }
+                
                 var suitEquips = MatchEquipSuit(account.AccountName, role, suit, curEquips, tradeSuitMap[i]);
                 idealFcr = suit.IdealFcr;
                 //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
@@ -830,13 +839,17 @@ public class EquipController : BaseController
             {
                 targetEquips.EquipSuit.RemoveAll(p => p.SkillMode != targetSkillMode);
             }
-
+            var roleSuitName = role.GetRoleSuitName();
             P.Log("获取{role.Level}级{role.Job}配置的装备成功");
             for (int i = 0; i < targetEquips.EquipSuit.Count; i++)
             {
-                var suit = targetEquips.EquipSuit[i];
-
                 tradeSuitMap.Add(new Dictionary<emEquipSort, TradeModel>());
+                var suit = targetEquips.EquipSuit[i];
+                if (role.Job == emJob.死骑&& targetSuitType == emSuitType.效率 && roleSuitName.ToString() != suit.SuitName)
+                {
+                    continue;
+                }
+                
                 var suitEquips = MatchEquipSuit(account.AccountName, role, suit, curEquips, tradeSuitMap[i]);
                 idealFcr = suit.IdealFcr;
                 //调整戒指等级如果不能满足速度要求则不匹配 因为把死灵戒指调整成非必要 要额外计算速度是否满足理想速度 如果戒指非必要都没命中则没必要调整戒指
@@ -2055,6 +2068,7 @@ public class EquipController : BaseController
     private EquipSuits GetEquipConfig(emJob job, int level, emSuitType suitType)
     {
         return SuitCfg.Instance.GetEquipmentByJobAndLevel(job, level, suitType);
+
     }
 
     public List<EquipModel> MergeEquips(Dictionary<emEquipSort, EquipModel> toWear, Dictionary<emEquipSort, EquipModel> curWear)

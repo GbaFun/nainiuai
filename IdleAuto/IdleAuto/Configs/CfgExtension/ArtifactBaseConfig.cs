@@ -31,6 +31,8 @@ public class ArtifactBaseConfig : Equipment
 
     private string _slotRule;
 
+    public string Method { get; set; }
+
     /// <summary>
     /// 目标孔数
     /// </summary>

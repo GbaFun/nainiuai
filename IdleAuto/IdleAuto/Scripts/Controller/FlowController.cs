@@ -273,7 +273,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != RepairManager.RepoAcc && p.EquipName.Contains("雄黄之白热的珠宝") && p.Content.Contains("+30%") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.EquipName.Contains("精华") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             //var usefulList = FreeDb.Sqlite.Select<UsefulEquip>().Where(p => p.EquipName.Contains("权杖") && p.Content.Contains("+3 狂热") && p.Content.Contains("+3 审判")
             //&& (p.Quality == "base" || p.Quality == "slot") && p.EquipStatus == emEquipStatus.Repo && p.AccountName != RepairManager.RepoAcc).ToList();
             // var list = usefulList.ToObject<List<EquipModel>>();
@@ -288,7 +288,7 @@ namespace IdleAuto.Scripts.Controller
                 await Task.Delay(1500);
                 foreach (var e in item)
                 {
-                    await tradeControl.StartTrade(e, "奶牛");
+                    await tradeControl.StartTrade(e, "奶牛苦工24");
                     await Task.Delay(1500);
                     e.EquipStatus = emEquipStatus.Trading;
                     DbUtil.InsertOrUpdate<EquipModel>(e);
@@ -793,6 +793,17 @@ namespace IdleAuto.Scripts.Controller
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(19).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
             await CollectAndMakeArtifact(emArtifactBase.双头斧末日, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
+        }
+
+        public static async Task MakeFrost()
+        {
+
+            Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "十字弓" &&
+         (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/4)")) && p.EquipName.Contains("巨神十字弓") && p.EquipStatus == emEquipStatus.Repo;
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(19).ToList();
+            // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
+            // await CollectAndMakeArtifact(emArtifactBase.巨神冰冻, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
+            await RegisterFrost();
         }
         /// <summary>
         /// 移动底子和制作神器
@@ -1491,6 +1502,38 @@ namespace IdleAuto.Scripts.Controller
 
             toSendRole = ReSortSendRole(toSendAccount, toSendRole);
             var eqInRepo = EquipUtil.QueryEquipInRepo().Where((a, b) => (a.EquipName == "末日") && a.RoleID == 0).ToList();
+            int index = 0;
+            foreach (var item in eqInRepo)
+            {
+                var demandRole = toSendRole[index];
+                var t = new TradeModel()
+                {
+                    DemandAccountName = demandRole.AccountName,
+                    DemandRoleId = demandRole.RoleId,
+                    DemandRoleName = demandRole.RoleName,
+                    EquipId = item.EquipID,
+                    EquipName = item.EquipName,
+                    EquipSortName = "主手",
+                    OwnerAccountName = item.AccountName,
+                    TradeStatus = emTradeStatus.Register,
+
+
+                };
+                DbUtil.InsertOrUpdate<TradeModel>(t);
+                index++;
+            }
+
+        }
+
+        public static async Task RegisterFrost()
+        {
+            var toSendRole = FreeDb.Sqlite.Select<EquipModel, GroupModel>()
+                .InnerJoin<GroupModel>((a, b) => a.RoleID == b.RoleId)
+                .Where((a, b) => b.Job == emJob.骑士 && a.emEquipSort == emEquipSort.主手 && !a.EquipName.Contains("末日") && !a.EquipName.Contains("正义之手") && !a.EquipName.Contains("冰冻"))
+                .ToList((a, b) => b);
+
+
+            var eqInRepo = EquipUtil.QueryEquipInRepo().Where((a, b) => (a.EquipName.Contains("冰冻")) && a.Quality == "artifact" && a.RoleID == 0).ToList();
             int index = 0;
             foreach (var item in eqInRepo)
             {
@@ -2218,7 +2261,7 @@ namespace IdleAuto.Scripts.Controller
             {
                 var user = AccountCfg.Instance.GetUserModel(item.Key);
                 var win = await TabManager.Instance.TriggerAddBroToTap(user);
-                var idList = item.Select(s=>s.EquipID).ToList();
+                var idList = item.Select(s => s.EquipID).ToList();
                 var eids = string.Join(",", idList);
                 await win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(win.User.FirstRole.RoleId), "equip");
                 await Task.Delay(1500);
@@ -2228,8 +2271,128 @@ namespace IdleAuto.Scripts.Controller
                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => idList.Contains(p.EquipID)).ExecuteAffrows();
                     FreeDb.Sqlite.Delete<DelPreviewEquipModel>().Where(p => idList.Contains(p.EquipID)).ExecuteAffrows();
                 }
+                win.Close();
             }
 
+
+        }
+
+        /// <summary>
+        /// 正义发给斧永恒且有末日的队伍 冰冻发给剑永恒队伍
+        /// </summary>
+        /// <returns></returns>
+        public static async Task SwitchFrostAndJustice()
+        {
+
+            var groupList = FreeDb.Sqlite.Select<GroupModel>().ToList();
+            var justiceList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("正义之手")).ToList();
+            //检查正义队伍dk是否有末日 有的话跳过
+            var filterJusticeList = new List<EquipModel>();
+            foreach (var item in justiceList)
+            {
+                if (item.RoleID == 0)
+                {
+                    filterJusticeList.Add(item);
+                    continue;
+                }
+                var jusKnight = groupList.Find(p => p.RoleId == item.RoleID);
+                //正义队的dk
+                var jusDk = groupList.Find(p => p.AccountName == jusKnight.AccountName && p.TeamIndex == jusKnight.TeamIndex && p.Job == emJob.死骑);
+                var hasMori = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "末日" && p.RoleID == jusDk.RoleId).First() != null;
+                if (!hasMori) filterJusticeList.Add(item);
+            }
+            var frostList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("冰冻") && p.Quality == "artifact").ToList();
+            var shuangtouYongheng = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName.Contains("永恒") && p.Content.Contains("双头斧")).ToList();
+            var toSwitchMoriList = new List<EquipModel>();
+            foreach (var item in shuangtouYongheng)
+            {
+                var dkId = item.RoleID;
+                var dk = groupList.Where(p => p.RoleId == dkId).FirstOrDefault();
+                var knight = groupList.Find(p => p.AccountName == dk.AccountName && p.TeamIndex == dk.TeamIndex && p.Job == emJob.骑士);
+                var mori = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "末日" && !p.Content.Contains("巨神") && p.RoleID == knight.RoleId).First();
+                var hasFeilong = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "飞龙" && p.RoleID == knight.RoleId).First() != null;
+                if (mori != null && !hasFeilong)
+                {
+                    toSwitchMoriList.Add(mori);
+                }
+            }
+
+            for (int i = 0; i < filterJusticeList.Count; i++)
+            {
+
+                var justice = filterJusticeList[i];
+                var mori = toSwitchMoriList[i];
+                var justiceUser = AccountCfg.Instance.GetUserModel(justice.AccountName);
+                var winJus = await TabManager.Instance.TriggerAddBroToTap(justiceUser);
+                var moriUser = AccountCfg.Instance.GetUserModel(mori.AccountName);
+                var winMori = await TabManager.Instance.TriggerAddBroToTap(moriUser);
+                // 脱下正义
+                var e1 = new EquipController(winJus);
+                if (justice.RoleID > 0)
+                {
+                    var knightJus = winJus.User.Roles.Find(p => p.RoleId == justice.RoleID);
+                    await e1.EquipOff(winJus, knightJus, (int)emEquipSort.主手, justice);
+                    await Task.Delay(1500);
+                    await e1.AutoEquips(winJus, knightJus);
+                }
+                var t1 = new TradeController(winJus);
+                await t1.StartTrade(justice, mori.RoleName);
+                var t2 = new TradeController(winMori);
+                await t2.AcceptAll(winMori.User);
+                await Task.Delay(1500);
+                var e2 = new EquipController(winMori);
+                var knightMori = winMori.User.Roles.Find(p => p.RoleId == mori.RoleID);
+                var knightMoriGroup = knightMori.GetGroup();
+                var dkMoriRoleid = knightMoriGroup.Find(p => p.Job == emJob.死骑).RoleId;
+                var dkMori = winMori.User.Roles.Find(p => p.RoleId == dkMoriRoleid);
+                var curEquips = await e2.AutoEquips(winMori, knightMori);
+                var c2 = new CharacterController(winMori);
+                await c2.AddSkillPoints(knightMori, curEquips);
+                await Task.Delay(1500);
+                var yongheng = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.RoleID == dkMori.RoleId && p.EquipName.Contains("永恒")).First();
+
+                await MoveMoriToDk(mori, dkMori, winMori, yongheng);
+
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// 将双头末日装配给dk 需要放在副手 且腰带和手套不能有攻速
+        /// </summary>
+        /// <returns></returns>
+        public static async Task MoveMoriToDk(EquipModel mori, RoleModel dk, BroWindow win, EquipModel yongheng)
+        {
+            var e = new EquipController(win);
+            var effId = await e.GetSuitId(emSuitType.效率, dk);
+            if (effId > 0)
+            {
+                await e.LoadSuit(emSuitType.效率, dk);
+            }
+
+            await e.EquipOff(win, dk, (int)emEquipSort.副手, yongheng);
+            await e.EquipOff(win, dk, (int)emEquipSort.主手, mori);
+            //await e.EquipOn(win, dk, mori);
+            //await e.EquipOn(win, dk, yongheng);
+            await e.AutoEquips(win, dk, targetSuitType: emSuitType.效率);
+            if (effId > 0)
+            {
+                await e.SaveEquipSuit(emSuitType.效率, dk);
+            }
+            var mfId = await e.GetSuitId(emSuitType.MF, dk);
+            if (mfId > 0)
+            {
+                await e.LoadSuit(emSuitType.MF, dk);
+            }
+            else return;
+            await e.EquipOff(win, dk, (int)emEquipSort.副手, yongheng);
+            await e.EquipOn(win, dk, mori);
+            await e.EquipOn(win, dk, yongheng);
+            await e.AutoEquips(win, dk, targetSuitType: emSuitType.MF);
+
+            await e.SaveEquipSuit(emSuitType.MF, dk);
 
         }
 

@@ -477,6 +477,7 @@
     "name": "冰冻",
     "description": "",
     "equipment": {
+      "isTrade": true,
       "category": "十字弓",
       "quality": "神器",
       "conditions": [
@@ -4379,6 +4380,12 @@
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
+          "conditionContent": "1"
         }
       ]
     }
@@ -4395,6 +4402,12 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
           "conditionContent": "1"
         }
       ]
@@ -4436,6 +4449,12 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
+          "conditionContent": "1"
+        },
+        {
+          "matchType": "必需",
+          "operate": "小于等于",
+          "attributeType": "攻击速度",
           "conditionContent": "1"
         }
       ]
@@ -4740,6 +4759,24 @@
           "attributeType": "所有技能",
           "conditionContent": "3"
         }
+      ]
+    }
+  },
+  {
+    "name": "赦免",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "传奇",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "赦免徽章"
+        }
+        
       ]
     }
   }

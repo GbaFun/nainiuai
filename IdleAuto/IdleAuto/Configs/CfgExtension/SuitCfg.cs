@@ -201,6 +201,7 @@ public class SuitCfg
             }
             if (_equipMap.TryGetValue(job, out var equipmentList))
             {
+         
                 return equipmentList.Find(e => e.Lv.AdaptLevel(level));
             }
         }

@@ -72,6 +72,16 @@ public class RoleModel : IModel
         return role.SkillMode;
     }
 
+    public emSuitName GetRoleSuitName()
+    {
+        var role = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == RoleId).First();
+        if (role == null)
+        {
+            throw new Exception("请先初始化组队表");
+        }
+        return role.SuitName;
+    }
+
     public List<GroupModel> GetGroup()
     {
 

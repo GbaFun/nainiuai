@@ -1,5 +1,6 @@
 ﻿using IdleAuto.Db;
 using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,22 @@ namespace IdleAuto.Scripts.View
         public SecondMenuForm()
         {
             InitializeComponent();
+            LoadData();
         }
         public TextBox TxtJordan => txtJordan;  // 使用属性封装
+
+        private Dictionary<string, ArtifactBaseConfig> ArtifactData => ArtifactBaseCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
+        public string GetSelectedMethod()
+        {
+            var key = this.comArtifact.SelectedItem.ToString();
+            return ArtifactData[key].Method;
+        }
+
+        public void LoadData()
+        {
+            var dic = ArtifactData;
+            comArtifact.DataSource = dic.Select(p => p.Key).ToList();
+        }
 
 
 
@@ -69,6 +84,17 @@ namespace IdleAuto.Scripts.View
         private void btnBoss_Click(object sender, EventArgs e)
         {
             FlowController.ThrowJordan();
+        }
+
+        private void btnArtifact_Click(object sender, EventArgs e)
+        {
+            string methodName = MenuInstance.SecondForm.GetSelectedMethod();
+            ReflectUtil.Invoke(typeof(FlowController), methodName);
+        }
+
+        private void btnSwitchJustice_Click(object sender, EventArgs e)
+        {
+            FlowController.SwitchFrostAndJustice();
         }
     }
 }
