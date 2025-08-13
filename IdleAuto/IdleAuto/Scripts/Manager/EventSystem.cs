@@ -55,7 +55,12 @@ public enum emEventType
     /// <summary>
     /// san值不够
     /// </summary>
-    OnSanError
+    OnSanError,
+
+    /// <summary>
+    /// 交易符文
+    /// </summary>
+    TradeRune,
 
 }
 

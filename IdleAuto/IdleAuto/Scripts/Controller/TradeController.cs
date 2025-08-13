@@ -106,7 +106,7 @@ public class TradeController : BaseController
         ////接受交易请求
         return true;
     }
-    public async Task<bool> AcceptAll(UserModel account)
+    public async Task<bool> AcceptAll(int page=0)
     {
         if (_isSkipTrade)
         {
@@ -114,13 +114,14 @@ public class TradeController : BaseController
             return false;
         }
         await Task.Delay(1000);
+        var account = _win.User;
         //跳转消息页面
         var role = account.FirstRole;
         // _win.GetBro().ShowDevTools();
         P.Log($"跳转{role.RoleName}的消息页面", emLogType.AutoEquip);
-        if (_browser.Address.IndexOf(IdleUrlHelper.NoticeUrl()) == -1)
+        if (_browser.Address.IndexOf(IdleUrlHelper.NoticeUrl(-1)) == -1)
         {
-            var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.NoticeUrl(), "trade,equip");
+            var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.NoticeUrl(-1), "trade,equip");
             if (!response.Success) throw new Exception("消息页加载失败");
         }
 
@@ -147,7 +148,7 @@ public class TradeController : BaseController
             }
 
             await Task.Delay(1000);
-            await AcceptAll(account);
+            await AcceptAll();
         }
 
 

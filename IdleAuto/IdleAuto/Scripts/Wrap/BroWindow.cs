@@ -64,12 +64,15 @@ namespace IdleAuto.Scripts.Wrap
             EventMa.SubscribeEvent(emEventType.OnCharLoaded, OnCharLoaded);
             EventMa.SubscribeEvent(emEventType.OnJsInited, OnJsInited);
             EventMa.SubscribeEvent(emEventType.OnPostFailed, OnPostFailed);
+            EventMa.SubscribeEvent(emEventType.TradeRune, TradeRune);
             if (isProxy)
             {
                 SetProxy();
             }
             this._bro = InitializeChromium(User.AccountName, url);
         }
+
+
         private void OnCharLoaded(params object[] args)
         {
 
@@ -236,7 +239,7 @@ namespace IdleAuto.Scripts.Wrap
             onJsInitCallBack?.Invoke(jsName);
         }
 
-        public void OnSignalCallback(params object[] args)
+        private void OnSignalCallback(params object[] args)
         {
             string t = args[0] as string;
             onSignalCallBack?.Invoke(t);
@@ -277,9 +280,10 @@ namespace IdleAuto.Scripts.Wrap
         /// <param name="signals"></param>
         /// <param name="act"></param>
         /// <returns></returns>
-        public async Task SignalRaceCallBack(string[] signals, Action act)
+        public async Task<string> SignalRaceCallBack(string[] signals, Action act)
         {
             var tcs2 = new TaskCompletionSource<bool>();
+            string match = "";
             if (onSignalCallBack != null)
             {
                 throw new Exception("重复添加信号事件方法");
@@ -288,6 +292,7 @@ namespace IdleAuto.Scripts.Wrap
             {
                 if (signals.Contains(result))
                 {
+                    match = result;
                     onSignalCallBack = null;
                     tcs2.SetResult(true);
 
@@ -295,7 +300,7 @@ namespace IdleAuto.Scripts.Wrap
             };
             act.Invoke();
             await tcs2.Task;
-
+            return match;
         }
 
 
@@ -397,6 +402,19 @@ namespace IdleAuto.Scripts.Wrap
             {
                 this.Close();
             }
+        }
+
+        private void TradeRune(params object[] args)
+        {
+            var data = args[0].ToString();
+            data = data.Replace('，', ',');
+            var arr = data.Split(',');
+            var runeName = arr[0];
+            var count = arr[1];
+            var dic = new Dictionary<int, int>();
+            dic.Add(int.Parse(runeName), int.Parse(count));
+            FlowController.TradeRune(dic);
+
         }
 
         /// <summary>

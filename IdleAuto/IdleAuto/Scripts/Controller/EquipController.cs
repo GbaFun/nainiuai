@@ -41,7 +41,7 @@ public class EquipController : BaseController
         if (r.Result.ToObject<bool>())
         {
             var t = new TradeController(win);
-            await t.AcceptAll(win.User);
+            await t.AcceptAll();
         }
         await Task.Delay(2000);
         P.Log("开始转移角色背包物品到仓库", emLogType.AutoEquip);

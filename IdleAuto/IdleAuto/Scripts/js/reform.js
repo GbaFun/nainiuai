@@ -4,6 +4,7 @@
     async function init() {
         try {
             await CefSharp.BindObjectAsync("Bridge");
+            addRuneModule();
         }
         catch (e) {
             console.log("Error:", e);
@@ -74,6 +75,52 @@
 
     function getEquipContent() {
         return $(".panel-body").text()
+    }
+
+    //加入可以直接交易符文的模块
+    function addRuneModule() {
+        var div = $('<div>', {
+            'class': 'col-md-9',
+            "style": "color:black"
+        });
+        var input = $('<input>', {
+            "type": "text",
+            "style": "color:black",
+            "id":"txtRune"
+
+        });
+        var input1 = $('<input>', {
+            "type": "button",
+            "value": "继续改造",
+            "click": () => {
+                Bridge.invokeEvent("OnSignal", "Continue");
+            }
+
+        });
+        var input2 = $('<input>', {
+            "type": "button",
+            "value": "交易符文",
+            "click": () => {
+                var text = $("#txtRune").val();
+                debugger
+                Bridge.invokeEvent("TradeRune", text);
+            }
+
+        });
+        var input3 = $('<input>', {
+            "type": "button",
+            "value": "跳过",
+            "click": () => {
+                Bridge.invokeEvent("OnSignal", "Skip");
+            }
+
+        });
+        div.append(input);
+        div.append(input2);
+        div.append(input3);
+        div.append(input1);
+
+        $(".container .row").append(div);
     }
 
     _reform.reform = reform;

@@ -431,3 +431,11 @@ public enum emSuitName
     骑士冰冻,
     DK剑永恒
 }
+
+public enum emSignal
+{
+    Continue,
+    Skip
+
+    
+}

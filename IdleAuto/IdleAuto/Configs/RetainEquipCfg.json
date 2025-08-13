@@ -3739,7 +3739,7 @@
 
       ]
     },
-    "maxCount": 8
+    "maxCount": 100
   },
   {
     "equip": {
@@ -4301,11 +4301,18 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "秘境"
+        },
+        {
+          "matchType": "必需",
+
+          "operate": "大于等于",
+          "attributeType": "物品掉率",
+          "conditionContent": "10"
         }
       ]
 
     },
-    "maxCount": 60
+    "maxCount": 600
   },
   {
     "equip": {
@@ -4894,22 +4901,22 @@
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
-          "conditionContent": "冰封球"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "陨石"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "等于",
-          "attributeType": "名称",
-          "conditionContent": "熔岩之泉"
+          "conditionContent": "太古"
         }
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "在范围内",
+        //  "attributeType": "自定义",
+        //  "conditionContent": "陨石"
+        //},
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "等于",
+        //  "attributeType": "名称",
+        //  "conditionContent": "熔岩之泉"
+        //}
 
       ]
     },
@@ -4969,13 +4976,6 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "白羊座"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "元素之怒"
         },
         {
           "matchType": "任一",
@@ -5081,7 +5081,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 1
   },
   {
     "equip": {
@@ -5150,7 +5150,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 1
   },
   {
     "equip": {
@@ -5181,7 +5181,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 1
   },
   {
     "equip": {
@@ -5212,7 +5212,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 5
   },
   {
     "equip": {

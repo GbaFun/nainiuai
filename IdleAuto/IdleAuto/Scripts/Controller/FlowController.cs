@@ -265,7 +265,7 @@ namespace IdleAuto.Scripts.Controller
             var w = curWin;
             var t = new TradeController(w);
             await Task.Delay(1000);
-            await t.AcceptAll(curWin.User);
+            await t.AcceptAll();
 
             await t.TradeRune(sendDic, role.RoleName, true);
 
@@ -273,7 +273,7 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task SendEquip()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.EquipName.Contains("精华") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.EquipName.Contains("牛王战戟") && p.EquipStatus == emEquipStatus.Repo && p.IsLocal == false).ToList();
             //var usefulList = FreeDb.Sqlite.Select<UsefulEquip>().Where(p => p.EquipName.Contains("权杖") && p.Content.Contains("+3 狂热") && p.Content.Contains("+3 审判")
             //&& (p.Quality == "base" || p.Quality == "slot") && p.EquipStatus == emEquipStatus.Repo && p.AccountName != RepairManager.RepoAcc).ToList();
             // var list = usefulList.ToObject<List<EquipModel>>();
@@ -387,7 +387,7 @@ namespace IdleAuto.Scripts.Controller
                 var user2 = AccountCfg.Instance.GetUserModel(targetAcc);
                 var win2 = await TabManager.Instance.TriggerAddBroToTap(user2);
                 var t = new TradeController(win2);
-                await t.AcceptAll(user2);
+                await t.AcceptAll();
                 win2.Close();
             }
         }
@@ -459,7 +459,7 @@ namespace IdleAuto.Scripts.Controller
                 var r1 = await win2.CallJs("_char.hasNotice()");
                 if (r1.Result.ToObject<bool>())
                 {
-                    await t2.AcceptAll(win2.User);
+                    await t2.AcceptAll();
                 }
 
 
@@ -742,7 +742,7 @@ namespace IdleAuto.Scripts.Controller
                 var receiverAccName = AccountCfg.Instance.GetUserModel(item.Key.AccountName);
                 var win2 = await TabManager.Instance.TriggerAddBroToTap(receiverAccName);
                 var t2 = new TradeController(win2);
-                await t2.AcceptAll(win2.User);
+                await t2.AcceptAll();
                 win2.Close();
             }
 
@@ -801,8 +801,8 @@ namespace IdleAuto.Scripts.Controller
             Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "十字弓" &&
          (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/4)")) && p.EquipName.Contains("巨神十字弓") && p.EquipStatus == emEquipStatus.Repo;
             var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(19).ToList();
-            // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
-            // await CollectAndMakeArtifact(emArtifactBase.巨神冰冻, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
+
+            //  await CollectAndMakeArtifact(emArtifactBase.巨神冰冻, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
             await RegisterFrost();
         }
         /// <summary>
@@ -837,7 +837,7 @@ namespace IdleAuto.Scripts.Controller
             var receiverUserModel = AccountCfg.Instance.GetUserModel(receiverAcc);
             var win2 = await TabManager.Instance.TriggerAddBroToTap(receiverUserModel);
             var t2 = new TradeController(win2);
-            await t2.AcceptAll(win2.User);
+            await t2.AcceptAll();
             await Task.Delay(1500);
 
             var a = new ArtifactController(win2);
@@ -1156,7 +1156,7 @@ namespace IdleAuto.Scripts.Controller
             {
                 var win2 = await TabManager.Instance.TriggerAddBroToTap(receiverAcc);
                 var t2 = new TradeController(win2);
-                await t2.AcceptAll(win2.User);
+                await t2.AcceptAll();
                 win2.Close();
             }
             if (winFeiLong != null)
@@ -1527,10 +1527,19 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task RegisterFrost()
         {
-            var toSendRole = FreeDb.Sqlite.Select<EquipModel, GroupModel>()
+            var toSendRole1 = FreeDb.Sqlite.Select<EquipModel, GroupModel>()
                 .InnerJoin<GroupModel>((a, b) => a.RoleID == b.RoleId)
-                .Where((a, b) => b.Job == emJob.骑士 && a.emEquipSort == emEquipSort.主手 && !a.EquipName.Contains("末日") && !a.EquipName.Contains("正义之手") && !a.EquipName.Contains("冰冻"))
+                .Where((a, b) => b.Job == emJob.骑士 && a.emEquipSort == emEquipSort.主手 && !a.EquipName.Contains("末日") && !a.EquipName.Contains("正义之手") && !a.EquipName.Contains("冰冻")
+                && a.AccountName != RepairManager.RepoAcc)
                 .ToList((a, b) => b);
+
+            var toSendRole2 = FreeDb.Sqlite.Select<EquipModel, GroupModel>()
+       .InnerJoin<GroupModel>((a, b) => a.RoleID == b.RoleId)
+       .Where((a, b) => b.Job == emJob.骑士 && a.emEquipSort == emEquipSort.副手 && !a.EquipName.Contains("梦境")
+       && a.AccountName != RepairManager.RepoAcc)
+       .ToList((a, b) => b);
+
+            var toSendRole = toSendRole1.Intersect(toSendRole2).ToList();
 
 
             var eqInRepo = EquipUtil.QueryEquipInRepo().Where((a, b) => (a.EquipName.Contains("冰冻")) && a.Quality == "artifact" && a.RoleID == 0).ToList();
@@ -1813,7 +1822,7 @@ namespace IdleAuto.Scripts.Controller
                 await c2.ExitGroup(role1);
                 //加入骑士
                 await c1.MakeGroup(hunter, pastor, role1);
-                await t.AcceptAll(u);
+                await t.AcceptAll();
                 // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
                 // await win2.LoadUrl($"https://www.idleinfinity.cn/Battle/WorldEvent?id={role1.RoleId}");
                 await WorldBoss(role1, win2);
@@ -2015,7 +2024,7 @@ namespace IdleAuto.Scripts.Controller
                         }
 
                         var t1 = new TradeController(win);
-                        await t1.AcceptAll(win.User);
+                        await t1.AcceptAll();
                         //下掉需求dk的永恒并删除配装
 
                         var dk1 = win.User.Roles.Where(p => p.RoleId == dkGroup.RoleId).FirstOrDefault();
@@ -2045,7 +2054,7 @@ namespace IdleAuto.Scripts.Controller
                             yongheng.SetEquipStatus(emEquipStatus.Trading);
                         }
 
-                        await t2.AcceptAll(win2.User);
+                        await t2.AcceptAll();
                         await e1.AutoAttributeSave(win2, dk2, new List<EquipModel> { yongheng });
                         await e2.EquipOn(win2, dk2, yongheng);
                         yongheng.RoleID = dk2.RoleId;
@@ -2155,6 +2164,28 @@ namespace IdleAuto.Scripts.Controller
         }
 
         /// <summary>
+        /// 将符文发送给指定用户
+        /// </summary>
+        /// <param name="dic"></param>
+        /// <param name="toRoleName"></param>
+        /// <returns></returns>
+        public static async Task TradeRune(Dictionary<int, int> dic)
+        {
+            var win = TabManager.Instance.GetWindow();
+            var role = win.User.FirstRole;
+            var roleName = role.RoleName;
+            var recWin = await TabManager.Instance.TriggerAddBroToTap(win.User);
+            string acc = ConfigUtil.GetAppSetting("RuneAcc");
+            var runeWin = await TabManager.Instance.TriggerAddBroToTap(AccountCfg.Instance.GetUserModel(acc));
+            var t = new TradeController(runeWin);
+            await t.TradeRune(dic, roleName, false);
+            runeWin.Close();
+            var t1 = new TradeController(recWin);
+            await t1.AcceptAll();
+
+        }
+
+        /// <summary>
         /// 改造冥神
         /// </summary>
         /// <returns></returns>
@@ -2214,7 +2245,7 @@ namespace IdleAuto.Scripts.Controller
                 var t2 = new TradeController(win2);
                 await t2.StartTrade(otherJewel, role.RoleName);
                 var t1 = new TradeController(win);
-                await t1.AcceptAll(win.User);
+                await t1.AcceptAll();
                 target = otherJewel;
                 await win.LoadUrlWaitJsInit(url, "inlay");
                 await Task.Delay(1000);
@@ -2248,7 +2279,17 @@ namespace IdleAuto.Scripts.Controller
             if (curCount >= maxCount) return;
             await Task.Delay(5000);
             var result = await r.ReformEquip(eq, eq.RoleID, type);
-            if (!result) return;//材料不够
+            if (!result)
+            {
+                var matchSignal = await win.SignalRaceCallBack(new string[] { emSignal.Continue.ToString(), emSignal.Skip.ToString() }, () =>
+                {
+
+                });
+                if (matchSignal == emSignal.Skip.ToString())
+                {
+                    return;
+                }
+            }
             await ReformUntilCondition(eq, win, con, maxCount, ++curCount, type);
         }
 
@@ -2338,7 +2379,7 @@ namespace IdleAuto.Scripts.Controller
                 var t1 = new TradeController(winJus);
                 await t1.StartTrade(justice, mori.RoleName);
                 var t2 = new TradeController(winMori);
-                await t2.AcceptAll(winMori.User);
+                await t2.AcceptAll();
                 await Task.Delay(1500);
                 var e2 = new EquipController(winMori);
                 var knightMori = winMori.User.Roles.Find(p => p.RoleId == mori.RoleID);

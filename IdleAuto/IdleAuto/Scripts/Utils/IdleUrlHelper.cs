@@ -55,8 +55,12 @@ public class IdleUrlHelper
     {
         return $"{Idle}/{Inlay}?id={roleid}&eid={eid}&pi=0&pt=&et=&pi2=0&pt2=&et2=&aid=";
     }
-    public static string NoticeUrl()
+    public static string NoticeUrl(int page)
     {
-        return $"{Idle}/{Notice}";
+        if (page == -1)
+        {
+            return $"{Idle}/{Notice}";
+        }
+        return $"{Idle}/{Notice}?pi={page}";
     }
 }
