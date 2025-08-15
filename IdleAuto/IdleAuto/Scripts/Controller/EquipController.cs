@@ -1457,7 +1457,8 @@ public class EquipController : BaseController
         //只查找仓库中的装备
         var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
 
-        var _equipsSelf = EquipUtil.QueryEquipInRepo(role.RoleId).Where((a, b) => a.AccountName == accountName && a.EquipStatus == emEquipStatus.Repo).ToList();
+        var _equipsSelf = EquipUtil.QueryEquipInRepo(role.RoleId).Where((a, b) => a.AccountName == accountName && a.EquipStatus == emEquipStatus.Repo).Distinct().ToList();
+        //var test = _equipsSelf.Where(p => p.EquipName == "永恒").ToList();
         var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName != accountName && a.EquipStatus == emEquipStatus.Repo && a.IsLocal == false).ToList();
         if (registeredEquips != null)
         {
@@ -1642,6 +1643,7 @@ public class EquipController : BaseController
         if (eq != null)
         {
             eq.EquipStatus = emEquipStatus.Repo;
+          
             DbUtil.InsertOrUpdate<EquipModel>(eq);
         }
 
@@ -1954,10 +1956,17 @@ public class EquipController : BaseController
         foreach (var item in findEquips)
         {
 
-            if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
+            try
             {
-                matchReports.Add(item.EquipID, report);
-                matchEquipMap.Add(item.EquipID, item);
+                if (AttributeMatchUtil.Match(item, targetConfig, out AttributeMatchReport report))
+                {
+                    matchReports.Add(item.EquipID, report);
+                    matchEquipMap.Add(item.EquipID, item);
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
         }
 

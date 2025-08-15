@@ -25,7 +25,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "掉落等级",
-          "conditionContent": "70"
+          "conditionContent": "80"
         },
         {
           "matchType": "任一",
@@ -80,7 +80,7 @@
           "matchGroupName": "套装",
           "operate": "等于",
           "attributeType": "自定义",
-          "conditionContent": "风之语"
+          "conditionContent": "风之语1"
         },
         {
           "matchType": "任一",
@@ -116,7 +116,7 @@
           "matchGroupName": "套装",
           "operate": "在范围内",
           "attributeType": "名称",
-          "conditionContent": "麦克奥雷的饰环"
+          "conditionContent": "麦克奥雷的饰环1"
         },
         {
           "matchType": "任一",
@@ -153,13 +153,7 @@
           "attributeType": "名称",
           "conditionContent": "不朽11"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "套装",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "风之语"
-        },
+
         {
           "matchType": "任一",
           "matchGroupName": "套装",
@@ -863,6 +857,56 @@
   },
   {
     "equip": {
+      "description": "完美套装",
+      "category": "手套",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "流水"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
+      "description": "完美套装",
+      "category": "项链",
+      "quality": "套装",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "白露"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
+        }
+
+      ]
+    },
+    "maxCount": 1200
+  },
+  {
+    "equip": {
       "description": "完美传奇",
       "category": "手套",
       "quality": "传奇",
@@ -1003,11 +1047,18 @@
           "operate": "不等于",
           "attributeType": "自定义",
           "conditionContent": "无形"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 10
   },
   {
     "equip": {
@@ -1068,7 +1119,7 @@
 
       ]
     },
-    "maxCount": 4
+    "maxCount": 0
   },
   {
     "equip": {
@@ -1244,9 +1295,9 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
-          "operate": "大于等于",
-          "attributeType": "指定职业全系技能",
-          "conditionContent": "牧师,3"
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]
@@ -2891,7 +2942,7 @@
         }
       ]
     },
-    "maxCount": 20
+    "maxCount": 4
   },
   {
     "equip": {
@@ -3019,7 +3070,7 @@
         }
       ]
     },
-    "maxCount": 100
+    "maxCount": 4
   },
   {
     "equip": {
@@ -3033,7 +3084,7 @@
           "operate": "大于等于",
           "matchGroupName": "职业系列技能",
           "attributeType": "指定职业单系技能",
-          "conditionContent": "死骑,冰霜,1"
+          "conditionContent": "死骑,冰霜,3"
         },
         {
           "matchType": "必需",
@@ -3044,7 +3095,7 @@
         }
       ]
     },
-    "maxCount": 20
+    "maxCount": 4
   },
   {
     "equip": {
@@ -4312,7 +4363,7 @@
       ]
 
     },
-    "maxCount": 600
+    "maxCount": 60
   },
   {
     "equip": {

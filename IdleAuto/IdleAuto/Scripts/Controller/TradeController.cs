@@ -150,6 +150,18 @@ public class TradeController : BaseController
             await Task.Delay(1000);
             await AcceptAll();
         }
+        else
+        {
+            var r = await _win.CallJs("_char.hasNotice()");
+            if (r.Result.ToObject<bool>())
+            {
+                await Task.Delay(1000);
+                ++page;
+                await _win.LoadUrlWaitJsInit(IdleUrlHelper.NoticeUrl(page), "trade,equip");
+                await Task.Delay(1000);
+                await AcceptAll(page);
+            }
+        }
 
 
         return false;

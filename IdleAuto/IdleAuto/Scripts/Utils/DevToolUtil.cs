@@ -23,7 +23,7 @@ public class DevToolUtil
                 writer.WriteLine($"{cookie.Domain}\t{cookie.Name}\t{cookie.Value}\t{cookie.Path}\t{cookie.Expires}");
             }
         }
-        Console.WriteLine("Cookies saved.");
+        
     }
     /// <summary>
     /// 载入指定路径下的所有cookie
@@ -56,14 +56,14 @@ public class DevToolUtil
                 }
             }
         }
-        Console.WriteLine("Cookies loaded.");
+        
     }
 
     public static async Task ClearCookiesAsync(ChromiumWebBrowser browser)
     {
         var cookieManager = browser.GetCookieManager();
         await cookieManager.DeleteCookiesAsync("", "");
-        Console.WriteLine("Cookies cleared.");
+        
     }
 
     public static async Task PrintCookiesAsync(ChromiumWebBrowser browser)
@@ -94,11 +94,11 @@ public class DevToolUtil
         if (response.Success && response.Result != null)
         {
             File.WriteAllText(filename, response.Result.ToString());
-            Console.WriteLine("LocalStorage saved.");
+            
         }
         else
         {
-            Console.WriteLine("Failed to save LocalStorage.");
+            
         }
     }
 
@@ -117,11 +117,11 @@ public class DevToolUtil
             var response = await browser.EvaluateScriptAsync(script);
             if (response.Success)
             {
-                Console.WriteLine("LocalStorage loaded.");
+                
             }
             else
             {
-                Console.WriteLine("Failed to load LocalStorage.");
+                
             }
         }
     }
@@ -135,11 +135,11 @@ public class DevToolUtil
         var response = await browser.EvaluateScriptAsync(script);
         if (response.Success)
         {
-            Console.WriteLine("LocalStorage cleared.");
+            
         }
         else
         {
-            Console.WriteLine("Failed to clear LocalStorage.");
+            
         }
     }
 

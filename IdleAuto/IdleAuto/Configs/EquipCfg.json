@@ -2280,11 +2280,20 @@
       "isTrade": true,
       "conditions": [
         {
-          "matchType": "可选",
+          "matchType": "任一",
+          "matchGroupName": "",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 40,
           "conditionContent": "死骑,冰霜,1"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 40,
+          "conditionContent": "1"
         },
         {
           "matchType": "可选",
@@ -4542,6 +4551,24 @@
       ]
     }
   },
+  {
+    "name": "混沌",
+
+    "equipment": {
+      "category": "护符",
+      "quality": "传奇",
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "混沌之眼"
+        }
+      ]
+    }
+  },
   //死灵75以后法师
   {
     "name": "冥神",
@@ -4776,7 +4803,7 @@
           "attributeType": "名称",
           "conditionContent": "赦免徽章"
         }
-        
+
       ]
     }
   }

@@ -37,6 +37,13 @@ namespace IdleAuto.Scripts.View
             this.btnArtifact = new System.Windows.Forms.Button();
             this.comArtifact = new System.Windows.Forms.ComboBox();
             this.btnSwitchJustice = new System.Windows.Forms.Button();
+            this.btnRollJewelry = new System.Windows.Forms.Button();
+            this.txtJewelryId = new System.Windows.Forms.TextBox();
+            this.comJewelryType = new System.Windows.Forms.ComboBox();
+            this.btnSendEq = new System.Windows.Forms.Button();
+            this.txtSendEqCon = new System.Windows.Forms.TextBox();
+            this.txtSendEqNum = new System.Windows.Forms.TextBox();
+            this.txtRoleToSend = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -114,11 +121,74 @@ namespace IdleAuto.Scripts.View
             this.btnSwitchJustice.UseVisualStyleBackColor = true;
             this.btnSwitchJustice.Click += new System.EventHandler(this.btnSwitchJustice_Click);
             // 
+            // btnRollJewelry
+            // 
+            this.btnRollJewelry.Location = new System.Drawing.Point(3, 182);
+            this.btnRollJewelry.Name = "btnRollJewelry";
+            this.btnRollJewelry.Size = new System.Drawing.Size(75, 28);
+            this.btnRollJewelry.TabIndex = 9;
+            this.btnRollJewelry.Text = "洗珠宝";
+            this.btnRollJewelry.UseVisualStyleBackColor = true;
+            this.btnRollJewelry.Click += new System.EventHandler(this.btnRollJewelry_Click);
+            // 
+            // txtJewelryId
+            // 
+            this.txtJewelryId.Location = new System.Drawing.Point(84, 182);
+            this.txtJewelryId.Name = "txtJewelryId";
+            this.txtJewelryId.Size = new System.Drawing.Size(121, 25);
+            this.txtJewelryId.TabIndex = 10;
+            // 
+            // comJewelryType
+            // 
+            this.comJewelryType.FormattingEnabled = true;
+            this.comJewelryType.Location = new System.Drawing.Point(211, 182);
+            this.comJewelryType.Name = "comJewelryType";
+            this.comJewelryType.Size = new System.Drawing.Size(121, 23);
+            this.comJewelryType.TabIndex = 11;
+            // 
+            // btnSendEq
+            // 
+            this.btnSendEq.Location = new System.Drawing.Point(3, 216);
+            this.btnSendEq.Name = "btnSendEq";
+            this.btnSendEq.Size = new System.Drawing.Size(75, 28);
+            this.btnSendEq.TabIndex = 12;
+            this.btnSendEq.Text = "交易装备";
+            this.btnSendEq.UseVisualStyleBackColor = true;
+            this.btnSendEq.Click += new System.EventHandler(this.btnSendEq_Click);
+            // 
+            // txtSendEqCon
+            // 
+            this.txtSendEqCon.Location = new System.Drawing.Point(84, 219);
+            this.txtSendEqCon.Name = "txtSendEqCon";
+            this.txtSendEqCon.Size = new System.Drawing.Size(248, 25);
+            this.txtSendEqCon.TabIndex = 13;
+            // 
+            // txtSendEqNum
+            // 
+            this.txtSendEqNum.Location = new System.Drawing.Point(338, 220);
+            this.txtSendEqNum.Name = "txtSendEqNum";
+            this.txtSendEqNum.Size = new System.Drawing.Size(100, 25);
+            this.txtSendEqNum.TabIndex = 14;
+            // 
+            // txtRoleToSend
+            // 
+            this.txtRoleToSend.Location = new System.Drawing.Point(444, 220);
+            this.txtRoleToSend.Name = "txtRoleToSend";
+            this.txtRoleToSend.Size = new System.Drawing.Size(100, 25);
+            this.txtRoleToSend.TabIndex = 15;
+            // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtRoleToSend);
+            this.Controls.Add(this.txtSendEqNum);
+            this.Controls.Add(this.txtSendEqCon);
+            this.Controls.Add(this.btnSendEq);
+            this.Controls.Add(this.comJewelryType);
+            this.Controls.Add(this.txtJewelryId);
+            this.Controls.Add(this.btnRollJewelry);
             this.Controls.Add(this.btnSwitchJustice);
             this.Controls.Add(this.comArtifact);
             this.Controls.Add(this.btnArtifact);
@@ -143,5 +213,12 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.Button btnArtifact;
         private System.Windows.Forms.ComboBox comArtifact;
         private System.Windows.Forms.Button btnSwitchJustice;
+        private System.Windows.Forms.Button btnRollJewelry;
+        private System.Windows.Forms.TextBox txtJewelryId;
+        private System.Windows.Forms.ComboBox comJewelryType;
+        private System.Windows.Forms.Button btnSendEq;
+        private System.Windows.Forms.TextBox txtSendEqCon;
+        private System.Windows.Forms.TextBox txtSendEqNum;
+        private System.Windows.Forms.TextBox txtRoleToSend;
     }
 }

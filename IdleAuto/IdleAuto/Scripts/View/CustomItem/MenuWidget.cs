@@ -137,7 +137,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).ToArray();
+            string[] MapSwitchAccounts =RepairManager.NanfangAccounts.ToArray();
 
             FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
@@ -159,7 +159,7 @@ namespace IdleAuto.Scripts.View
                 try
                 {
 
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair);
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair,RepairManager.ActiveAcc);
 
 
                 }
@@ -273,7 +273,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(4, 1, FlowController.StartEfficencyMonitor);
+            FlowController.GroupWork(3, 1, FlowController.StartEfficencyMonitor);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
@@ -323,7 +323,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon);
+            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon,RepairManager.ActiveAcc);
 
         }
 
@@ -408,7 +408,7 @@ namespace IdleAuto.Scripts.View
                     await FlowController.UpdateMfEquip(win);
                 });
             }
-            else FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip);
+            else FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip,RepairManager.ActiveAcc);
         }
 
         private void btnPreDel_Click(object sender, EventArgs e)

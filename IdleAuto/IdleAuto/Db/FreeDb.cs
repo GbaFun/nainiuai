@@ -14,7 +14,7 @@ namespace IdleAuto.Db
         static Lazy<IFreeSql> sqliteLazy = new Lazy<IFreeSql>(() =>
         {
             var fsql = new FreeSql.FreeSqlBuilder()
-                .UseMonitorCommand(cmd => Trace.WriteLine($"Sql：{cmd.CommandText}"))
+                //.UseMonitorCommand(cmd => Trace.WriteLine($"Sql：{cmd.CommandText}"))
                 .UseAdoConnectionPool(true)
                 .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=Idle.db")
                 .UseAutoSyncStructure(true) //自动同步实体结构到数据库，只有CRUD时才会生成表

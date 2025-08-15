@@ -1,4 +1,5 @@
-﻿using IdleAuto.Db;
+﻿using IdleAuto.Configs.CfgExtension;
+using IdleAuto.Db;
 using IdleAuto.Scripts.Controller;
 using IdleAuto.Scripts.Utils;
 using System;
@@ -20,19 +21,51 @@ namespace IdleAuto.Scripts.View
             InitializeComponent();
             LoadData();
         }
-        public TextBox TxtJordan => txtJordan;  // 使用属性封装
+        /// <summary>
+        /// N乔丹数量
+        /// </summary>
+        public TextBox TxtJordan => txtJordan;  
+        /// <summary>
+        /// 改造珠宝id
+        /// </summary>
+        public TextBox TxtJewelryId => txtJewelryId;
+
+        /// <summary>
+        /// 发送装备条件
+        /// </summary>
+        public TextBox TxtSendEqCon => txtSendEqCon;
+
+        /// <summary>
+        /// 发送装备数量
+        /// </summary>
+        public TextBox TxtSendEqNum => txtSendEqNum;
+
+        /// <summary>
+        /// 发送对象
+        /// </summary>
+        public TextBox TxtRoleToSend => txtRoleToSend;
+
 
         private Dictionary<string, ArtifactBaseConfig> ArtifactData => ArtifactBaseCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
+
+        private Dictionary<string, Equipment> EquipEmData=> EmEquipCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
         public string GetSelectedMethod()
         {
             var key = this.comArtifact.SelectedItem.ToString();
             return ArtifactData[key].Method;
         }
 
+        public Equipment GetSelectedEquipmentConfig()
+        {
+            var key = this.comJewelryType.SelectedItem.ToString();
+            return EquipEmData[key];
+        }
+
         public void LoadData()
         {
             var dic = ArtifactData;
             comArtifact.DataSource = dic.Select(p => p.Key).ToList();
+            comJewelryType.DataSource = EquipEmData.Select(p => p.Key).ToList();
         }
 
 
@@ -46,7 +79,7 @@ namespace IdleAuto.Scripts.View
                 {
 
                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips, RepairManager.ActiveAcc);
 
 
 
@@ -95,6 +128,16 @@ namespace IdleAuto.Scripts.View
         private void btnSwitchJustice_Click(object sender, EventArgs e)
         {
             FlowController.SwitchFrostAndJustice();
+        }
+
+        private void btnRollJewelry_Click(object sender, EventArgs e)
+        {
+            FlowController.RollJewelry();
+        }
+
+        private void btnSendEq_Click(object sender, EventArgs e)
+        {
+            FlowController.SendEquip();
         }
     }
 }

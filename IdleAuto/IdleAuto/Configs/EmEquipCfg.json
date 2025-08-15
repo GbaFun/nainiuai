@@ -496,7 +496,7 @@
         "matchType": "必需",
         "operate": "大于等于",
         "attributeType": "增强伤害",
-        "conditionContent": "28"
+        "conditionContent": "30"
       },
 
       {

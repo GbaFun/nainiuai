@@ -21,11 +21,14 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public static string[] NanfangAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
     public static string[] NainiuAccounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
+    public static string[] ActiveAcc = NainiuAccounts.Concat(NanfangAccounts).ToArray();
+    public static string RepoExclude = ConfigUtil.GetAppSetting("repoExclude");
     public static readonly List<int> FcrSpeeds = new List<int> { 0, 25, 50, 75, 110, 145, 180 };
     public static long PublicFeilongId = long.Parse(ConfigUtil.GetAppSetting("feilong"));
     public static long PublicYonghengId = long.Parse(ConfigUtil.GetAppSetting("yongheng"));
     public static readonly string RepoAcc = ConfigUtil.GetAppSetting("repoAcc");
     public static readonly string RepoRole = ConfigUtil.GetAppSetting("repoRole");
+    public static readonly string MainAcc = ConfigUtil.GetAppSetting("mainAcc");
 
     public static string RepairJob = ConfigUtil.GetAppSetting("RepairJob");
     public static string[] Jobs = ConfigUtil.GetAppSetting("jobs").Split(',');
@@ -131,8 +134,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 var roleProgress = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).ToList();
                 if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
                     continue;
-                var isTrriger = equipController.AutoEquipOffline(role, account);
-                if (!isTrriger) continue;
+                //var isTrriger = equipController.AutoEquipOffline(role, account);
+                //if (!isTrriger) continue;
                 //自动更换装备
                 var curEquips = await equipController.AutoEquips(window, role);
                 var c = new CharacterController(window);
