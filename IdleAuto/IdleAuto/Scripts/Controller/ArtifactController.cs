@@ -129,7 +129,7 @@ namespace IdleAuto.Scripts.Controller
                     var response2 = await _win.CallJsWaitReload($@"repositoryNext()", "equip");
                     if (response2.Success && (bool)response2.Result)
                     {
-                        P.Log("");
+                        
 
                     }
                     else

@@ -51,10 +51,7 @@ public class RetainEquipCfg
 
         foreach (var item in configs)
         {
-            if (equip.EquipName == "流云桥")
-            {
-                P.Log("");
-            }
+            
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {
                 return true;

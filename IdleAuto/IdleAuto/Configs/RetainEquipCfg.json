@@ -3393,7 +3393,7 @@
         }
       ]
     },
-    "maxCount": 1
+    "maxCount": 1000
   },
   {
     "equip": {
@@ -3775,11 +3775,17 @@
           "attributeType": "凹槽",
           "seq": 6,
           "conditionContent": "6"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "增强伤害",
+          "conditionContent": "13"
         }
 
       ]
     },
-    "maxCount": 10
+    "maxCount": 100
   },
   //末日
   {
@@ -3826,6 +3832,37 @@
           "operate": "大于等于",
           "attributeType": "凹槽",
           "conditionContent": "4"
+        }
+
+      ]
+    },
+    "maxCount": 4
+  },
+  {
+    "equip": {
+      "category": "斧",
+      "quality": "普通|破碎",
+
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "狂战士"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "6"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "增强伤害",
+          "conditionContent": "15"
         }
 
       ]

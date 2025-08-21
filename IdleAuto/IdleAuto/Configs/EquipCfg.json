@@ -2236,11 +2236,20 @@
       "isTrade": true,
       "conditions": [
         {
-          "matchType": "必需",
+          "matchGroupName": "元帅护符",
+          "matchType": "任一",
           "operate": "大于等于",
           "attributeType": "指定职业单系技能",
           "seq": 40,
           "conditionContent": "骑士,光环,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "元帅护符",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "seq": 40,
+          "conditionContent": "3"
         },
         {
           "matchType": "可选",

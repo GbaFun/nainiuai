@@ -307,10 +307,7 @@ namespace AttributeMatch
             bool ismatch = false;
             string regexAttr = "";
             weight = 0;
-            if (_condition.AttributeType == emAttrType.掉落等级)
-            {
-                Console.WriteLine("掉落等级测试");
-            }
+           
             var matchResult = GetBaseAttValue(_condition.AttributeType, _equip.Content);
             ismatch = OperateValue(matchResult.Item2, _condition.ConditionContent, _condition.Operate, out weight);
             return ismatch;
@@ -488,9 +485,14 @@ namespace AttributeMatch
             int slotValue = 0;
             weight = 0;
             emOperateType emOperateType = _condition.Operate;
+            if (_equip.EquipName == "无形超强的巨神之刃")
+            {
+              //  Console.WriteLine("凹槽测试");
+            }
             switch (_equip.emItemQuality)
             {
                 case emItemQuality.普通:
+                   
                     regexStr = @"最大凹槽：(?<v>\d+)";
                     regex = new Regex(regexStr, RegexOptions.Multiline);
                     match = regex.Match(_equip.Content);

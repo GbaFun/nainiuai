@@ -155,7 +155,11 @@ function getRepositoryEquips() {
         var equipContent = $(`.${window.classMappings[id]}`);
         var classname = equipContent.find('p.equip-title:first').attr('class');
         var quality = classname.split(' ')[0];
+     
         var content = equipContent.text();
+        if (content.indexOf('最大凹槽') > -1) {
+            quality = 'base';
+        }
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
     });
@@ -172,6 +176,9 @@ function getPackageEquips() {
         var classname = equipContent.find('p.equip-title:first').attr('class');
         var quality = classname.split(' ')[0];
         var content = equipContent.text();
+        if (content.indexOf('最大凹槽') > -1) {
+            quality = 'base';
+        }
         var e = getEquipInfo(id, 999, quality, content);
         eMap[e.eid] = e;
     });
