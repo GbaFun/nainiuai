@@ -2047,7 +2047,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 4
   },
   {
     "equip": {
@@ -2147,7 +2147,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 40
   },
   {
     "equip": {
@@ -2164,7 +2164,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2178,6 +2178,13 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "死亡之网"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
       ]
     },
@@ -2201,7 +2208,7 @@
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "指定职业全系技能",
-          "conditionContent": "死灵,2"
+          "conditionContent": "死灵,3"
         }
 
       ]
@@ -2225,7 +2232,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -2484,8 +2491,28 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "巫妖王之怒"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "conditionContent": "死骑,冰霜,2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "conditionContent": "死骑,2"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
         }
-
 
       ]
     },
@@ -3429,6 +3456,48 @@
     },
     "maxCount": 4
   },
+  {
+    "equip": {
+      "category": "盾",
+      "quality": "破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "超强的大盾"
+        }
+      ]
+    },
+    "maxCount": 40
+  },
+  {
+    "equip": {
+      "category": "盾",
+      "quality": "破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "凹槽",
+          "conditionContent": "4"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "统治者的大盾"
+        }
+      ]
+    },
+    "maxCount": 40
+  },
   //叶子
   {
     "equip": {
@@ -3661,6 +3730,12 @@
           "attributeType": "名称",
           "seq": 6,
           "conditionContent": "攻城"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "增强伤害",
+          "conditionContent": "15"
         }
 
       ]
@@ -3699,7 +3774,7 @@
 
           "attributeType": "凹槽",
           "seq": 6,
-          "conditionContent": "5"
+          "conditionContent": "6"
         }
 
       ]
@@ -3710,7 +3785,7 @@
   {
     "equip": {
       "category": "斧",
-      "quality": "普通|破碎",
+      "quality": "破碎",
 
       "conditions": [
 
@@ -3730,7 +3805,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 5
   },
   {
     "equip": {
@@ -3790,7 +3865,7 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 1
   },
   {
     "equip": {
@@ -5083,13 +5158,7 @@
           "attributeType": "自定义",
           "conditionContent": "强击"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "闪电之怒"
-        },
+
 
         {
           "matchType": "任一",
@@ -5159,14 +5228,14 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "圣剑之掌"
-        },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "等于",
-          "attributeType": "名称",
-          "conditionContent": "浴火重生"
         }
+        //{
+        //  "matchType": "任一",
+        //  "matchGroupName": "免洗",
+        //  "operate": "等于",
+        //  "attributeType": "名称",
+        //  "conditionContent": "浴火重生"
+        //}
 
       ]
     },
@@ -5216,14 +5285,14 @@
           "conditionContent": "双鱼座"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "风怒"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "免洗",
           "operate": "在范围内",
           "attributeType": "自定义",
@@ -5263,7 +5332,7 @@
 
       ]
     },
-    "maxCount": 5
+    "maxCount": 10
   },
   {
     "equip": {
@@ -5341,6 +5410,6 @@
 
       ]
     },
-    "maxCount": 100
+    "maxCount": 3
   }
 ]

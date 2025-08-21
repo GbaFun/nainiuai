@@ -114,7 +114,6 @@
     "equipment": {
       "category": "盾",
       "quality": "全部",
-      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -331,6 +330,7 @@
     "equipment": {
       "category": "盾",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
 
         {
@@ -732,7 +732,6 @@
     "equipment": {
       "category": "项链",
       "quality": "全部",
-      "isTrade": true,
 
       "conditions": [
         {
@@ -3173,6 +3172,13 @@
           "attributeType": "指定职业全系技能",
           "seq": 10,
           "conditionContent": "死灵,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "施法速度",
+          "seq": 10,
+          "conditionContent": "30"
         }
       ]
     }
@@ -3277,7 +3283,7 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "seq": 10,
-          "conditionContent": "骷髅法师,3"
+          "conditionContent": "骷髅法师,4"
         }
       ]
     }

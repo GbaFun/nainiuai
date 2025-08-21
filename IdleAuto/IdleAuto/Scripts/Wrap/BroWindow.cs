@@ -404,7 +404,7 @@ namespace IdleAuto.Scripts.Wrap
             }
         }
 
-        private void TradeRune(params object[] args)
+        public void TradeRune(params object[] args)
         {
             var data = args[0].ToString();
             data = data.Replace('，', ',');
@@ -413,7 +413,7 @@ namespace IdleAuto.Scripts.Wrap
             var count = arr[1];
             var dic = new Dictionary<int, int>();
             dic.Add(int.Parse(runeName), int.Parse(count));
-            FlowController.TradeRune(dic);
+             FlowController.TradeRune(dic);
 
         }
 

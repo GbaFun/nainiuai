@@ -23,6 +23,10 @@ namespace IdleAuto.Scripts.Controller
     /// </summary>
     public class FlowController
     {
+        static Equipment conCold = EmEquipCfg.Instance.Data[emEquip.冰霜珠宝];
+        static Equipment conPhysic = EmEquipCfg.Instance.Data[emEquip.物理珠宝];
+        static Equipment conPoison = EmEquipCfg.Instance.Data[emEquip.刺客毒素黄珠宝];
+        static List<Equipment> whiteList = new List<Equipment>() { conCold, conPhysic, conPoison };
 
         /// <summary>
         /// 全账号并行任务
@@ -177,10 +181,11 @@ namespace IdleAuto.Scripts.Controller
         }
         public static async Task SendRune()
         {
-            //  await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
-            var sendDic = new Dictionary<int, int>() { { 23, 1 } };
-            //var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 } };
-            // var sendDic = new Dictionary<int, int>() { { 22,1} };
+            await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
+            //var sendDic = new Dictionary<int, int>() { { 21, 1 }, { 25, 1 } };
+            //var sendDic = new Dictionary<int, int>() { { 23, 1 } };
+             var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+           // var sendDic = new Dictionary<int, int>() { { 22, 1 } };
             foreach (var job in sendDic)
             {
                 await SendRune(job.Key, job.Value);
@@ -811,9 +816,9 @@ namespace IdleAuto.Scripts.Controller
         {
             Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "斧" &&
          (p.Quality == "slot" || p.Quality == "base") && (p.Content.Contains("凹槽(0/5)") || p.Content.Contains("最大凹槽：5")) && p.EquipName == "超强的双头斧" && p.Content.Contains("+15") && p.EquipStatus == emEquipStatus.Repo;
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(8).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(5).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
-            await CollectAndMakeArtifact(emArtifactBase.双头斧末日, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), false);
+            await CollectAndMakeArtifact(emArtifactBase.双头斧末日, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), true);
             await RegisterMori();
         }
 
@@ -2123,6 +2128,13 @@ namespace IdleAuto.Scripts.Controller
             var c = await win.CallJs<string>("_reform.getEquipContent()");
             eq.Content = c;
             AttributeMatchReport report = new AttributeMatchReport();
+
+            if (whiteList.Where(p => AttributeMatchUtil.Match(eq, p, out _)).Count() > 0)
+            {
+                Console.WriteLine("命中");
+                return;
+
+            }
             if (AttributeMatchUtil.Match(eq, con, out report))
             {
                 Console.WriteLine("命中");
@@ -2205,6 +2217,7 @@ namespace IdleAuto.Scripts.Controller
             runeWin.Close();
             var t1 = new TradeController(recWin);
             await t1.AcceptAll();
+            recWin.Close();
 
         }
 
@@ -2304,6 +2317,18 @@ namespace IdleAuto.Scripts.Controller
             var result = await r.ReformEquip(eq, eq.RoleID, type);
             if (!result)
             {
+                //if (emReformType.Set21 == type)
+                //{
+                //    await TradeRune(new Dictionary<int, int>() { { 21, 100 } });
+                //    await Task.Delay(1000);
+                //}
+                //else if (emReformType.Set25 == type)
+                //{
+                //    await TradeRune(new Dictionary<int, int>() { { 25, 20 } });
+                //    await Task.Delay(1000);
+                    
+                //}
+
                 var matchSignal = await win.SignalRaceCallBack(new string[] { emSignal.Continue.ToString(), emSignal.Skip.ToString() }, () =>
                 {
 
@@ -2312,6 +2337,7 @@ namespace IdleAuto.Scripts.Controller
                 {
                     return;
                 }
+                bro.Reload();
             }
             await ReformUntilCondition(eq, win, con, maxCount, ++curCount, type);
         }
