@@ -139,5 +139,10 @@ namespace IdleAuto.Scripts.View
         {
             FlowController.SendEquip();
         }
+
+        private void btnReformJustice_Click(object sender, EventArgs e)
+        {
+            FlowController.ReformBaseJustice();
+        }
     }
 }

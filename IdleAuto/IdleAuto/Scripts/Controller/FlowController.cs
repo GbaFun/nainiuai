@@ -184,8 +184,9 @@ namespace IdleAuto.Scripts.Controller
             await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
             //var sendDic = new Dictionary<int, int>() { { 21, 1 }, { 25, 1 } };
             //var sendDic = new Dictionary<int, int>() { { 23, 1 } };
-             var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
-           // var sendDic = new Dictionary<int, int>() { { 22, 1 } };
+            //var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+            // var sendDic = new Dictionary<int, int>() { { 22, 1 } };
+             var sendDic = new Dictionary<int, int>() { { 28, 1 },{ 29, 1 } };
             foreach (var job in sendDic)
             {
                 await SendRune(job.Key, job.Value);
@@ -902,7 +903,10 @@ namespace IdleAuto.Scripts.Controller
             var user = win.User;
             var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "戒指" && p.Quality == "base" && p.EquipStatus == emEquipStatus.Repo && p.AccountName == user.AccountName).ToList();
             var bindedList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName == user.AccountName && p.EquipBaseName == "戒指" && p.EquipName == "全能法戒" && p.Content.Contains("绑定")).ToList();
-            if (bindedList.Count >= 8) return;
+            if (bindedList.Count >= 8)
+            {
+                return;
+            }
             var r = new ReformController(win);
             var curEqList = eqList.Where(p => p.AccountName == user.AccountName).ToList();
             await r.UpgradeBaseEquip(win.User.FirstRole, curEqList);
@@ -920,7 +924,7 @@ namespace IdleAuto.Scripts.Controller
             await ReformEq(emReformType.Mage, eqList, win);
         }
 
-        public async static Task ReformBaseEq()
+        public async static Task ReformBaseJustice()
         {
             var eqList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == "权杖" && p.Quality == "base" && p.EquipStatus == emEquipStatus.Repo && p.Lv >= 70).ToList();
             var con = ArtifactBaseCfg.Instance.GetEquipCondition(emArtifactBase.正义改造底子);
@@ -1738,8 +1742,8 @@ namespace IdleAuto.Scripts.Controller
      );
             var targetAcc = dic.Where(p => p.Value.Count <= 40).Select(s => s.Key).ToArray();
 
-            await GroupWork(3, 1, ReformDungeon, targetAcc);
-            await GroupWork(3, 1, UpgradeBaseEq);
+            // await GroupWork(3, 1, ReformDungeon, targetAcc);
+            await GroupWork(3, 1, UpgradeBaseEq,RepairManager.ActiveAcc);
         }
 
 
@@ -2326,7 +2330,7 @@ namespace IdleAuto.Scripts.Controller
                 //{
                 //    await TradeRune(new Dictionary<int, int>() { { 25, 20 } });
                 //    await Task.Delay(1000);
-                    
+
                 //}
 
                 var matchSignal = await win.SignalRaceCallBack(new string[] { emSignal.Continue.ToString(), emSignal.Skip.ToString() }, () =>

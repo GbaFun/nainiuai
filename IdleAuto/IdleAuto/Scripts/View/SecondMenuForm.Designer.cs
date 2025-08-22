@@ -44,6 +44,7 @@ namespace IdleAuto.Scripts.View
             this.txtSendEqCon = new System.Windows.Forms.TextBox();
             this.txtSendEqNum = new System.Windows.Forms.TextBox();
             this.txtRoleToSend = new System.Windows.Forms.TextBox();
+            this.btnReformJustice = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -177,11 +178,22 @@ namespace IdleAuto.Scripts.View
             this.txtRoleToSend.Size = new System.Drawing.Size(100, 25);
             this.txtRoleToSend.TabIndex = 15;
             // 
+            // btnReformJustice
+            // 
+            this.btnReformJustice.Location = new System.Drawing.Point(3, 250);
+            this.btnReformJustice.Name = "btnReformJustice";
+            this.btnReformJustice.Size = new System.Drawing.Size(75, 25);
+            this.btnReformJustice.TabIndex = 16;
+            this.btnReformJustice.Text = "正义底子";
+            this.btnReformJustice.UseVisualStyleBackColor = true;
+            this.btnReformJustice.Click += new System.EventHandler(this.btnReformJustice_Click);
+            // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnReformJustice);
             this.Controls.Add(this.txtRoleToSend);
             this.Controls.Add(this.txtSendEqNum);
             this.Controls.Add(this.txtSendEqCon);
@@ -220,5 +232,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.TextBox txtSendEqCon;
         private System.Windows.Forms.TextBox txtSendEqNum;
         private System.Windows.Forms.TextBox txtRoleToSend;
+        private System.Windows.Forms.Button btnReformJustice;
     }
 }
