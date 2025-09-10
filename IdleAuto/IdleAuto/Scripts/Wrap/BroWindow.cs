@@ -1,7 +1,9 @@
 ﻿using CefSharp;
 using CefSharp.Handler;
 using CefSharp.WinForms;
+using IdleAuto.Configs.CfgExtension;
 using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Service;
 using IdleAuto.Scripts.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -331,6 +333,13 @@ namespace IdleAuto.Scripts.Wrap
             // 绑定对象
             browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
             browser.JavascriptObjectRepository.Register("Bridge", _bridge, isAsync: true, options: BindingOptions.DefaultBinder);
+   
+            var reformService = new ReformService(User.AccountName);
+            // 绑定对象
+            browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
+            browser.JavascriptObjectRepository.Register("reformSummary", reformService, isAsync: true, options: BindingOptions.DefaultBinder);
+            
+            
             browser.KeyboardHandler = new CEFKeyBoardHandler();
             // 等待页面加载完成后执行脚本
             browser.FrameLoadEnd += (sender, e) => OnFrameLoadEnd(sender, e, name, url);

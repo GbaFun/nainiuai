@@ -184,12 +184,12 @@ namespace IdleAuto.Scripts.Controller
                     });
                     await AutoDungeonCancel();
                 }
-               await SwitchMap(bro, role);
-               var e = new EquipController(_win);
-                await e.LoadSuit(emSuitType.效率, role);
+                await SwitchMap(bro, role);
+                var e = new EquipController(_win);
+                //  await e.LoadSuit(emSuitType.效率, role);
                 return;
             }
-            else if (san >= 80 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
+            else if (san >= 60 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
                 var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != "base" && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
@@ -246,24 +246,24 @@ namespace IdleAuto.Scripts.Controller
                 var isNotAuto = r3.Result.ToObject<bool>();
                 if (isNotAuto) await AutoDungeon(true, false);
 
-                var e = new EquipController(_win);
-                await e.LoadSuit(emSuitType.MF, role);
+                // var e = new EquipController(_win);
+                //      await e.LoadSuit(emSuitType.MF, role);
                 return;
             }
-            else if (!canSwitch)
-            {
+            //else if (!canSwitch)
+            //{
 
-                var e = new EquipController(_win);
-                await e.LoadSuit(emSuitType.MF, role);
-                return;
-            }
-            else
-            {
-                await SwitchMap(bro, role);
-                var e = new EquipController(_win);
-                await e.LoadSuit(emSuitType.效率, role);
-                return;
-            }
+            //    var e = new EquipController(_win);
+            //    await e.LoadSuit(emSuitType.MF, role);
+            //    return;
+            //}
+            //else
+            //{
+            //    await SwitchMap(bro, role);
+            //    var e = new EquipController(_win);
+            //    await e.LoadSuit(emSuitType.效率, role);
+            //    return;
+            //}
         }
 
         /// <summary>
@@ -739,7 +739,7 @@ namespace IdleAuto.Scripts.Controller
         /// <returns></returns>
         public async Task SaveRoleInfo(RoleModel role)
         {
-            var info=await GetCharAtt(role);
+            var info = await GetCharAtt(role);
             var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == role.RoleId).First();
             g.SkeletonMageFcr = info.SkeletonMageFcr;
             DbUtil.InsertOrUpdate<GroupModel>(g);
@@ -967,7 +967,10 @@ namespace IdleAuto.Scripts.Controller
             List<string> curGroupSkill = await GetSkillGroup();//当前携带的技能数组
             var groupList = RepairManager.GetGroup(role);
             var nec = groupList.Where(p => p.Job == emJob.死灵).First();
-            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, nec.SkillMode);
+            var roleGroupInfo = groupList.Find(p => p.RoleId == role.RoleId);
+            //骑士和死灵的技能点是联动的
+            //dk有自己的技能点
+            var skillConfig = SkillPointCfg.Instance.GetSkillPoint(role.Job, role.Level, roleGroupInfo.SkillMode);
             var targetSkillPoint = GetTargetSkillPoint(role.Level, skillConfig);
 
             if (role.Job == emJob.死灵 && curEquips != null)
@@ -1533,11 +1536,11 @@ namespace IdleAuto.Scripts.Controller
         {
 
             var data = new Dictionary<string, object>();
-            if (RepairManager.NainiuAccounts.Contains(user.AccountName))
+            if (RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Contains(user.AccountName))
             {
                 data.Add("name", FilterSource);
             }
-            else if (RepairManager.NanfangAccounts.Contains(user.AccountName))
+            else if (RepairManager.BudingAccounts.Contains(user.AccountName))
             {
                 data.Add("name", FilterSource1);
             }

@@ -78,6 +78,8 @@
     <Compile Include="Scripts\Controller\InlayController.cs" />
     <Compile Include="Scripts\Model\DelView.cs" />
     <Compile Include="Scripts\Model\LockEquipModel.cs" />
+    <Compile Include="Scripts\Model\LunhuiBase.cs" />
+    <Compile Include="Scripts\Service\ReformService.cs" />
     <Compile Include="Scripts\Utils\EquipUtil.cs" />
     <Compile Include="Scripts\Controller\FlowController.cs" />
     <Compile Include="Scripts\Controller\ReformController.cs" />

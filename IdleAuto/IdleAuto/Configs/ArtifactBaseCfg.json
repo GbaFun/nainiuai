@@ -466,6 +466,31 @@
       }
     ]
   },
+  "圣堂飞龙": {
+    "category": "衣服",
+    "quality": "破碎",
+    "method": "MakeFeilong",
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "conditionContent": "3"
+      },
+      {
+        "matchType": "必需",
+        "operate": "在范围内",
+        "attributeType": "名称",
+        "conditionContent": "圣堂武士"
+      },
+      {
+        "matchType": "必需",
+        "operate": "不等于",
+        "attributeType": "自定义",
+        "conditionContent": "无形"
+      }
+    ]
+  },
   "正义改造底子": {
     "targetSlotCount": 4,
     "slotRule": "33:direct,else:random",
@@ -473,7 +498,13 @@
     "quality": "普通",
 
     "conditions": [
-
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "凹槽",
+        "seq": 6,
+        "conditionContent": "4"
+      },
       {
         "matchType": "必需",
         "operate": "大于等于",
@@ -489,8 +520,52 @@
         "attributeType": "技能等级",
         "seq": 6,
         "conditionContent": "狂热光环,3"
-      }
+      },
 
+      {
+        "matchType": "任一",
+        "matchGroupName": "权杖",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "seq": 6,
+        "conditionContent": "冥想光环,3"
+      }
+    ]
+
+
+  },
+  "冥审正义": {
+    "targetSlotCount": 4,
+    "slotRule": "33:direct,else:random",
+    "category": "权杖",
+    "quality": "破碎",
+    "method": "MakeJusticeMinxiang",
+
+    "conditions": [
+      {
+        "matchType": "必需",
+        "operate": "等于",
+        "attributeType": "凹槽",
+        "seq": 6,
+        "conditionContent": "4"
+      },
+      {
+        "matchType": "必需",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "seq": 6,
+        "conditionContent": "审判光环,3"
+      },
+
+
+      {
+        "matchType": "任一",
+        "matchGroupName": "权杖",
+        "operate": "大于等于",
+        "attributeType": "技能等级",
+        "seq": 6,
+        "conditionContent": "冥想光环,3"
+      }
     ]
 
 

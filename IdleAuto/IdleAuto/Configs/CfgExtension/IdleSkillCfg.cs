@@ -58,6 +58,10 @@ public class IdleSkillCfg
             skills = skills.Concat(Data["死灵"]).ToList();
             skills = skills.Concat(Data["游侠"]).ToList();
         }
+        if (jobName == "死骑")
+        {
+            skills = skills.Concat(Data["骑士"]).ToList();
+        }
         var s = skills.Find(p => p.Name == skillName);
         if (s == null)
         {

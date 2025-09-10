@@ -1,6 +1,8 @@
 ﻿using AttributeMatch;
 using CefSharp;
+using IdleAuto.Configs.CfgExtension;
 using IdleAuto.Db;
+using IdleAuto.Scripts.Service;
 using IdleAuto.Scripts.Utils;
 using IdleAuto.Scripts.Wrap;
 using System;
@@ -67,7 +69,7 @@ namespace IdleAuto.Scripts.Controller
 
         public async Task<bool> ReformEquip(EquipModel equip, int roleId, emReformType reformType)
         {
-
+            var summaryType = new emReformType[] { emReformType.Set21, emReformType.Set23, emReformType.Set25 };
             await Task.Delay(1500);
             var url = $"https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}";
             if (_win.GetBro().Address != url)
@@ -75,6 +77,7 @@ namespace IdleAuto.Scripts.Controller
                 await _win.LoadUrlWaitJsInit(url, "reform");
             }
             await Task.Delay(1500);
+      
             var d = new Dictionary<string, object>();
 
             d.Add("type", reformType);
@@ -91,6 +94,10 @@ namespace IdleAuto.Scripts.Controller
                 else if (reformType == emReformType.Set21)
                 {
                     if (!r["canSet21"]) return false;
+                }
+                else if (reformType == emReformType.Set23)
+                {
+                    if (!r["canSet23"]) return false;
                 }
                 else if (reformType == emReformType.Set25)
                 {
@@ -110,7 +117,7 @@ namespace IdleAuto.Scripts.Controller
         private async Task UpdateContent(EquipModel equip, emReformType reformType)
         {
             //打孔会直接跳到装备页不能更新装备内容
-            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19,emReformType.Unique22 };
+            var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19, emReformType.Unique22 };
             if (!updateTypeList.Contains(reformType)) return;
             var c = await _win.CallJs<string>("_reform.getEquipContent()");
             var content = c;

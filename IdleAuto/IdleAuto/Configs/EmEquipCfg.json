@@ -302,14 +302,14 @@
         "conditionContent": "蛇夫座"
       },
       {
-        "matchType": "任一",
+        "matchType": "必需",
         "operate": "大于等于",
         "matchGroupName": "条件",
         "attributeType": "指定职业单系技能",
         "conditionContent": "死灵,召唤,2"
       },
       {
-        "matchType": "任一",
+        "matchType": "必需",
         "operate": "大于等于",
         "matchGroupName": "条件",
         "attributeType": "技能等级",
@@ -378,7 +378,7 @@
     ]
   },
   "死灵太古珠条件": {
-    "category": "帽子|衣服|手套|靴子",
+    "category": "帽子|衣服",
     "quality": "套装",
 
     "conditions": [
@@ -456,7 +456,7 @@
         "matchType": "必需",
         "operate": "大于等于",
         "attributeType": "增强伤害",
-        "conditionContent": "28"
+        "conditionContent": "30"
       },
 
       {

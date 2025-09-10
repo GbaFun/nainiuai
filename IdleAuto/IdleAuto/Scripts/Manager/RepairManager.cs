@@ -21,7 +21,9 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
     public static string[] NanfangAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
     public static string[] NainiuAccounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
+    public static string[] BudingAccounts = ConfigUtil.GetAppSetting("布丁账号").Split(',');
     public static string[] ActiveAcc = NainiuAccounts.Concat(NanfangAccounts).ToArray();
+    public static string[] AccDone= ConfigUtil.GetAppSetting("AccDone").Split(',');
     public static string RepoExclude = ConfigUtil.GetAppSetting("repoExclude");
     public static readonly List<int> FcrSpeeds = new List<int> { 0, 25, 50, 75, 110, 145, 180 };
     public static long PublicFeilongId = long.Parse(ConfigUtil.GetAppSetting("feilong"));
@@ -58,10 +60,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
             if (targetRole == null && repairJob != "" && role.Job.ToString() != repairJob) continue;
             try
             {
-                //如果当前角色的记录是已经完成修车状态，则本次修车跳过该角色
-                var roleProgress = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).ToList();
-                if (roleProgress != null && roleProgress.Count == 1 && roleProgress[0].IsEnd)
-                    continue;
+          
                 //var isTrriger = equipController.AutoEquipOffline(role, account);
                 //if (!isTrriger) continue;
                 //自动更换装备
@@ -79,17 +78,8 @@ public class RepairManager : SingleManagerBase<RepairManager>
 
                 //角色剩余属性点分配
                 if (role.Job == emJob.死灵) await AddAttrPoint(window, role);
-                TaskProgress progress = new TaskProgress()
-                {
-                    Roleid = role.RoleId,
-                    UserName = account.AccountName,
-                    Type = emTaskType.AutoEquip,
-                    IsEnd = true
-                };
-                var one = FreeDb.Sqlite.Select<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName && p.Roleid == role.RoleId).First();
-                if (one != null)
-                    progress.Id = one.Id;
-                FreeDb.Sqlite.InsertOrUpdate<TaskProgress>().SetSource(progress).ExecuteAffrows();
+           
+          
             }
             catch (Exception ex)
             {
@@ -98,15 +88,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
             }
             if (targetRole != null) break;
         }
-        if (InterruptNames.Count <= 0)
-        {
-            FreeDb.Sqlite.Delete<TaskProgress>().Where(p => p.Type == emTaskType.AutoEquip && p.UserName == account.AccountName).ExecuteAffrows();
-            //MessageBox.Show($"自动修车完成");
-        }
-        else
-        {
-            // MessageBox.Show($"自动修车完成,但部分角色修车进程意外中断，中断角色列表：{string.Join("-", InterruptNames.ToArray())}");
-        }
+      
     }
     public async Task AutoRepair(BroWindow window)
     {
@@ -139,18 +121,17 @@ public class RepairManager : SingleManagerBase<RepairManager>
                 //自动更换装备
                 var curEquips = await equipController.AutoEquips(window, role);
                 var c = new CharacterController(window);
+            
+                //技能加点
+                await c.AddSkillPoints(role, curEquips); ;
                 if (role.Job == emJob.死灵)
                 {
-                    await c.SaveRoleInfo(role);
+                    //await c.SaveRoleInfo(role);
                     var knight = role.GetTeamMember(emJob.骑士, account.Roles);
                     var kCurEquips = await equipController.AutoEquips(window, knight);
                     await c.AddSkillPoints(knight, kCurEquips);
                 }
-                //技能加点
-                await c.AddSkillPoints(role, curEquips); ;
-
-                //角色剩余属性点分配
-                if (role.Job == emJob.死灵) await AddAttrPoint(window, role);
+              
                 TaskProgress progress = new TaskProgress()
                 {
                     Roleid = role.RoleId,

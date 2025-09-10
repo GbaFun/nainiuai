@@ -1,0 +1,6 @@
+@IdleApi_HostAddress = http://localhost:5227
+
+GET {{IdleApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

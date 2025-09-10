@@ -4,7 +4,7 @@
     async function init() {
         try {
             await CefSharp.BindObjectAsync("Bridge");
-            addRuneModule();
+            await addRuneModule();
         }
         catch (e) {
             console.log("Error:", e);
@@ -25,6 +25,7 @@
         upgradeRare: $("td:contains('升级为稀有物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         upgradeMagical: $("td:contains('升级为魔法物品')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         rare19: $("td:contains('重置所有词缀数值')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
+        set23: $($("td:contains('重置所有词缀')")[0]).parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         set21: $($("td:contains('重置所有词缀')")[1]).parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         set25: $("td:contains('重置所有词缀数值')").parent().find('.label-danger.equip-reform').attr("data-type") * 1,
         unique22: $($("td:contains('重置所有词缀')")[1]).parent().find('.label-danger.equip-reform').attr("data-type") * 1,
@@ -39,12 +40,13 @@
         var canUpgradeRare = $("td:contains('升级为稀有物品')").parent().find('.label ').text() == "执行";
         var canUpgradeMagical = $("td:contains('升级为魔法物品')").parent().find('.label ').text() == "执行";
         var canRare19 = $("td:contains('重置所有词缀数值')").parent().find('.label ').text() == "执行";
+        var canSet23 = $($("td:contains('重置所有词缀')")[0]).parent().find('.label ').text() == "执行";
         var canSet21 = $($("td:contains('重置所有词缀')")[1]).parent().find('.label ').text() == "执行";
         var canSet25 = $("td:contains('重置所有词缀数值')").parent().find('.label ').text() == "执行";
         var canUnique22 = $($("td:contains('重置所有词缀')")[1]).parent().find('.label ').text() == "执行";
         return {
             canDirect: canDirect, canRandom: canRandom, canMage: canMage, canUpgradeRare: canUpgradeRare, canUpgradeMagical: canUpgradeMagical, canRare19: canRare19, canSlotRandom: canSlotRandom
-            , canSet21: canSet21, canSet25: canSet25, canUnique22: canUnique22
+            , canSet21: canSet21, canSet25: canSet25, canUnique22: canUnique22, canSet23: canSet23
         }
     }
 
@@ -78,7 +80,7 @@
     }
 
     //加入可以直接交易符文的模块
-    function addRuneModule() {
+    async function addRuneModule() {
         var div = $('<div>', {
             'class': 'col-md-9',
             "style": "color:black"
@@ -86,7 +88,7 @@
         var input = $('<input>', {
             "type": "text",
             "style": "color:black",
-            "id":"txtRune"
+            "id": "txtRune"
 
         });
         var input1 = $('<input>', {
@@ -115,10 +117,19 @@
             }
 
         });
+        //var sum = await reformSummary.getEquipCountToReform();
+        //var input4 = $('<input>', {
+        //    "type": "text",
+        //    "id": "txtSum",
+        //    "value": sum
+
+
+        //});
         div.append(input);
         div.append(input2);
         div.append(input3);
         div.append(input1);
+       // div.append(input4);
 
         $(".container .row").append(div);
     }

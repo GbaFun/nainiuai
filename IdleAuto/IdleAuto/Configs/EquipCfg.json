@@ -114,6 +114,7 @@
     "equipment": {
       "category": "盾",
       "quality": "全部",
+      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -433,6 +434,24 @@
 
           "seq": 50,
           "conditionContent": "永恒"
+        }
+      ]
+    }
+  },
+  {
+    "name": "灾祸",
+    "description": "",
+    "equipment": {
+      "category": "剑",
+      "quality": "神器",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+
+          "seq": 50,
+          "conditionContent": "灾祸"
         }
       ]
     }
@@ -1133,6 +1152,40 @@
           "operate": "小于等于",
           "attributeType": "施法速度",
           "conditionContent": "5"
+        }
+
+
+      ]
+    }
+  },
+  {
+    "name": "魂戒",
+    "description": "技能等级技能戒指，优先考虑施法->MF->金币掉落->元素抗性",
+    "equipment": {
+      "category": "戒指",
+      "quality": "传奇",
+
+      "conditions": [
+        {
+          "matchType": "可选",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
+        },
+
+
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "绑定"
+        },
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "灵魂之戒"
         }
 
 
@@ -2546,7 +2599,6 @@
     "equipment": {
       "category": "腰带",
       "quality": "传奇",
-      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",
@@ -3647,6 +3699,39 @@
     }
   },
   {
+    "name": "巫妖王",
+    "description": "死骑知识头盔",
+    "equipment": {
+      "category": "死骑面罩",
+      "quality": "传奇",
+      "conditions": [
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "凋零光环,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑头盔",
+          "operate": "大于等于",
+          "attributeType": "指定职业单系技能",
+          "seq": 10,
+          "conditionContent": "死骑,冰霜,2"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "死骑头盔",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 10,
+          "conditionContent": "死骑,2"
+        }
+      ]
+    }
+  },
+  {
     "name": "死骑眼光",
     "description": "死骑眼光或者冰霜优先眼光",
     "equipment": {
@@ -4095,30 +4180,229 @@
       ]
     }
   },
-  //骑士圣衣
+  //dk圣衣
   {
-    "name": "敏锐之眼",
+    "name": "晶铸熔炉",
+
     "equipment": {
-      "category": "帽子",
+      "category": "衣服",
       "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "晶铸熔炉"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凋零"
+        }
+      ]
+    }
+  },
+  {
+    "name": "冷魂锁链",
+
+    "equipment": {
+      "category": "腰带",
+      "quality": "套装",
+      "isTrade": true,
+
       "conditions": [
         {
           "matchType": "必需",
           "operate": "等于",
           "attributeType": "名称",
+          "conditionContent": "冷魂锁链"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凋零"
+        }
+      ]
+    }
+  },
+  {
+    "name": "半影坠饰",
+
+    "equipment": {
+      "category": "项链",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "半影坠饰"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凋零"
+        }
+      ]
+    }
+  },
+  {
+    "name": "黑暗清算",
+
+    "equipment": {
+      "category": "手套",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "黑暗清算"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "凋零"
+        }
+      ]
+    }
+  },
+  //骑士圣衣
+  {
+    "name": "圣洁之靴",
+
+    "equipment": {
+      "category": "靴子",
+      "quality": "套装",
+      "isTrade": true,
+      "isReformBase": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "圣洁之靴"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "审判"
+        }
+      ]
+    }
+  },
+  {
+    "name": "敏锐之眼",
+
+    "equipment": {
+      "category": "帽子",
+      "quality": "套装",
+      "isTrade": true,
+
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "敏锐之眼"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "审判"
+        }
+      ]
+    }
+  },
+  {
+    "name": "敏锐之眼审判",
+
+    "equipment": {
+      "category": "帽子",
+      "quality": "套装",
+
+
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "名称",
           "conditionContent": "敏锐之眼"
         },
         {
           "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "指定职业单系技能",
-          "conditionContent": "骑士,光环,2"
-        },
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "审判"
+        }
+      ]
+    }
+  },
+  {
+    "name": "苏醒王者",
+
+    "equipment": {
+      "category": "衣服",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
         {
           "matchType": "必需",
-          "operate": "大于等于",
-          "attributeType": "技能等级",
-          "conditionContent": "审判光环,2"
+          "operate": "在范围内",
+          "attributeType": "名称",
+          "conditionContent": "苏醒王者"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "审判"
+        }
+      ]
+    }
+  },
+  {
+    "name": "极速之击",
+
+    "equipment": {
+      "category": "手套",
+      "quality": "套装",
+      "isTrade": true,
+      "conditions": [
+
+
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "极速之击"
+        },
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "审判"
         }
       ]
     }
@@ -4194,7 +4478,7 @@
       "conditions": [
         {
           "matchType": "必需",
-          "operate": "等于",
+          "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "灵魂监狱"
         },
@@ -4219,7 +4503,7 @@
 
         {
           "matchType": "必需",
-          "operate": "等于",
+          "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "黑暗余孽"
         },
@@ -4281,31 +4565,7 @@
       ]
     }
   },
-  {
-    "name": "圣洁之靴",
 
-    "equipment": {
-      "category": "靴子",
-      "quality": "套装",
-      "isTrade": true,
-      "conditions": [
-
-
-        {
-          "matchType": "必需",
-          "operate": "在范围内",
-          "attributeType": "名称",
-          "conditionContent": "圣洁之靴"
-        },
-        {
-          "matchType": "必需",
-          "operate": "不等于",
-          "attributeType": "自定义",
-          "conditionContent": "无形"
-        }
-      ]
-    }
-  },
   {
     "name": "浴火重生",
 
@@ -4400,7 +4660,7 @@
       "conditions": [
 
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
@@ -4423,7 +4683,7 @@
       "conditions": [
 
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
@@ -4446,7 +4706,7 @@
       "conditions": [
 
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
@@ -4470,7 +4730,7 @@
       "conditions": [
 
         {
-          "matchType": "必需",
+          "matchType": "可选",
           "operate": "大于等于",
           "attributeType": "更佳魔法装备",
           "conditionContent": "1"
@@ -4562,12 +4822,19 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "龙珠"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
         }
       ]
     }
   },
   {
-    "name": "混沌",
+    "name": "混沌之眼",
 
     "equipment": {
       "category": "护符",
@@ -4580,7 +4847,15 @@
           "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "混沌之眼"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于",
+          "attributeType": "所有技能",
+          "conditionContent": "2"
         }
+
       ]
     }
   },
@@ -4768,7 +5043,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "1"
+          "conditionContent": "3"
         },
 
         {
@@ -4810,6 +5085,7 @@
     "equipment": {
       "category": "项链",
       "quality": "传奇",
+      "isTrade": true,
       "conditions": [
 
         {

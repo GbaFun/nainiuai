@@ -359,6 +359,23 @@ function equipTrade(cid, eid, name) {
         });
 }
 
+function equipUse(cid, eid) {
+    
+    var data = MERGE_Form({
+        cid: cid,
+        eid: eid
+      
+    });
+    console.log(data);
+    POST_Message("EquipUse", data, "post", 1000)
+        .then(r => {
+            console.log("EquipUse success");
+        })
+        .catch(r => {
+            console.log(r);
+        });
+}
+
 function putToAuction(data) {
 
 

@@ -45,6 +45,7 @@ namespace IdleAuto.Scripts.View
             this.txtSendEqNum = new System.Windows.Forms.TextBox();
             this.txtRoleToSend = new System.Windows.Forms.TextBox();
             this.btnReformJustice = new System.Windows.Forms.Button();
+            this.btnLunhuiBase = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -188,11 +189,22 @@ namespace IdleAuto.Scripts.View
             this.btnReformJustice.UseVisualStyleBackColor = true;
             this.btnReformJustice.Click += new System.EventHandler(this.btnReformJustice_Click);
             // 
+            // btnLunhuiBase
+            // 
+            this.btnLunhuiBase.Location = new System.Drawing.Point(84, 0);
+            this.btnLunhuiBase.Name = "btnLunhuiBase";
+            this.btnLunhuiBase.Size = new System.Drawing.Size(121, 23);
+            this.btnLunhuiBase.TabIndex = 17;
+            this.btnLunhuiBase.Text = "转移轮回底子";
+            this.btnLunhuiBase.UseVisualStyleBackColor = true;
+            this.btnLunhuiBase.Click += new System.EventHandler(this.btnLunhuiBase_Click);
+            // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnLunhuiBase);
             this.Controls.Add(this.btnReformJustice);
             this.Controls.Add(this.txtRoleToSend);
             this.Controls.Add(this.txtSendEqNum);
@@ -233,5 +245,6 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.TextBox txtSendEqNum;
         private System.Windows.Forms.TextBox txtRoleToSend;
         private System.Windows.Forms.Button btnReformJustice;
+        private System.Windows.Forms.Button btnLunhuiBase;
     }
 }

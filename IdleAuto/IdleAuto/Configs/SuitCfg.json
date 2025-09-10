@@ -645,7 +645,7 @@
           "isNecessery": 0
         },
         "头盔": {
-          "name": "敏锐之眼,3级光环头盔,2级光环头盔,骑士40解毒头",
+          "name": "敏锐之眼,3级光环头盔",
           "isNecessery": 0
         },
         "项链": {
@@ -653,11 +653,11 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "靴子": {
@@ -665,11 +665,11 @@
           "isNecessery": 0
         },
         "衣服": {
-          "name": "飞龙衣服,重甲",
+          "name": "苏醒王者,重甲",
           "isNecessery": 0
         },
         "手套": {
-          "name": "抗性手",
+          "name": "极速之击,抗性手",
           "isNecessery": 0
         },
         "护符": {
@@ -692,7 +692,7 @@
           "isNecessery": 0
         },
         "头盔": {
-          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
+          "name": "敏锐之眼审判,3级光环头盔,2级光环头盔,骑士40解毒头",
           "isNecessery": 0
         },
         "项链": {
@@ -700,11 +700,11 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "靴子": {
@@ -739,7 +739,7 @@
           "isNecessery": 0
         },
         "头盔": {
-          "name": "3级光环头盔,2级光环头盔,骑士40解毒头",
+          "name": "敏锐之眼审判,3级光环头盔,2级光环头盔,骑士40解毒头",
           "isNecessery": 0
         },
         "项链": {
@@ -747,11 +747,11 @@
           "isNecessery": 0
         },
         "戒指1": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "戒指2": {
-          "name": "绑定技能戒指",
+          "name": "魂戒,绑定技能戒指",
           "isNecessery": 0
         },
         "靴子": {
@@ -4591,6 +4591,7 @@
     "equipSuit": [
       {
         "suitName": "DK剑永恒",
+        "skillMode": "DK施法",
         "主手": {
           "name": "执法者",
           "isNecessery": 0
@@ -4616,7 +4617,7 @@
           "isNecessery": 0
         },
         "手套": {
-          "name": "抗性手",
+          "name": "黑暗清算,抗性手",
           "isNecessery": 0
         },
         "靴子": {
@@ -4632,12 +4633,61 @@
           "isNecessery": 0
         },
         "腰带": {
-          "name": "mf腰带,零速任意腰带",
+          "name": "冷魂锁链,mf腰带,零速任意腰带",
           "isNecessery": 0
         }
       },
       {
         "suitName": "DK剑永恒",
+        "skillMode": "DK施法",
+        "主手": {
+          "name": "灾祸",
+          "isNecessery": true
+        },
+        "副手": {
+          "name": "永恒",
+          "isNecessery": true
+        },
+        "头盔": {
+          "name": "四以上凋零",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "半影坠饰,零速冰霜项链"
+
+        },
+        "戒指1": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "绑定技能戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "黑暗清算,抗性手",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "天启鞋,抗火毒靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "晶铸熔炉,天灾,死骑技能衣服",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "混沌之眼,龙珠,冰霜护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "冷魂锁链,mf腰带,零速任意腰带",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": "DK剑永恒",
+        "skillMode": "DK施法",
         "主手": {
           "name": "执法者",
           "isNecessery": 0
@@ -4663,7 +4713,7 @@
           "isNecessery": 0
         },
         "手套": {
-          "name": "抗性手",
+          "name": "黑暗清算,抗性手",
           "isNecessery": 0
         },
         "靴子": {
@@ -4679,7 +4729,7 @@
           "isNecessery": 0
         },
         "腰带": {
-          "name": "mf腰带,零速任意腰带",
+          "name": "冷魂锁链,mf腰带,零速任意腰带",
           "isNecessery": 0
         }
       },
@@ -4714,7 +4764,7 @@
           "isNecessery": 0
         },
         "靴子": {
-          "name": "抗火毒靴子",
+          "name": "冰原行者",
           "isNecessery": 0
         },
         "衣服": {
@@ -4850,8 +4900,55 @@
           "isNecessery": 0
         },
         "项链": {
-          "name": "mf项链",
+          "name": "赦免",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "mf戒指",
           "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "mf戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "mf手套",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "mf靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "天灾",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "mf护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "mf腰带",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": "mf装",
+        "主手": {
+          "name": "双头永恒",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "末日",
+          "isNecessery": true
+        },
+        "头盔": {
+          "name": "死骑凋零解毒",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "mf项链"
+          
         },
         "戒指1": {
           "name": "mf戒指",
@@ -4897,8 +4994,55 @@
           "isNecessery": 0
         },
         "项链": {
-          "name": "mf项链",
+          "name": "赦免",
+          "isNecessery": true
+        },
+        "戒指1": {
+          "name": "mf戒指",
           "isNecessery": 0
+        },
+        "戒指2": {
+          "name": "mf戒指",
+          "isNecessery": 0
+        },
+        "手套": {
+          "name": "mf手套",
+          "isNecessery": 0
+        },
+        "靴子": {
+          "name": "mf靴子",
+          "isNecessery": 0
+        },
+        "衣服": {
+          "name": "mf衣服",
+          "isNecessery": 0
+        },
+        "护符": {
+          "name": "mf护符",
+          "isNecessery": 0
+        },
+        "腰带": {
+          "name": "mf腰带",
+          "isNecessery": 0
+        }
+      },
+      {
+        "suitName": "mf装",
+        "主手": {
+          "name": "海鸥",
+          "isNecessery": 0
+        },
+        "副手": {
+          "name": "永恒",
+          "isNecessery": 0
+        },
+        "头盔": {
+          "name": "死骑凋零解毒",
+          "isNecessery": 0
+        },
+        "项链": {
+          "name": "mf项链"
+          
         },
         "戒指1": {
           "name": "mf戒指",

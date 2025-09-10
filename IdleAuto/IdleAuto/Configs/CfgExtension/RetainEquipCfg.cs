@@ -38,6 +38,10 @@ public class RetainEquipCfg
     public bool IsRetain(EquipModel equip)
     {
         List<RetainEquip> configs;
+        if (equip.EquipName == "部落徽记"&&equip.Content.Contains("已绑定"))
+        {
+            Console.Write(1);
+        }
         if (ConfigCache.ContainsKey(equip.EquipName))
         {
             configs = ConfigCache[equip.EquipName];

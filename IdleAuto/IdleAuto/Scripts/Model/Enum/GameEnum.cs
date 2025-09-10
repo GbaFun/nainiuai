@@ -329,8 +329,13 @@ public enum emArtifactBase
     双头斧末日,
     [Description("正义之手")]
     正义改造底子,
+    [Description("正义之手")]
+    冥审正义,
     [Description("冰冻")]
-    巨神冰冻
+    巨神冰冻,
+    [Description("飞龙")]
+    圣堂飞龙
+
 }
 
 /// <summary>
@@ -355,7 +360,8 @@ public enum emSkillMode
     全能法师,
     献祭无尸爆,
     稳固,
-    爆炸
+    爆炸,
+    DK施法
 
 }
 
@@ -407,6 +413,8 @@ public enum emReformType
     /// 传奇22
     /// </summary>
     Unique22,
+
+    Set23,
 
 }
 

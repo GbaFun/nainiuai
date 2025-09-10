@@ -1,0 +1,14 @@
+ cd /home/core/idle
+
+docker build -t myapp .
+
+docker stop myapp
+
+docker container rm myapp
+
+docker run -d \
+  -p 5000:5000 \
+  --name myapp \
+  -v /home/core/idle/cookieBac:/app/cookie \
+  myapp
+  

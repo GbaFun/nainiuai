@@ -1,0 +1,233 @@
+﻿[
+  {
+    "lv": {
+      "min": 1,
+      "max": 5
+    },
+    "mapLv": 1
+  },
+  {
+    "lv": {
+      "min": 6,
+      "max": 10
+    },
+    "mapLv": 8
+  },
+  {
+    "lv": {
+      "min": 11,
+      "max": 15
+    },
+    "mapLv": 15
+  },
+  {
+    "lv": {
+      "min": 16,
+      "max": 19
+    },
+    "mapLv": 20
+  },
+  {
+    "lv": {
+      "min": 20,
+      "max": 29
+    },
+    "mapLv": 29
+  },
+  {
+    "lv": {
+      "min": 30,
+      "max": 39
+    },
+    "mapLv": 38
+  },
+  {
+    "lv": {
+      "min": 40,
+      "max": 46
+    },
+    "mapLv": 48
+  },
+  {
+    "lv": {
+      "min": 47,
+      "max": 49
+    },
+    "mapLv": 56
+  },
+
+  {
+    "lv": {
+      "min": 50,
+      "max": 54
+    },
+    "mapLv": 58
+  },
+
+  {
+    "lv": {
+      "min": 55,
+      "max": 59
+    },
+    "mapLv": 63
+  },
+
+  {
+    "lv": {
+      "min": 60,
+      "max": 63
+    },
+    "mapLv": 68
+  },
+  {
+    "lv": {
+      "min": 62,
+      "max": 62
+    },
+    "mapLv": 70
+  },
+  {
+    "lv": {
+      "min": 63,
+      "max": 63
+    },
+    "mapLv": 71
+  },
+  {
+    "lv": {
+      "min": 64,
+      "max": 65
+    },
+    "mapLv": 72
+  },
+  {
+    "lv": {
+      "min": 66,
+      "max": 66
+    },
+    "mapLv": 74
+  },
+  {
+    "lv": {
+      "min": 67,
+      "max": 67
+    },
+    "mapLv": 75
+  },
+  {
+    "lv": {
+      "min": 68,
+      "max": 68
+    },
+    "mapLv": 76
+  },
+  {
+    "lv": {
+      "min": 69,
+      "max": 69
+    },
+    "mapLv": 77
+  },
+  {
+    "lv": {
+      "min": 70,
+      "max": 74
+    },
+    "skillMode": "法师",
+    "mapLv": 77
+  },
+
+  {
+    "lv": {
+      "min": 75,
+      "max": 79
+    },
+    "skillMode": "法师",
+    "mapLv": 82
+  },
+  {
+    "lv": {
+      "min": 80,
+      "max": 81
+    },
+    "skillMode": "法师",
+    "mapLv": 88
+  },
+  {
+    "lv": {
+      "min": 82,
+      "max": 87
+    },
+    "skillMode": "法师",
+    "mapLv": 90
+  },
+  {
+    "lv": {
+      "min": 88,
+      "max": 100
+    },
+    "skillMode": "法师",
+    "mapLv": 97
+  },
+  {
+    "lv": {
+      "min": 63,
+      "max": 68
+    },
+    "skillMode": "献祭",
+    "mapLv": 71
+  },
+  {
+    "lv": {
+      "min": 69,
+      "max": 69
+    },
+    "skillMode": "献祭",
+    "mapLv": 77
+  },
+  {
+    "lv": {
+      "min": 70,
+      "max": 73
+    },
+    "skillMode": "献祭",
+    "mapLv": 78
+  },
+  {
+    "lv": {
+      "min": 74,
+      "max": 79
+    },
+    "skillMode": "献祭",
+    "mapLv": 82
+  },
+  {
+    "lv": {
+      "min": 80,
+      "max": 80
+    },
+    "skillMode": "献祭",
+    "mapLv": 88
+  },
+
+
+
+
+  {
+    "lv": {
+      "min": 81,
+      "max": 87
+    },
+    "skillMode": "献祭",
+    "mapLv": 90
+  },
+
+  {
+    "lv": {
+      "min": 88,
+      "max": 100
+    },
+    "skillMode": "献祭",
+    "mapLv": 97
+  }
+]

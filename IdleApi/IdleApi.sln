@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36127.28 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdleApi", "IdleApi\IdleApi.csproj", "{4F71F011-37C8-48EC-8D25-BE59ABAFB0FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4F71F011-37C8-48EC-8D25-BE59ABAFB0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F71F011-37C8-48EC-8D25-BE59ABAFB0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F71F011-37C8-48EC-8D25-BE59ABAFB0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F71F011-37C8-48EC-8D25-BE59ABAFB0FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EBDD8BD6-5ABE-4385-B907-480F16A19BD7}
+	EndGlobalSection
+EndGlobal

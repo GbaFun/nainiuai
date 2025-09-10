@@ -1,6 +1,7 @@
 ﻿using IdleAuto.Configs.CfgExtension;
 using IdleAuto.Db;
 using IdleAuto.Scripts.Controller;
+using IdleAuto.Scripts.Model;
 using IdleAuto.Scripts.Utils;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace IdleAuto.Scripts.View
         /// <summary>
         /// N乔丹数量
         /// </summary>
-        public TextBox TxtJordan => txtJordan;  
+        public TextBox TxtJordan => txtJordan;
         /// <summary>
         /// 改造珠宝id
         /// </summary>
@@ -48,7 +49,7 @@ namespace IdleAuto.Scripts.View
 
         private Dictionary<string, ArtifactBaseConfig> ArtifactData => ArtifactBaseCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
 
-        private Dictionary<string, Equipment> EquipEmData=> EmEquipCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
+        private Dictionary<string, Equipment> EquipEmData => EmEquipCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
         public string GetSelectedMethod()
         {
             var key = this.comArtifact.SelectedItem.ToString();
@@ -143,6 +144,13 @@ namespace IdleAuto.Scripts.View
         private void btnReformJustice_Click(object sender, EventArgs e)
         {
             FlowController.ReformBaseJustice();
+        }
+
+        private void btnLunhuiBase_Click(object sender, EventArgs e)
+        {
+            var list = FreeDb.Sqlite.Select<LunhuiBase>().Where(p => p.RoleID == 0).ToList();
+            var toList = list.ToObject<List<EquipModel>>();
+            FlowController.SendEquip(toList);
         }
     }
 }

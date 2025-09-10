@@ -154,7 +154,7 @@ public class SuitInfo
         }
         catch (Exception e)
         {
-            throw e;
+            throw new Exception(name + e.StackTrace);
         }
 
     }
@@ -165,7 +165,7 @@ public class SuitCfg
     private static readonly string ConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Configs", "SuitCfg.json");
     public static SuitCfg Instance { get; } = new SuitCfg();
     public List<EquipSuits> SuitList { get; set; }
-    private Dictionary<emJob, List<EquipSuits>> _equipMap;
+
 
     public SuitCfg()
     {
@@ -183,14 +183,14 @@ public class SuitCfg
         SuitList = json.ToUpperCamelCase<List<EquipSuits>>();
     }
 
-    public EquipSuits GetEquipmentByJobAndLevel(emJob job, int level,emSuitType suitType=emSuitType.效率)
+    public EquipSuits GetEquipmentByJobAndLevel(emJob job, int level, emSuitType suitType = emSuitType.效率)
     {
         try
         {
-            if (_equipMap == null)
-            {
+            Dictionary<emJob, List<EquipSuits>> _equipMap = new Dictionary<emJob, List<EquipSuits>>() ;
+           
                 _equipMap = new Dictionary<emJob, List<EquipSuits>>();
-                foreach (var equipment in SuitList.Where(p=>p.SuitType==suitType))
+                foreach (var equipment in SuitList.Where(p => p.SuitType == suitType))
                 {
                     if (!_equipMap.ContainsKey(equipment.Job))
                     {
@@ -198,10 +198,10 @@ public class SuitCfg
                     }
                     _equipMap[equipment.Job].Add(equipment);
                 }
-            }
+            
             if (_equipMap.TryGetValue(job, out var equipmentList))
             {
-         
+
                 return equipmentList.Find(e => e.Lv.AdaptLevel(level));
             }
         }

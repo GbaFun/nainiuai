@@ -137,7 +137,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts =RepairManager.NanfangAccounts.ToArray();
+            string[] MapSwitchAccounts = RepairManager.NanfangAccounts.ToArray();
 
             FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
@@ -153,13 +153,14 @@ namespace IdleAuto.Scripts.View
             string[] accounts = null;
             FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
             FreeDb.Sqlite.Delete<LockEquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+            var acc = RepairManager.ActiveAcc.Except(RepairManager.AccDone).ToArray();
             //accounts = new string[] {"南方工具人7" };
             Task.Run(async () =>
             {
                 try
                 {
 
-                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair,RepairManager.ActiveAcc);
+                    await FlowController.GroupWork(2, 1, RepairManager.Instance.AutoRepair, acc);
 
 
                 }
@@ -268,6 +269,7 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
+           //  var acc = RepairManager.BudingAccounts.Where(p => p != "010").ToArray();
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, acc);
         }
 
@@ -302,7 +304,7 @@ namespace IdleAuto.Scripts.View
 
             //FlowController.SwitchYongheng();
             // FlowController.ReformShengyi();
-            FlowController.RollJewelry();
+            FlowController.UseBox();
             // FlowController.ReformBaseEq();
         }
 
@@ -323,7 +325,7 @@ namespace IdleAuto.Scripts.View
         private void btnDungeon_Click(object sender, EventArgs e)
         {
 
-            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon,RepairManager.ActiveAcc);
+            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.ActiveAcc);
 
         }
 
@@ -335,6 +337,7 @@ namespace IdleAuto.Scripts.View
 
         private void BtnAutoRune_Click(object sender, EventArgs e)
         {
+            FlowController.InitializeRuneCfgItems();
             FlowController.GroupWork(3, 0, FlowController.RuneUpgrade);
         }
 
@@ -408,7 +411,7 @@ namespace IdleAuto.Scripts.View
                     await FlowController.UpdateMfEquip(win);
                 });
             }
-            else FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip,RepairManager.ActiveAcc);
+            else FlowController.GroupWork(3, 1, FlowController.UpdateMfEquip, RepairManager.ActiveAcc);
         }
 
         private void btnPreDel_Click(object sender, EventArgs e)

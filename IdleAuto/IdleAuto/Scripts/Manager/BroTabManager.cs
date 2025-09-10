@@ -90,6 +90,7 @@ public class BroTabManager
         // 绑定对象
         browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
         browser.JavascriptObjectRepository.Register("Bridge", new Bridge(), isAsync: true, options: BindingOptions.DefaultBinder);
+        
         browser.KeyboardHandler = new CEFKeyBoardHandler();
         // 等待页面加载完成后执行脚本
         browser.FrameLoadEnd += (sender, e) => OnFrameLoadEnd(sender, e, name, url);
