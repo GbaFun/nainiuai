@@ -1,0 +1,726 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>idleinfinity</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
+
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link data-style="0" id="webstyle" href="/Content/page1.css?v=20250331" rel="stylesheet" />
+    <!--[if lt IE 9]>
+      <script src="~/Scripts/html5shiv.min.js"></script>
+      <script src="~/Scripts/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script type="text/javascript" src="/Scripts/Common.js?v=20250326"></script>
+    <script type="text/javascript" src="/Scripts/Chat.js?v=2025314-1"></script>
+    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/Scripts/Particles.js?v=20190627"></script>
+    <script type="text/javascript" src="/Scripts/Fire.js?v=20190627"></script>
+    <script type="text/javascript" src="/Scripts/Coooool3.js?v=20250723"></script>
+
+    <script type="text/javascript" src="/Scripts/sortable.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".progress-bar").css("width", "100%");
+            $(".progress-bar-exp").css("width", function (i, p) {
+                return $(this).data("percent");
+            });
+
+            $(".char-delete").click(function () {
+                $("#cid").val($(this).data("id"));
+                confirm("将销毁角色所有信息，确定删除角色？", function () {
+                    $("form").attr("action", "/Home/CharDelete");
+                    $("form").trigger("submit");
+                });
+            });
+
+            $(".switch-style").click(function () {
+                $("form").attr("action", "/Home/SwitchStyle");
+                $("form").trigger("submit");
+            });
+
+            $(".world-event").dblclick(function () {
+                var level = $(this).data("lvl");
+                if (level >= 88) {
+                    window.location.replace("/Battle/WorldEvent?id=" + $(this).data("id"));
+                }
+            });
+
+            window.localStorage.setItem("idleinfinity.style", "0");
+
+
+            $(".char-move").click(function () {
+                $(".sort-item").css("cursor", "pointer");
+                createDrag(false);
+            });
+
+            var createDrag = function (flag) {
+                Sortable.create(document.getElementById('sort-container'), {
+                    handle: ".sort-item",
+                    animation: 150,
+                    dataIdAttr: 'data-id',
+                    disabled: flag,
+                    store: {
+                        get: function (sortable) {
+                            var order = localStorage.getItem("idleinfinity.sort");
+                            return order ? order.split('|') : [];
+                        },
+                        set: function (sortable) {
+                            var order = sortable.toArray();
+                            localStorage.setItem("idleinfinity.sort", order.join('|'));
+                        }
+                    }
+                });
+            };
+            createDrag(true);
+
+        })
+    </script>
+
+    <script type="text/javascript" src="/Scripts/Popup.js?v=20250415"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                            $(".logo-canvas").fire();
+                            $("body").particle({ number: 20,fillStyle:"#222",shadowColor:"#888",stokeStyle:"#888" });
+
+
+                $(".system-logout").on("click", function () {
+                    confirm("确认退出？", function () {
+                        window.location.replace("/Home/Logout");
+                    });
+                });
+
+                //回到顶部
+                $(".duik-go-to").on("click", (function(t) {
+                        t.preventDefault(),
+                    $("html, body").animate({
+                            scrollTop: 0
+                    }, 600)
+                }));
+                var e = function() {
+                $(window).scrollTop() > 400 ? $(".duik-go-to").addClass("show") : $(".duik-go-to").removeClass("show")
+                };
+                e();
+                $(window).scroll(function () {
+                    e();
+                });
+
+            });
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?9026e0124320144488a739be44652df7";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" aria-expanded="false" aria-controls="navbar" type="button" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div style="position:absolute;">
+                    <canvas class="logo-canvas"></canvas>
+                    <a class="navbar-brand" href="/Home/Index">
+                        Idle Infinity
+                        <sub style="font-size:1rem;">v20250212</sub>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse" id="navbar" aria-expanded="false">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/Home/Index">铁矿石</a>
+                    </li>
+                    <li>
+                        <a href="/Notice/Query?id=">
+                            消息
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown">设置<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="base" href="/Config/Query?id=">物品过滤</a></li>
+                            <li><a class="base" href="/Home/EditPassword?id=">修改密码</a></li>
+                            <li><a class="base" href="/Home/Validate?id=">绑定邮箱</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown">帮助<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a class="base" href="/Help/Content?url=Base">基础知识</a></li>
+                            <li><a class="base" href="/Help/Content?url=CharType">职业技能</a></li>
+                            <li><a class="base" href="/Help/Content?url=Monsters">怪物介绍</a></li>
+                            <li><a class="base" href="/Help/Content?url=Equip">物品装备</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown">
+                            关于
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="base" href="/Help/Content?url=Log">更新日志</a></li>
+                            <li><a class="base" href="/Equipment/Unique?id=">物品收集</a></li>
+                            <li>
+                                <a class="base" href="/Home/OnlineUsers?id=">
+                                    在线玩家
+                                    <span class="chat-count badge"></span>
+                                </a>
+                            </li>
+                            <li><a class="base" href="/Character/RankingListPrev?id=">赛季回顾</a></li>
+                            <li><a class="base" href="/Guide/Query">攻略查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown">
+                            友链
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="base" href="https://idf.faith.wang/" target="_blank">无限定义</a></li>
+                            <li><a class="base" href="http://www.uagame.cn/" target="_blank">不可思议的大冒险</a></li>
+                            <li><a class="base" href="https://dev.idlepog.com/" target="_blank">POG 荣耀之径</a></li>
+                            <li><a class="base" href="https://poe.faith.wang/" target="_blank">Idle POE</a></li>
+
+                        </ul>
+                    </li>
+                    <li><a role="button" class="system-logout">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <span>铁矿石</span>
+                        <span class="label label-success" data-toggle="tooltip" data-placement="right" title="已验证邮箱">已验证</span>
+
+
+                        <div class="pull-right">
+                            <a class="btn btn-xs btn-info char-move" role="button">移动</a>
+                            <a class="btn btn-xs btn-danger" href="/Home/Index?d=1" role="button">删除角色</a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>活跃时间：</span><span><span class="physical">2025-09-12 11:15:26</span></span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>总获取金币：</span><span class="lightning">63110510420</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>第<span class="physical">10</span>赛季：</span><span>第<span class="physical">212</span>天</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>总击杀怪物：</span><span class="physical">35644905</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>总获取装备：</span><span class="physical">4637297</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <span>总经验效率：</span><span class="physical" data-toggle="tooltip" data-placement="right" title="60957363">4315304</span>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <a class="btn btn-xs btn-warning" href="/Character/Detail?id=1983" role="button">史蒂夫</a>
+
+                        <div class="pull-right">
+                            <a class="btn btn-xs btn-default switch-style" role="button">界面风格</a>
+                            <a class="btn btn-xs btn-info" href="/Battle/Guaji" role="button">挂机状态</a>
+                            <a class="btn btn-xs btn-success" href="/Character/RankingList?id=116" role="button">赛季排行</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sort-container">
+                <div class="col-sm-6 col-md-4" data-id="116">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">末影龙</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=116" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="116">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 地精刺客</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：621</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：586</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="26.5%">
+                                        <span>26.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="329">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">草泥马</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=329" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="329">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 地精骑士</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：834</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：340</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="75.8%">
+                                        <span>75.8%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="392">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">苦力怕</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=392" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="99" data-id="392">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv99</span> 地精死骑</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：1031</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：370</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="12.2%">
+                                        <span>12.2%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="697">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">奶牛</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=697" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="697">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 地精骑士</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：724</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：317</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="32.9%">
+                                        <span>32.9%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="958">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">南宫</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=958" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="958">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 人类牧师</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：905</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：1226</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="43.7%">
+                                        <span>43.7%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1022">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">恶魂</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1022" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="1022">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 地精游侠</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：828</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：290</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="44.5%">
+                                        <span>44.5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1087">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">烈焰人</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1087" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="99" data-id="1087">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv99</span> 人类骑士</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：778</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：321</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="16.7%">
+                                        <span>16.7%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1114">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">远古守卫</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1114" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="99" data-id="1114">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv99</span> 人类猎手</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：828</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：465</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="6.6%">
+                                        <span>6.6%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1163">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">凋零</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1163" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="99" data-id="1163">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv99</span> 地精死骑</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：1172</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：245</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="7.0%">
+                                        <span>7.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1264">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">女巫</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1264" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="1264">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 侏儒法师</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：624</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：2554</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="71.8%">
+                                        <span>71.8%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1669">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">史莱姆</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1669" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="98" data-id="1669">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv98</span> 人类骑士</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：753</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：318</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="69.9%">
+                                        <span>69.9%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4" data-id="1874">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <span class="sort-item name">幻翼</span>
+                            <span class="label label-default">简单</span>
+                            <span class="label label-info">挂机</span>
+                            <div class="pull-right">
+                                <a class="btn btn-xs btn-default" href="/Character/Detail?id=1874" role="button">选择</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="media-left world-event" data-lvl="99" data-id="1874">
+                                <img class="media-object img-circle img-thumbnail" style="width:100px;height:100px;" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSBtZWV0IiB3aWR0aD0iNjQiIGhlaWdodD0iNjQiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzY0eDY0CkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPiNob2xkZXJfMTVjYjhjMzMzODAgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gPC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNWNiOGMzMzM4MCI+PHJlY3QgZmlsbD0iI2VlZWVlZSIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiAvPjxnPjx0ZXh0IHg9IjEzLjQ3NSIgeT0iMzYuNTk5Ij42NHg2NDwvdGV4dD48L2c+PC9nPjwvc3ZnPg==" alt="...">
+                            </div>
+                            <div class="media-body">
+                                <div><span class="label label-default">Lv99</span> 精灵战士</div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-life" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>生命：718</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-mana" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                        <span>法力：178</span>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-exp" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-percent="17.0%">
+                                        <span>17.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="form" method="post">
+        <input name="__RequestVerificationToken" type="hidden" value="cRaXFWhFtuIDWc5lpXdaIiwEKFk8iKQJA0GL0M75DgfVBIhy5bsBr9fmdSQmXBwG57UoxMKmcp0ePHT9HBJXftJH6kGDQFFMgee840l7Kq2uOBX7tY7X_cmeD-E7nQtvTzzhCMo7D-iq3ibT--4vhxGnMlEVEi6pvwspcvlhD0ZcmLzzTGmT1PsyLZFXurck0" />
+        <input type="hidden" name="cid" id="cid" value="" />
+    </form>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted text-center">
+                <span class="visible-sm-inline visible-md-inline visible-lg-inline"><img style="width:16px;" src="/Content/images/beian.png" /><a href="https://beian.mps.gov.cn/#/query/webSearch?code=32059002006594" rel="noreferrer" target="_blank">苏公网安备32059002006594号</a></span>
+                <span>© 2018 idleinfinity </span>
+                <span class="visible-sm-inline visible-md-inline visible-lg-inline"><a target="_blank" href="https://beian.miit.gov.cn/#/Integrated/recordQuery">苏ICP备18012616号</a></span>
+
+            </p>
+        </div>
+    </footer>
+    <div class="modal fade" id="modalAlert" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content model-inverse">
+                <div class="modal-header">
+                    <span class="modal-title">提示</span>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-xs alert-ok" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content model-inverse">
+                <div class="modal-header">
+                    <span class="modal-title">确认</span>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-xs confirm-ok" data-dismiss="modal">确定</button>
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="duik-go-to"><span class="glyphicon glyphicon-arrow-up duik-go-to__inner"></span></a>
+
+</body>
+</html>

@@ -244,8 +244,9 @@ public class EquipController : BaseController
 
 
             P.Log("写入仓库装备到数据库", emLogType.AutoEquip);
-            var specialCategory = new List<string> { "戒指", "护符", "秘境", "道具", "权杖", "项链", "斧", "珠宝", "爪" };
-            if (repositoryEquips.Values.Where(p => !specialCategory.Contains(p.Category) && p.Category == p.EquipName).Count() > 0)
+            var specialCategory = new List<string> { "戒指", "护符", "秘境", "道具", "权杖", "项链", "斧", "珠宝", "爪","标枪" };
+            var errorList = repositoryEquips.Values.Where(p => !specialCategory.Contains(p.Category) && p.Category == p.EquipName).ToList();
+            if (errorList.Count > 0)
             {
                 throw new Exception("解析装备数据异常");
             }

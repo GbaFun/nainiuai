@@ -171,7 +171,7 @@ public class PageLoadHandler
             if (size == 0 || val.TotalMinutes >= 10 || isDirectUpdate)
             {
                 await DevToolUtil.SaveCookiesAsync(bro, cookiePath);
-                await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
+              //  await DevToolUtil.SaveLocalStorageAsync(bro, stroagePath);
             }
         }
     }
@@ -217,13 +217,7 @@ public class PageLoadHandler
             bro.LoadUrl(url);
         }
 
-        if (!File.Exists(stroagePath))
-        {
-            FileStream fs = File.Create(stroagePath);
-            fs.Close();
-        }
-        await DevToolUtil.ClearLocalStorageAsync(bro);
-        await DevToolUtil.LoadLocalStorageAsync(bro, stroagePath);
+  
     }
     /// <summary>
     /// 检查cookie是否在有效期

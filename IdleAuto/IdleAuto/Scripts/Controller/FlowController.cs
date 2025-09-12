@@ -28,6 +28,23 @@ namespace IdleAuto.Scripts.Controller
         static Equipment conPhysic = EmEquipCfg.Instance.Data[emEquip.物理珠宝];
         static Equipment conPoison = EmEquipCfg.Instance.Data[emEquip.刺客毒素黄珠宝];
         static List<Equipment> whiteList = new List<Equipment>() { conCold, conPhysic, conPoison };
+        /// <summary>
+        /// 获取需要制作的神器数量
+        /// </summary>
+        /// <returns></returns>
+        public static int GetArtifactCount()
+        {
+            return int.Parse(MenuInstance.SecondForm.TxtArtifactCount.Text.Trim());
+        }
+
+        /// <summary>
+        /// 是否收集底子
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsCollectBase()
+        {
+            return bool.Parse(MenuInstance.SecondForm.ComCollectBase.SelectedValue.ToString());
+        }
 
         /// <summary>
         /// 全账号并行任务
@@ -183,9 +200,9 @@ namespace IdleAuto.Scripts.Controller
         public static async Task SendRune()
         {
             await FlowController.GroupWork(3, 1, FlowController.SaveRuneMap);
-            var sendDic = new Dictionary<int, int>() { { 25, 1 } };
+            //var sendDic = new Dictionary<int, int>() { { 25, 1 } };
             //var sendDic = new Dictionary<int, int>() { { 23, 1 } };
-            // var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
+            var sendDic = new Dictionary<int, int>() { { 26, 1 }, { 27, 1 }, { 28, 1 }, { 29, 1 }, { 30, 1 }, { 31, 1 }, { 32, 1 } };
             //  var sendDic = new Dictionary<int, int>() { { 21, 1 }, { 19, 1 } };
             //var sendDic = new Dictionary<int, int>() { { 28, 1 },{ 29, 1 } };
             foreach (var job in sendDic)
@@ -838,11 +855,12 @@ namespace IdleAuto.Scripts.Controller
 
         public static async Task MakeFeilong()
         {
+            int count = GetArtifactCount();
             Expression<Func<EquipModel, bool>> exp = (p) => p.Lv >= 70 && p.Category == "衣服" &&
          (p.Quality == "slot") && (p.Content.Contains("凹槽(0/3)")) && p.EquipName.Contains("圣堂武士") && !p.EquipName.Contains("无形") && p.EquipStatus == emEquipStatus.Repo;
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(4).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(exp.And(p => p.AccountName != RepairManager.RepoAcc)).Take(count).ToList();
             // var lunhuiList1 = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName != "RasdGch" && p.Category == "死灵副手" && (p.Quality == "slot" || p.Quality == "base") && p.Content.Contains("+3 生生不息") && (p.Content.Contains("+3 重生") || p.Content.Contains("+3 献祭")) && p.Lv >= 70).ToList().GroupBy(g => new { g.RoleID, g.RoleName, g.AccountName });
-            await CollectAndMakeArtifact(emArtifactBase.圣堂飞龙, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), true);
+            await CollectAndMakeArtifact(emArtifactBase.圣堂飞龙, list, RepairManager.RepoRole, RepairManager.RepoAcc, exp.And(p => p.AccountName == RepairManager.RepoAcc), IsCollectBase());
             await RegisterFeilong();
         }
 
@@ -905,7 +923,8 @@ namespace IdleAuto.Scripts.Controller
 
             exp.And(p => p.AccountName == win2.User.AccountName);
             baseList = FreeDb.Sqlite.Select<EquipModel>().Where(exp).ToList();
-            baseList = baseList.Take(200).ToList();
+            int count = GetArtifactCount();
+            baseList = baseList.Take(count).ToList();
             foreach (var item in baseList)
             {
                 var con = ArtifactBaseCfg.Instance.GetEquipCondition(emBase);
@@ -2253,6 +2272,15 @@ namespace IdleAuto.Scripts.Controller
                 {
                     var isMatch21Rule = AttributeMatchUtil.Match(e, con21, out _);
                     //不满足满roll法师 
+
+                    if (!isMatch21Rule)
+                    {
+                        //开始洗点21
+                        win = await GetWin(win, user);
+                        var r = new ReformController(win);
+                        await ReformUntilCondition(e, win, con21, 80, 0, emReformType.Set21);
+
+                    }
                     var hasTaigu = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.EquipName == "太古之珠" && p.EquipStatus == emEquipStatus.Repo).Count() > 0;
                     var isMatchTaigu = isMatch21Rule && AttributeMatchUtil.Match(e, conTaiguEq, out _) && AttributeMatchUtil.Match(e, conNecTaigu, out _);
                     //满足太古条件 且有珠子
@@ -2267,14 +2295,6 @@ namespace IdleAuto.Scripts.Controller
                     {
                         //没珠子跳过 别浪费25
                         // continue;
-                    }
-                    if (!isMatch21Rule)
-                    {
-                        //开始洗点21
-                        win = await GetWin(win, user);
-                        var r = new ReformController(win);
-                        await ReformUntilCondition(e, win, con21, 80, 0, emReformType.Set21);
-
                     }
                     isMatch21Rule = AttributeMatchUtil.Match(e, con21, out _);
 

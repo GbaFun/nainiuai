@@ -46,6 +46,15 @@ namespace IdleAuto.Scripts.View
         /// </summary>
         public TextBox TxtRoleToSend => txtRoleToSend;
 
+        /// <summary>
+        /// 神器制作数量
+        /// </summary>
+        public TextBox TxtArtifactCount => txtArtifactCount;
+        /// <summary>
+        /// 是否收集底子
+        /// </summary>
+        public ComboBox ComCollectBase => comCollectBase;
+
 
         private Dictionary<string, ArtifactBaseConfig> ArtifactData => ArtifactBaseCfg.Instance.Data.ToDictionary(p => p.Key.ToString(), p => p.Value);
 
@@ -67,6 +76,12 @@ namespace IdleAuto.Scripts.View
             var dic = ArtifactData;
             comArtifact.DataSource = dic.Select(p => p.Key).ToList();
             comJewelryType.DataSource = EquipEmData.Select(p => p.Key).ToList();
+            LoadCollectBaseFlag();
+        }
+
+        private void LoadCollectBaseFlag()
+        {
+            comCollectBase.DataSource = new List<bool>() { true, false };
         }
 
 

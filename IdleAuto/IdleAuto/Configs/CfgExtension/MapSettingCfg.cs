@@ -51,7 +51,7 @@ public class MapSettingCfg
     public MapSetting GetSetting(RoleModel role)
     {
         var skillMode = role.GetRoleSkillMode();
-        if (skillMode == emSkillMode.boss) skillMode = emSkillMode.法师;
+        skillMode = emSkillMode.法师;
         int roleLv = role.Level;
         var last = Data.Where(p => p.Lv.AdaptLevel(roleLv) && p.SkillMode == skillMode).LastOrDefault();
         if (last == null) P.Log("未配置该级别切图数据"); //throw new Exception("未配置该级别切图数据");

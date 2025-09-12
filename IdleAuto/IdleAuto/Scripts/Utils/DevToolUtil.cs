@@ -16,9 +16,30 @@ public class DevToolUtil
         FileUtil.EnsureDirectoryExists(fileName);
         var cookieManager = browser.GetCookieManager();
         var cookies = await cookieManager.VisitAllCookiesAsync();
+        // 用于去重：Key 是 "Domain|Path|Name"，Value 是 Cookie
+        var uniqueCookies = new Dictionary<string, Cookie>();
+        foreach (Cookie cookie in cookies)
+        {
+            if (!(cookie.Name.Contains("token") || cookie.Name.Contains("cookie"))) continue;
+            string key = $"{cookie.Domain}|{cookie.Path}|{cookie.Name}";
+
+            // 如果已经存在，比较时间，保留最新的（Expires 更晚的）
+            if (uniqueCookies.TryGetValue(key, out var existingCookie))
+            {
+                if (cookie.Expires > existingCookie.Expires)
+                {
+                    uniqueCookies[key] = cookie;
+                }
+                // 否则，保留已有的（已存在的 Expires 更晚）
+            }
+            else
+            {
+                uniqueCookies[key] = cookie;
+            }
+        }
         using (var writer = new StreamWriter(fileName))
         {
-            foreach (var cookie in cookies)
+            foreach (var cookie in uniqueCookies.Values)
             {
                 writer.WriteLine($"{cookie.Domain}\t{cookie.Name}\t{cookie.Value}\t{cookie.Path}\t{cookie.Expires}");
             }

@@ -4350,9 +4350,9 @@
         },
         {
           "matchType": "必需",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "审判"
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "审判光环,3"
         }
       ]
     }

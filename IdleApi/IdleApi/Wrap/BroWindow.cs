@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -24,6 +25,8 @@ namespace IdleApi.Wrap
         /// Cookie 文件存储路径（默认程序目录下：{UserName}.txt）
         /// </summary>
         public string CookiePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"cookie/{UserName}.txt");
+
+        public string Token { get; set; }
 
         /// <summary>
         /// 当前正在操作的地址（比如当前加载的页面 URL）
@@ -59,6 +62,7 @@ namespace IdleApi.Wrap
             {
                 Timeout = TimeSpan.FromSeconds(30)
             };
+            _httpClient.BaseAddress = new Uri("https://www.idleinfinity.cn");
         }
 
         /// <summary>
@@ -75,22 +79,102 @@ namespace IdleApi.Wrap
 
             try
             {
-                var fullUri = new Uri(new Uri("https://www.idleinfinity.cn/"), url); // 构造完整 URI
-                var response = await _httpClient.GetAsync(fullUri);
+                // 动态构造 URI：支持相对路径和完整 URL
+                Uri requestUri;
+                if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
+                {
+                    // 如果传入的是完整 URL（如 https://...），直接使用
+                    requestUri = new Uri(url);
+                }
+                else
+                {
+                    // 如果传入的是相对路径（如 /Home/Index），拼接 BaseAddress
+                    if (_httpClient.BaseAddress == null)
+                        throw new InvalidOperationException("未设置 BaseAddress，无法处理相对路径");
 
-                // 确保请求成功
+                    requestUri = new Uri(_httpClient.BaseAddress, url);
+                }
+
+                var response = await _httpClient.GetAsync(requestUri);
                 response.EnsureSuccessStatusCode();
-
-                await SaveCookiesToFileAsync();
                 var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"[BroWindow] 成功加载: {fullUri}\n 页面是否在首页: {content.Contains("奶牛苦工").ToString()}");
+                if (!content.Contains("删除角色")&&url.Contains("Index"))
+                {
+                    throw new Exception("登录失效");
+                }
+                else
+                {
+                    await SaveCookiesToFileAsync();
+                }
+                await GetCsrfTokenAsync(content);
                 return content;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[BroWindow] 加载 URL 失败: {url}, 错误: {ex.Message}");
-                throw; // 可根据需要处理异常，比如重试、记录日志等
+                throw;
             }
+        }
+
+        // 获取页面并提取CSRF Token
+        private async Task<string> GetCsrfTokenAsync(string html)
+        {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
+
+            var tokenNode = htmlDoc.DocumentNode.SelectSingleNode("//input[@name='__RequestVerificationToken']");
+            if (tokenNode == null)
+                throw new Exception("CSRF Token not found in the page.");
+
+            Token = tokenNode.GetAttributeValue("value", "");
+            return Token;
+        }
+
+        public async Task SubmitFormAsync(string url, Dictionary<string, string> formData)
+        {
+
+
+            // 2. 设置请求头（根据抓包结果调整）
+            // 3. 设置请求头（可选，但某些服务器会检查）
+            _httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+            _httpClient.DefaultRequestHeaders.Add("Origin", "https://www.idleinfinity.cn");
+            _httpClient.DefaultRequestHeaders.Add("Referer", CurrentAddress);
+
+            // 3. 构造表单数据
+
+            formData.Add("__RequestVerificationToken", Token);
+            // 动态构造 URI：支持相对路径和完整 URL
+            Uri requestUri;
+            if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
+            {
+                // 如果传入的是完整 URL（如 https://...），直接使用
+                requestUri = new Uri(url);
+            }
+            else
+            {
+                // 如果传入的是相对路径（如 /Home/Index），拼接 BaseAddress
+                if (_httpClient.BaseAddress == null)
+                    throw new InvalidOperationException("未设置 BaseAddress，无法处理相对路径");
+
+                requestUri = new Uri(_httpClient.BaseAddress, url);
+            }
+            // 4. 发送请求
+            var response = await _httpClient.PostAsync(requestUri, new FormUrlEncodedContent(formData));
+
+            // 5. 处理重定向
+            if (response.StatusCode == HttpStatusCode.Redirect)
+            {
+                var redirectUrl = response.Headers.Location;
+                Console.WriteLine($"重定向到: {redirectUrl}");
+
+                // 发送重定向请求（GET）
+                response = await _httpClient.GetAsync(redirectUrl);
+            }
+
+            // 6. 检查结果
+            Console.WriteLine($"最终状态码: {response.StatusCode}");
+            Console.WriteLine($"最终响应: {await response.Content.ReadAsStringAsync()}");
+            response.EnsureSuccessStatusCode();
         }
 
         /// <summary>

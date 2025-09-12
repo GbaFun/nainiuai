@@ -12,7 +12,7 @@ namespace IdleApi.Scripts
                 {
                     await Task.Delay(2000);
                     var bro = new BroWindow(item.AccountName);
-                    await bro.LoadUrlAsync("Home/Index");
+                    await bro.LoadUrlAsync(IdleUrlHelper.HomeUrl());
                 }
                 catch (Exception e)
                 {

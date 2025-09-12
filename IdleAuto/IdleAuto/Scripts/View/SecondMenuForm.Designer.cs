@@ -46,6 +46,8 @@ namespace IdleAuto.Scripts.View
             this.txtRoleToSend = new System.Windows.Forms.TextBox();
             this.btnReformJustice = new System.Windows.Forms.Button();
             this.btnLunhuiBase = new System.Windows.Forms.Button();
+            this.comCollectBase = new System.Windows.Forms.ComboBox();
+            this.txtArtifactCount = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnCollectDelAll
@@ -199,11 +201,28 @@ namespace IdleAuto.Scripts.View
             this.btnLunhuiBase.UseVisualStyleBackColor = true;
             this.btnLunhuiBase.Click += new System.EventHandler(this.btnLunhuiBase_Click);
             // 
+            // comCollectBase
+            // 
+            this.comCollectBase.FormattingEnabled = true;
+            this.comCollectBase.Location = new System.Drawing.Point(317, 151);
+            this.comCollectBase.Name = "comCollectBase";
+            this.comCollectBase.Size = new System.Drawing.Size(121, 23);
+            this.comCollectBase.TabIndex = 18;
+            // 
+            // txtArtifactCount
+            // 
+            this.txtArtifactCount.Location = new System.Drawing.Point(211, 151);
+            this.txtArtifactCount.Name = "txtArtifactCount";
+            this.txtArtifactCount.Size = new System.Drawing.Size(100, 25);
+            this.txtArtifactCount.TabIndex = 19;
+            // 
             // SecondMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtArtifactCount);
+            this.Controls.Add(this.comCollectBase);
             this.Controls.Add(this.btnLunhuiBase);
             this.Controls.Add(this.btnReformJustice);
             this.Controls.Add(this.txtRoleToSend);
@@ -246,5 +265,7 @@ namespace IdleAuto.Scripts.View
         private System.Windows.Forms.TextBox txtRoleToSend;
         private System.Windows.Forms.Button btnReformJustice;
         private System.Windows.Forms.Button btnLunhuiBase;
+        private System.Windows.Forms.ComboBox comCollectBase;
+        private System.Windows.Forms.TextBox txtArtifactCount;
     }
 }

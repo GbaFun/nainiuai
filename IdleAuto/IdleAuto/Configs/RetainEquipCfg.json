@@ -587,7 +587,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 1
   },
   {
     "equip": {
@@ -630,7 +630,7 @@
 
       ]
     },
-    "maxCount": 0
+    "maxCount": 1
   },
   {
     "equip": {
@@ -3529,6 +3529,7 @@
     },
     "maxCount": 40
   },
+  //戒指底子
   {
     "equip": {
       "category": "戒指",
@@ -3746,7 +3747,7 @@
   {
     "equip": {
       "category": "衣服",
-      "quality": "普通|破碎",
+      "quality": "破碎",
       "conditions": [
         {
           "matchType": "必需",
@@ -3762,7 +3763,7 @@
         }
       ]
     },
-    "maxCount": 4
+    "maxCount": 20
   },
   //优雅旋律
   {
@@ -3898,6 +3899,12 @@
           "operate": "大于等于",
           "attributeType": "增强伤害",
           "conditionContent": "15"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "3"
         }
 
       ]
@@ -3942,7 +3949,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "增强伤害",
-          "conditionContent": "13"
+          "conditionContent": "14"
         }
 
       ]
