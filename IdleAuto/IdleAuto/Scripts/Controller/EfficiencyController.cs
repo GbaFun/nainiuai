@@ -43,7 +43,7 @@ namespace IdleAuto.Scripts.Controller
                     a.AccountName = user.AccountName;
                     
                     var aa=FreeDb.Sqlite.InsertOrUpdate<CharAttributeModel>().SetSource(a).ExecuteAffrows();
-                    var g=FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == item.RoleId).First();
+                    var g = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.RoleId == item.RoleId).First();
                     g.SkeletonMageFcr = a.SkeletonMageFcr;
                     DbUtil.InsertOrUpdate<GroupModel>(g);
                     Console.WriteLine("保存行数:" + aa);

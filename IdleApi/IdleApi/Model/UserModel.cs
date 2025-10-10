@@ -40,7 +40,7 @@ public class UserModel
     public List<RoleModel> Roles = new List<RoleModel>();
 
     public bool IsLogin { get; private set; }
-    public void SetLogin(bool isSuccess, string account, List<RoleModel> roles)
+    public void SetLogin(bool isSuccess,  List<RoleModel> roles)
     {
         IsLogin = isSuccess;
         //AccountName = account;

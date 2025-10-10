@@ -19,6 +19,7 @@
   {
     "equip": {
       "category": "全部",
+      "description": "80级太古",
       "quality": "传奇|套装|神器",
       "conditions": [
         {
@@ -544,7 +545,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 2
   },
   {
     "equip": {
@@ -646,14 +647,14 @@
           "conditionContent": "吟唱者之袍"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "2"
         },
         {
-          "matchType": "任一",
+          "matchType": "必需",
           "matchGroupName": "传奇",
           "operate": "大于等于",
           "attributeType": "施法速度",
@@ -1171,7 +1172,32 @@
         {
           "matchType": "必需",
           "matchGroupName": "传奇",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "沙利娜的守护"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
           "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
+        }
+
+      ]
+    },
+    "maxCount": 8
+  },
+  {
+    "equip": {
+      "description": "完美传奇",
+      "category": "腰带",
+      "quality": "传奇",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "matchGroupName": "传奇",
+          "operate": "等于",
           "attributeType": "名称",
           "conditionContent": "蜘蛛之网"
         }
@@ -1866,7 +1892,7 @@
           "matchType": "必需",
           "operate": "大于等于",
           "attributeType": "所有技能",
-          "conditionContent": "1"
+          "conditionContent": "2"
         }
 
       ]
@@ -1891,6 +1917,12 @@
           "operate": "大于等于",
           "attributeType": "所有技能",
           "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]
@@ -1909,6 +1941,12 @@
           "operate": "在范围内",
           "attributeType": "名称",
           "conditionContent": "金属网格"
+        },
+        {
+          "matchType": "必需",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]
@@ -2864,7 +2902,7 @@
 
       ]
     },
-    "maxCount": 1200
+    "maxCount": 5
   },
   {
     "equip": {
@@ -3692,6 +3730,48 @@
           "operate": "大于等于",
           "attributeType": "技能等级",
           "conditionContent": "烈焰风暴,3"
+        }
+      ]
+    },
+    "maxCount": 12
+  },
+  {
+    "equip": {
+      "category": "牧师副手",
+      "quality": "普通|破碎",
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "凹槽",
+          "conditionContent": "2"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "精神灼烧,3"
+        },
+        {
+          "matchType": "必需",
+          "matchGroupName": "法杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "腐蚀光环,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "法杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "灵魂吸取,3"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "法杖",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "conditionContent": "暗影尖刺,3"
         }
       ]
     },
@@ -5257,8 +5337,15 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "水瓶座"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "不等于",
+          "attributeType": "自定义",
+          "conditionContent": "无形"
         }
-        //},
+
         //{
         //  "matchType": "任一",
         //  "matchGroupName": "免洗",
@@ -5388,13 +5475,7 @@
           "attributeType": "自定义",
           "conditionContent": "射手座"
         },
-        {
-          "matchType": "任一",
-          "matchGroupName": "免洗",
-          "operate": "在范围内",
-          "attributeType": "自定义",
-          "conditionContent": "强击"
-        },
+
 
 
         {
@@ -5434,6 +5515,13 @@
           "operate": "在范围内",
           "attributeType": "自定义",
           "conditionContent": "狂乱"
+        },
+        {
+          "matchType": "任一",
+          "matchGroupName": "免洗",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
 
       ]

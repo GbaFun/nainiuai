@@ -22,7 +22,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public static string[] NanfangAccounts = ConfigUtil.GetAppSetting("南方账号").Split(',');
     public static string[] NainiuAccounts = ConfigUtil.GetAppSetting("奶牛账号").Split(',');
     public static string[] BudingAccounts = ConfigUtil.GetAppSetting("布丁账号").Split(',');
-    public static string[] ActiveAcc = NainiuAccounts.Concat(NanfangAccounts).ToArray();
+    public static string[] ActiveAcc = NainiuAccounts.Concat(NanfangAccounts).Concat(BudingAccounts).ToArray();
     public static string[] AccDone= ConfigUtil.GetAppSetting("AccDone").Split(',');
     public static string RepoExclude = ConfigUtil.GetAppSetting("repoExclude");
     public static readonly List<int> FcrSpeeds = new List<int> { 0, 25, 50, 75, 110, 145, 180 };
@@ -36,6 +36,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
     public static string[] Jobs = ConfigUtil.GetAppSetting("jobs").Split(',');
 
     public static bool IsCollectEquip = bool.Parse(ConfigUtil.GetAppSetting("isCollectEquip"));
+    public static bool IsActiveBuding = bool.Parse(ConfigUtil.GetAppSetting("ActiveBuding"));
 
 
     public async Task AutoRepair(BroWindow window, RoleModel targetRole = null)
@@ -237,7 +238,7 @@ public class RepairManager : SingleManagerBase<RepairManager>
         bool isCollect = RepairManager.IsCollectEquip;
         var equipController = new EquipController(win);
         var account = win.User;
-        if (isCollect)
+        if (isCollect&&!account.AccountName.StartsWith("0"))
         {
             //将挂机装备放入仓库
             await EquipToRepository(win, equipController, account, true);

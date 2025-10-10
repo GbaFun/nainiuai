@@ -55,7 +55,10 @@ public class RetainEquipCfg
 
         foreach (var item in configs)
         {
-            
+            //if (item.Equip.Description == "80级太古" && equip.EquipName == "磨骨者" && equip.IsPerfect)
+            //{
+            //    Console.WriteLine("");
+            //}
             if (AttributeMatchUtil.Match(equip, item.Equip, out var report) && item.AddCount())
             {
                 return true;

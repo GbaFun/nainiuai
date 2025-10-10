@@ -105,6 +105,9 @@ function getEquipInfo(eid, sortid, quality, content) {
         if (sc[1] != "已绑定") baseName = sc[1];
         else baseName = sc[2];
     }
+    else if (baseName.Contains("猎人的伪装")) {
+        baseName = "猎人的伪装";
+    }
     else {
         var sbname = name[1].replace("太古", "").replace("无形", "");
         if (sbname.includes("的")) {
@@ -370,6 +373,7 @@ function equipUse(cid, eid) {
     POST_Message("EquipUse", data, "post", 1000)
         .then(r => {
             console.log("EquipUse success");
+            setTimeout(() => { location.reload(); }, 3000)
         })
         .catch(r => {
             console.log(r);

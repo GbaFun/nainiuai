@@ -30,8 +30,14 @@ public class TradeController : BaseController
     public async Task<bool> StartTrade(EquipModel equip, string roleName)
     {
         await Task.Delay(1000);
-        //跳转装备页面
         var role = _win.User.FirstRole;
+    
+    
+        //跳转装备页面
+        if (equip.EquipStatus == emEquipStatus.Package)
+        {
+            role = _win.User.Roles.Find(p => p.RoleId == equip.RoleID);
+        }
         //_win.GetBro().ShowDevTools();
         P.Log($"跳转{role.RoleName}的装备详情页面", emLogType.AutoEquip);
         var response = await _win.LoadUrlWaitJsInit(IdleUrlHelper.EquipUrl(role.RoleId), "equip");
@@ -181,7 +187,6 @@ public class TradeController : BaseController
         var r = await _win.CallJs($"readEquipInfo({json})");
         var eq = r.Result.ToObject<EquipModel>();
         eq.EquipStatus = eqStatus;
-       // eq.Category = CategoryUtil.GetCategory(eq.EquipBaseName);
         eq.SetAccountInfo(_win.User);
         var tradeInfo = FreeDb.Sqlite.Select<TradeModel>(new long[] { eq.EquipID }).First();
 

@@ -1,4 +1,6 @@
 ﻿using HtmlAgilityPack;
+using IdleAuto.Db;
+using IdleAuto.Scripts.Model;
 using System;
 using System.IO;
 using System.Net;
@@ -16,6 +18,7 @@ namespace IdleApi.Wrap
         private readonly HttpClient _httpClient;
         private readonly CookieContainer _cookieContainer;
 
+        public UserModel User { get; set; }
         /// <summary>
         /// 用户名，也是 Cookie 文件名标识
         /// </summary>
@@ -36,6 +39,11 @@ namespace IdleApi.Wrap
         private string _address;
 
         /// <summary>
+        /// 当前页面内容
+        /// </summary>
+        public string CurrentContent { get; set; }
+
+        /// <summary>
         /// 构造函数：初始化指定用户的 Cookie 和 HttpClient
         /// </summary>
         /// <param name="userName">用户唯一标识，用于区分 Cookie 文件</param>
@@ -43,6 +51,7 @@ namespace IdleApi.Wrap
         {
             UserName = userName ?? throw new ArgumentNullException(nameof(userName));
 
+            User = AccountCfg.Instance.GetUserModel(userName);
             // 初始化 Cookie 容器
             _cookieContainer = new CookieContainer();
 
@@ -63,6 +72,7 @@ namespace IdleApi.Wrap
                 Timeout = TimeSpan.FromSeconds(30)
             };
             _httpClient.BaseAddress = new Uri("https://www.idleinfinity.cn");
+
         }
 
         /// <summary>
@@ -98,7 +108,7 @@ namespace IdleApi.Wrap
                 var response = await _httpClient.GetAsync(requestUri);
                 response.EnsureSuccessStatusCode();
                 var content = await response.Content.ReadAsStringAsync();
-                if (!content.Contains("删除角色")&&url.Contains("Index"))
+                if (!content.Contains("删除角色") && url.Contains("Index"))
                 {
                     throw new Exception("登录失效");
                 }
@@ -106,43 +116,50 @@ namespace IdleApi.Wrap
                 {
                     await SaveCookiesToFileAsync();
                 }
-                await GetCsrfTokenAsync(content);
+                CurrentContent = content;
+                await Task.Delay(2000);
+
                 return content;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[BroWindow] 加载 URL 失败: {url}, 错误: {ex.Message}");
-                throw;
+                throw ex;
             }
         }
 
-        // 获取页面并提取CSRF Token
-        private async Task<string> GetCsrfTokenAsync(string html)
+
+
+        /// <summary>
+        /// 提交表单并返回重定向的页面
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="formData"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public async Task<string> SubmitFormAsync(string url, Dictionary<string, string> dic = null)
         {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(html);
-
-            var tokenNode = htmlDoc.DocumentNode.SelectSingleNode("//input[@name='__RequestVerificationToken']");
-            if (tokenNode == null)
-                throw new Exception("CSRF Token not found in the page.");
-
-            Token = tokenNode.GetAttributeValue("value", "");
-            return Token;
-        }
-
-        public async Task SubmitFormAsync(string url, Dictionary<string, string> formData)
-        {
-
-
+            await Task.Delay(2000);
+            var formData = ParseForm(CurrentContent);
+            if (dic != null)
+            {
+                foreach(var item in dic)
+                {
+                    formData[item.Key] = item.Value;
+                }
+            }
             // 2. 设置请求头（根据抓包结果调整）
             // 3. 设置请求头（可选，但某些服务器会检查）
-            _httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-            _httpClient.DefaultRequestHeaders.Add("Origin", "https://www.idleinfinity.cn");
-            _httpClient.DefaultRequestHeaders.Add("Referer", CurrentAddress);
+            if (!_httpClient.DefaultRequestHeaders.Contains("Referer"))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                _httpClient.DefaultRequestHeaders.Add("Origin", "https://www.idleinfinity.cn");
+                _httpClient.DefaultRequestHeaders.Add("Referer", CurrentAddress);
+            }
 
-            // 3. 构造表单数据
+         
 
-            formData.Add("__RequestVerificationToken", Token);
+            
             // 动态构造 URI：支持相对路径和完整 URL
             Uri requestUri;
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -173,15 +190,53 @@ namespace IdleApi.Wrap
 
             // 6. 检查结果
             Console.WriteLine($"最终状态码: {response.StatusCode}");
-            Console.WriteLine($"最终响应: {await response.Content.ReadAsStringAsync()}");
+            Console.WriteLine($"账号: {User.AccountName}|执行地址:{url}");
+            var content = await response.Content.ReadAsStringAsync();
+            CurrentContent = content;
             response.EnsureSuccessStatusCode();
+            return content;
+        }
+
+        public static Dictionary<string, string> ParseForm(string htmlContent)
+        {
+            var formData = new Dictionary<string, string>();
+
+            // 加载HTML内容
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(htmlContent);
+
+            // 查找id为"form"的表单
+            var formNode = htmlDoc.DocumentNode.Descendants("form")
+                                     .FirstOrDefault(f => f.Attributes.Contains("id") && f.Attributes["id"].Value == "form");
+
+            if (formNode == null)
+            {
+                Console.WriteLine("未找到id为'form'的表单。");
+                return formData;
+            }
+
+            // 遍历表单中的所有输入元素
+            var inputNodes = formNode.Descendants("input");
+
+            foreach (var input in inputNodes)
+            {
+                var name = input.Attributes["name"]?.Value;
+                var value = input.Attributes["value"]?.Value;
+
+                if (!string.IsNullOrEmpty(name))
+                {
+                    formData[name] = value ?? string.Empty;
+                }
+            }
+
+            return formData;
         }
 
         /// <summary>
         /// 从文件加载 Cookie（通常是之前保存的登录态 Cookie）
         /// 加载时会对相同 Domain + Path + Name 的 Cookie 去重，只保留最新的（Expires 最晚的）
         /// </summary>
-        public void LoadCookiesFromFile()
+        private void LoadCookiesFromFile()
         {
             string path = CookiePath;
 
@@ -285,7 +340,17 @@ namespace IdleApi.Wrap
         public async Task SaveCookiesToFileAsync()
         {
             try
+
             {
+                if (File.Exists(CookiePath))
+                {
+                    var lastWriteTime = File.GetLastWriteTime(CookiePath);
+                    var span = DateTime.Now - lastWriteTime;
+                    if (span.TotalMinutes < 10)
+                    {
+                        return;
+                    }
+                }
                 var allCookies = _cookieContainer.GetCookies(new Uri("https://www.idleinfinity.cn/Home/Index"));
 
                 // 用于去重：Key 是 "Domain|Path|Name"，Value 是 Cookie

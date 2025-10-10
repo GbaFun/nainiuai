@@ -467,9 +467,13 @@
           "matchType": "必需",
           "operate": "在范围内",
           "attributeType": "名称",
-
-          "seq": 50,
           "conditionContent": "末日"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "所有技能",
+          "conditionContent": "1"
         }
       ]
     }
@@ -3179,7 +3183,6 @@
     "equipment": {
       "category": "死灵副手",
       "quality": "神器",
-      "isTrade": true,
       "conditions": [
         {
           "matchType": "必需",

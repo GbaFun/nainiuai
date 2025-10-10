@@ -10,6 +10,7 @@ public class IdleUrlHelper
     public const string Map = "Map/Detail";
     public const string Role = "Character/Detail";
     public const string Equip = "Equipment/Query";
+    public const string EquipStoreAll = "Equipment/EquipStoreAll";
     public const string Ah = "Auction/Query";
     public const string Inlay = "Equipment/Inlay";
     public const string Material = "Equipment/Material";
@@ -41,6 +42,11 @@ public class IdleUrlHelper
     public static string EquipUrl(int roleId, int bagpi, int boxpi)
     {
         return $"{Idle}/{Equip}?{m_roleArg}{roleId}&pt2=&pi2={boxpi}&et2=&pi={bagpi}&pt=&et=&aid=";
+    }
+
+    public static string EquipStoreAllUrl()
+    {
+        return $"{Idle}/{EquipStoreAll}";
     }
     public static string AhUrl(int roleId)
     {

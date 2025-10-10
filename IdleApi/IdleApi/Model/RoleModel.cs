@@ -16,10 +16,12 @@ public class RoleModel : IModel
 
     public string RoleName { get; set; }
     public string RoleInfo { get; set; }
-    [Navigate(nameof(CharAttributeModel.RoleId))]
-    public List<CharAttributeModel> Attribute { get; set; }
 
-    public MapModel Map { get; set; }
+    public decimal ExpPercent { get; set; }
+
+    public bool IsIdle { get; set; }
+
+
 
     public int Level
     {

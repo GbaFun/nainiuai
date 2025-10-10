@@ -21,7 +21,7 @@ public class LevelRange
 public class Equipment
 {
     public emItemType emEquipType { get; set; }
-
+    public string Description { get; set; }
     public string Category { get; set; }
     public string Quality { get; set; }
 
@@ -187,18 +187,18 @@ public class SuitCfg
     {
         try
         {
-            Dictionary<emJob, List<EquipSuits>> _equipMap = new Dictionary<emJob, List<EquipSuits>>() ;
-           
-                _equipMap = new Dictionary<emJob, List<EquipSuits>>();
-                foreach (var equipment in SuitList.Where(p => p.SuitType == suitType))
+            Dictionary<emJob, List<EquipSuits>> _equipMap = new Dictionary<emJob, List<EquipSuits>>();
+
+            _equipMap = new Dictionary<emJob, List<EquipSuits>>();
+            foreach (var equipment in SuitList.Where(p => p.SuitType == suitType))
+            {
+                if (!_equipMap.ContainsKey(equipment.Job))
                 {
-                    if (!_equipMap.ContainsKey(equipment.Job))
-                    {
-                        _equipMap.Add(equipment.Job, new List<EquipSuits>());
-                    }
-                    _equipMap[equipment.Job].Add(equipment);
+                    _equipMap.Add(equipment.Job, new List<EquipSuits>());
                 }
-            
+                _equipMap[equipment.Job].Add(equipment);
+            }
+
             if (_equipMap.TryGetValue(job, out var equipmentList))
             {
 

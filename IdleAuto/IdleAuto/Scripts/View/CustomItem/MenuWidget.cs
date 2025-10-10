@@ -137,7 +137,7 @@ namespace IdleAuto.Scripts.View
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            string[] MapSwitchAccounts = RepairManager.NanfangAccounts.ToArray();
+            string[] MapSwitchAccounts = RepairManager.ActiveAcc.ToArray();
 
             FlowController.GroupWork(4, 1, FlowController.StartMapSwitch, MapSwitchAccounts);
         }
@@ -153,7 +153,7 @@ namespace IdleAuto.Scripts.View
             string[] accounts = null;
             FreeDb.Sqlite.Delete<TradeModel>().Where(p => 1 == 1).ExecuteAffrows();
             FreeDb.Sqlite.Delete<LockEquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-            var acc = RepairManager.ActiveAcc.Except(RepairManager.AccDone).ToArray();
+            var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Except(RepairManager.AccDone).ToArray();
             //accounts = new string[] {"南方工具人7" };
             Task.Run(async () =>
             {
@@ -269,13 +269,13 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
-           //  var acc = RepairManager.BudingAccounts.Where(p => p != "010").ToArray();
+            //  var acc = RepairManager.BudingAccounts.Where(p => p != "010").ToArray();
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, acc);
         }
 
         private void btnMonitor_Click(object sender, EventArgs e)
         {
-            FlowController.GroupWork(3, 1, FlowController.StartEfficencyMonitor);
+            FlowController.GroupWork(3,35, FlowController.StartEfficencyMonitor);
         }
 
         private void BtnInventory_Click(object sender, EventArgs e)
@@ -305,6 +305,7 @@ namespace IdleAuto.Scripts.View
             //FlowController.SwitchYongheng();
             // FlowController.ReformShengyi();
             FlowController.UseBox();
+           // FlowController.SendJieduBase();
             // FlowController.ReformBaseEq();
         }
 
@@ -324,8 +325,24 @@ namespace IdleAuto.Scripts.View
 
         private void btnDungeon_Click(object sender, EventArgs e)
         {
+            var isActiveBuding = bool.Parse(ConfigUtil.GetAppSetting("ActiveBuding"));
+            string[] acc = null;
+            if (isActiveBuding)
+            {
+                acc = RepairManager.ActiveAcc;
+            }
+            else
+            {
+                acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).ToArray();
+            }
+         
 
-            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, RepairManager.ActiveAcc);
+            if (AccountCombo.SelectedItem!=null)
+            {
+                var accountSelected = AccountCombo.SelectedItem as Account;
+                acc = new string[] { accountSelected.AccountName };
+            }
+            FlowController.GroupWork(3, 1, FlowController.StartDailyDungeon, acc);
 
         }
 

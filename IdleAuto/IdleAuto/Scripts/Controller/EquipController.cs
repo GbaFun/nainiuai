@@ -157,24 +157,6 @@ public class EquipController : BaseController
     public async Task InventoryEquips(BroWindow win, UserModel account, bool ignoreTime = false)
     {
         Dictionary<long, EquipModel> repositoryEquips = new Dictionary<long, EquipModel>();
-        //检查是否需要保存装备
-        //如果忽略检查保存时间，直接进行盘点
-        if (!ignoreTime)
-        {
-            var v = FreeDb.Sqlite.Select<CommonModel>().Where(P => P.CommonKey == "EquipSaveTime").ToList();
-
-            if (v.Count > 0)
-            {
-                var time = Convert.ToDateTime(v[0].CommonValue);
-                if (DateTime.Now.Subtract(time).TotalHours < 8)
-                {
-                    P.Log("8小时内已经保存过装备，无需再次保存", emLogType.AutoEquip);
-                    return;
-                }
-            }
-        }
-
-        P.Log("开始盘点所有装备", emLogType.AutoEquip);
 
         RoleModel role = account.FirstRole;
         await Task.Delay(1000);
@@ -244,7 +226,7 @@ public class EquipController : BaseController
 
 
             P.Log("写入仓库装备到数据库", emLogType.AutoEquip);
-            var specialCategory = new List<string> { "戒指", "护符", "秘境", "道具", "权杖", "项链", "斧", "珠宝", "爪","标枪" };
+            var specialCategory = new List<string> { "戒指", "护符", "秘境", "道具", "权杖", "项链", "斧", "珠宝", "爪", "标枪" };
             var errorList = repositoryEquips.Values.Where(p => !specialCategory.Contains(p.Category) && p.Category == p.EquipName).ToList();
             if (errorList.Count > 0)
             {
@@ -1344,14 +1326,24 @@ public class EquipController : BaseController
 
     public void RecordDkYongheng(RoleModel role, Dictionary<emEquipSort, EquipModel> curEquip)
     {
-        var targetEq = curEquip[emEquipSort.副手];
-        if (!targetEq.EquipName.Contains("永恒"))
+        EquipModel targetEq = null;
+        if (curEquip.ContainsKey(emEquipSort.副手))
+        {
+            targetEq = curEquip[emEquipSort.副手];
+            if (!targetEq.EquipName.Contains("永恒"))
+            {
+                targetEq = curEquip[emEquipSort.主手];
+            }
+        }
+        else
         {
             targetEq = curEquip[emEquipSort.主手];
         }
 
 
-        if (targetEq.EquipName.Contains("永恒"))
+
+
+        if (targetEq.EquipName.Contains("永恒") || targetEq.EquipName.Contains("执着"))
         {
             var baseVal = 15;
             var val = AttributeMatchUtil.GetBaseAttValue(emAttrType.唤醒光环, targetEq.Content).Item2;
@@ -1444,6 +1436,10 @@ public class EquipController : BaseController
         var list = curEquips.Select(p => p.Value).ToList();
         list.ForEach(p => WrapEquip(p, win.User, role, emEquipStatus.Equipped));
         DbUtil.InsertOrUpdate<EquipModel>(list);
+        if (role.Job == emJob.死骑)
+        {
+            RecordDkYongheng(role, curEquips);
+        }
         await Task.Delay(1000);
     }
 
@@ -1457,16 +1453,20 @@ public class EquipController : BaseController
     /// <returns></returns>
     private EquipSuitMatchStruct MatchEquipSuit(string accountName, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, TradeModel> tradeResult)
     {
+        var budingExclude = new string[] {  "轮回", "无形轮回" };
         //只查找仓库中的装备
         var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
 
         var _equipsSelf = EquipUtil.QueryEquipInRepo(role.RoleId).Where((a, b) => a.AccountName == accountName && a.EquipStatus == emEquipStatus.Repo).Distinct().ToList();
         //var test = _equipsSelf.Where(p => p.EquipName == "永恒").ToList();
-        var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName != accountName && a.EquipStatus == emEquipStatus.Repo && a.IsLocal == false).ToList();
+        var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName != accountName &&( a.EquipStatus == emEquipStatus.Repo||a.EquipStatus==emEquipStatus.Package) && a.IsLocal == false).ToList();
+       int count= _equipsOthers.RemoveAll(p => p.AccountName == "南方仓库" && (p.EquipName.Contains("轮回") || p.EquipName == "人品的展现"));
         if (registeredEquips != null)
         {
             _equipsOthers = _equipsOthers.Where(p => !registeredEquips.Select(s => s.EquipId).Contains(p.EquipID)).ToList();
         }
+        _equipsOthers = _equipsOthers.Where(p => (p.AccountName.StartsWith("0") && !budingExclude.Contains(p.EquipName)) || !p.AccountName.StartsWith("0")).ToList();
+        var test=_equipsOthers.Where(p => p.EquipName == "全能法戒" && p.EquipStatus == emEquipStatus.Package).ToList();
         var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
         var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();

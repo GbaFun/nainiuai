@@ -93,9 +93,18 @@ namespace IdleAuto.Scripts.View
             {
                 try
                 {
+                    string[] acc = null;
+                    if (RepairManager.IsActiveBuding)
+                    {
+                        acc = RepairManager.ActiveAcc;
+                    }
+                    else
+                    {
+                        acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).ToArray();
+                    }
 
                     FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
-                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips, RepairManager.ActiveAcc);
+                    await FlowController.GroupWork(3, 1, RepairManager.Instance.UpdateEquips, acc);
 
 
 
@@ -166,6 +175,33 @@ namespace IdleAuto.Scripts.View
             var list = FreeDb.Sqlite.Select<LunhuiBase>().Where(p => p.RoleID == 0).ToList();
             var toList = list.ToObject<List<EquipModel>>();
             FlowController.SendEquip(toList);
+        }
+
+        private void btnSendMage_Click(object sender, EventArgs e)
+        {
+            FlowController.SendMageSuitToDk();
+        }
+
+        private void btnSync_Click(object sender, EventArgs e)
+        {
+            var list = FreeDb.SqliteApi.Select<EquipModel>().ToList();
+            var rows = FreeDb.Sqlite.Delete<EquipModel>().Where(p => 1 == 1).ExecuteAffrows();
+            DbUtil.InsertOrUpdate(list);
+        }
+
+        private void comCollectBase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtArtifactCount_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comArtifact_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

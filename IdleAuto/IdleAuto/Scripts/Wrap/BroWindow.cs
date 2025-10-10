@@ -172,6 +172,23 @@ namespace IdleAuto.Scripts.Wrap
             }
             return aa;
         }
+
+        public async Task<string> GetHtml()
+        {
+            if (_bro.IsBrowserInitialized)
+            {
+                string script = "document.documentElement.outerHTML;";
+                var task = _bro.EvaluateScriptAsync(script);
+                await task;
+
+                if (task.Result != null && task.Result.Result != null)
+                {
+                    string html = task.Result.Result.ToString();
+                    return html;
+                }
+            }
+            return "";
+        }
         public async Task<T> CallJs<T>(string jsFunc)
         {
             var result = await _bro.EvaluateScriptAsync(jsFunc);
