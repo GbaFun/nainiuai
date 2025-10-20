@@ -12,26 +12,41 @@ namespace IdleApi.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class EquipController
+    public class EquipController:BaseApi
     {
 
-
+        [HttpGet]
+        public async Task<bool> TestNot()
+        {
+            var bro = await BroWinManager.GetWin("RasdGch");
+            var t = new TradeService(bro);
+            await t.AcceptAll();
+            return true;
+        }
 
         /// <summary>
         /// 保存所有装备
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task SaveAll()
+        public async Task SaveAll(bool isIncludeBuding = true,string key="")
         {
-
-            await FlowScript.SaveAllEquip();
+            if (key != "" && !KeyDic.ContainsKey(key))
+            {
+                KeyDic.Add(key, "");
+            }
+            else if (key != "")
+            {
+                return;
+            }
+            await FlowScript.SaveAllEquip(isIncludeBuding);
 
         }
         [HttpGet]
-        public async Task TestCollect(string name)
+        public async Task TestCollect(string name,string key="")
         {
             var taskList = new List<Task>();
+          
             foreach (var item in AccountCfg.Instance.Accounts)
             {
                 try
@@ -64,6 +79,7 @@ namespace IdleApi.Controllers
                 }
 
             }
+            await Task.WhenAll(taskList);
 
 
         }

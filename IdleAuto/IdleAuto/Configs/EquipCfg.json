@@ -3353,6 +3353,38 @@
     }
   },
   {
+    "name": "怨灵尖啸3",
+    "description": "死灵副手",
+    "equipment": {
+      "category": "死灵副手",
+      "quality": "传奇",
+      "isTrade": true,
+      "conditions": [
+        {
+          "matchType": "必需",
+          "operate": "等于",
+          "attributeType": "名称",
+          "conditionContent": "怨灵尖啸"
+        },
+
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "指定职业全系技能",
+          "seq": 10,
+          "conditionContent": "死灵,3"
+        },
+        {
+          "matchType": "必需",
+          "operate": "大于等于",
+          "attributeType": "技能等级",
+          "seq": 10,
+          "conditionContent": "骷髅法师,3"
+        }
+      ]
+    }
+  },
+  {
     "name": "献祭轮回",
     "description": "死灵副手",
     "equipment": {
@@ -4464,7 +4496,15 @@
           "matchType": "可选",
           "operate": "在范围内",
           "attributeType": "自定义",
+          "seq": 10,
           "conditionContent": "骷髅法师"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
       ]
     }
@@ -4489,7 +4529,15 @@
           "matchType": "可选",
           "operate": "在范围内",
           "attributeType": "自定义",
+          "seq": 10,
           "conditionContent": "骷髅法师"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
       ]
     }
@@ -4514,7 +4562,15 @@
           "matchType": "可选",
           "operate": "在范围内",
           "attributeType": "自定义",
+          "seq": 10,
           "conditionContent": "骷髅法师"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
       ]
     }
@@ -4539,7 +4595,15 @@
           "matchType": "可选",
           "operate": "在范围内",
           "attributeType": "自定义",
+          "seq": 10,
           "conditionContent": "骷髅法师"
+        },
+
+        {
+          "matchType": "可选",
+          "operate": "在范围内",
+          "attributeType": "自定义",
+          "conditionContent": "太古"
         }
       ]
     }

@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using IdleApi.Scripts;
 using IdleAuto.Db;
 using IdleAuto.Scripts.Model;
 using System;
@@ -17,6 +18,10 @@ namespace IdleApi.Wrap
     {
         private readonly HttpClient _httpClient;
         private readonly CookieContainer _cookieContainer;
+        /// <summary>
+        /// 页面的转义工具
+        /// </summary>
+        public PageParser Page { get; set; }
 
         public UserModel User { get; set; }
         /// <summary>
@@ -117,8 +122,9 @@ namespace IdleApi.Wrap
                     await SaveCookiesToFileAsync();
                 }
                 CurrentContent = content;
+                ParsePage(content);
                 await Task.Delay(2000);
-
+                Console.WriteLine($"账号: {User.AccountName}|执行地址:{url}");
                 return content;
             }
             catch (Exception ex)
@@ -126,6 +132,24 @@ namespace IdleApi.Wrap
                 Console.WriteLine($"[BroWindow] 加载 URL 失败: {url}, 错误: {ex.Message}");
                 throw ex;
             }
+        }
+
+        private void ParsePage(string content)
+        {
+            if (Page == null)
+            {
+               Page= new PageParser(content);
+            }
+            else
+            {
+                Page.LoadHtml(content);
+            }
+        }
+
+        public bool HasUnReadNotice()
+        {
+            if (Page == null) return false;
+            return Page.HasUnReadNotice();
         }
 
 
@@ -143,7 +167,7 @@ namespace IdleApi.Wrap
             var formData = ParseForm(CurrentContent);
             if (dic != null)
             {
-                foreach(var item in dic)
+                foreach (var item in dic)
                 {
                     formData[item.Key] = item.Value;
                 }
@@ -157,9 +181,9 @@ namespace IdleApi.Wrap
                 _httpClient.DefaultRequestHeaders.Add("Referer", CurrentAddress);
             }
 
-         
 
-            
+
+
             // 动态构造 URI：支持相对路径和完整 URL
             Uri requestUri;
             if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
@@ -192,8 +216,8 @@ namespace IdleApi.Wrap
             Console.WriteLine($"最终状态码: {response.StatusCode}");
             Console.WriteLine($"账号: {User.AccountName}|执行地址:{url}");
             var content = await response.Content.ReadAsStringAsync();
+            ParsePage(content);
             CurrentContent = content;
-            response.EnsureSuccessStatusCode();
             return content;
         }
 

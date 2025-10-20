@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 
-
+/// <summary>
+/// 装备页parser
+/// </summary>
 public class EquipParser
 {
     private HtmlDocument _doc;
@@ -17,9 +19,9 @@ public class EquipParser
         _doc.LoadHtml(htmlContent);
     }
 
-    public Dictionary<int, EquipModel> GetCurEquips()
+    public Dictionary<emEquipSort, EquipModel> GetCurEquips()
     {
-        var eMap = new Dictionary<int, EquipModel>();
+        var eMap = new Dictionary<emEquipSort, EquipModel>();
         var nodes = _doc.DocumentNode.SelectNodes("//span[@class='sr-only label label-danger equip-off']");
 
         if (nodes != null)
@@ -47,8 +49,8 @@ public class EquipParser
                     if (contentNode != null)
                     {
                         var content = contentNode.InnerText;
-                        var e = GetEquipModel(id, sortId, quality, content, emEquipStatus.Equipped);
-                        eMap.Add((int)e.emEquipSort, e);
+                        var e = GetEquipModel(id, (emEquipSort)sortId, quality, content, emEquipStatus.Equipped);
+                        eMap.Add(e.emEquipSort, e);
                     }
                 }
             }
@@ -78,7 +80,7 @@ public class EquipParser
                         if (contentNode != null)
                         {
                             var content = contentNode.InnerText;
-                            var e = GetEquipModel(id, 999, quality, content, emEquipStatus.Package);
+                            var e = GetEquipModel(id, emEquipSort.未穿戴, quality, content, emEquipStatus.Package);
                             eMap.Add(e.EquipID, e);
                         }
                     }
@@ -124,7 +126,7 @@ public class EquipParser
                         if (contentNode != null)
                         {
                             var content = contentNode.InnerText;
-                            var e = GetEquipModel(id, 999, quality, content, emEquipStatus.Repo);
+                            var e = GetEquipModel(id, emEquipSort.未穿戴, quality, content, emEquipStatus.Repo);
                             eMap.Add(e.EquipID, e);
                         }
                     }
@@ -135,7 +137,7 @@ public class EquipParser
         return eMap;
     }
 
-    private EquipModel GetEquipModel(long eid, int sortid, string quality, string content, emEquipStatus equipStatus)
+    private EquipModel GetEquipModel(long eid, emEquipSort sort, string quality, string content, emEquipStatus equipStatus)
     {
         // 移除所有空白行（包括仅包含空白字符的行）
         content = Regex.Replace(content, @"^\s*$\n?", "", RegexOptions.Multiline);
@@ -146,7 +148,7 @@ public class EquipParser
         var e = new EquipModel
         {
             EquipID = eid,
-            emEquipSort = (emEquipSort)sortid,
+            emEquipSort = sort,
             Quality = quality,
             EquipStatus = equipStatus,
             Content = content

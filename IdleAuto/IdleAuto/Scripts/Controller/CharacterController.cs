@@ -189,7 +189,7 @@ namespace IdleAuto.Scripts.Controller
                 //  await e.LoadSuit(emSuitType.效率, role);
                 return;
             }
-            else if (san >= 60 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
+            else if (san >= 20 && canSwitch)//大于80打秘境 秘境数量大于25打秘境 不然打普通本
             {
                 var dList = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.Category == emCategory.秘境.ToString() && p.Quality != "base" && p.AccountName == _win.User.AccountName).ToList();
                 dList = dList.Where(p => p.CanWear(role)).ToList();
@@ -266,6 +266,41 @@ namespace IdleAuto.Scripts.Controller
             //}
         }
 
+        public async Task StartNainiu(RoleModel role)
+        {
+            var user = _win.User;
+            var bro = _win.GetBro();
+            if (bro.Address.IndexOf("Map/Detail") == -1) await _win.SignalCallback("charReload", () =>
+            {
+                _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
+            });
+
+            var r2 = await _win.CallJs("_map.isInDungeonForEquip()");
+            var isInDungeonForEquip = r2.Result.ToObject<bool>();
+
+
+            var r1 = await _win.CallJs("_map.canSwitch()");
+            var canSwitch = r1.Result.ToObject<bool>();
+            if (!canSwitch) return;
+
+            var equip = FreeDb.Sqlite.Select<EquipModel>().Where(p => (p.EquipName.Contains("维特之脚") || p.EquipName.Contains("牛王战戟")) && p.Lv >= 85 && p.AccountName == _win.User.AccountName).First();
+
+            var targetRole = user.Roles[0];
+            var r = new ReformController(_win);
+            var canNainiu = await r.ReformEquip(equip, targetRole.RoleId, emReformType.Nainiu);
+            await Task.Delay(1000);
+            var dungeonUrl = $"  https://www.idleinfinity.cn/Map/DungeonForEquip?id={role.RoleId}";
+            await _win.LoadUrlWaitJsInit(dungeonUrl, "map");
+            await Task.Delay(1000);
+            //此时跳转了秘境
+            var r3 = await _win.CallJs("$(\"a:contains('取消自动')\").css(\"display\")=='none'");
+            var isNotAuto = r3.Result.ToObject<bool>();
+            if (isNotAuto) await AutoDungeon(true, false);
+            //
+
+
+        }
+
         /// <summary>
         /// 开始秘境
         /// </summary>
@@ -276,6 +311,7 @@ namespace IdleAuto.Scripts.Controller
         public async Task StartDungeon(ChromiumWebBrowser bro, RoleModel role, bool isReset = false, int targetDungeonLv = 0, bool bossOnly = false)
         {
             _browser = bro;
+            bool canSwitch = false;
             var isDungeonBack = bool.Parse(ConfigUtil.GetAppSetting("IsDungeonBack"));
             //秘境归
             if (isDungeonBack)
@@ -285,7 +321,7 @@ namespace IdleAuto.Scripts.Controller
                     _browser.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
                 });
                 var r = await _win.CallJs("_map.canSwitch()");
-                var canSwitch = r.Result.ToObject<bool>();
+                canSwitch = r.Result.ToObject<bool>();
                 if (!canSwitch)
                 {
                     await _win.SignalCallback("charReload", () =>
@@ -300,6 +336,9 @@ namespace IdleAuto.Scripts.Controller
              {
                  bro.LoadUrl($"https://www.idleinfinity.cn/Map/Detail?id={role.RoleId}");
              });
+            canSwitch = await _win.CallJs<bool>("_map.canSwitch()");
+
+            if (!canSwitch) return;
             var curMapLv = await GetCurMapLv();
             _curMapLv = curMapLv;
             //开始秘境

@@ -3,14 +3,17 @@ class Character {
     //当前角色id
     cid = 0;
 
+
     constructor() {
         this.init().then(() => {
-            this.initCurrentChar();
-            if (this.cid > 0) Bridge.invokeEvent('OnCharLoaded', _char.cid);
-            
-            Bridge.invokeEvent('OnJsInited', 'char');
-            Bridge.invokeEvent('OnSignal', 'charReload');
-            this.addCloseButton();
+            if (this.isJquery()) {
+                this.initCurrentChar();
+                if (this.cid > 0) Bridge.invokeEvent('OnCharLoaded', _char.cid);
+
+                Bridge.invokeEvent('OnJsInited', 'char');
+                Bridge.invokeEvent('OnSignal', 'charReload');
+                this.addCloseButton();
+            }
         });
     }
     async init() {
@@ -20,6 +23,19 @@ class Character {
         catch (e) {
             console.log("Error:", e);
         }
+    }
+
+    isJquery() {
+        try {
+            if ($ && $.fn && $.fn.jquery && $ instanceof Function && typeof $.length === "number") {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (e) {
+            return false;
+        }
+
     }
 
     initCurrentChar() {
@@ -361,6 +377,9 @@ class Character {
         container.append(btn);
     }
     isBossDone() {
+        if (!this.isJquery()) {
+            return false;
+        }
         const regex = /([0-9]|[1-9][0-9])%-\(([0-5])\/5\)/;
         var str = $(".panel-heading").text().trim();
         return regex.test(str);

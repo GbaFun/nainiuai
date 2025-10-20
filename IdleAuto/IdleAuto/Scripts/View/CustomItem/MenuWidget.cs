@@ -269,7 +269,7 @@ namespace IdleAuto.Scripts.View
         private void btnSyncFilter_Click(object sender, EventArgs e)
         {
             var acc = RepairManager.NainiuAccounts.Concat(RepairManager.NanfangAccounts).Where(p => p != "RasdGch").ToArray();
-            //  var acc = RepairManager.BudingAccounts.Where(p => p != "010").ToArray();
+              //var acc = RepairManager.BudingAccounts.Where(p => p != "010").ToArray();
             FlowController.GroupWork(4, 1, FlowController.SyncFilter, acc);
         }
 
@@ -304,7 +304,7 @@ namespace IdleAuto.Scripts.View
 
             //FlowController.SwitchYongheng();
             // FlowController.ReformShengyi();
-            FlowController.UseBox();
+          //  FlowController.UseBox();
            // FlowController.SendJieduBase();
             // FlowController.ReformBaseEq();
         }

@@ -11,8 +11,8 @@
         /// <summary>
         /// 将背包的装备存库
         /// </summary>
-        /// <returns></returns>
-        Task SaveEquipInBag(int roleid);
+        /// <returns>范围特定装备列表</returns>
+        Task<List<long>> SaveEquipInBag(int roleid);
 
         /// <summary>
         ///保存所有在包裹中的装备

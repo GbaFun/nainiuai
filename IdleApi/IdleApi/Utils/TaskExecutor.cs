@@ -9,7 +9,7 @@ namespace IdleApi.Utils
     public static class TaskExecutor
     {
         // 控制总并发数量的信号量
-        private static readonly SemaphoreSlim _totalConcurrencySemaphore = new SemaphoreSlim(2);
+        private static readonly SemaphoreSlim _totalConcurrencySemaphore = new SemaphoreSlim(3);
 
         // 跟踪每个账号是否已经有任务在执行
         private static readonly ConcurrentDictionary<string, SemaphoreSlim> _accountSemaphores =

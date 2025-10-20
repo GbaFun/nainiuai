@@ -14,6 +14,7 @@ namespace IdleApi.Controllers
     [ApiController]
     public class BaseApi : ControllerBase
     {
+        public static Dictionary<string, string> KeyDic = new Dictionary<string, string>();
        
         [HttpGet]
 
@@ -26,10 +27,10 @@ namespace IdleApi.Controllers
         [HttpGet]
         public async Task Test()
         {
-            var bro = new BroWindow("铁矿石");
-            await bro.LoadUrlAsync(IdleUrlHelper.HomeUrl());
-            var form = new Dictionary<string, string> { { "cid", "" } };
-            await bro.SubmitFormAsync("/Home/SwitchStyle", form);
+            var bro = await BroWinManager.GetWin("打火石");
+            var t = new TradeService(bro);
+            await t.AcceptAll();
+            
         }
 
         [HttpGet]

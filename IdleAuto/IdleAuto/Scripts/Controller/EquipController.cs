@@ -711,11 +711,15 @@ public class EquipController : BaseController
             g.AttType = emAttrType.精力;
             DbUtil.InsertOrUpdate<GroupModel>(g);
         }
-        else if (g.AttType != emAttrType.精力)
+        else if (role.Job == emJob.死灵 && necEquipSuitName == emSuitName.死灵召唤最终配装.ToString())
         {
-            bool canWear = false;
-            canWear = canNecWear ? canNecWear : await AutoAttributeSave(win, role, equipModels);
+            canNecWear = await AutoAttributeSave(win, role, equipModels, emAttrType.精力);
+            await Task.Delay(1000);
         }
+
+        bool canWear = false;
+        canWear = canNecWear ? canNecWear : await AutoAttributeSave(win, role, equipModels);
+
 
         await Task.Delay(1000);
         if (towearEquips.Count > 0)
@@ -1453,20 +1457,20 @@ public class EquipController : BaseController
     /// <returns></returns>
     private EquipSuitMatchStruct MatchEquipSuit(string accountName, RoleModel role, EquipSuit equipSuit, Dictionary<emEquipSort, EquipModel> curEquips, Dictionary<emEquipSort, TradeModel> tradeResult)
     {
-        var budingExclude = new string[] {  "轮回", "无形轮回" };
+        var budingExclude = new string[] { "轮回", "无形轮回" };
         //只查找仓库中的装备
         var registeredEquips = FreeDb.Sqlite.Select<TradeModel>().Where(p => p.TradeStatus == emTradeStatus.Register).ToList();
 
         var _equipsSelf = EquipUtil.QueryEquipInRepo(role.RoleId).Where((a, b) => a.AccountName == accountName && a.EquipStatus == emEquipStatus.Repo).Distinct().ToList();
         //var test = _equipsSelf.Where(p => p.EquipName == "永恒").ToList();
-        var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName != accountName &&( a.EquipStatus == emEquipStatus.Repo||a.EquipStatus==emEquipStatus.Package) && a.IsLocal == false).ToList();
-       int count= _equipsOthers.RemoveAll(p => p.AccountName == "南方仓库" && (p.EquipName.Contains("轮回") || p.EquipName == "人品的展现"));
+        var _equipsOthers = EquipUtil.QueryEquipInRepo().Where((a, b) => a.AccountName != accountName && (a.EquipStatus == emEquipStatus.Repo || a.EquipStatus == emEquipStatus.Package) && a.IsLocal == false).ToList();
+        int count = _equipsOthers.RemoveAll(p => p.AccountName == "南方仓库" && (p.EquipName.Contains("轮回") || p.EquipName == "人品的展现"));
         if (registeredEquips != null)
         {
             _equipsOthers = _equipsOthers.Where(p => !registeredEquips.Select(s => s.EquipId).Contains(p.EquipID)).ToList();
         }
         _equipsOthers = _equipsOthers.Where(p => (p.AccountName.StartsWith("0") && !budingExclude.Contains(p.EquipName)) || !p.AccountName.StartsWith("0")).ToList();
-        var test=_equipsOthers.Where(p => p.EquipName == "全能法戒" && p.EquipStatus == emEquipStatus.Package).ToList();
+        var test = _equipsOthers.Where(p => p.EquipName == "全能法戒" && p.EquipStatus == emEquipStatus.Package).ToList();
         var dicOthers = GetEquipDicWithCategoaryQuality(_equipsOthers);
         var dicSelf = GetEquipDicWithCategoaryQuality(_equipsSelf);
         EquipSuitMatchStruct result = new EquipSuitMatchStruct();

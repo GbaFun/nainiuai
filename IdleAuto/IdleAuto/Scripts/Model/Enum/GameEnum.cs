@@ -415,6 +415,7 @@ public enum emReformType
     Unique22,
 
     Set23,
+    Nainiu,
 
 }
 

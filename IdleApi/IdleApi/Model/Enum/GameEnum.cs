@@ -437,5 +437,11 @@ public enum emSignal
     Continue,
     Skip
 
-    
+
+}
+
+public enum emNoticeType
+{
+    Equip,
+    Others
 }

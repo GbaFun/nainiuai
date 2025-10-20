@@ -158,6 +158,15 @@ namespace IdleAuto.Scripts.Wrap
             };
 
             var res = await _bro.LoadUrlAsync(url);
+            var str = await GetHtml();
+            if (str.Contains("封号"))
+            {
+                await Task.Delay(10000);
+                foreach(var item in taskDic.Values)
+                {
+                  item.TrySetResult(true);
+                }
+            }
             await Task.WhenAll(taskDic.Values.Select(p => p.Task));
             onJsInitCallBack = null;
             return res;
@@ -168,7 +177,7 @@ namespace IdleAuto.Scripts.Wrap
             var aa = await _bro.EvaluateScriptAsync(jsFunc);
             if (!aa.Success)
             {
-                throw new Exception("CallJs执行失败" + aa.Result);
+                throw new Exception("CallJs执行失败" + jsFunc);
             }
             return aa;
         }

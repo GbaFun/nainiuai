@@ -105,7 +105,7 @@ function getEquipInfo(eid, sortid, quality, content) {
         if (sc[1] != "已绑定") baseName = sc[1];
         else baseName = sc[2];
     }
-    else if (baseName.Contains("猎人的伪装")) {
+    else if (baseName.indexOf("猎人的伪装")>-1) {
         baseName = "猎人的伪装";
     }
     else {

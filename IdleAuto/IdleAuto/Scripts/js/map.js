@@ -459,6 +459,7 @@ let _map = {};
 
     init().then(() => {
         Bridge.invokeEvent('OnJsInited', 'map');
+        Bridge.invokeEvent('OnJsInited', 'reform');
 
     })
 

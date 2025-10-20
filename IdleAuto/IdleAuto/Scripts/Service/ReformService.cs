@@ -24,7 +24,7 @@ namespace IdleAuto.Scripts.Service
         // JavaScript 可调用的方法
         public Dictionary<int, int> GetEquipCountToReform()
         {
-            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName == _accountName && p.RoleID > 0 && p.Content.Contains("蛇夫座")).ToList();
+            var list = FreeDb.Sqlite.Select<EquipModel>().Where(p => p.AccountName == _accountName &&p.EquipStatus==emEquipStatus.Equipped && p.RoleID > 0 && p.Content.Contains("蛇夫座")).ToList();
 
             var dic = new Dictionary<int, int>();
             var count21 = 0;

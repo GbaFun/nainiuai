@@ -11,10 +11,12 @@ public class IdleUrlHelper
     public const string Role = "Character/Detail";
     public const string Equip = "Equipment/Query";
     public const string EquipStoreAll = "Equipment/EquipStoreAll";
+    public const string EquipStore= "Equipment/EquipStore";
     public const string Ah = "Auction/Query";
     public const string Inlay = "Equipment/Inlay";
     public const string Material = "Equipment/Material";
-    public const string Notice = "Notice/Query";
+    private const string Notice = "Notice/Query";
+    private const string NoticeYes = "Notice/NoticeYes";
     public const string Reform = "Equipment/Reform";
     private const string m_roleArg = "id=";
     public static string HomeUrl()
@@ -48,6 +50,10 @@ public class IdleUrlHelper
     {
         return $"{Idle}/{EquipStoreAll}";
     }
+    public static string EquipStoreUrl()
+    {
+        return $"{Idle}/{EquipStore}";
+    }
     public static string AhUrl(int roleId)
     {
         return $"{Idle}/{Ah}?{m_roleArg}{roleId}";
@@ -68,5 +74,10 @@ public class IdleUrlHelper
             return $"{Idle}/{Notice}";
         }
         return $"{Idle}/{Notice}?pi={page}";
+    }
+    public static string NoticeYesUrl()
+    {
+        
+        return $"{Idle}/{NoticeYes}";
     }
 }

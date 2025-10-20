@@ -77,7 +77,7 @@ namespace IdleAuto.Scripts.Controller
             }
 
             await Task.Delay(1000);
-            await UpdateContent(equip, reformType);
+          if(reformType!=emReformType.Nainiu)  await UpdateContent(equip, reformType);
             var d = new Dictionary<string, object>();
 
             d.Add("type", reformType);
@@ -107,15 +107,52 @@ namespace IdleAuto.Scripts.Controller
                 {
                     if (!r["canUnique22"]) return false;
                 }
+               
 
             }
             var a = await _win.CallJsWaitReload($"_reform.reform({d.ToLowerCamelCase()})", "reform");
             await UpdateContent(equip, reformType);
             return true;
         }
+        public async Task<bool> CheckNainiu(EquipModel equip, int roleId, emReformType reformType)
+        {
+            await Task.Delay(1500);
+            if (equip == null) return false;
+            var url = $"https://www.idleinfinity.cn/Equipment/Reform?id={roleId}&eid={equip.EquipID}";
+            if (_win.GetBro().Address != url)
+            {
+                await _win.LoadUrlWaitJsInit(url, "reform");
+            }
+
+            await Task.Delay(1000);
+            await UpdateContent(equip, reformType);
+            var d = new Dictionary<string, object>();
+
+            d.Add("type", reformType);
+            //改造完会跳转到装备栏界面
+            var materialResult = await _win.CallJs("_reform.isMeterialEnough()");
+            if (materialResult.Success)
+            {
+                var r = materialResult.Result.ToObject<Dictionary<string, bool>>();
+
+                if (r["canNainiu"]) return true;
+                else return false;
+
+
+
+            }
+
+            return true;
+        }
+
 
         private async Task UpdateContent(EquipModel equip, emReformType reformType)
         {
+            if (reformType == emReformType.Nainiu)
+            {
+                DbUtil.Delete(equip);
+                return;
+            }
             //打孔会直接跳到装备页不能更新装备内容
             var updateTypeList = new List<emReformType>() { emReformType.Mage, emReformType.UpgradeMagical, emReformType.UpgradeRare, emReformType.Set21, emReformType.Set25, emReformType.Rare19, emReformType.Unique22, emReformType.Set23 };
             if (!updateTypeList.Contains(reformType)) return;

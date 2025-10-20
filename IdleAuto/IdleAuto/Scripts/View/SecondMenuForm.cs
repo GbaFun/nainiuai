@@ -203,5 +203,19 @@ namespace IdleAuto.Scripts.View
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FlowController.PassFinalDungeon();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var passFinalAcc = FreeDb.Sqlite.Select<GroupModel>().Where(p => p.DungeonPassedLv == 100).ToList().Select(s => s.AccountName).Distinct();
+            var tuiList = FreeDb.Sqlite.Select<EquipModel>().Where(p => (p.EquipName.Contains("维特之脚") || p.EquipName.Contains("牛王战戟")) && p.Lv >= 85 && p.EquipStatus == emEquipStatus.Repo).ToList().Select(s => s.AccountName).Distinct();
+            var acc = passFinalAcc.Intersect(tuiList).ToList();
+            FlowController.GroupWork(3, 1, FlowController.StartNainiu, acc.ToArray());
+
+        }
     }
 }

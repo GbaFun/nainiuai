@@ -111,7 +111,7 @@ namespace IdleAuto.Scripts.Model
             absoluteEng = baseAttr.Eng + EngAdd;
 
 
-            if (absoluteStr >= require.Str && absoluteDex >= require.Dex && absoluteVit >= require.Vit && absoluteEng >= require.Eng)
+            if (absoluteStr >= require.Str && absoluteDex >= require.Dex && absoluteVit >= require.Vit && absoluteEng >= require.Eng&&Point==0)
             {
                 //精力优先触发重置
                 if (attType == emAttrType.精力 && absoluteVit >= absoluteEng)
